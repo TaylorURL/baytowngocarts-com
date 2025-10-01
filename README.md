@@ -1,8 +1,8 @@
 # Speedway 146 Website
 
-A modern React website for Speedway 146 - Baytown's premier go-kart racing and family entertainment destination.
 
-## Tech Stack
+
+## Tech Stack Used
 
 - **Frontend**: React 18 with TypeScript
 - **Build Tool**: Vite
