@@ -7,21 +7,18 @@ const Attractions: React.FC = () => {
     {
       title: 'Go-Kart Racing',
       description: 'Professional racing karts on our challenging outdoor track designed for maximum excitement.',
-      image: 'https://images.pexels.com/photos/163407/go-kart-racing-competition-speed-163407.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
       image: '/images/9.jpg',
       features: ['Professional Karts', 'Timed Races', 'Safety Gear Included'],
     },
     {
       title: 'Bounce Houses',
       description: 'Multiple inflatable attractions perfect for kids parties and family fun.',
-      image: 'https://images.pexels.com/photos/1094072/pexels-photo-1094072.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
       image: '/images/10.jpg',
       features: ['Multiple Themes', 'All Ages Welcome', 'Safe & Clean'],
     },
     {
       title: 'Party Rooms',
       description: 'Private party spaces available for birthdays, corporate events, and celebrations.',
-      image: 'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop',
       image: '/images/11.jpg',
       features: ['Private Spaces', 'Catering Available', 'Event Planning'],
     },

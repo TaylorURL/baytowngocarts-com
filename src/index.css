@@ -1,9 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import Bebas Neue font */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 /* Custom color variables */
 :root {
