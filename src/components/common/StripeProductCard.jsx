@@ -1,6 +1,6 @@
 import React from 'react';
 import { Check, Phone } from 'lucide-react';
-import Button from '../common/Button';
+import Button from './Button.jsx';
 
 const StripeProductCard = ({ product }) => {
   const handleBooking = () => {

@@ -1,17 +1,15 @@
 import React from 'react';
-import Hero from '../components/home/Hero';
-import VideoSection from '../components/home/VideoSection';
-import ImageGallery from '../components/home/ImageGallery';
-import Features from '../components/home/Features';
-import Attractions from '../components/home/Attractions';
-import Testimonials from '../components/home/Testimonials';
-import CTA from '../components/home/CTA';
+import Hero from '../components/common/Hero.jsx';
+import ImageGallery from '../components/common/ImageGallery.jsx';
+import Features from '../components/common/Features.jsx';
+import Attractions from '../components/common/Attractions.jsx';
+import Testimonials from '../components/common/Testimonials.jsx';
+import CTA from '../components/common/CTA.jsx';
 
 const HomePage = () => {
   return (
     <div>
       <Hero />
-      <VideoSection />
       <ImageGallery />
       <Features />
       <Attractions />

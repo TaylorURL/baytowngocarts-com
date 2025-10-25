@@ -1,14 +1,14 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
-import StripeProductCard from '../components/pricing/StripeProductCard';
-import { BOUNCE_PRICING } from '../utils/constants';
-import { STRIPE_PRODUCTS } from '../stripe-config';
+import StripeProductCard from '../components/common/StripeProductCard.jsx';
+import { BOUNCE_PRICING } from '../lib/constants.js';
+import { STRIPE_PRODUCTS } from '../lib/stripe-config.js';
 
 const PricingPage = () => {
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-red-900 via-red-800 to-navy-900 text-white">
+      <section className="py-20 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <h1 className="text-4xl lg:text-6xl font-bold mb-6">

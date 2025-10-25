@@ -4,24 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom color variables */
-:root {
-  --color-navy-900: #0a1929;
-  --color-navy-800: #0f2942;
-  --color-navy-700: #153e5c;
-  --color-red-600: #dc2626;
-  --color-red-500: #ef4444;
-}
-
-/* Base styles */
 html {
   scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #333;
+  color: var(--color-gray-800);
   line-height: 1.5;
+}
+
+main {
+  padding-top: 4.125rem;
 }
 
 /* Enhanced Animation classes */
@@ -72,7 +66,7 @@ body {
 
 .button-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3), 0 4px 6px -2px rgba(220, 38, 38, 0.2);
+  box-shadow: var(--shadow-red);
 }
 
 /* Enhanced keyframe animations */
@@ -116,17 +110,6 @@ body {
   }
 }
 
-/* Utility classes */
-.text-navy-900 { color: var(--color-navy-900); }
-.bg-navy-900 { background-color: var(--color-navy-900); }
-.bg-navy-800 { background-color: var(--color-navy-800); }
-.bg-navy-700 { background-color: var(--color-navy-700); }
-.text-red-600 { color: var(--color-red-600); }
-.bg-red-600 { background-color: var(--color-red-600); }
-.hover\:bg-red-700:hover { background-color: #b91c1c; }
-.border-red-600 { border-color: var(--color-red-600); }
-
-/* Enhanced Image hover effects */
 .image-hover {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;

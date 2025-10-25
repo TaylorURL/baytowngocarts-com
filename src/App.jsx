@@ -10,11 +10,13 @@ import FAQPage from './pages/FAQPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import SuccessPage from './pages/SuccessPage';
-import ChatWidget from './components/chat/ChatWidget';
+import ChatWidget from './components/common/ChatWidget.jsx';
+import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />

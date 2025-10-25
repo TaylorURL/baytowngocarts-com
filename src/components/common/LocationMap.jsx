@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
-import { CONTACT_INFO, BUSINESS_HOURS } from '../../utils/constants';
+import { CONTACT_INFO, BUSINESS_HOURS } from '../../lib/constants.js';
 
 const LocationMap = () => {
   return (

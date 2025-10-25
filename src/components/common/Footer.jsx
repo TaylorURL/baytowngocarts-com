@@ -21,18 +21,33 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/p/Speedway146-61575710985956/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/Speedway146/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.tiktok.com/@Speedway146"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-red-400 transition-colors"
+                aria-label="TikTok"
+              >
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
               </a>
             </div>
           </div>
@@ -120,6 +135,9 @@ const Footer = () => {
             <a href="#" className="text-gray-400 hover:text-red-400 text-sm">Privacy Policy</a>
             <a href="#" className="text-gray-400 hover:text-red-400 text-sm">Terms of Service</a>
           </div>
+          <p className="text-gray-400 text-sm mt-4">
+            Design by <a href="https://taylorurl.com" target="_blank" rel="noopener noreferrer" className="hover:text-red-400 transition-colors">TaylorURL.com</a>
+          </p>
         </div>
       </div>
     </footer>

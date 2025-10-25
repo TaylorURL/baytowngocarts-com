@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
-import Button from '../common/Button';
+import Button from './Button.jsx';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -160,7 +160,7 @@ const ContactForm = () => {
             Download Go-Kart Waiver
           </a>
           <a 
-            href="/images/Bounce House Participant Waiver and Release PDF.pdf" 
+            href="/images/Bounce%20House%20Participant%20Waiver%20and%20Release%20PDF.pdf"
             download
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-center text-sm"
           >

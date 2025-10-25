@@ -1,18 +1,18 @@
 import React from 'react';
 import FAQItem from '../components/common/FAQItem';
-import { FAQS } from '../utils/constants';
+import { FAQS } from '../lib/constants.js';
 import Button from '../components/common/Button';
 import { Link } from 'react-router-dom';
 
 const FAQPage = () => {
   return (
-    <div className="pt-20">
+    <div>
       {/* Header */}
-      <div className="bg-gradient-to-br from-red-900 via-red-800 to-navy-900 py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold text-white mb-6">Frequently Asked Questions</h1>
-            <p className="text-xl text-gray-300">
+      <div className="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6">Frequently Asked Questions</h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Find answers to common questions about our go-karts, bounce houses, and policies.
             </p>
           </div>

@@ -1,10 +1,10 @@
 import React from 'react';
-import ContactForm from '../components/contact/ContactForm';
-import LocationMap from '../components/contact/LocationMap';
+import ContactForm from '../components/common/ContactForm.jsx';
+import LocationMap from '../components/common/LocationMap.jsx';
 
 const ContactPage = () => {
   return (
-    <div className="pt-20">
+    <div>
       {/* Hero Section */}
       <section className="py-20 bg-navy-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
