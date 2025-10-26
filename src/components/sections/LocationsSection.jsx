@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
 import { CONTACT_INFO, BUSINESS_HOURS } from '../../lib/constants.js';
 
-const LocationMap = () => {
+const LocationsSection = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -69,4 +69,4 @@ const LocationMap = () => {
   );
 };
 
-export default LocationMap;
+export default LocationsSection;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Check, Phone } from 'lucide-react';
-import Button from './Button.jsx';
+import Button from '../common/Button.jsx';
 
-const StripeProductCard = ({ product }) => {
+const ProductsSection = ({ product }) => {
   const handleBooking = () => {
     window.location.href = 'tel:(346) 932-1266';
   };
@@ -54,4 +54,4 @@ const StripeProductCard = ({ product }) => {
   );
 };
 
-export default StripeProductCard;
+export default ProductsSection;

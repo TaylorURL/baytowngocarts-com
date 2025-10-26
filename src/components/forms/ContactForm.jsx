@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
-import Button from './Button.jsx';
+import Button from '../common/Button.jsx';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({

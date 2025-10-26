@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-const FAQItem = ({ faq }) => {
+const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -31,4 +31,4 @@ const FAQItem = ({ faq }) => {
   );
 };
 
-export default FAQItem;
+export default QuestionSection;

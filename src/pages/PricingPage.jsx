@@ -1,13 +1,13 @@
 import React from 'react';
 import { Phone } from 'lucide-react';
-import StripeProductCard from '../components/common/StripeProductCard.jsx';
+import ProductsSection from '../components/sections/ProductsSection.jsx';
 import { BOUNCE_PRICING } from '../lib/constants.js';
 import { STRIPE_PRODUCTS } from '../lib/stripe-config.js';
 
 const PricingPage = () => {
   return (
     <div>
-      {/* Hero Section */}
+      {/* HeroSection Section */}
       <section className="py-20 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
@@ -36,7 +36,7 @@ const PricingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {STRIPE_PRODUCTS.map((product, index) => (
               <div key={index} data-aos="fade-up" data-aos-delay={index * 100}>
-                <StripeProductCard product={product} />
+                <ProductsSection product={product} />
               </div>
             ))}
           </div>

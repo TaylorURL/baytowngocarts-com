@@ -1,7 +1,7 @@
 import React from 'react';
 import { Zap, Shield, Trophy, Users } from 'lucide-react';
 
-const Features = () => {
+const FeatureSection = () => {
   const features = [
     {
       icon: Zap,
@@ -58,4 +58,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default FeatureSection;

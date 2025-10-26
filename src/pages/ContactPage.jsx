@@ -1,11 +1,11 @@
 import React from 'react';
-import ContactForm from '../components/common/ContactForm.jsx';
-import LocationMap from '../components/common/LocationMap.jsx';
+import ContactForm from '../components/forms/ContactForm.jsx';
+import LocationsSection from '../components/sections/LocationsSection.jsx';
 
 const ContactPage = () => {
   return (
     <div>
-      {/* Hero Section */}
+      {/* HeroSection Section */}
       <section className="py-20 bg-navy-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
@@ -35,7 +35,7 @@ const ContactPage = () => {
                 We're conveniently located in Baytown, TX. Visit us during our business hours or contact us to plan your next fun adventure!
               </p>
               
-              <LocationMap />
+              <LocationsSection />
               
               <div className="mt-8 p-6 bg-red-50 border border-red-200 rounded-lg">
                 <h3 className="text-lg font-semibold text-red-900 mb-2">Digital Waiver</h3>

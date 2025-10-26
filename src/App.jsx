@@ -10,7 +10,7 @@ import FAQPage from './pages/FAQPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import SuccessPage from './pages/SuccessPage';
-import ChatWidget from './components/common/ChatWidget.jsx';
+import ChatWidget from './components/widgets/ChatWidget.jsx';
 import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 export default function App() {

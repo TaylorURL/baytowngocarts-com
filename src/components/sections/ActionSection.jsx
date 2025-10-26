@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-const CTA = () => {
+const ActionSection = () => {
   return (
     <section className="py-20 bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -36,4 +36,4 @@ const CTA = () => {
   );
 };
 
-export default CTA;
+export default ActionSection;

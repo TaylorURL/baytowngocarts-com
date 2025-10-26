@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImageGallery = () => {
+const GallarySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const images = [
@@ -86,4 +86,4 @@ const ImageGallery = () => {
   );
 };
 
-export default ImageGallery;
+export default GallarySection;

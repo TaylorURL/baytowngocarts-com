@@ -15,10 +15,9 @@ body {
 }
 
 main {
-  padding-top: 4.125rem;
+  padding-top: 5rem;
 }
 
-/* Enhanced Animation classes */
 .animate-fade-in {
   animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Button from './Button.jsx';
+import Button from '../common/Button.jsx';
 
-const Hero = () => {
+const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const backgroundImages = ['/images/9.jpg', '/images/4.jpg', '/images/14.jpg', '/images/2.jpg', '/images/3.jpg'];
   
@@ -30,7 +30,7 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Hero Checkerboard Pattern Overlay */}
+      {/* HeroSection Checkerboard Pattern Overlay */}
       <div 
         className="absolute inset-0 z-5 opacity-10" 
         style={{
@@ -40,8 +40,8 @@ const Hero = () => {
         }}
       />
       
-      {/* Hero Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-48">
+      {/* HeroSection Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 md:pt-56 md:pb-48">
         <div className="md:max-w-2xl">
           <h1 
             className="text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-tight animate-fade-in italic sm:tracking-normal tracking-tighter"
@@ -107,4 +107,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default HeroSection;

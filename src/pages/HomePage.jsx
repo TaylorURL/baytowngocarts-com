@@ -1,20 +1,20 @@
 import React from 'react';
-import Hero from '../components/common/Hero.jsx';
-import ImageGallery from '../components/common/ImageGallery.jsx';
-import Features from '../components/common/Features.jsx';
-import Attractions from '../components/common/Attractions.jsx';
-import Testimonials from '../components/common/Testimonials.jsx';
-import CTA from '../components/common/CTA.jsx';
+import HeroSection from '../components/sections/HeroSection.jsx';
+import GallarySection from '../components/sections/GallarySection.jsx';
+import FeatureSection from '../components/sections/FeatureSection.jsx';
+import AttractionsSection from '../components/sections/AttractionsSection.jsx';
+import TestimonialSection from '../components/sections/TestimonialSection.jsx';
+import ActionSection from '../components/sections/ActionSection.jsx';
 
 const HomePage = () => {
   return (
-    <div>
-      <Hero />
-      <ImageGallery />
-      <Features />
-      <Attractions />
-      <Testimonials />
-      <CTA />
+    <div className="w-full -mt-20">
+      <HeroSection />
+      <GallarySection />
+      <FeatureSection />
+      <AttractionsSection />
+      <TestimonialSection />
+      <ActionSection />
     </div>
   );
 };

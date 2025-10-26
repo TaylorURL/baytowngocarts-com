@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-const Attractions = () => {
+const AttractionsSection = () => {
   const attractions = [
     {
       title: 'Go-Kart Racing',
@@ -85,4 +85,4 @@ const Attractions = () => {
   );
 };
 
-export default Attractions;
+export default AttractionsSection;

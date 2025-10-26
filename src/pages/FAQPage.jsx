@@ -1,5 +1,5 @@
 import React from 'react';
-import FAQItem from '../components/common/FAQItem';
+import QuestionSection from '../components/sections/QuestionSection.jsx';
 import { FAQS } from '../lib/constants.js';
 import Button from '../components/common/Button';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ const FAQPage = () => {
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             {FAQS.map((faq, index) => (
-              <FAQItem key={index} faq={faq} />
+              <QuestionSection key={index} faq={faq} />
             ))}
           </div>
           
