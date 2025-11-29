@@ -72,7 +72,7 @@ const AboutPage = () => {
             style={{ backgroundImage: 'url(/images/10.jpg)' }}
           />
         </div>
-        
+
         <div 
           className="absolute inset-0 z-5 opacity-10" 
           style={{
