@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut, ShoppingBag, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useCart } from '../../hooks/useCart';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,6 +11,7 @@ const Header = () => {
   const [activeLight, setActiveLight] = useState(0);
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { getTotalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -174,7 +176,32 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center gap-4">
+            <Link
+              to="/cart"
+              className="relative px-4 py-2.5 rounded-lg transition-all duration-300 border"
+              style={{
+                backgroundColor: 'var(--color-navy-800)',
+                borderColor: 'var(--color-navy-600)',
+                color: 'var(--color-white)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--color-navy-700)';
+                e.currentTarget.style.borderColor = 'var(--color-red-700)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--color-navy-800)';
+                e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+              }}
+            >
+              <ShoppingCart className="h-5 w-5" style={{ color: 'var(--color-red-500)' }} />
+              {getTotalItems() > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                  {getTotalItems()}
+                </span>
+              )}
+            </Link>
+
             {user ? (
               <div className="relative">
                 <button
@@ -206,6 +233,28 @@ const Header = () => {
                       borderColor: 'var(--color-navy-600)'
                     }}
                   >
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
+                      style={{
+                        color: 'var(--color-gray-300)',
+                        borderColor: 'transparent'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                        e.currentTarget.style.color = 'var(--color-white)';
+                        e.currentTarget.style.borderColor = 'var(--color-red-500)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.color = 'var(--color-gray-300)';
+                        e.currentTarget.style.borderColor = 'transparent';
+                      }}
+                    >
+                      <ShoppingBag className="h-5 w-5" />
+                      <span>My Purchases</span>
+                    </Link>
                     <button 
                       onClick={handleSignOut} 
                       className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
@@ -350,6 +399,29 @@ const Header = () => {
                 >
                   {user.email}
                 </div>
+                <Link
+                  to="/dashboard"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                  style={{
+                    backgroundColor: 'var(--color-navy-900)',
+                    color: 'var(--color-gray-300)',
+                    borderColor: 'var(--color-navy-600)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                    e.currentTarget.style.color = 'var(--color-white)';
+                    e.currentTarget.style.borderColor = 'var(--color-red-800)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--color-navy-900)';
+                    e.currentTarget.style.color = 'var(--color-gray-300)';
+                    e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+                  }}
+                >
+                  <ShoppingBag className="h-5 w-5" />
+                  <span>My Purchases</span>
+                </Link>
                 <button 
                   onClick={handleSignOut} 
                   className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"

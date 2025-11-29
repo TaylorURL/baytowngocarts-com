@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Camera } from 'lucide-react';
 
 const GallarySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,8 +18,6 @@ const GallarySection = () => {
     { src: '/images/11.jpg', alt: 'Go-kart fun', title: 'Go-Kart Fun' },
     { src: '/images/12.jpg', alt: 'Entertainment center', title: 'Entertainment Center' },
     { src: '/images/13.jpg', alt: 'Speedway 146 experience', title: 'Our Experience' },
-    { src: '/images/14.jpg', alt: 'Racing thrills', title: 'Racing Thrills' },
-    { src: '/images/15.jpg', alt: 'Family entertainment', title: 'Family Entertainment' },
   ];
 
   const nextSlide = () => {
@@ -32,14 +31,17 @@ const GallarySection = () => {
   const currentImages = images.slice(currentSlide * 4, (currentSlide + 1) * 4);
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16" data-aos="fade-up">
-          <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-4">
+        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
+          <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+            GALLERY
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
             Experience the Action
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Take a look at the excitement and fun that awaits you at Speedway 146.
+          <p className="text-xl text-gray-600">
+            Take a look at the excitement and fun that awaits you at Speedway 146
           </p>
         </div>
 
@@ -48,36 +50,53 @@ const GallarySection = () => {
             {currentImages.map((image, index) => (
               <div
                 key={currentSlide * 4 + index}
-                className="relative image-hover rounded-lg overflow-hidden shadow-lg group"
+                className="relative image-hover rounded-2xl overflow-hidden shadow-xl group"
               >
                 <img
                   src={image.src}
                   alt={image.alt}
                   className="w-full h-64 object-cover transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <h3 className="text-white text-lg font-semibold">{image.title}</h3>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
+                  <div className="text-center">
+                    <Camera className="h-6 w-6 text-white mx-auto mb-2" />
+                    <h3 className="text-white text-lg font-bold">{image.title}</h3>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Navigation */}
-          <div className="flex justify-center mt-8 space-x-4">
+          <div className="flex justify-center items-center mt-12 gap-6">
             <button
               onClick={prevSlide}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              aria-label="Previous images"
             >
-              Previous
+              <ChevronLeft className="h-6 w-6" />
             </button>
-            <span className="flex items-center text-gray-600">
-              {currentSlide + 1} / {Math.ceil(images.length / 4)}
-            </span>
+            
+            <div className="flex items-center gap-3">
+              {[...Array(Math.ceil(images.length / 4))].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`transition-all duration-300 rounded-full ${
+                    index === currentSlide
+                      ? 'bg-red-600 w-8 h-3'
+                      : 'bg-gray-300 hover:bg-gray-400 w-3 h-3'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+            
             <button
               onClick={nextSlide}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              aria-label="Next images"
             >
-              Next
+              <ChevronRight className="h-6 w-6" />
             </button>
           </div>
         </div>

@@ -64,12 +64,12 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/9.jpg)' }}
+            style={{ backgroundImage: 'url(/images/10.jpg)' }}
           />
         </div>
         

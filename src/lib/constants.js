@@ -52,35 +52,43 @@ export const BOUNCE_PRICING = [
 export const FAQS = [
   {
     question: "What are the age and height requirements for go-karts?",
-    answer: "For adult go-karts, drivers must be at least 14 years old and 58 inches tall. For kid go-karts, drivers must be 8-13 years old and at least 48 inches tall. Safety is our top priority!"
+    answer: "For adult go-karts, drivers must be at least 14 years old and 58 inches tall. For kid go-karts, drivers must be 8-13 years old and at least 48 inches tall. Safety is our top priority!",
+    category: "Racing"
   },
   {
     question: "Can I bring my own food to Speedway 146?",
-    answer: "Outside food and drinks are not permitted, but we offer a variety of delicious options at our snack bar, including Mexican cultural favorites and classic American snacks."
+    answer: "Outside food and drinks are not permitted, but we offer a variety of delicious options at our snack bar, including Mexican cultural favorites and classic American snacks.",
+    category: "Policies"
   },
   {
     question: "Do I need a reservation for go-kart racing?",
-    answer: "No reservation is needed for go-kart racing or bounce house use during regular business hours. Just come in and purchase your tickets at the counter."
+    answer: "No reservation is needed for go-kart racing or bounce house use during regular business hours. Just come in and purchase your tickets at the counter.",
+    category: "Racing"
   },
   {
     question: "How does the Race Swap Option work?",
-    answer: "If your group has no kids, you can swap 3 kid races for 2 adult races at no extra charge in any of our Family Deals."
+    answer: "If your group has no kids, you can swap 3 kid races for 2 adult races at no extra charge in any of our Family Deals.",
+    category: "Pricing"
   },
   {
     question: "What food combo options are available with Family Deals?",
-    answer: "You can choose from Classic Nachos, Chili Cheese Nachos, Ham BLT Sandwich, or Turkey BLT Sandwich. Each combo includes a 12 fl oz drink."
+    answer: "You can choose from Classic Nachos, Chili Cheese Nachos, Ham BLT Sandwich, or Turkey BLT Sandwich. Each combo includes a 12 fl oz drink.",
+    category: "Pricing"
   },
   {
     question: "Do you offer party room rentals?",
-    answer: "Yes! Our private party room is available by phone reservation only. Please call (346) 932-1266 to inquire about availability and pricing."
+    answer: "Yes! Our private party room is available by phone reservation only. Please call (346) 932-1266 to inquire about availability and pricing.",
+    category: "Events"
   },
   {
     question: "What is your refund policy?",
-    answer: "All unused races must be used the same day. No refunds, credits, or redemptions after leaving the premises."
+    answer: "All unused races must be used the same day. No refunds, credits, or redemptions after leaving the premises.",
+    category: "Policies"
   },
   {
     question: "Can I rent a bounce house for my home event?",
-    answer: "Yes! We offer bounce house rentals for off-site events. Please use our online booking form on the Contact page to request information."
+    answer: "Yes! We offer bounce house rentals for off-site events. Please use our online booking form on the Contact page to request information.",
+    category: "Events"
   }
 ];
 

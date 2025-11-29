@@ -10,6 +10,9 @@ import FAQPage from './pages/FAQPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import SuccessPage from './pages/SuccessPage';
+import DashboardPage from './pages/PurchasesPage';
+import CartPage from './pages/CartPage';
+import PurchaseDetailsPage from './pages/PurchaseDetailsPage';
 import ChatWidget from './components/widgets/ChatWidget.jsx';
 import ScrollToTop from './components/common/ScrollToTop.jsx';
 
@@ -25,6 +28,9 @@ export default function App() {
           <Route path="events" element={<EventsPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="faq" element={<FAQPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="cart" element={<CartPage />} />
+          <Route path="purchase/:orderId" element={<PurchaseDetailsPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
