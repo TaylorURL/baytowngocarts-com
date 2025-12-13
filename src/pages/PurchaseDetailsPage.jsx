@@ -219,7 +219,7 @@ export default function PurchaseDetailsPage() {
               <div className="space-y-4">
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
                   <h3 className="font-bold text-navy-900 mb-2">Speedway 146</h3>
-                  <p className="text-gray-700 mb-3">6750 N Highway 146, Baytown, TX 77523</p>
+                  <p className="text-gray-700 mb-3">6750 N TX-146, Baytown, TX 77523</p>
                   
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-700">
