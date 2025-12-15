@@ -11,7 +11,7 @@ const TEST_PRODUCTS = [
         features: [
             'Test live Stripe payments',
             'Verify integration works',
-            'Remove after testing'
+            'Disable boolean after testing.'
         ],
         isTest: true
     }

@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import QuestionSection from '../components/sections/QuestionSection.jsx';
 import {FAQS} from '../lib/constants.js';
 import Button from '../components/common/Button';
@@ -8,6 +8,31 @@ import {Calendar, DollarSign, HelpCircle, MessageSquare, Phone, Search, Users, X
 const FAQPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [isSticky, setIsSticky] = useState(false);
+    const stickyRef = useRef(null);
+    const anchorRef = useRef(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (stickyRef.current) {
+                const rect = stickyRef.current.getBoundingClientRect();
+                setIsSticky(rect.top <= 80);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToStickyPosition = () => {
+        if (anchorRef.current) {
+            anchorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategory(categoryId);
+        scrollToStickyPosition();
+    };
 
     const categories = useMemo(() => [
         {id: 'All', icon: Search, label: 'All Questions'},
@@ -98,10 +123,19 @@ const FAQPage = () => {
                      style={{clipPath: 'polygon(0 100%, 100% 0, 100% 100%, 0% 100%)'}}/>
             </section>
 
-            <section className="py-16 bg-white border-b-2 border-gray-100 sticky top-20 z-40">
+            <div ref={anchorRef} className="scroll-mt-20"></div>
+
+            <section 
+                ref={stickyRef}
+                className={`py-4 border-b-2 sticky top-20 z-40 transition-all duration-300 ${
+                    isSticky 
+                        ? 'bg-navy-900 border-red-600' 
+                        : 'bg-white border-gray-100'
+                }`}
+            >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">
-                        <div className="flex flex-wrap justify-center gap-3">
+                        <div className="flex flex-wrap justify-center gap-2">
                             {categories.map((category) => {
                                 const count = getCategoryCount(category.id);
                                 const isActive = selectedCategory === category.id;
@@ -110,17 +144,23 @@ const FAQPage = () => {
                                 return (
                                     <button
                                         key={category.id}
-                                        onClick={() => setSelectedCategory(category.id)}
-                                        className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                                        onClick={() => handleCategorySelect(category.id)}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-all duration-300 ${
                                             isActive
                                                 ? 'bg-red-600 text-white shadow-lg scale-105'
-                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                                                : isSticky
+                                                    ? 'bg-navy-800 text-gray-300 hover:bg-navy-700 hover:scale-105'
+                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
                                         }`}
                                     >
-                                        <IconComponent className="h-5 w-5"/>
-                                        <span>{category.label}</span>
+                                        <IconComponent className="h-4 w-4"/>
+                                        <span className="text-sm">{category.label}</span>
                                         <span className={`ml-1 px-2 py-0.5 rounded-full text-xs font-bold ${
-                                            isActive ? 'bg-white text-red-600' : 'bg-gray-200 text-gray-600'
+                                            isActive 
+                                                ? 'bg-white text-red-600' 
+                                                : isSticky
+                                                    ? 'bg-navy-700 text-gray-400'
+                                                    : 'bg-gray-200 text-gray-600'
                                         }`}>
                       {count}
                     </span>
