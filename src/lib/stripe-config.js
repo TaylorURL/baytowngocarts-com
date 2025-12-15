@@ -57,12 +57,12 @@ export const STRIPE_PRODUCTS = [
   {
     id: 'prod_SuF9rhy87orqYS',
     priceId: 'price_1RyQemCMNAD5XWq4A8DpcSm9',
-    name: 'All Day Racing',
-    description: 'Unlimited races',
+    name: '2.5 Hour Racing',
+    description: 'Unlimited races for 2.5 hours',
     price: '$44.99',
     mode: 'payment',
     features: [
-      'Race all day long',
+      'Unlimited races for 2.5 hours',
       'Adult or Kid karts',
       'Best value for racing enthusiasts'
     ]

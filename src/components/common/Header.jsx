@@ -8,21 +8,11 @@ import { useCart } from '../../hooks/useCart';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeLight, setActiveLight] = useState(0);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { isStaff } = useAdmin();
   const { getTotalItems } = useCart();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const lightInterval = setInterval(() => {
@@ -52,20 +42,16 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? 'bg-[var(--color-navy-900)] backdrop-blur-md shadow-2xl border-b border-[var(--color-red-900)]' 
-          : 'bg-gradient-to-b from-[var(--color-navy-900)] to-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        boxShadow: isScrolled ? 'var(--shadow-red)' : 'none'
+        backgroundColor: '#0a1929'
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-6">
             <div 
-              className="flex gap-2 p-3 rounded-xl border backdrop-blur-sm"
+              className="hidden sm:flex gap-2 p-3 rounded-xl border backdrop-blur-sm"
               style={{
                 backgroundColor: 'rgba(10, 25, 41, 0.8)',
                 borderColor: 'var(--color-navy-700)'
