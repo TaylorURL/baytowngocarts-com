@@ -259,7 +259,7 @@ export default function CartPage() {
                                 </div>
 
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Service Fee (5%):</span>
+                                    <span className="text-gray-600">Transaction Fee:</span>
                                     <span
                                         className="font-semibold text-gray-700">${calculateFees().serviceFee.toFixed(2)}</span>
                                 </div>
@@ -273,7 +273,7 @@ export default function CartPage() {
 
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
                                     <p className="text-xs text-blue-800 text-center">
-                                        💡 Paying with cash saves you 5% at the track
+                                        Paying with cash saves you the transaction fee at the track
                                     </p>
                                 </div>
                             </div>

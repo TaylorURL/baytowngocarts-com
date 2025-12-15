@@ -50,32 +50,20 @@ serve(async (req) => {
 
         const transactionFee = (subtotal * TRANSACTION_FEE_PERCENT) + 0.30
         const platformFee = subtotal * PLATFORM_FEE_PERCENT
+        const totalFees = transactionFee + platformFee
 
         lineItems.push({
             price_data: {
                 currency: 'usd',
                 product_data: {
                     name: 'Transaction Fee',
-                    description: '4% + $0.30 card processing fee',
                 },
-                unit_amount: Math.round(transactionFee * 100),
+                unit_amount: Math.round(totalFees * 100),
             },
             quantity: 1,
         })
 
-        lineItems.push({
-            price_data: {
-                currency: 'usd',
-                product_data: {
-                    name: 'Platform Fee',
-                    description: '1% platform service fee',
-                },
-                unit_amount: Math.round(platformFee * 100),
-            },
-            quantity: 1,
-        })
-
-        const total = subtotal + transactionFee + platformFee
+        const total = subtotal + totalFees
         const stripeProcessingFee = (total * 0.029) + 0.30
         const applicationFeeAmount = Math.round((platformFee + stripeProcessingFee) * 100)
 
