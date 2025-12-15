@@ -342,87 +342,100 @@ const Header = () => {
             )}
           </div>
 
-          <button
-            className="lg:hidden p-3 rounded-lg transition-all duration-300 border"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-            style={{
-              color: 'var(--color-white)',
-              borderColor: 'transparent'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
-              e.currentTarget.style.borderColor = 'var(--color-red-800)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.borderColor = 'transparent';
-            }}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <Link
+              to="/cart"
+              className="relative p-3 rounded-lg transition-all duration-300"
+              style={{
+                color: 'var(--color-white)'
+              }}
+            >
+              <ShoppingCart className="h-6 w-6" style={{ color: 'var(--color-red-500)' }} />
+              {getTotalItems() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {getTotalItems()}
+                </span>
+              )}
+            </Link>
+            <button
+              className="p-3 rounded-lg transition-all duration-300 border"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+              style={{
+                color: 'var(--color-white)',
+                borderColor: 'transparent'
+              }}
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-[600px] opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
-          <nav 
-            className="py-4 space-y-2 rounded-2xl backdrop-blur-md border mt-4 p-4"
-            style={{
-              backgroundColor: 'rgba(10, 25, 41, 0.9)',
-              borderColor: 'var(--color-navy-700)'
-            }}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      <div 
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{
+          backgroundColor: 'var(--color-navy-900)'
+        }}
+      >
+        <div className="flex flex-col h-full">
+          <div 
+            className="flex items-center justify-between p-4 border-b"
+            style={{ borderColor: 'var(--color-navy-700)' }}
           >
+            <Link to="/" onClick={() => { setIsMenuOpen(false); scrollToTop(); }} className="flex items-center gap-2">
+              <img src="/images/logo.png" alt="Speedway 146" className="h-10 w-10 object-contain" />
+              <span className="text-lg font-bold text-white">Speedway 146</span>
+            </Link>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 rounded-lg"
+              style={{ color: 'var(--color-gray-400)' }}
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto p-4 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className="block px-5 py-4 rounded-lg text-base font-bold transition-all duration-300 border"
+                className="block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200"
                 style={{
                   color: location.pathname === item.path ? 'var(--color-red-500)' : 'var(--color-gray-300)',
-                  backgroundColor: location.pathname === item.path ? 'rgba(220, 38, 38, 0.15)' : 'transparent',
-                  borderColor: location.pathname === item.path ? 'var(--color-red-800)' : 'transparent'
+                  backgroundColor: location.pathname === item.path ? 'rgba(220, 38, 38, 0.15)' : 'transparent'
                 }}
                 onClick={() => {
                   setIsMenuOpen(false);
                   scrollToTop();
-                }}
-                onMouseEnter={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.backgroundColor = 'var(--color-navy-800)';
-                    e.currentTarget.style.color = 'var(--color-white)';
-                    e.currentTarget.style.borderColor = 'var(--color-navy-600)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = 'var(--color-gray-300)';
-                    e.currentTarget.style.borderColor = 'transparent';
-                  }
                 }}
               >
                 {item.name}
               </Link>
             ))}
           </nav>
-          
+
           <div 
-            className="py-4 mt-4 border-t"
+            className="p-4 border-t space-y-3"
             style={{ borderColor: 'var(--color-navy-700)' }}
           >
             {user ? (
-              <div 
-                className="space-y-4 rounded-2xl backdrop-blur-md border p-4"
-                style={{
-                  backgroundColor: 'rgba(10, 25, 41, 0.9)',
-                  borderColor: 'var(--color-navy-700)'
-                }}
-              >
+              <>
                 <div 
-                  className="px-5 py-3 text-sm truncate rounded-lg border font-medium"
+                  className="px-4 py-2 text-sm truncate rounded-lg"
                   style={{
                     color: 'var(--color-gray-400)',
-                    backgroundColor: 'rgba(31, 41, 55, 0.5)',
-                    borderColor: 'var(--color-navy-700)'
+                    backgroundColor: 'rgba(31, 41, 55, 0.5)'
                   }}
                 >
                   {user.email}
@@ -430,118 +443,66 @@ const Header = () => {
                 <Link
                   to="/dashboard"
                   onClick={() => setIsMenuOpen(false)}
-                  className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                   style={{
-                    backgroundColor: 'var(--color-navy-900)',
                     color: 'var(--color-gray-300)',
-                    borderColor: 'var(--color-navy-600)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
-                    e.currentTarget.style.color = 'var(--color-white)';
-                    e.currentTarget.style.borderColor = 'var(--color-red-800)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--color-navy-900)';
-                    e.currentTarget.style.color = 'var(--color-gray-300)';
-                    e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+                    backgroundColor: 'var(--color-navy-800)'
                   }}
                 >
                   <ShoppingBag className="h-5 w-5" />
                   <span>My Purchases</span>
                 </Link>
-                
                 {isStaff && (
                   <Link
                     to="/staff"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                     style={{
-                      backgroundColor: 'var(--color-navy-900)',
                       color: 'var(--color-gray-300)',
-                      borderColor: 'var(--color-navy-600)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
-                      e.currentTarget.style.color = 'var(--color-white)';
-                      e.currentTarget.style.borderColor = 'var(--color-red-800)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-navy-900)';
-                      e.currentTarget.style.color = 'var(--color-gray-300)';
-                      e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+                      backgroundColor: 'var(--color-navy-800)'
                     }}
                   >
                     <Shield className="h-5 w-5" />
                     <span>Staff Panel</span>
                   </Link>
                 )}
-                
                 <button 
-                  onClick={handleSignOut} 
-                  className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                  onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                   style={{
-                    backgroundColor: 'rgba(220, 38, 38, 0.2)',
                     color: 'var(--color-red-400)',
-                    borderColor: 'var(--color-red-800)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.3)';
-                    e.currentTarget.style.color = 'var(--color-red-300)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
-                    e.currentTarget.style.color = 'var(--color-red-400)';
+                    backgroundColor: 'rgba(220, 38, 38, 0.15)'
                   }}
                 >
                   <LogOut className="h-5 w-5" />
                   <span>Sign Out</span>
                 </button>
-              </div>
+              </>
             ) : (
-              <div className="flex flex-col gap-3 px-4">
+              <>
                 <Link 
                   to="/login" 
-                  className="w-full text-center px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                  className="block text-center px-4 py-3 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                   style={{
                     color: 'var(--color-gray-300)',
-                    borderColor: 'var(--color-navy-600)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--color-navy-800)';
-                    e.currentTarget.style.color = 'var(--color-white)';
-                    e.currentTarget.style.borderColor = 'var(--color-red-800)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = 'var(--color-gray-300)';
-                    e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+                    backgroundColor: 'var(--color-navy-800)'
                   }}
                 >
                   Sign In
                 </Link>
                 <Link 
                   to="/signup" 
-                  className="w-full text-center px-5 py-4 rounded-lg font-bold transition-all duration-300 border"
+                  className="block text-center px-4 py-3 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                   style={{
                     backgroundColor: 'var(--color-red-600)',
-                    color: 'var(--color-white)',
-                    borderColor: 'var(--color-red-700)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--color-red-500)';
-                    e.currentTarget.style.boxShadow = '0 8px 20px 0 rgba(220, 38, 38, 0.6)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--color-red-600)';
-                    e.currentTarget.style.boxShadow = 'none';
+                    color: 'var(--color-white)'
                   }}
                 >
                   Sign Up
                 </Link>
-              </div>
+              </>
             )}
           </div>
         </div>

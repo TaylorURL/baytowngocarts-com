@@ -38,9 +38,8 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center space-x-2 mb-8">
-            <Flag className="h-8 w-8 text-red-500" />
-            <span className="text-2xl font-bold text-white">Speedway 146</span>
+          <Link to="/" className="inline-block mb-8">
+            <img src="/images/logo.png" alt="Speedway 146" className="h-20 mx-auto" />
           </Link>
           <h2 className="text-3xl font-bold text-white">Sign in to your account</h2>
           <p className="mt-2 text-gray-300">

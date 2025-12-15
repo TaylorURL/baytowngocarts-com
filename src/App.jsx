@@ -14,7 +14,6 @@ import DashboardPage from './pages/PurchasesPage';
 import CartPage from './pages/CartPage';
 import PurchaseDetailsPage from './pages/PurchaseDetailsPage';
 import StaffPanelPage from './pages/StaffPanelPage';
-import ChatWidget from './components/widgets/ChatWidget.jsx';
 import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 export default function App() {
@@ -38,7 +37,6 @@ export default function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/success" element={<SuccessPage />} />
       </Routes>
-      <ChatWidget />
     </Router>
   );
 }
