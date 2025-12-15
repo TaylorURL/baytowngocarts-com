@@ -13,7 +13,7 @@ const PricingPage = () => {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/3.jpg)' }}
+            style={{ backgroundImage: 'url(/images/17.JPEG)' }}
           />
         </div>
         
@@ -207,7 +207,7 @@ const PricingPage = () => {
 
       <section className="py-24 bg-navy-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/5.jpg)' }} />
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/15.JPEG)' }} />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">

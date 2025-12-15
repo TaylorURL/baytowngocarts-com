@@ -69,7 +69,7 @@ const AboutPage = () => {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/10.jpg)' }}
+            style={{ backgroundImage: 'url(/images/16.JPEG)' }}
           />
         </div>
 
@@ -150,7 +150,7 @@ const AboutPage = () => {
             <div data-aos="fade-left" className="relative">
               <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
                 <img
-                  src="/images/1.jpg"
+                  src="/images/19.JPEG"
                   alt="Go-kart racing at Speedway 146"
                   className="w-full h-full object-cover"
                 />
@@ -199,7 +199,7 @@ const AboutPage = () => {
 
       <section className="py-24 bg-navy-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/4.jpg)' }} />
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/15.JPEG)' }} />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
@@ -284,7 +284,7 @@ const AboutPage = () => {
             <div data-aos="fade-right" className="relative lg:order-1 order-2">
               <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
                 <img
-                  src="/images/2.jpg"
+                  src="/images/16.JPEG"
                   alt="Speedway 146 team"
                   className="w-full h-full object-cover"
                 />

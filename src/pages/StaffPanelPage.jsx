@@ -174,7 +174,7 @@ export default function StaffPanelPage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{ backgroundImage: 'url(/images/3.jpg)' }}
+            style={{ backgroundImage: 'url(/images/22.JPEG)' }}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-navy-900/90 via-red-900/80 to-navy-900/90" />
         </div>

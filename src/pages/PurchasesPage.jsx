@@ -61,7 +61,7 @@ export default function PurchasesPage() {
           <div className="absolute inset-0 z-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-20"
-              style={{ backgroundImage: 'url(/images/3.jpg)' }}
+              style={{ backgroundImage: 'url(/images/20.JPEG)' }}
             />
           </div>
           
@@ -95,7 +95,7 @@ export default function PurchasesPage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/6.jpg)' }}
+            style={{ backgroundImage: 'url(/images/21.JPEG)' }}
           />
         </div>
         

@@ -7,7 +7,7 @@ const AttractionsSection = () => {
     {
       title: 'Go-Kart Racing',
       description: 'Professional racing karts on our challenging outdoor track designed for maximum excitement and adrenaline.',
-      image: '/images/9.jpg',
+      image: '/images/22.JPEG',
       icon: Zap,
       features: ['Professional Karts', 'Timed Races', 'Safety Gear Included'],
       color: 'red',
@@ -15,7 +15,7 @@ const AttractionsSection = () => {
     {
       title: 'Bounce Houses',
       description: 'Multiple inflatable attractions perfect for kids parties and family fun in a safe, supervised environment.',
-      image: '/images/10.jpg',
+      image: '/images/21.JPEG',
       icon: Baby,
       features: ['Multiple Themes', 'All Ages Welcome', 'Safe & Clean'],
       color: 'navy',
@@ -23,7 +23,7 @@ const AttractionsSection = () => {
     {
       title: 'Party Rooms',
       description: 'Private party spaces available for birthdays, corporate events, and celebrations of all kinds.',
-      image: '/images/11.jpg',
+      image: '/images/20.JPEG',
       icon: PartyPopper,
       features: ['Private Spaces', 'Catering Available', 'Event Planning'],
       color: 'red',

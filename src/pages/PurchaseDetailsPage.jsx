@@ -78,7 +78,7 @@ export default function PurchaseDetailsPage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/3.jpg)' }}
+            style={{ backgroundImage: 'url(/images/19.JPEG)' }}
           />
         </div>
         

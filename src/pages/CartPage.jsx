@@ -101,7 +101,7 @@ export default function CartPage() {
           <div className="absolute inset-0 z-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-30"
-              style={{ backgroundImage: 'url(/images/3.jpg)' }}
+            style={{ backgroundImage: 'url(/images/18.JPEG)' }}
             />
           </div>
           
@@ -136,7 +136,7 @@ export default function CartPage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/3.jpg)' }}
+              style={{ backgroundImage: 'url(/images/17.JPEG)' }}
           />
         </div>
         

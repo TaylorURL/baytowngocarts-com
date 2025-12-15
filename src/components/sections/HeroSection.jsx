@@ -5,7 +5,7 @@ import Button from '../common/Button.jsx';
 
 const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const backgroundImages = ['/images/9.jpg', '/images/4.jpg', '/images/14.jpg', '/images/2.jpg', '/images/3.jpg'];
+  const backgroundImages = ['/images/14.JPEG', '/images/15.JPEG', '/images/16.JPEG', '/images/17.JPEG', '/images/18.JPEG'];
   
   useEffect(() => {
     const interval = setInterval(() => {

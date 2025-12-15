@@ -38,7 +38,7 @@ const ContactPage = () => {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/6.jpg)' }}
+            style={{ backgroundImage: 'url(/images/22.JPEG)' }}
           />
         </div>
         

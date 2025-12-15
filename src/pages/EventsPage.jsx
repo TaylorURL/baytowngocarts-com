@@ -8,21 +8,21 @@ const EventsPage = () => {
     {
       title: 'Birthday Parties',
       description: 'Make your birthday unforgettable with high-speed racing and our private party room.',
-      image: '/images/5.jpg',
+      image: '/images/17.JPEG',
       icon: Cake,
       features: ['Private party room for 30 guests', 'Racing packages included', 'Food & drinks available', 'Party decorations & setup'],
     },
     {
       title: 'Corporate Events',
       description: 'Team building activities and corporate entertainment that your team will love.',
-      image: '/images/6.jpg',
+      image: '/images/18.JPEG',
       icon: Briefcase,
       features: ['Team building races', 'Private track time available', 'Catering options', 'Meeting space included'],
     },
     {
       title: 'Racing Leagues',
       description: 'Join our competitive racing leagues and compete for championship titles.',
-      image: '/images/7.jpg',
+      image: '/images/19.JPEG',
       icon: Trophy,
       features: ['Weekly competitive races', 'Championship points system', 'Trophies & prizes', 'Professional lap timing'],
     },
@@ -97,7 +97,7 @@ const EventsPage = () => {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/5.jpg)' }}
+            style={{ backgroundImage: 'url(/images/14.JPEG)' }}
           />
         </div>
         
@@ -331,7 +331,7 @@ const EventsPage = () => {
             <div data-aos="fade-left" className="relative">
               <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
                 <img
-                  src="/images/8.jpg"
+                  src="/images/18.JPEG"
                   alt="Party room"
                   className="w-full h-full object-cover"
                 />

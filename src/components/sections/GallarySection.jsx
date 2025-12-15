@@ -5,19 +5,14 @@ const GallarySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const images = [
-    { src: '/images/1.jpg', alt: 'Go-kart racing action', title: 'High-Speed Racing' },
-    { src: '/images/2.jpg', alt: 'Kids enjoying bounce house', title: 'Bounce House Fun' },
-    { src: '/images/3.jpg', alt: 'Birthday party celebration', title: 'Birthday Parties' },
-    { src: '/images/4.jpg', alt: 'Corporate team building event', title: 'Corporate Events' },
-    { src: '/images/5.jpg', alt: 'Family fun at Speedway 146', title: 'Family Fun' },
-    { src: '/images/6.jpg', alt: 'Racing excitement', title: 'Racing Thrills' },
-    { src: '/images/7.jpg', alt: 'Party celebrations', title: 'Party Time' },
-    { src: '/images/8.jpg', alt: 'Speedway 146 facilities', title: 'Our Facilities' },
-    { src: '/images/9.jpg', alt: 'Racing action', title: 'Racing Action' },
-    { src: '/images/10.jpg', alt: 'Family activities', title: 'Family Activities' },
-    { src: '/images/11.jpg', alt: 'Go-kart fun', title: 'Go-Kart Fun' },
-    { src: '/images/12.jpg', alt: 'Entertainment center', title: 'Entertainment Center' },
-    { src: '/images/13.jpg', alt: 'Speedway 146 experience', title: 'Our Experience' },
+    { src: '/images/14.JPEG', alt: 'Go-kart racing action', title: 'High-Speed Racing' },
+    { src: '/images/15.JPEG', alt: 'Kids enjoying the track', title: 'Kids Racing' },
+    { src: '/images/16.JPEG', alt: 'Birthday party celebration', title: 'Birthday Parties' },
+    { src: '/images/18.JPEG', alt: 'Family fun at Speedway 146', title: 'Family Fun' },
+    { src: '/images/19.JPEG', alt: 'Racing excitement', title: 'Racing Thrills' },
+    { src: '/images/20.JPEG', alt: 'Party celebrations', title: 'Party Time' },
+    { src: '/images/21.JPEG', alt: 'Speedway 146 facilities', title: 'Our Facilities' },
+    { src: '/images/22.JPEG', alt: 'Racing action', title: 'Racing Action' },
   ];
 
   const nextSlide = () => {
