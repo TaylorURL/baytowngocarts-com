@@ -48,7 +48,7 @@ serve(async (req) => {
             })
         }
 
-        const transactionFee = subtotal * TRANSACTION_FEE_PERCENT
+        const transactionFee = (subtotal * TRANSACTION_FEE_PERCENT) + 0.30
         const platformFee = subtotal * PLATFORM_FEE_PERCENT
 
         lineItems.push({
@@ -56,7 +56,7 @@ serve(async (req) => {
                 currency: 'usd',
                 product_data: {
                     name: 'Transaction Fee',
-                    description: '4% card processing fee',
+                    description: '4% + $0.30 card processing fee',
                 },
                 unit_amount: Math.round(transactionFee * 100),
             },

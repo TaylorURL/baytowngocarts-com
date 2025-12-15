@@ -17,7 +17,7 @@ export default function CartPage() {
 
     const calculateFees = () => {
         const subtotal = getTotal();
-        const serviceFee = subtotal * COMBINED_FEE_PERCENT;
+        const serviceFee = (subtotal * COMBINED_FEE_PERCENT) + FIXED_FEE;
         const total = subtotal + serviceFee;
 
         return {
