@@ -76,6 +76,7 @@ serve(async (req) => {
         })
 
         const total = subtotal + transactionFee + platformFee
+        const applicationFeeAmount = Math.round(platformFee * 100)
 
         const sessionConfig: any = {
             line_items: lineItems,
@@ -88,6 +89,12 @@ serve(async (req) => {
                 platform_fee: platformFee.toFixed(2),
                 transaction_fee: transactionFee.toFixed(2),
                 subtotal: subtotal.toFixed(2),
+            },
+            payment_intent_data: {
+                application_fee_amount: applicationFeeAmount,
+                transfer_data: {
+                    destination: CONNECTED_ACCOUNT_ID,
+                },
             },
         }
 
