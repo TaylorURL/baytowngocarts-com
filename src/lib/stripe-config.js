@@ -1,5 +1,18 @@
 export const STRIPE_PRODUCTS = [
     {
+        id: 'test_payment',
+        priceId: 'test_payment_price',
+        name: 'Test Payment',
+        description: 'Live payment testing',
+        price: '$1.00',
+        mode: 'payment',
+        features: [
+            'Test live Stripe payments',
+            'Verify integration works',
+            'Remove after testing'
+        ]
+    },
+    {
         id: 'prod_SuF7rI45RLsQlo',
         priceId: 'price_1RyQdACMNAD5XWq4mCpKzdh1',
         name: 'Adult Race',
