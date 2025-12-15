@@ -101,8 +101,8 @@ export const FAQS = [
         category: "Racing"
     },
     {
-        question: "Can pregnant individuals or people with medical conditions race?",
-        answer: "No. Anyone who is pregnant or has a medical condition cannot participate. It is your responsibility to inform our staff of any restrictions or concerns.",
+        question: "Can pregnant women or people with medical conditions race?",
+        answer: "No. Pregnant women and anyone with a medical condition cannot participate. It is your responsibility to inform our staff of any restrictions or concerns.",
         category: "Policies"
     },
     {

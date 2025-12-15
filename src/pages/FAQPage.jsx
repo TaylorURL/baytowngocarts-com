@@ -188,7 +188,7 @@ const FAQPage = () => {
                                         </h2>
                                     </div>
                                     {filteredFAQs.map((faq, index) => (
-                                        <QuestionSection key={index} faq={faq}/>
+                                        <QuestionSection key={`${selectedCategory}-${index}`} faq={faq}/>
                                     ))}
                                 </>
                             ) : (
