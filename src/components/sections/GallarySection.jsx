@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Camera, ChevronLeft, ChevronRight} from 'lucide-react';
 
 const GallarySection = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
 
     const images = [
         {src: '/images/14.JPEG', alt: 'Go-kart racing action', title: 'High-Speed Racing'},
@@ -15,6 +16,20 @@ const GallarySection = () => {
         {src: '/images/22.JPEG', alt: 'Racing action', title: 'Racing Action'},
     ];
 
+    useEffect(() => {
+        let loadedCount = 0;
+        images.forEach((image) => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount === images.length) {
+                    setImagesLoaded(true);
+                }
+            };
+            img.src = image.src;
+        });
+    }, []);
+
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / 4));
     };
@@ -23,14 +38,17 @@ const GallarySection = () => {
         setCurrentSlide((prev) => (prev - 1 + Math.ceil(images.length / 4)) % Math.ceil(images.length / 4));
     };
 
-    const currentImages = images.slice(currentSlide * 4, (currentSlide + 1) * 4);
+    const getSlideImages = (slideIndex) => {
+        return images.slice(slideIndex * 4, (slideIndex + 1) * 4);
+    };
+
+    const totalSlides = Math.ceil(images.length / 4);
 
     return (
         <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-                    <div
-                        className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+                    <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
                         GALLERY
                     </div>
                     <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
@@ -41,27 +59,35 @@ const GallarySection = () => {
                     </p>
                 </div>
 
-                <div className="relative">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="zoom-in">
-                        {currentImages.map((image, index) => (
+                <div className="relative" data-aos="fade-up" data-aos-delay="200">
+                    <div className="relative overflow-hidden">
+                        {[...Array(totalSlides)].map((_, slideIndex) => (
                             <div
-                                key={currentSlide * 4 + index}
-                                className="relative image-hover rounded-2xl overflow-hidden shadow-xl group"
+                                key={slideIndex}
+                                className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 transition-opacity duration-500 ${
+                                    slideIndex === currentSlide ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'
+                                }`}
                             >
-                                <img
-                                    src={image.src}
-                                    alt={image.alt}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-64 object-cover transition-transform duration-300"
-                                />
-                                <div
-                                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
-                                    <div className="text-center">
-                                        <Camera className="h-6 w-6 text-white mx-auto mb-2"/>
-                                        <h3 className="text-white text-lg font-bold">{image.title}</h3>
+                                {getSlideImages(slideIndex).map((image, index) => (
+                                    <div
+                                        key={index}
+                                        className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer"
+                                    >
+                                        <div className="w-full h-64 bg-gray-200 overflow-hidden">
+                                            <img
+                                                src={image.src}
+                                                alt={image.alt}
+                                                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                                            />
+                                        </div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6 pointer-events-none">
+                                            <div className="text-center">
+                                                <Camera className="h-6 w-6 text-white mx-auto mb-2"/>
+                                                <h3 className="text-white text-lg font-bold">{image.title}</h3>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         ))}
                     </div>
@@ -76,7 +102,7 @@ const GallarySection = () => {
                         </button>
 
                         <div className="flex items-center gap-3">
-                            {[...Array(Math.ceil(images.length / 4))].map((_, index) => (
+                            {[...Array(totalSlides)].map((_, index) => (
                                 <button
                                     key={index}
                                     onClick={() => setCurrentSlide(index)}

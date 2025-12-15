@@ -441,22 +441,24 @@ const PricingPage = () => {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                            <div className="bg-gradient-to-br from-red-600 to-red-700 rounded-2xl p-6 text-center" data-aos="fade-up">
-                                <Gift className="h-10 w-10 mx-auto mb-3"/>
-                                <h3 className="text-xl font-bold mb-2">Group Discounts</h3>
-                                <p className="text-red-100 mb-4 text-sm">
+                            <div className="bg-gradient-to-br from-navy-800 to-navy-700 rounded-2xl p-6 text-center border-2 border-red-600" data-aos="fade-up">
+                                <Gift className="h-10 w-10 mx-auto mb-3 text-red-500"/>
+                                <h3 className="text-xl font-bold mb-2 text-white">Group Discounts</h3>
+                                <p className="text-gray-300 mb-4 text-sm">
                                     Planning a party or group event? Contact us for special pricing!
                                 </p>
-                                <Link to="/contact">
-                                    <Button size="md" variant="outline" className="bg-white text-red-600 hover:bg-gray-100 border-0">
-                                        Get Group Pricing
-                                    </Button>
-                                </Link>
+                                <div className="flex justify-center">
+                                    <Link to="/contact">
+                                        <Button size="md" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-0">
+                                            Get Group Pricing
+                                        </Button>
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="bg-gradient-to-br from-navy-800 to-navy-700 rounded-2xl p-6 text-center border-2 border-red-600" data-aos="fade-up" data-aos-delay="100">
                                 <TrendingUp className="h-10 w-10 mx-auto mb-3 text-red-500"/>
-                                <h3 className="text-xl font-bold mb-2">Race Swap Option</h3>
+                                <h3 className="text-xl font-bold mb-2 text-white">Race Swap Option</h3>
                                 <p className="text-gray-300 mb-4 text-sm">
                                     Swap 3 kid races for 2 adult races in any Family Deal!
                                 </p>
@@ -466,14 +468,14 @@ const PricingPage = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-6 border border-white border-opacity-20" data-aos="fade-up">
+                        <div className="bg-navy-800 bg-opacity-70 backdrop-blur-md rounded-2xl p-6 border border-red-600 border-opacity-30" data-aos="fade-up">
                             <div className="flex items-center gap-3 mb-4 justify-center">
                                 <div className="bg-red-600 p-2 rounded-xl">
-                                    <Download className="h-5 w-5"/>
+                                    <Download className="h-5 w-5 text-white"/>
                                 </div>
-                                <h3 className="text-xl font-bold">Download Waivers</h3>
+                                <h3 className="text-xl font-bold text-white">Download Waivers</h3>
                             </div>
-                            <p className="text-gray-300 mb-4 text-center text-sm max-w-2xl mx-auto">
+                            <p className="text-gray-200 mb-4 text-center text-sm max-w-2xl mx-auto">
                                 Complete before your visit for faster check-in!
                             </p>
                             <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -16,6 +16,7 @@ const corsHeaders = {
 
 const PLATFORM_FEE_PERCENT = 0.01
 const TRANSACTION_FEE_PERCENT = 0.04
+const TEXAS_SALES_TAX_PERCENT = 0.0825
 // @ts-ignore
 const CONNECTED_ACCOUNT_ID = Deno.env.get('STRIPE_CONNECTED_ACCOUNT_ID') || ''
 
@@ -48,9 +49,21 @@ serve(async (req) => {
             })
         }
 
+        const salesTax = subtotal * TEXAS_SALES_TAX_PERCENT
         const transactionFee = (subtotal * TRANSACTION_FEE_PERCENT) + 0.30
         const platformFee = subtotal * PLATFORM_FEE_PERCENT
         const totalFees = transactionFee + platformFee
+
+        lineItems.push({
+            price_data: {
+                currency: 'usd',
+                product_data: {
+                    name: 'Sales Tax',
+                },
+                unit_amount: Math.round(salesTax * 100),
+            },
+            quantity: 1,
+        })
 
         lineItems.push({
             price_data: {
@@ -63,7 +76,7 @@ serve(async (req) => {
             quantity: 1,
         })
 
-        const total = subtotal + totalFees
+        const total = subtotal + salesTax + totalFees
         const stripeProcessingFee = (total * 0.029) + 0.30
         const applicationFeeAmount = Math.round((platformFee + stripeProcessingFee) * 100)
 
@@ -77,6 +90,7 @@ serve(async (req) => {
                 user_id: userId,
                 platform_fee: platformFee.toFixed(2),
                 transaction_fee: transactionFee.toFixed(2),
+                sales_tax: salesTax.toFixed(2),
                 subtotal: subtotal.toFixed(2),
             },
             payment_intent_data: {
