@@ -2,6 +2,10 @@ import {useEffect} from 'react';
 import {supabase} from '../lib/supabase';
 
 export const logPageView = async (pathname) => {
+    if (pathname === '/traffic' || pathname === '/staff') {
+        return;
+    }
+    
     try {
         const userAgent = navigator.userAgent;
         const referrer = document.referrer || null;
@@ -57,6 +61,8 @@ export const getTrafficStats = async (timeRange = 'today') => {
             .from('site_traffic')
             .select('*')
             .gte('timestamp', startDate.toISOString())
+            .neq('page_path', '/traffic')
+            .neq('page_path', '/staff')
             .order('timestamp', {ascending: false});
 
         if (error) throw error;
