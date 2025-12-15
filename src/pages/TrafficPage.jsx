@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Activity, ArrowLeft, BarChart3, Clock, Globe, Monitor, MousePointer, TrendingUp, Users} from 'lucide-react';
+import {Activity, ArrowLeft, BarChart3, Clock, Globe, MapPin, Monitor, MousePointer, TrendingUp, Users} from 'lucide-react';
 import {useAdmin} from '../hooks/useAdmin';
 import {getTrafficStats} from '../hooks/useTraffic';
 
@@ -85,6 +85,36 @@ export default function TrafficPage() {
         return hours;
     };
 
+    const getLocationBreakdown = () => {
+        const cities = {};
+        const countries = {};
+        const locations = [];
+
+        traffic.forEach(view => {
+            if (view.city && view.region) {
+                const cityKey = `${view.city}, ${view.region}`;
+                cities[cityKey] = (cities[cityKey] || 0) + 1;
+            }
+            if (view.country) {
+                countries[view.country] = (countries[view.country] || 0) + 1;
+            }
+            if (view.latitude && view.longitude) {
+                locations.push({
+                    lat: view.latitude,
+                    lng: view.longitude,
+                    city: view.city,
+                    country: view.country
+                });
+            }
+        });
+
+        return {
+            cities: Object.entries(cities).sort((a, b) => b[1] - a[1]).slice(0, 10),
+            countries: Object.entries(countries).sort((a, b) => b[1] - a[1]).slice(0, 10),
+            locations
+        };
+    };
+
     if (staffLoading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
@@ -101,6 +131,7 @@ export default function TrafficPage() {
     const devices = getDeviceBreakdown();
     const referrers = getReferrerBreakdown();
     const hourlyData = getHourlyBreakdown();
+    const locationData = getLocationBreakdown();
     const maxHourly = Math.max(...hourlyData, 1);
 
     return (
@@ -292,6 +323,105 @@ export default function TrafficPage() {
                                     ))}
                                 </div>
                             </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+                                    <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                                        <MapPin className="h-5 w-5 text-red-600"/>
+                                        Top Cities
+                                    </h3>
+                                    {locationData.cities.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {locationData.cities.map(([city, count], idx) => (
+                                                <div key={city} className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-sm font-bold text-gray-400 w-6">{idx + 1}</span>
+                                                        <span className="text-gray-700 font-medium">{city}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                                                            <div
+                                                                className="bg-green-600 h-2 rounded-full"
+                                                                style={{width: `${(count / traffic.length) * 100}%`}}
+                                                            />
+                                                        </div>
+                                                        <span className="text-sm font-bold text-navy-900 w-12 text-right">{count}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-500 text-center py-4">No location data available</p>
+                                    )}
+                                </div>
+
+                                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+                                    <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                                        <Globe className="h-5 w-5 text-red-600"/>
+                                        Top Countries
+                                    </h3>
+                                    {locationData.countries.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {locationData.countries.map(([country, count], idx) => (
+                                                <div key={country} className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-sm font-bold text-gray-400 w-6">{idx + 1}</span>
+                                                        <span className="text-gray-700 font-medium">{country}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                                                            <div
+                                                                className="bg-purple-600 h-2 rounded-full"
+                                                                style={{width: `${(count / traffic.length) * 100}%`}}
+                                                            />
+                                                        </div>
+                                                        <span className="text-sm font-bold text-navy-900 w-12 text-right">{count}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-500 text-center py-4">No location data available</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {locationData.locations.length > 0 && (
+                                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
+                                    <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                                        <MapPin className="h-5 w-5 text-red-600"/>
+                                        Visitor Locations Map
+                                    </h3>
+                                    <div className="relative bg-navy-900 rounded-xl overflow-hidden" style={{height: '400px'}}>
+                                        <img 
+                                            src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg"
+                                            alt="World Map"
+                                            className="w-full h-full object-contain opacity-30"
+                                        />
+                                        <div className="absolute inset-0">
+                                            {locationData.locations.map((loc, idx) => {
+                                                const x = ((parseFloat(loc.lng) + 180) / 360) * 100;
+                                                const y = ((90 - parseFloat(loc.lat)) / 180) * 100;
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        className="absolute w-3 h-3 bg-red-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-pulse shadow-lg"
+                                                        style={{
+                                                            left: `${x}%`,
+                                                            top: `${y}%`,
+                                                            boxShadow: '0 0 10px rgba(239, 68, 68, 0.8)'
+                                                        }}
+                                                        title={`${loc.city || 'Unknown'}, ${loc.country || 'Unknown'}`}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="absolute bottom-4 left-4 bg-navy-800 bg-opacity-90 rounded-lg px-4 py-2">
+                                            <p className="text-white text-sm font-bold">{locationData.locations.length} visitor locations</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
                                 <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">

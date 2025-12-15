@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {supabase} from '../lib/supabase';
 
 export const logPageView = async (pathname) => {
-    if (pathname === '/traffic' || pathname === '/staff') {
+    if (pathname === '/traffic' || pathname === '/staff' || pathname.startsWith('/purchase')) {
         return;
     }
     
@@ -12,12 +12,28 @@ export const logPageView = async (pathname) => {
         const screenWidth = window.screen.width;
         const screenHeight = window.screen.height;
 
+        let geoData = null;
+        try {
+            const geoResponse = await fetch('https://ipapi.co/json/');
+            if (geoResponse.ok) {
+                geoData = await geoResponse.json();
+            }
+        } catch (geoError) {
+            console.error('Geolocation fetch failed:', geoError);
+        }
+
         await supabase.from('site_traffic').insert({
             page_path: pathname,
             user_agent: userAgent,
             referrer: referrer,
             screen_width: screenWidth,
             screen_height: screenHeight,
+            city: geoData?.city || null,
+            region: geoData?.region || null,
+            country: geoData?.country_name || null,
+            country_code: geoData?.country_code || null,
+            latitude: geoData?.latitude || null,
+            longitude: geoData?.longitude || null,
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -63,6 +79,7 @@ export const getTrafficStats = async (timeRange = 'today') => {
             .gte('timestamp', startDate.toISOString())
             .neq('page_path', '/traffic')
             .neq('page_path', '/staff')
+            .not('page_path', 'like', '/purchase%')
             .order('timestamp', {ascending: false});
 
         if (error) throw error;

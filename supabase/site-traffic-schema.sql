@@ -7,12 +7,20 @@ CREATE TABLE site_traffic (
     referrer text,
     screen_width integer,
     screen_height integer,
+    city text,
+    region text,
+    country text,
+    country_code text,
+    latitude decimal(10, 8),
+    longitude decimal(11, 8),
     timestamp timestamptz DEFAULT now(),
     created_at timestamptz DEFAULT now()
 );
 
 CREATE INDEX idx_site_traffic_timestamp ON site_traffic(timestamp DESC);
 CREATE INDEX idx_site_traffic_page_path ON site_traffic(page_path);
+CREATE INDEX idx_site_traffic_country ON site_traffic(country);
+CREATE INDEX idx_site_traffic_city ON site_traffic(city);
 
 ALTER TABLE site_traffic ENABLE ROW LEVEL SECURITY;
 
