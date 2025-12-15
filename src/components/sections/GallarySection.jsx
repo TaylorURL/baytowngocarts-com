@@ -51,6 +51,8 @@ const GallarySection = () => {
                                 <img
                                     src={image.src}
                                     alt={image.alt}
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-64 object-cover transition-transform duration-300"
                                 />
                                 <div

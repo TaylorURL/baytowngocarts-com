@@ -1,4 +1,6 @@
-export const STRIPE_PRODUCTS = [
+export const ENABLE_TEST_PRODUCTS = false;
+
+const TEST_PRODUCTS = [
     {
         id: 'test_payment',
         priceId: 'test_payment_price',
@@ -10,8 +12,12 @@ export const STRIPE_PRODUCTS = [
             'Test live Stripe payments',
             'Verify integration works',
             'Remove after testing'
-        ]
-    },
+        ],
+        isTest: true
+    }
+];
+
+const LIVE_PRODUCTS = [
     {
         id: 'prod_SuF7rI45RLsQlo',
         priceId: 'price_1RyQdACMNAD5XWq4mCpKzdh1',
@@ -81,3 +87,7 @@ export const STRIPE_PRODUCTS = [
         ]
     }
 ];
+
+export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS 
+    ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS] 
+    : LIVE_PRODUCTS;

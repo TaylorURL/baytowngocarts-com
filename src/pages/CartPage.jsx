@@ -8,6 +8,7 @@ import {supabase} from '../lib/supabase';
 const TRANSACTION_FEE_PERCENT = 0.04;
 const PLATFORM_FEE_PERCENT = 0.01;
 const COMBINED_FEE_PERCENT = TRANSACTION_FEE_PERCENT + PLATFORM_FEE_PERCENT;
+const FIXED_FEE = 0.30;
 
 export default function CartPage() {
     const navigate = useNavigate();

@@ -4,7 +4,23 @@ import Button from '../common/Button.jsx';
 
 const HeroSection = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
     const backgroundImages = ['/images/14.JPEG', '/images/15.JPEG', '/images/16.JPEG', '/images/17.JPEG', '/images/18.JPEG'];
+
+    useEffect(() => {
+        const preloadImages = backgroundImages.map((src) => {
+            const img = new Image();
+            img.src = src;
+            return img;
+        });
+        
+        Promise.all(preloadImages.map(img => 
+            new Promise(resolve => {
+                if (img.complete) resolve();
+                else img.onload = resolve;
+            })
+        )).then(() => setImagesLoaded(true));
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {

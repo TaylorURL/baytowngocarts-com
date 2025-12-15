@@ -384,7 +384,7 @@ const Header = () => {
                             setIsMenuOpen(false);
                             scrollToTop();
                         }} className="flex items-center gap-2">
-                            <img src="/images/logo.png" alt="Speedway 146" className="h-10 w-10 object-contain"/>
+                            <img src="/images/logo.png" alt="Speedway 146" loading="eager" className="h-10 w-10 object-contain"/>
                             <span className="text-lg font-bold text-white">Speedway 146</span>
                         </Link>
                         <button

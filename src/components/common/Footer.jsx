@@ -12,6 +12,8 @@ const Footer = () => {
                             <img
                                 src="/images/logo.png"
                                 alt="Speedway 146 Logo"
+                                loading="lazy"
+                                decoding="async"
                                 className="h9 w-9 rounded-lg"
                             />
                             <span className="text-xl font-bold">SPEEDWAY146</span>

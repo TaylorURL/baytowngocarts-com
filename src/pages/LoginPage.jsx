@@ -40,7 +40,7 @@ const LoginPage = () => {
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
                     <Link to="/" className="inline-block mb-8">
-                        <img src="/images/logo.png" alt="Speedway 146" className="h-20 mx-auto"/>
+                        <img src="/images/logo.png" alt="Speedway 146" loading="eager" className="h-20 mx-auto"/>
                     </Link>
                     <h2 className="text-3xl font-bold text-white">Sign in to your account</h2>
                     <p className="mt-2 text-gray-300">
