@@ -117,7 +117,7 @@ export const FAQS = [
     },
     {
         question: "Is tax included in your prices?",
-        answer: "No. All pricing is plus tax and plus the 4% card fee unless paying cash.",
+        answer: "No. All pricing is plus tax and plus a transaction fee for card payments. Paying with cash avoids the transaction fee.",
         category: "Pricing"
     },
     {
