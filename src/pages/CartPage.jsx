@@ -10,6 +10,8 @@ const PLATFORM_FEE_PERCENT = 0.01;
 const COMBINED_FEE_PERCENT = TRANSACTION_FEE_PERCENT + PLATFORM_FEE_PERCENT;
 const FIXED_FEE = 0.30;
 const TEXAS_SALES_TAX_PERCENT = 0.0825;
+const GROUP_DISCOUNT_THRESHOLD = 15;
+const GROUP_DISCOUNT_PERCENT = 0.10;
 
 export default function CartPage() {
     const navigate = useNavigate();
@@ -18,12 +20,19 @@ export default function CartPage() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const calculateFees = () => {
-        const subtotal = getTotal();
+        const rawSubtotal = getTotal();
+        const totalPeople = getTotalItems();
+        const qualifiesForGroupDiscount = totalPeople >= GROUP_DISCOUNT_THRESHOLD;
+        const groupDiscount = qualifiesForGroupDiscount ? rawSubtotal * GROUP_DISCOUNT_PERCENT : 0;
+        const subtotal = rawSubtotal - groupDiscount;
         const salesTax = subtotal * TEXAS_SALES_TAX_PERCENT;
         const serviceFee = (subtotal * COMBINED_FEE_PERCENT) + FIXED_FEE;
         const total = subtotal + salesTax + serviceFee;
 
         return {
+            rawSubtotal,
+            groupDiscount,
+            qualifiesForGroupDiscount,
             subtotal,
             salesTax,
             serviceFee,
@@ -253,13 +262,28 @@ export default function CartPage() {
                                     <span className="font-semibold">{getTotalItems()} people</span>
                                 </div>
 
+                                {getTotalItems() < 15 && (
+                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                        <p className="text-xs text-blue-800 text-center">
+                                            Add {15 - getTotalItems()} more to get 10% group discount!
+                                        </p>
+                                    </div>
+                                )}
+
                                 <div className="border-t border-gray-200 pt-4"></div>
 
                                 <div className="flex justify-between text-lg">
                                     <span className="text-gray-700">Subtotal:</span>
                                     <span
-                                        className="font-semibold text-navy-900">${calculateFees().subtotal.toFixed(2)}</span>
+                                        className="font-semibold text-navy-900">${calculateFees().rawSubtotal.toFixed(2)}</span>
                                 </div>
+
+                                {calculateFees().qualifiesForGroupDiscount && (
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-green-600 font-semibold">Group Discount (10%):</span>
+                                        <span className="font-semibold text-green-600">-${calculateFees().groupDiscount.toFixed(2)}</span>
+                                    </div>
+                                )}
 
                                 <div className="flex justify-between text-sm">
                                     <span className="text-gray-600">Sales Tax (8.25%):</span>

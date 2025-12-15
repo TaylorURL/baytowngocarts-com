@@ -17,6 +17,8 @@ const corsHeaders = {
 const PLATFORM_FEE_PERCENT = 0.01
 const TRANSACTION_FEE_PERCENT = 0.04
 const TEXAS_SALES_TAX_PERCENT = 0.0825
+const GROUP_DISCOUNT_THRESHOLD = 15
+const GROUP_DISCOUNT_PERCENT = 0.10
 // @ts-ignore
 const CONNECTED_ACCOUNT_ID = Deno.env.get('STRIPE_CONNECTED_ACCOUNT_ID') || ''
 
@@ -28,22 +30,34 @@ serve(async (req) => {
     try {
         const {items, successUrl, cancelUrl, customerEmail, userId} = await req.json()
 
-        let subtotal = 0
+        let rawSubtotal = 0
+        let totalQuantity = 0
+
+        for (const item of items) {
+            const itemPrice = parseFloat(item.price.replace('$', ''))
+            rawSubtotal += itemPrice * item.quantity
+            totalQuantity += item.quantity
+        }
+
+        const qualifiesForGroupDiscount = totalQuantity >= GROUP_DISCOUNT_THRESHOLD
+        const discountMultiplier = qualifiesForGroupDiscount ? (1 - GROUP_DISCOUNT_PERCENT) : 1
+        const groupDiscount = qualifiesForGroupDiscount ? rawSubtotal * GROUP_DISCOUNT_PERCENT : 0
+        const subtotal = rawSubtotal - groupDiscount
+
         const lineItems = []
 
         for (const item of items) {
             const itemPrice = parseFloat(item.price.replace('$', ''))
-            const itemTotal = itemPrice * item.quantity
-            subtotal += itemTotal
+            const discountedPrice = itemPrice * discountMultiplier
 
             lineItems.push({
                 price_data: {
                     currency: 'usd',
                     product_data: {
-                        name: item.name,
+                        name: qualifiesForGroupDiscount ? `${item.name} (10% off)` : item.name,
                         description: item.description,
                     },
-                    unit_amount: Math.round(itemPrice * 100),
+                    unit_amount: Math.round(discountedPrice * 100),
                 },
                 quantity: item.quantity,
             })
@@ -92,6 +106,8 @@ serve(async (req) => {
                 transaction_fee: transactionFee.toFixed(2),
                 sales_tax: salesTax.toFixed(2),
                 subtotal: subtotal.toFixed(2),
+                group_discount: groupDiscount.toFixed(2),
+                total_quantity: totalQuantity.toString(),
             },
             payment_intent_data: {
                 application_fee_amount: applicationFeeAmount,

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Baby, Check, Clock, Download, Gift, Minus, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, TrendingUp, Users, Zap} from 'lucide-react';
+import {Baby, Check, Clock, Download, Gift, HelpCircle, Minus, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, TrendingUp, Users, Zap} from 'lucide-react';
 import {BOUNCE_PRICING} from '../lib/constants.js';
 import {STRIPE_PRODUCTS} from '../lib/stripe-config.js';
 import {Link, useNavigate} from 'react-router-dom';
@@ -254,26 +254,25 @@ const PricingPage = () => {
                         })}
                     </div>
 
-                    <div className="mt-12 max-w-4xl mx-auto" data-aos="fade-up">
-                        <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 border-2 border-red-200">
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-red-600 p-3 rounded-xl">
-                                        <Phone className="h-6 w-6 text-white"/>
+                    <div className="mt-12 max-w-6xl mx-auto" data-aos="fade-up">
+                        <Link to="/faq" className="block">
+                            <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 border-2 border-red-200 hover:border-red-400 transition-all hover:shadow-lg">
+                                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                    <div className="flex items-start gap-4">
+                                        <div className="bg-red-600 p-3 rounded-xl">
+                                            <HelpCircle className="h-6 w-6 text-white"/>
+                                        </div>
+                                        <div className="text-left">
+                                            <h3 className="text-xl font-bold text-navy-900 mb-1">Have Questions?</h3>
+                                            <p className="text-gray-700">Check out our FAQ page for answers to common questions</p>
+                                        </div>
                                     </div>
-                                    <div className="text-left">
-                                        <h3 className="text-xl font-bold text-navy-900 mb-1">Questions? Call Us!</h3>
-                                        <p className="text-gray-700">We're here to help you choose the perfect package</p>
+                                    <div className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold text-lg transition-all whitespace-nowrap">
+                                        View FAQ
                                     </div>
                                 </div>
-                                <a
-                                    href="tel:(346) 932-1266"
-                                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold text-lg transition-all hover:scale-105 whitespace-nowrap"
-                                >
-                                    (346) 932-1266
-                                </a>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </section>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {LogOut, Menu, Shield, ShoppingBag, ShoppingCart, User, X} from 'lucide-react';
+import {BarChart3, LogOut, Menu, Shield, ShoppingBag, ShoppingCart, User, X} from 'lucide-react';
 import {useAuth} from '../../hooks/useAuth';
 import {useAdmin} from '../../hooks/useAdmin';
 import {useCart} from '../../hooks/useCart';
@@ -270,6 +270,31 @@ const Header = () => {
                                             </Link>
                                         )}
 
+                                        {isStaff && (
+                                            <Link
+                                                to="/traffic"
+                                                onClick={() => setIsUserMenuOpen(false)}
+                                                className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
+                                                style={{
+                                                    color: 'var(--color-gray-300)',
+                                                    borderColor: 'transparent'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                                                    e.currentTarget.style.color = 'var(--color-white)';
+                                                    e.currentTarget.style.borderColor = 'var(--color-red-500)';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                                    e.currentTarget.style.color = 'var(--color-gray-300)';
+                                                    e.currentTarget.style.borderColor = 'transparent';
+                                                }}
+                                            >
+                                                <BarChart3 className="h-5 w-5"/>
+                                                <span>Site Traffic</span>
+                                            </Link>
+                                        )}
+
                                         <button
                                             onClick={handleSignOut}
                                             className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
@@ -455,6 +480,20 @@ const Header = () => {
                                     >
                                         <Shield className="h-5 w-5"/>
                                         <span>Staff Panel</span>
+                                    </Link>
+                                )}
+                                {isStaff && (
+                                    <Link
+                                        to="/traffic"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
+                                        style={{
+                                            color: 'var(--color-gray-300)',
+                                            backgroundColor: 'var(--color-navy-800)'
+                                        }}
+                                    >
+                                        <BarChart3 className="h-5 w-5"/>
+                                        <span>Site Traffic</span>
                                     </Link>
                                 )}
                                 <button

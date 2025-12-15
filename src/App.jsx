@@ -14,6 +14,7 @@ import DashboardPage from './pages/PurchasesPage';
 import CartPage from './pages/CartPage';
 import PurchaseDetailsPage from './pages/PurchaseDetailsPage';
 import StaffPanelPage from './pages/StaffPanelPage';
+import TrafficPage from './pages/TrafficPage';
 import ScrollToTop from './components/common/ScrollToTop.jsx';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
                     <Route path="cart" element={<CartPage/>}/>
                     <Route path="purchase/:orderId" element={<PurchaseDetailsPage/>}/>
                     <Route path="staff" element={<StaffPanelPage/>}/>
+                    <Route path="traffic" element={<TrafficPage/>}/>
                 </Route>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signup" element={<SignupPage/>}/>
