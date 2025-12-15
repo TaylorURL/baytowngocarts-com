@@ -5,127 +5,126 @@
 @tailwind utilities;
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: var(--color-gray-800);
-  line-height: 1.5;
+    font-family: 'Bebas Neue', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--color-gray-800);
+    line-height: 1.5;
 }
 
 main {
-  padding-top: 5rem;
+    padding-top: 5rem;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-up {
-  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-up.delay-100 {
-  animation-delay: 100ms;
+    animation-delay: 100ms;
 }
 
 /* Enhanced Hover animations */
 .hover-scale {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-scale:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .hover-lift {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Enhanced Card hover effects */
 .card-hover {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Enhanced Button hover effects */
 .button-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .button-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-red);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-red);
 }
 
 /* Enhanced keyframe animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Mobile optimizations */
 @media (max-width: 640px) {
-  .button-hover {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .button-hover:active {
-    transform: scale(0.95);
-  }
-  
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  h1 {
-    letter-spacing: -0.5px;
-  }
+    .button-hover {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .button-hover:active {
+        transform: scale(0.95);
+    }
+
+    .touch-target {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    h1 {
+        letter-spacing: -0.5px;
+    }
 }
 
 .image-hover {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
 }
 
 .image-hover img {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .image-hover:hover img {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 /* Enhanced text shadow for hero content */
 .hero-text-shadow {
-  text-shadow: 
-    2px 2px 8px rgba(0, 0, 0, 0.9), 
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9),
     0 0 20px rgba(0, 0, 0, 0.7),
     4px 4px 16px rgba(0, 0, 0, 0.5);
 }

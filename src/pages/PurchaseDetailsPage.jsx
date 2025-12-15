@@ -1,322 +1,345 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, Package, CreditCard, CheckCircle, Clock, MapPin, Phone, Mail, Download } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { supabase } from '../lib/supabase';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {
+    ArrowLeft,
+    Calendar,
+    CheckCircle,
+    Clock,
+    CreditCard,
+    Download,
+    Mail,
+    MapPin,
+    Package,
+    Phone
+} from 'lucide-react';
+import {useAuth} from '../hooks/useAuth';
+import {supabase} from '../lib/supabase';
 
 export default function PurchaseDetailsPage() {
-  const { orderId } = useParams();
-  const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
-  const [purchase, setPurchase] = useState(null);
-  const [loading, setLoading] = useState(true);
+    const {orderId} = useParams();
+    const navigate = useNavigate();
+    const {user, loading: authLoading} = useAuth();
+    const [purchase, setPurchase] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate('/login');
+    useEffect(() => {
+        if (!authLoading && !user) {
+            navigate('/login');
+        }
+    }, [user, authLoading, navigate]);
+
+    useEffect(() => {
+        if (user && orderId) {
+            fetchPurchaseDetails();
+        }
+    }, [user, orderId]);
+
+    const fetchPurchaseDetails = async () => {
+        try {
+            const {data, error} = await supabase
+                .from('purchases')
+                .select('*')
+                .eq('id', orderId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (error) throw error;
+            setPurchase(data);
+        } catch (error) {
+            console.error('Error fetching purchase details:', error);
+            alert('Unable to load order details');
+            navigate('/dashboard');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const formatPrice = (cents) => {
+        return `$${(cents / 100).toFixed(2)}`;
+    };
+
+    if (loading || authLoading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600 text-lg">Loading order details...</p>
+                </div>
+            </div>
+        );
     }
-  }, [user, authLoading, navigate]);
 
-  useEffect(() => {
-    if (user && orderId) {
-      fetchPurchaseDetails();
+    if (!purchase) {
+        return null;
     }
-  }, [user, orderId]);
 
-  const fetchPurchaseDetails = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('purchases')
-        .select('*')
-        .eq('id', orderId)
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) throw error;
-      setPurchase(data);
-    } catch (error) {
-      console.error('Error fetching purchase details:', error);
-      alert('Unable to load order details');
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const formatPrice = (cents) => {
-    return `$${(cents / 100).toFixed(2)}`;
-  };
-
-  if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading order details...</p>
-        </div>
-      </div>
-    );
-  }
+        <div className="w-full -mt-20">
+            <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
+                <div className="absolute inset-0 z-0">
+                    <div
+                        className="absolute inset-0 bg-cover bg-center opacity-30"
+                        style={{backgroundImage: 'url(/images/19.JPEG)'}}
+                    />
+                </div>
 
-  if (!purchase) {
-    return null;
-  }
+                <div
+                    className="absolute inset-0 z-5 opacity-10"
+                    style={{
+                        backgroundImage: 'linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)',
+                        backgroundSize: '20px 20px',
+                        backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+                    }}
+                />
 
-  return (
-    <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: 'url(/images/19.JPEG)' }}
-          />
-        </div>
-        
-        <div 
-          className="absolute inset-0 z-5 opacity-10" 
-          style={{
-            backgroundImage: 'linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)',
-            backgroundSize: '20px 20px',
-            backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-          }}
-        />
+                <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="flex items-center gap-2 text-white hover:text-red-500 transition-colors mb-6 font-semibold"
+                        >
+                            <ArrowLeft className="h-5 w-5"/>
+                            Back to Purchases
+                        </button>
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 text-white hover:text-red-500 transition-colors mb-6 font-semibold"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Back to Purchases
-            </button>
-            
-            <div className="text-center">
-              <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
-                ORDER DETAILS
-              </div>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-white leading-tight">
-                Order <span className="text-red-500">#{purchase.order_number}</span>
-              </h1>
-              <div className="flex items-center justify-center gap-2">
-                {purchase.status === 'completed' ? (
-                  <span className="px-4 py-2 rounded-full text-sm font-bold bg-green-600 text-white flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4" />
+                        <div className="text-center">
+                            <div
+                                className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+                                ORDER DETAILS
+                            </div>
+                            <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-white leading-tight">
+                                Order <span className="text-red-500">#{purchase.order_number}</span>
+                            </h1>
+                            <div className="flex items-center justify-center gap-2">
+                                {purchase.status === 'completed' ? (
+                                    <span
+                                        className="px-4 py-2 rounded-full text-sm font-bold bg-green-600 text-white flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4"/>
                     COMPLETED
                   </span>
-                ) : (
-                  <span className="px-4 py-2 rounded-full text-sm font-bold bg-yellow-500 text-yellow-900 flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
+                                ) : (
+                                    <span
+                                        className="px-4 py-2 rounded-full text-sm font-bold bg-yellow-500 text-yellow-900 flex items-center gap-2">
+                    <Clock className="h-4 w-4"/>
                     PENDING
                   </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%, 0% 100%)' }} />
-      </section>
-
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
-                <Package className="h-6 w-6 text-red-600" />
-                Order Summary
-              </h2>
-              
-              <div className="space-y-6">
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-navy-900 mb-4">Order Items</h3>
-                  <div className="space-y-3">
-                    {purchase.items.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
-                        <div>
-                          <p className="font-semibold text-navy-900">{item.product_name}</p>
-                          <p className="text-sm text-gray-600">Quantity: {item.quantity} × {formatPrice(item.price)}</p>
+                                )}
+                            </div>
                         </div>
-                        <p className="font-bold text-navy-900">{formatPrice(item.subtotal)}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 pt-4 border-t-2 border-gray-300 flex justify-between items-center">
-                    <div>
-                      <p className="text-lg font-bold text-navy-900">Order Total</p>
-                      <p className="text-sm text-gray-600">Total: {purchase.total_quantity} {purchase.total_quantity > 1 ? 'people' : 'person'}</p>
                     </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-black text-red-600">
-                        {formatPrice(purchase.total_amount)}
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 p-2 rounded-lg">
-                      <Calendar className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Order Date</p>
-                      <p className="font-semibold text-navy-900">{formatDate(purchase.created_at)}</p>
-                    </div>
-                  </div>
+                <div className="absolute bottom-0 left-0 right-0 h-16 bg-white"
+                     style={{clipPath: 'polygon(0 100%, 100% 0, 100% 100%, 0% 100%)'}}/>
+            </section>
 
-                  <div className="flex items-start gap-3">
-                    <div className="bg-purple-100 p-2 rounded-lg">
-                      <CreditCard className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Payment Method</p>
-                      <p className="font-semibold text-navy-900">
-                        {purchase.stripe_session_id?.startsWith('debug_') ? 'Debug/Test Order' : 'Credit Card (Stripe)'}
-                      </p>
-                    </div>
-                  </div>
+            <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto space-y-8">
+                        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
+                            <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
+                                <Package className="h-6 w-6 text-red-600"/>
+                                Order Summary
+                            </h2>
 
-                  <div className="flex items-start gap-3">
-                    <div className="bg-green-100 p-2 rounded-lg">
-                      <Package className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Product ID</p>
-                      <p className="font-semibold text-navy-900">{purchase.product_id}</p>
-                    </div>
-                  </div>
+                            <div className="space-y-6">
+                                <div className="border-b border-gray-200 pb-6">
+                                    <h3 className="text-lg font-bold text-navy-900 mb-4">Order Items</h3>
+                                    <div className="space-y-3">
+                                        {purchase.items.map((item, idx) => (
+                                            <div key={idx}
+                                                 className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+                                                <div>
+                                                    <p className="font-semibold text-navy-900">{item.product_name}</p>
+                                                    <p className="text-sm text-gray-600">Quantity: {item.quantity} × {formatPrice(item.price)}</p>
+                                                </div>
+                                                <p className="font-bold text-navy-900">{formatPrice(item.subtotal)}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div
+                                        className="mt-4 pt-4 border-t-2 border-gray-300 flex justify-between items-center">
+                                        <div>
+                                            <p className="text-lg font-bold text-navy-900">Order Total</p>
+                                            <p className="text-sm text-gray-600">Total: {purchase.total_quantity} {purchase.total_quantity > 1 ? 'people' : 'person'}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-3xl font-black text-red-600">
+                                                {formatPrice(purchase.total_amount)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 p-2 rounded-lg">
-                      <CheckCircle className="h-5 w-5 text-red-600" />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="flex items-start gap-3">
+                                        <div className="bg-blue-100 p-2 rounded-lg">
+                                            <Calendar className="h-5 w-5 text-blue-600"/>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500 mb-1">Order Date</p>
+                                            <p className="font-semibold text-navy-900">{formatDate(purchase.created_at)}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="bg-purple-100 p-2 rounded-lg">
+                                            <CreditCard className="h-5 w-5 text-purple-600"/>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500 mb-1">Payment Method</p>
+                                            <p className="font-semibold text-navy-900">
+                                                {purchase.stripe_session_id?.startsWith('debug_') ? 'Debug/Test Order' : 'Credit Card (Stripe)'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="bg-green-100 p-2 rounded-lg">
+                                            <Package className="h-5 w-5 text-green-600"/>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500 mb-1">Product ID</p>
+                                            <p className="font-semibold text-navy-900">{purchase.product_id}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-3">
+                                        <div className="bg-red-100 p-2 rounded-lg">
+                                            <CheckCircle className="h-5 w-5 text-red-600"/>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500 mb-1">Order Status</p>
+                                            <p className="font-semibold text-navy-900 capitalize">{purchase.status}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border-2 border-blue-200 p-8">
+                            <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
+                                <MapPin className="h-6 w-6 text-blue-600"/>
+                                Visit Information
+                            </h2>
+
+                            <div className="space-y-4">
+                                <div className="bg-white bg-opacity-60 rounded-lg p-4">
+                                    <h3 className="font-bold text-navy-900 mb-2">Speedway 146</h3>
+                                    <p className="text-gray-700 mb-3">6750 N TX-146, Baytown, TX 77523</p>
+
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <Phone className="h-4 w-4 text-red-600"/>
+                                            <a href="tel:(346) 932-1266"
+                                               className="hover:text-red-600 transition-colors font-semibold">
+                                                (346) 932-1266
+                                            </a>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <Mail className="h-4 w-4 text-red-600"/>
+                                            <a href="mailto:info@speedway146.com"
+                                               className="hover:text-red-600 transition-colors">
+                                                info@speedway146.com
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white bg-opacity-60 rounded-lg p-4">
+                                    <h4 className="font-bold text-navy-900 mb-2">What to Bring</h4>
+                                    <ul className="space-y-1 text-gray-700">
+                                        <li>• Valid government-issued ID</li>
+                                        <li>• Signed waiver (available at facility or download below)</li>
+                                        <li>• This order confirmation</li>
+                                        <li>• Closed-toe shoes required</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
+                            <h2 className="text-2xl font-bold text-navy-900 mb-4 flex items-center gap-3">
+                                <Download className="h-6 w-6 text-red-600"/>
+                                Important Documents
+                            </h2>
+
+                            <div className="space-y-3">
+                                <a
+                                    href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div
+                                            className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
+                                            <Download className="h-5 w-5 text-white"/>
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-navy-900">Download Waiver</p>
+                                            <p className="text-sm text-gray-600">Required for all participants</p>
+                                        </div>
+                                    </div>
+                                    <span className="text-red-600 font-semibold">PDF</span>
+                                </a>
+
+                                <button
+                                    onClick={() => window.print()}
+                                    className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div
+                                            className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
+                                            <Download className="h-5 w-5 text-white"/>
+                                        </div>
+                                        <div className="text-left">
+                                            <p className="font-bold text-navy-900">Print Order Confirmation</p>
+                                            <p className="text-sm text-gray-600">Bring to facility for check-in</p>
+                                        </div>
+                                    </div>
+                                    <span className="text-red-600 font-semibold">Print</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
+                            <h2 className="text-2xl font-bold text-navy-900 mb-4">Need Help?</h2>
+                            <p className="text-gray-600 mb-6">
+                                If you have any questions about your order or need to make changes, please contact us:
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <a
+                                    href="tel:(346) 932-1266"
+                                    className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
+                                >
+                                    <Phone className="h-5 w-5"/>
+                                    Call Us
+                                </a>
+                                <a
+                                    href="/contact"
+                                    className="flex-1 flex items-center justify-center gap-2 border-2 border-red-600 text-red-600 hover:bg-red-50 px-6 py-3 rounded-lg font-semibold transition-all"
+                                >
+                                    <Mail className="h-5 w-5"/>
+                                    Contact Form
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Order Status</p>
-                      <p className="font-semibold text-navy-900 capitalize">{purchase.status}</p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border-2 border-blue-200 p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
-                <MapPin className="h-6 w-6 text-blue-600" />
-                Visit Information
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h3 className="font-bold text-navy-900 mb-2">Speedway 146</h3>
-                  <p className="text-gray-700 mb-3">6750 N TX-146, Baytown, TX 77523</p>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Phone className="h-4 w-4 text-red-600" />
-                      <a href="tel:(346) 932-1266" className="hover:text-red-600 transition-colors font-semibold">
-                        (346) 932-1266
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Mail className="h-4 w-4 text-red-600" />
-                      <a href="mailto:info@speedway146.com" className="hover:text-red-600 transition-colors">
-                        info@speedway146.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h4 className="font-bold text-navy-900 mb-2">What to Bring</h4>
-                  <ul className="space-y-1 text-gray-700">
-                    <li>• Valid government-issued ID</li>
-                    <li>• Signed waiver (available at facility or download below)</li>
-                    <li>• This order confirmation</li>
-                    <li>• Closed-toe shoes required</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-4 flex items-center gap-3">
-                <Download className="h-6 w-6 text-red-600" />
-                Important Documents
-              </h2>
-              
-              <div className="space-y-3">
-                <a
-                  href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
-                      <Download className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-navy-900">Download Waiver</p>
-                      <p className="text-sm text-gray-600">Required for all participants</p>
-                    </div>
-                  </div>
-                  <span className="text-red-600 font-semibold">PDF</span>
-                </a>
-
-                <button
-                  onClick={() => window.print()}
-                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
-                      <Download className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <p className="font-bold text-navy-900">Print Order Confirmation</p>
-                      <p className="text-sm text-gray-600">Bring to facility for check-in</p>
-                    </div>
-                  </div>
-                  <span className="text-red-600 font-semibold">Print</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-4">Need Help?</h2>
-              <p className="text-gray-600 mb-6">
-                If you have any questions about your order or need to make changes, please contact us:
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="tel:(346) 932-1266"
-                  className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
-                >
-                  <Phone className="h-5 w-5" />
-                  Call Us
-                </a>
-                <a
-                  href="/contact"
-                  className="flex-1 flex items-center justify-center gap-2 border-2 border-red-600 text-red-600 hover:bg-red-50 px-6 py-3 rounded-lg font-semibold transition-all"
-                >
-                  <Mail className="h-5 w-5" />
-                  Contact Form
-                </a>
-              </div>
-            </div>
-          </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 }

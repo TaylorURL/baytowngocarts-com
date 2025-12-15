@@ -7,16 +7,16 @@ import TestimonialSection from '../components/sections/TestimonialSection.jsx';
 import ActionSection from '../components/sections/ActionSection.jsx';
 
 const HomePage = () => {
-  return (
-    <div className="w-full -mt-20">
-      <HeroSection />
-      <GallarySection />
-      <FeatureSection />
-      <AttractionsSection />
-      <TestimonialSection />
-      <ActionSection />
-    </div>
-  );
+    return (
+        <div className="w-full -mt-20">
+            <HeroSection/>
+            <GallarySection/>
+            <FeatureSection/>
+            <AttractionsSection/>
+            <TestimonialSection/>
+            <ActionSection/>
+        </div>
+    );
 };
 
 export default HomePage;
