@@ -76,7 +76,8 @@ serve(async (req) => {
         })
 
         const total = subtotal + transactionFee + platformFee
-        const applicationFeeAmount = Math.round(platformFee * 100)
+        const stripeProcessingFee = (total * 0.029) + 0.30
+        const applicationFeeAmount = Math.round((platformFee + stripeProcessingFee) * 100)
 
         const sessionConfig: any = {
             line_items: lineItems,
@@ -92,6 +93,7 @@ serve(async (req) => {
             },
             payment_intent_data: {
                 application_fee_amount: applicationFeeAmount,
+                on_behalf_of: CONNECTED_ACCOUNT_ID,
                 transfer_data: {
                     destination: CONNECTED_ACCOUNT_ID,
                 },
