@@ -1,117 +1,97 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { CheckCircle, ShoppingBag, ArrowRight, Bug } from 'lucide-react';
+import { CheckCircle, ShoppingBag, ArrowRight } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
+import { useCart } from '../hooks/useCart';
 
 const SuccessPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const isDebug = searchParams.get('debug') === 'true';
+  const { clearCart } = useCart();
+  const purchaseAttempted = useRef(false);
 
   useEffect(() => {
-    const recordPurchase = async () => {
+    const createPurchase = async () => {
       const sessionId = searchParams.get('session_id');
-      const isDebugMode = searchParams.get('debug') === 'true';
-      const isCartCheckout = searchParams.get('cart_checkout') === 'true';
       
-      if (isDebugMode) {
-        console.log('Debug mode - purchase already recorded');
-        const timer = setTimeout(() => {
-          setLoading(false);
-        }, 1500);
-        return () => clearTimeout(timer);
-      }
-      
-      if (isCartCheckout && user) {
-        try {
-          const cartItemsJson = sessionStorage.getItem('pendingCartItems');
-          if (cartItemsJson) {
-            const cartItems = JSON.parse(cartItemsJson);
-            
-            const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-            
-            const items = cartItems.map(item => ({
-              product_id: item.product.id,
-              product_name: item.product.name,
-              price: Math.round(parseFloat(item.product.price.replace('$', '')) * 100),
-              quantity: item.quantity,
-              subtotal: Math.round(parseFloat(item.product.price.replace('$', '')) * 100) * item.quantity
-            }));
-            
-            const totalAmount = items.reduce((sum, item) => sum + item.subtotal, 0);
-            const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-
-            const { error } = await supabase
-              .from('purchases')
-              .insert({
-                user_id: user.id,
-                order_number: orderNumber,
-                items: items,
-                total_amount: totalAmount,
-                total_quantity: totalQuantity,
-                status: 'completed',
-                stripe_session_id: `cart_${Date.now()}`
-              });
-
-            if (error) {
-              console.error('Error recording cart purchases:', error);
-            } else {
-              sessionStorage.removeItem('pendingCartItems');
-            }
-          }
-        } catch (error) {
-          console.error('Error processing cart checkout:', error);
-        }
-      } else if (sessionId && user) {
-        try {
-          const amount = searchParams.get('amount');
-          const productName = searchParams.get('product_name');
-          const productId = searchParams.get('product_id');
-          const quantity = parseInt(searchParams.get('quantity') || '1');
-          
-          if (amount && productName && productId) {
-            const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-            
-            const items = [{
-              product_id: productId,
-              product_name: productName,
-              price: parseInt(amount),
-              quantity: quantity,
-              subtotal: parseInt(amount) * quantity
-            }];
-            
-            const { error } = await supabase
-              .from('purchases')
-              .insert({
-                user_id: user.id,
-                order_number: orderNumber,
-                items: items,
-                total_amount: parseInt(amount) * quantity,
-                total_quantity: quantity,
-                status: 'completed',
-                stripe_session_id: sessionId
-              });
-            
-            if (error) {
-              console.error('Error recording purchase:', error);
-            }
-          }
-        } catch (error) {
-          console.error('Error recording purchase:', error);
-        }
-      }
-
-      const timer = setTimeout(() => {
+      if (!sessionId || !user) {
         setLoading(false);
-      }, 1500);
+        return;
+      }
 
-      return () => clearTimeout(timer);
+      if (purchaseAttempted.current) {
+        return;
+      }
+      purchaseAttempted.current = true;
+
+      try {
+        const { data: existingPurchase } = await supabase
+          .from('purchases')
+          .select('id')
+          .eq('stripe_session_id', sessionId)
+          .limit(1);
+
+        if (existingPurchase && existingPurchase.length > 0) {
+          console.log('Purchase already exists');
+          localStorage.removeItem('pendingPurchase');
+          clearCart();
+          setLoading(false);
+          return;
+        }
+
+        const pendingPurchaseStr = localStorage.getItem('pendingPurchase');
+        if (!pendingPurchaseStr) {
+          console.log('No pending purchase data found');
+          setLoading(false);
+          return;
+        }
+
+        const pendingPurchase = JSON.parse(pendingPurchaseStr);
+        const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
+        
+        const purchaseData = {
+          user_id: user.id,
+          order_number: orderNumber,
+          items: pendingPurchase.items.map(item => ({
+            product_name: item.name,
+            price: Math.round(parseFloat(item.price.replace('$', '')) * 100),
+            quantity: item.quantity,
+            subtotal: Math.round(parseFloat(item.price.replace('$', '')) * 100) * item.quantity
+          })),
+          total_amount: Math.round(pendingPurchase.total * 100),
+          total_quantity: pendingPurchase.totalQuantity,
+          status: 'completed',
+          stripe_session_id: sessionId,
+          customer_email: user.email
+        };
+
+        const { error } = await supabase
+          .from('purchases')
+          .insert(purchaseData);
+
+        if (error) {
+          if (error.code === '23505') {
+            console.log('Purchase already exists (unique constraint)');
+          } else {
+            console.error('Error creating purchase:', error);
+          }
+        } else {
+          console.log('Purchase created successfully');
+        }
+        
+        localStorage.removeItem('pendingPurchase');
+        clearCart();
+      } catch (error) {
+        console.error('Error in createPurchase:', error);
+      }
+      
+      setLoading(false);
     };
 
-    recordPurchase();
+    createPurchase();
   }, [searchParams, user]);
 
   if (loading) {
@@ -128,12 +108,6 @@ const SuccessPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        {isDebug && (
-          <div className="mb-4 bg-yellow-500 text-yellow-900 px-4 py-2 rounded-lg text-center font-bold flex items-center justify-center gap-2">
-            <Bug className="h-5 w-5" />
-            DEBUG MODE - Test Purchase Created
-          </div>
-        )}
         <div className="bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="mb-6">
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />

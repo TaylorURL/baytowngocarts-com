@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut, ShoppingBag, ShoppingCart } from 'lucide-react';
+import { Menu, X, User, LogOut, ShoppingBag, ShoppingCart, Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useAdmin } from '../../hooks/useAdmin';
 import { useCart } from '../../hooks/useCart';
 
 const Header = () => {
@@ -11,6 +12,7 @@ const Header = () => {
   const [activeLight, setActiveLight] = useState(0);
   const location = useLocation();
   const { user, signOut } = useAuth();
+  const { isStaff } = useAdmin();
   const { getTotalItems } = useCart();
 
   useEffect(() => {
@@ -255,6 +257,32 @@ const Header = () => {
                       <ShoppingBag className="h-5 w-5" />
                       <span>My Purchases</span>
                     </Link>
+                    
+                    {isStaff && (
+                      <Link
+                        to="/staff"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
+                        style={{
+                          color: 'var(--color-gray-300)',
+                          borderColor: 'transparent'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                          e.currentTarget.style.color = 'var(--color-white)';
+                          e.currentTarget.style.borderColor = 'var(--color-red-500)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                          e.currentTarget.style.color = 'var(--color-gray-300)';
+                          e.currentTarget.style.borderColor = 'transparent';
+                        }}
+                      >
+                        <Shield className="h-5 w-5" />
+                        <span>Staff Panel</span>
+                      </Link>
+                    )}
+                    
                     <button 
                       onClick={handleSignOut} 
                       className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
@@ -422,6 +450,33 @@ const Header = () => {
                   <ShoppingBag className="h-5 w-5" />
                   <span>My Purchases</span>
                 </Link>
+                
+                {isStaff && (
+                  <Link
+                    to="/staff"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"
+                    style={{
+                      backgroundColor: 'var(--color-navy-900)',
+                      color: 'var(--color-gray-300)',
+                      borderColor: 'var(--color-navy-600)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+                      e.currentTarget.style.color = 'var(--color-white)';
+                      e.currentTarget.style.borderColor = 'var(--color-red-800)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-navy-900)';
+                      e.currentTarget.style.color = 'var(--color-gray-300)';
+                      e.currentTarget.style.borderColor = 'var(--color-navy-600)';
+                    }}
+                  >
+                    <Shield className="h-5 w-5" />
+                    <span>Staff Panel</span>
+                  </Link>
+                )}
+                
                 <button 
                   onClick={handleSignOut} 
                   className="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-lg transition-all duration-300 font-bold border"

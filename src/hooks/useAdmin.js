@@ -2,66 +2,57 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function useAdmin() {
-  const [permissions, setPermissions] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isStaff, setIsStaff] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAdminPermissions();
+    checkStaffStatus();
   }, []);
 
-  const fetchAdminPermissions = async () => {
+  const checkStaffStatus = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        console.log('[useAdmin] No user logged in');
-        setPermissions([]);
-        setIsAdmin(false);
+        setIsStaff(false);
         setLoading(false);
         return;
       }
 
-      console.log('[useAdmin] Checking permissions for user:', user.id);
-
       const { data, error } = await supabase
-        .from('administrators')
-        .select('permissions')
+        .from('staff')
+        .select('id')
         .eq('user_id', user.id)
         .single();
 
       if (error) {
-        console.log('[useAdmin] Error fetching permissions:', error.message);
         if (error.code === 'PGRST116') {
-          console.log('[useAdmin] User is not an administrator');
+          setIsStaff(false);
+        } else if (error.code === '42P01' || error.message.includes('relation') || error.message.includes('does not exist')) {
+          console.warn('[useAdmin] Staff table does not exist yet. Please run the setup SQL.');
+          setIsStaff(false);
+        } else if (error.message.includes('Load failed')) {
+          console.warn('[useAdmin] Network error checking staff status. Assuming not staff.');
+          setIsStaff(false);
+        } else {
+          console.error('[useAdmin] Error checking staff status:', error);
+          setIsStaff(false);
         }
-        setPermissions([]);
-        setIsAdmin(false);
       } else {
-        console.log('[useAdmin] User permissions:', data?.permissions);
-        setPermissions(data?.permissions || []);
-        setIsAdmin(data?.permissions?.length > 0);
+        setIsStaff(!!data);
       }
     } catch (error) {
-      console.error('[useAdmin] Error fetching admin permissions:', error);
-      setPermissions([]);
-      setIsAdmin(false);
+      console.error('[useAdmin] Error checking staff status:', error);
+      setIsStaff(false);
     } finally {
       setLoading(false);
     }
   };
 
-  const hasPermission = (permission) => {
-    const result = permissions.includes(permission);
-    console.log(`[useAdmin] Checking permission "${permission}":`, result);
-    return result;
-  };
-
   return {
-    permissions,
-    isAdmin,
+    isAdmin: isStaff,
+    isStaff,
     loading,
-    hasPermission,
-    refetch: fetchAdminPermissions
+    refetch: checkStaffStatus
   };
 }

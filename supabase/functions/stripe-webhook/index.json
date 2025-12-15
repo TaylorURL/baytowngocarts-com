@@ -1,0 +1,4 @@
+{
+  "importMapPath": "./import_map.json",
+  "verifyJWT": false
+}

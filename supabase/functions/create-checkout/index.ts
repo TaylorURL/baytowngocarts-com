@@ -11,37 +11,105 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const PLATFORM_FEE_PERCENT = 0.01
+const TRANSACTION_FEE_PERCENT = 0.04
+const CONNECTED_ACCOUNT_ID = Deno.env.get('STRIPE_CONNECTED_ACCOUNT_ID') || ''
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const { priceId, successUrl, cancelUrl, customerEmail } = await req.json()
+    const { items, successUrl, cancelUrl, customerEmail, userId } = await req.json()
 
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
+    let subtotal = 0
+    const lineItems = []
+
+    for (const item of items) {
+      const itemPrice = parseFloat(item.price.replace('$', ''))
+      const itemTotal = itemPrice * item.quantity
+      subtotal += itemTotal
+
+      lineItems.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.name,
+            description: item.description,
+          },
+          unit_amount: Math.round(itemPrice * 100),
         },
-      ],
-      mode: 'payment',
-      success_url: successUrl + '&session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: cancelUrl,
-      customer_email: customerEmail,
+        quantity: item.quantity,
+      })
+    }
+
+    const transactionFee = subtotal * TRANSACTION_FEE_PERCENT
+    const platformFee = subtotal * PLATFORM_FEE_PERCENT
+
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: 'Transaction Fee',
+          description: '4% card processing fee',
+        },
+        unit_amount: Math.round(transactionFee * 100),
+      },
+      quantity: 1,
     })
 
+    lineItems.push({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: 'Platform Fee',
+          description: '1% platform service fee',
+        },
+        unit_amount: Math.round(platformFee * 100),
+      },
+      quantity: 1,
+    })
+
+    const total = subtotal + transactionFee + platformFee
+
+    const sessionConfig: any = {
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: successUrl + '?session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: cancelUrl,
+      customer_email: customerEmail,
+      metadata: {
+        user_id: userId,
+        platform_fee: platformFee.toFixed(2),
+        transaction_fee: transactionFee.toFixed(2),
+        subtotal: subtotal.toFixed(2),
+      },
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig)
+
     return new Response(
-      JSON.stringify({ sessionId: session.id, url: session.url }),
+      JSON.stringify({ 
+        sessionId: session.id, 
+        url: session.url,
+        subtotal: subtotal.toFixed(2),
+        platformFee: platformFee.toFixed(2),
+        transactionFee: transactionFee.toFixed(2),
+        total: total.toFixed(2),
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200,
       },
     )
   } catch (error) {
+    console.error('Checkout error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.toString(),
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,

@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft, CreditCard, Bug } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft, CreditCard } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../hooks/useAuth';
-import { useAdmin } from '../hooks/useAdmin';
 import { supabase } from '../lib/supabase';
+
+const TRANSACTION_FEE_PERCENT = 0.04;
+const PLATFORM_FEE_PERCENT = 0.01;
+const COMBINED_FEE_PERCENT = TRANSACTION_FEE_PERCENT + PLATFORM_FEE_PERCENT;
 
 export default function CartPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { hasPermission } = useAdmin();
-  const { items, updateQuantity, removeItem, getTotal, getTotalItems, clearCart } = useCart();
+  const { items, updateQuantity, removeItem, getTotal, getTotalItems } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const calculateFees = () => {
+    const subtotal = getTotal();
+    const serviceFee = subtotal * COMBINED_FEE_PERCENT;
+    const total = subtotal + serviceFee;
+    
+    return {
+      subtotal,
+      serviceFee,
+      total
+    };
+  };
 
   const handleCheckout = async () => {
     if (!user) {
@@ -22,73 +37,60 @@ export default function CartPage() {
       return;
     }
 
-    try {
-      sessionStorage.setItem('pendingCartItems', JSON.stringify(items));
-      
-      const totalAmount = Math.round(getTotal() * 100);
-      const totalItems = getTotalItems();
-      const productNames = items.map(item => `${item.product.name} (x${item.quantity})`).join(', ');
-      
-      clearCart();
-      
-      navigate(`/success?cart_checkout=true&amount=${totalAmount}&product_name=${encodeURIComponent(productNames)}&quantity=${totalItems}`);
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert('Unable to process checkout. Please try again.');
-    }
-  };
-
-  const handleDebugCheckout = async () => {
-    if (!user) {
-      alert('You must be logged in to use debug mode');
-      return;
-    }
-
-    if (items.length === 0) {
-      alert('Cart is empty');
-      return;
-    }
+    setIsProcessing(true);
 
     try {
-      const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-      
-      const orderItems = items.map(item => ({
-        product_id: item.product.id,
-        product_name: item.product.name,
-        price: Math.round(parseFloat(item.product.price.replace('$', '')) * 100),
-        quantity: item.quantity,
-        subtotal: Math.round(parseFloat(item.product.price.replace('$', '')) * 100) * item.quantity
+      const checkoutItems = items.map(item => ({
+        id: item.product.id,
+        name: item.product.name,
+        description: item.product.description,
+        price: item.product.price,
+        quantity: item.quantity
       }));
-      
-      const totalAmount = orderItems.reduce((sum, item) => sum + item.subtotal, 0);
-      const totalQuantity = orderItems.reduce((sum, item) => sum + item.quantity, 0);
 
-      const { error } = await supabase
-        .from('purchases')
-        .insert({
-          user_id: user.id,
-          order_number: orderNumber,
-          items: orderItems,
-          total_amount: totalAmount,
-          total_quantity: totalQuantity,
-          status: 'completed',
-          stripe_session_id: `debug_${Date.now()}`
-        });
+      localStorage.setItem('pendingPurchase', JSON.stringify({
+        items: checkoutItems,
+        subtotal: calculateFees().subtotal,
+        serviceFee: calculateFees().serviceFee,
+        total: calculateFees().total,
+        totalQuantity: getTotalItems()
+      }));
 
-      if (error) {
-        console.error('Error creating debug purchases:', error);
-        alert('Error creating debug purchases. Check console.');
+      const response = await fetch('https://ggkqadmnvrjsewnazdxj.supabase.co/functions/v1/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({
+          items: checkoutItems,
+          successUrl: `${window.location.origin}/success`,
+          cancelUrl: `${window.location.origin}/cart`,
+          customerEmail: user.email,
+          userId: user.id
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Checkout error:', data);
+        alert(`Unable to create checkout session: ${data.error || 'Please try again.'}`);
+        setIsProcessing(false);
         return;
       }
 
-      clearCart();
-      
-      const firstItem = items[0];
-      const amount = Math.round(parseFloat(firstItem.product.price.replace('$', '')) * 100);
-      navigate(`/success?product_id=${firstItem.product.id}&product_name=${encodeURIComponent(firstItem.product.name)}&amount=${amount * firstItem.quantity}&quantity=${firstItem.quantity}&debug=true`);
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        console.error('No URL in response:', data);
+        throw new Error('No checkout URL returned');
+      }
     } catch (error) {
-      console.error('Debug checkout error:', error);
-      alert('Error in debug mode. Check console.');
+      console.error('Checkout error:', error);
+      alert('Unable to process checkout. Please try again.');
+      setIsProcessing(false);
     }
   };
 
@@ -243,30 +245,41 @@ export default function CartPage() {
                   <span>Total Items:</span>
                   <span className="font-semibold">{getTotalItems()} people</span>
                 </div>
+                
                 <div className="border-t border-gray-200 pt-4"></div>
+                
+                <div className="flex justify-between text-lg">
+                  <span className="text-gray-700">Subtotal:</span>
+                  <span className="font-semibold text-navy-900">${calculateFees().subtotal.toFixed(2)}</span>
+                </div>
+                
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Service Fee (5%):</span>
+                  <span className="font-semibold text-gray-700">${calculateFees().serviceFee.toFixed(2)}</span>
+                </div>
+                
+                <div className="border-t-2 border-gray-300 pt-4"></div>
+                
                 <div className="flex justify-between text-2xl font-bold">
                   <span className="text-navy-900">Total:</span>
-                  <span className="text-red-600">${getTotal().toFixed(2)}</span>
+                  <span className="text-red-600">${calculateFees().total.toFixed(2)}</span>
+                </div>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+                  <p className="text-xs text-blue-800 text-center">
+                    💡 Paying with cash saves you 5% at the track
+                  </p>
                 </div>
               </div>
 
               <button
                 onClick={handleCheckout}
-                className="w-full bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 flex items-center justify-center gap-2"
+                disabled={isProcessing}
+                className={`w-full ${isProcessing ? 'bg-gray-400' : 'bg-red-600 hover:bg-red-700'} text-white px-8 py-4 rounded-xl font-bold text-lg transition-all ${!isProcessing && 'hover:scale-105'} flex items-center justify-center gap-2`}
               >
                 <CreditCard className="h-6 w-6" />
-                Proceed to Checkout
+                {isProcessing ? 'Processing...' : 'Proceed to Checkout'}
               </button>
-
-              {hasPermission('admin.debug') && (
-                <button
-                  onClick={handleDebugCheckout}
-                  className="mt-3 w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-lg transition-all border-2 border-yellow-500 bg-yellow-50 text-yellow-900 hover:bg-yellow-100"
-                >
-                  <Bug className="h-6 w-6" />
-                  Debug Checkout (Skip Payment)
-                </button>
-              )}
 
               <p className="text-sm text-gray-500 text-center mt-4">
                 Secure payment powered by Stripe
