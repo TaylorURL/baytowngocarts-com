@@ -386,51 +386,14 @@ export default function TrafficPage() {
                                 </div>
                             </div>
 
-                            {locationData.locations.length > 0 && (
-                                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
-                                    <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
-                                        <MapPin className="h-5 w-5 text-red-600"/>
-                                        Visitor Locations Map
-                                    </h3>
-                                    <div className="relative bg-navy-900 rounded-xl overflow-hidden" style={{height: '400px'}}>
-                                        <img 
-                                            src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg"
-                                            alt="World Map"
-                                            className="w-full h-full object-contain opacity-30"
-                                        />
-                                        <div className="absolute inset-0">
-                                            {locationData.locations.map((loc, idx) => {
-                                                const x = ((parseFloat(loc.lng) + 180) / 360) * 100;
-                                                const y = ((90 - parseFloat(loc.lat)) / 180) * 100;
-                                                return (
-                                                    <div
-                                                        key={idx}
-                                                        className="absolute w-3 h-3 bg-red-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-pulse shadow-lg"
-                                                        style={{
-                                                            left: `${x}%`,
-                                                            top: `${y}%`,
-                                                            boxShadow: '0 0 10px rgba(239, 68, 68, 0.8)'
-                                                        }}
-                                                        title={`${loc.city || 'Unknown'}, ${loc.country || 'Unknown'}`}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <div className="absolute bottom-4 left-4 bg-navy-800 bg-opacity-90 rounded-lg px-4 py-2">
-                                            <p className="text-white text-sm font-bold">{locationData.locations.length} visitor locations</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
                             <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
                                 <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
                                     <TrendingUp className="h-5 w-5 text-red-600"/>
                                     Recent Activity
                                 </h3>
-                                <div className="overflow-x-auto">
+                                <div className="overflow-y-auto" style={{maxHeight: '400px'}}>
                                     <table className="w-full">
-                                        <thead>
+                                        <thead className="sticky top-0 bg-white">
                                             <tr className="border-b-2 border-gray-200">
                                                 <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">Time</th>
                                                 <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">Page</th>
