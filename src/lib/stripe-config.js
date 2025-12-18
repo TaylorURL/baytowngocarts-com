@@ -26,7 +26,7 @@ const LIVE_PRODUCTS = [
         price: '$13.99',
         mode: 'payment',
         features: [
-            'For teens and adults',
+            'For taller racers (53"+)',
             'High-performance go-karts',
             'Safety equipment included'
         ]
@@ -39,7 +39,7 @@ const LIVE_PRODUCTS = [
         price: '$13.99',
         mode: 'payment',
         features: [
-            'Ideal for ages 6-10',
+            'For younger racers (40"+)',
             'Safe and fun for kids',
             'Same great experience'
         ]
@@ -87,6 +87,54 @@ const LIVE_PRODUCTS = [
         ]
     }
 ];
+
+const DOUBLE_SEATER_PRODUCTS = [
+    {
+        id: 'prod_double_ride_along',
+        priceId: 'price_double_ride_along',
+        name: 'Ride Along Rush',
+        description: '1 Race - Double Seater',
+        price: '$19.99',
+        mode: 'payment',
+        features: [
+            '1 Double Seater Race',
+            'Driver 53"+ / Passenger 33"+',
+            'Perfect for parent & child'
+        ],
+        isDoubleSeater: true
+    },
+    {
+        id: 'prod_double_drift',
+        priceId: 'price_double_drift',
+        name: 'Double Drift',
+        description: '2 Races - Double Seater',
+        price: '$37.99',
+        mode: 'payment',
+        features: [
+            '2 Double Seater Races',
+            'Driver 53"+ / Passenger 33"+',
+            'Great for multiple laps'
+        ],
+        isDoubleSeater: true
+    },
+    {
+        id: 'prod_track_titan',
+        priceId: 'price_track_titan',
+        name: 'Track Titan',
+        description: '3 Races - Double Seater',
+        price: '$39.99',
+        mode: 'payment',
+        features: [
+            '3 Double Seater Races',
+            'Driver 53"+ / Passenger 33"+',
+            'Best double seater value'
+        ],
+        isDoubleSeater: true,
+        isPopular: true
+    }
+];
+
+export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
 
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS 
     ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS] 

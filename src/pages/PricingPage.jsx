@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Baby, Check, Clock, Download, Gift, HelpCircle, Minus, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, TrendingUp, Users, Zap} from 'lucide-react';
+import {Baby, Check, Clock, Download, HelpCircle, Minus, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, Users, Zap} from 'lucide-react';
 import {BOUNCE_PRICING} from '../lib/constants.js';
-import {STRIPE_PRODUCTS} from '../lib/stripe-config.js';
+import {STRIPE_PRODUCTS, STRIPE_DOUBLE_SEATER_PRODUCTS} from '../lib/stripe-config.js';
 import {Link, useNavigate} from 'react-router-dom';
 import Button from '../components/common/Button.jsx';
 import {useCart} from '../hooks/useCart';
@@ -34,15 +34,27 @@ const PricingPage = () => {
     };
 
     const getTotalPrice = () => {
-        return STRIPE_PRODUCTS.reduce((sum, product) => {
+        const regularTotal = STRIPE_PRODUCTS.reduce((sum, product) => {
             const qty = getQuantity(product.id);
             const price = parseFloat(product.price.replace('$', ''));
             return sum + (qty * price);
         }, 0);
+        const doubleSeaterTotal = STRIPE_DOUBLE_SEATER_PRODUCTS.reduce((sum, product) => {
+            const qty = getQuantity(product.id);
+            const price = parseFloat(product.price.replace('$', ''));
+            return sum + (qty * price);
+        }, 0);
+        return regularTotal + doubleSeaterTotal;
     };
 
     const handleAddAllToCart = () => {
         STRIPE_PRODUCTS.forEach(product => {
+            const qty = getQuantity(product.id);
+            if (qty > 0) {
+                addItem(product, qty);
+            }
+        });
+        STRIPE_DOUBLE_SEATER_PRODUCTS.forEach(product => {
             const qty = getQuantity(product.id);
             if (qty > 0) {
                 addItem(product, qty);
@@ -60,6 +72,12 @@ const PricingPage = () => {
                 addItem(product, qty);
             }
         });
+        STRIPE_DOUBLE_SEATER_PRODUCTS.forEach(product => {
+            const qty = getQuantity(product.id);
+            if (qty > 0) {
+                addItem(product, qty);
+            }
+        });
         navigate('/cart');
     };
 
@@ -68,6 +86,7 @@ const PricingPage = () => {
         if (name.includes('Adult')) return Zap;
         if (name.includes('Family')) return Users;
         if (name.includes('2.5') || name.includes('Hour')) return Timer;
+        if (name.includes('Double') || name.includes('Ride Along') || name.includes('Track Titan')) return Users;
         return Sparkles;
     };
 
@@ -207,6 +226,111 @@ const PricingPage = () => {
 
                                     <ul className="mb-3 space-y-1.5 flex-grow">
                                         {product.features.slice(0, 3).map((feature, idx) => (
+                                            <li key={idx} className="flex items-start text-xs">
+                                                <Check size={12} className="text-green-600 mr-1.5 mt-0.5 flex-shrink-0"/>
+                                                <span className="text-gray-600">{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    <div className="pt-3 border-t border-gray-100">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={() => updateQuantity(product.id, -1)}
+                                                disabled={qty === 0}
+                                                className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold transition-colors ${
+                                                    qty === 0
+                                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                                }`}
+                                            >
+                                                <Minus className="h-4 w-4"/>
+                                            </button>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={qty}
+                                                onChange={(e) => setQuantityDirect(product.id, e.target.value)}
+                                                className="w-14 text-center text-lg font-bold text-navy-900 border-2 border-gray-200 rounded-lg py-1 focus:border-red-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            />
+                                            <button
+                                                onClick={() => updateQuantity(product.id, 1)}
+                                                className="w-9 h-9 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold transition-colors"
+                                            >
+                                                <Plus className="h-4 w-4"/>
+                                            </button>
+                                        </div>
+                                        {isSelected && (
+                                            <div className="mt-2 bg-red-50 rounded-lg py-1.5 text-center">
+                                                <span className="text-red-600 font-bold text-sm">
+                                                    ${(parseFloat(product.price.replace('$', '')) * qty).toFixed(2)}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="max-w-3xl mx-auto text-center my-12" data-aos="fade-up">
+                        <div className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
+                            DOUBLE SEATER
+                        </div>
+                        <h2 className="text-3xl lg:text-4xl font-bold text-navy-900 mb-4">
+                            Double Seater Racing
+                        </h2>
+                        <p className="text-lg text-gray-600">
+                            Share the thrill with a passenger! Driver must be 53"+ and passenger 33"+
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                        {STRIPE_DOUBLE_SEATER_PRODUCTS.map((product) => {
+                            const Icon = getIcon(product.name);
+                            const qty = getQuantity(product.id);
+                            const isSelected = qty > 0;
+
+                            return (
+                                <div
+                                    key={product.id}
+                                    className={`
+                                        rounded-2xl border-2 p-5 shadow-lg bg-white transition-all duration-300 relative flex flex-col
+                                        ${product.isPopular ? 'border-red-600 shadow-xl' : ''}
+                                        ${isSelected ? 'border-red-500 ring-2 ring-red-500 ring-opacity-50' : 'border-gray-200 hover:border-red-300'}
+                                    `}
+                                >
+                                    {product.isPopular && (
+                                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                            <div className="bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 whitespace-nowrap">
+                                                <Sparkles className="h-3 w-3"/>
+                                                BEST VALUE
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {isSelected && (
+                                        <div className="absolute -top-3 -right-3 bg-red-600 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-lg text-sm">
+                                            {qty}
+                                        </div>
+                                    )}
+
+                                    <div className="text-center mb-3">
+                                        <div className={`inline-flex p-3 rounded-xl mb-2 ${product.isPopular ? 'bg-red-600' : 'bg-navy-900'}`}>
+                                            <Icon className="h-5 w-5 text-white"/>
+                                        </div>
+                                        <h3 className="text-base font-bold text-navy-900 leading-tight">{product.name}</h3>
+                                        {product.description && (
+                                            <p className="text-xs text-gray-500 mt-1">{product.description}</p>
+                                        )}
+                                        <div className="mt-2">
+                                            <span className="text-2xl font-bold text-navy-900">{product.price}</span>
+                                            <p className="text-xs text-gray-500">per kart</p>
+                                        </div>
+                                    </div>
+
+                                    <ul className="mb-3 space-y-1.5 flex-grow">
+                                        {product.features.map((feature, idx) => (
                                             <li key={idx} className="flex items-start text-xs">
                                                 <Check size={12} className="text-green-600 mr-1.5 mt-0.5 flex-shrink-0"/>
                                                 <span className="text-gray-600">{feature}</span>
@@ -405,15 +529,29 @@ const PricingPage = () => {
                                     <li className="flex items-start gap-3">
                                         <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
                                         <div>
-                                            <span className="font-semibold text-red-400">Kid Karts:</span>
-                                            <span className="text-gray-300"> Ages 8-13, minimum 48" tall</span>
+                                            <span className="font-semibold text-red-400">No age requirement:</span>
+                                            <span className="text-gray-300"> Suggested minimum age is 5 if riding alone</span>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
+                                        <div>
+                                            <span className="font-semibold text-red-400">Kiddie Karts:</span>
+                                            <span className="text-gray-300"> Minimum 40" tall</span>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
                                         <div>
                                             <span className="font-semibold text-red-400">Adult Karts:</span>
-                                            <span className="text-gray-300"> Ages 14+, minimum 58" tall</span>
+                                            <span className="text-gray-300"> Minimum 53" tall</span>
+                                        </div>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
+                                        <div>
+                                            <span className="font-semibold text-red-400">Double Seater:</span>
+                                            <span className="text-gray-300"> Driver 53"+, Passenger 33"+</span>
                                         </div>
                                     </li>
                                 </ul>
@@ -429,41 +567,17 @@ const PricingPage = () => {
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
                                         <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
-                                        <span className="text-gray-300">3-Race Combo must be used same day</span>
+                                        <span className="text-gray-300">All racing packages must be used same day</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
+                                        <span className="text-gray-300">Hair that falls below the base of the neck must be tied back</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <Check className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0"/>
                                         <span className="text-gray-300">Signed waiver required for all participants</span>
                                     </li>
                                 </ul>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                            <div className="bg-gradient-to-br from-navy-800 to-navy-700 rounded-2xl p-6 text-center border-2 border-red-600" data-aos="fade-up">
-                                <Gift className="h-10 w-10 mx-auto mb-3 text-red-500"/>
-                                <h3 className="text-xl font-bold mb-2 text-white">Group Discounts</h3>
-                                <p className="text-gray-300 mb-4 text-sm">
-                                    Planning a party or group event? Contact us for special pricing!
-                                </p>
-                                <div className="flex justify-center">
-                                    <Link to="/contact">
-                                        <Button size="md" variant="outline" className="bg-red-600 hover:bg-red-700 text-white border-0">
-                                            Get Group Pricing
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className="bg-gradient-to-br from-navy-800 to-navy-700 rounded-2xl p-6 text-center border-2 border-red-600" data-aos="fade-up" data-aos-delay="100">
-                                <TrendingUp className="h-10 w-10 mx-auto mb-3 text-red-500"/>
-                                <h3 className="text-xl font-bold mb-2 text-white">Race Swap Option</h3>
-                                <p className="text-gray-300 mb-4 text-sm">
-                                    Swap 3 kid races for 2 adult races in any Family Deal!
-                                </p>
-                                <a href="tel:(346) 932-1266" className="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl font-bold transition-all">
-                                    Call to Book
-                                </a>
                             </div>
                         </div>
 

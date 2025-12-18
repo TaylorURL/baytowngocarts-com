@@ -72,12 +72,12 @@ export const FAQS = [
     },
     {
         question: "Is there a minimum age to drive a kart?",
-        answer: "There is no age requirement, but there are height requirements: Adult Sprint Karts require 54 inches or taller, Kiddie Karts require 40 inches or taller. For Double-Seater Karts, the driver must be 54 inches or taller and the passenger must be 33 inches or taller.",
+        answer: "There is no age requirement, but we suggest a minimum age of 5 if riding alone. There are height requirements: Adult Karts require 53 inches or taller, Kiddie Karts require 40 inches or taller. For Double-Seater Karts, the driver must be 53 inches or taller and the passenger must be 33 inches or taller.",
         category: "Racing"
     },
     {
         question: "Do you have double-seater karts?",
-        answer: "Yes. We currently have one double-seater kart available. Driver must be 54″+ and passenger must be 33″+.",
+        answer: "Yes. We currently have one double-seater kart available. Driver must be 53\"+ and passenger must be 33\"+.",
         category: "Racing"
     },
     {
