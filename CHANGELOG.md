@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7] - 2026-02-02
+
+- Updated project name in public/turl.json from "baytowngocarts-com" to "Baytown Speedway"
+- Removed public/version.json file containing version information
+
 ## [1.6] - 2026-02-02
 
 - Updated eslint.config.js to use double quotes instead of single quotes for consistency in string literals.
