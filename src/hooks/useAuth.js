@@ -6,6 +6,11 @@ export function useAuth() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
+        
         supabase.auth.getSession().then(({data: {session}}) => {
             setUser(session?.user ?? null);
             setLoading(false);
@@ -22,6 +27,7 @@ export function useAuth() {
     }, []);
 
     const signIn = async (email, password) => {
+        if (!supabase) return {data: null, error: {message: 'Supabase not configured'}};
         const {data, error} = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -30,6 +36,7 @@ export function useAuth() {
     };
 
     const signUp = async (email, password) => {
+        if (!supabase) return {data: null, error: {message: 'Supabase not configured'}};
         const {data, error} = await supabase.auth.signUp({
             email,
             password,
@@ -41,6 +48,7 @@ export function useAuth() {
     };
 
     const signOut = async () => {
+        if (!supabase) return {error: null};
         const {error} = await supabase.auth.signOut();
         return {error};
     };

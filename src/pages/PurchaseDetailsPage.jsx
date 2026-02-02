@@ -35,6 +35,11 @@ export default function PurchaseDetailsPage() {
     }, [user, orderId]);
 
     const fetchPurchaseDetails = async () => {
+        if (!supabase) {
+            setLoading(false);
+            navigate('/dashboard');
+            return;
+        }
         try {
             const {data, error} = await supabase
                 .from('purchases')

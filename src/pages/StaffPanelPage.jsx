@@ -92,6 +92,10 @@ export default function StaffPanelPage() {
     };
 
     const fetchRecentOrders = async () => {
+        if (!supabase) {
+            setLoading(false);
+            return;
+        }
         try {
             const {data, error} = await supabase
                 .from('purchases')

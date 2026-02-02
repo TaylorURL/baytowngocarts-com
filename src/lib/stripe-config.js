@@ -134,6 +134,74 @@ const DOUBLE_SEATER_PRODUCTS = [
     }
 ];
 
+const PARTY_PACKAGES = [
+    {
+        id: 'prod_party_all_access',
+        priceId: 'price_party_all_access',
+        name: 'All-Access Family Race Party',
+        description: '20 bracelets, 2hr racing, 3hr party room',
+        price: '$699.00',
+        mode: 'payment',
+        features: [
+            '20 Racing Bracelets included',
+            '2 hours of organized racing',
+            '3 hours in private party room',
+            'Room fits up to 45 guests',
+            'Tables & chairs set up',
+            'Staff manages everything'
+        ],
+        isPartyPackage: true,
+        isPopular: true
+    },
+    {
+        id: 'prod_party_bounce_upgrade',
+        priceId: 'price_party_bounce_upgrade',
+        name: 'Bounce House + Game Tables',
+        description: 'Party upgrade add-on',
+        price: '$150.00',
+        mode: 'payment',
+        features: [
+            'Bounce house for kids',
+            'Game tables included',
+            'Extra fun between races'
+        ],
+        isPartyPackage: true,
+        isUpgrade: true
+    },
+    {
+        id: 'prod_party_race_together',
+        priceId: 'price_party_race_together',
+        name: 'Race Together Upgrade',
+        description: 'Your group races together',
+        price: '$150.00',
+        mode: 'payment',
+        features: [
+            'Group races at same time',
+            'Not split with public',
+            'More fun together'
+        ],
+        isPartyPackage: true,
+        isUpgrade: true
+    },
+    {
+        id: 'prod_party_private_track',
+        priceId: 'price_party_private_track',
+        name: 'Private Track (2 Hours)',
+        description: 'Exclusive track access',
+        price: '$700.00',
+        mode: 'payment',
+        features: [
+            '2 hours private track',
+            'No public riders',
+            'Exclusive experience'
+        ],
+        isPartyPackage: true,
+        isUpgrade: true
+    }
+];
+
+export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
+
 export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
 
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS 

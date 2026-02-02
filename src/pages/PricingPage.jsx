@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Baby, Check, Clock, Download, HelpCircle, Minus, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, Users, Zap} from 'lucide-react';
+import {Baby, Check, Clock, Crown, Download, HelpCircle, Minus, PartyPopper, Phone, Plus, Shield, ShoppingCart, Sparkles, Timer, Users, Zap} from 'lucide-react';
 import {BOUNCE_PRICING} from '../lib/constants.js';
-import {STRIPE_PRODUCTS, STRIPE_DOUBLE_SEATER_PRODUCTS} from '../lib/stripe-config.js';
+import {STRIPE_PRODUCTS, STRIPE_DOUBLE_SEATER_PRODUCTS, STRIPE_PARTY_PACKAGES} from '../lib/stripe-config.js';
 import {Link, useNavigate} from 'react-router-dom';
 import Button from '../components/common/Button.jsx';
 import {useCart} from '../hooks/useCart';
@@ -376,6 +376,178 @@ const PricingPage = () => {
                                 </div>
                             );
                         })}
+                    </div>
+
+                    <div className="max-w-4xl mx-auto text-center my-16" data-aos="fade-up">
+                        <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-full text-sm font-bold tracking-wider">
+                            PARTY PACKAGES
+                        </div>
+                        <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-4">
+                            All-Access Family Race Parties
+                        </h2>
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                            The fun, stress-free way to celebrate! Perfect for birthdays, school groups & family celebrations.
+                        </p>
+                    </div>
+
+                    <div className="max-w-3xl mx-auto mb-12">
+                        {STRIPE_PARTY_PACKAGES.filter(p => !p.isUpgrade).map((product) => {
+                            const qty = getQuantity(product.id);
+                            const isSelected = qty > 0;
+
+                            return (
+                                <div
+                                    key={product.id}
+                                    className={`
+                                        rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 relative
+                                        ${isSelected ? 'ring-4 ring-green-500' : ''}
+                                    `}
+                                    style={{
+                                        background: 'linear-gradient(135deg, #0a1929 0%, #1a3a5c 50%, #0a1929 100%)'
+                                    }}
+                                >
+                                    {product.isPopular && (
+                                        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-navy-900 text-center py-3 font-bold tracking-wider flex items-center justify-center gap-2">
+                                            <Sparkles className="h-5 w-5"/>
+                                            MOST POPULAR PARTY PACKAGE
+                                            <Sparkles className="h-5 w-5"/>
+                                        </div>
+                                    )}
+
+                                    <div className="p-8 lg:p-10">
+                                        <div className="flex flex-col lg:flex-row gap-8">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-4 mb-4">
+                                                    <div className="bg-red-600 p-4 rounded-2xl">
+                                                        <PartyPopper className="h-10 w-10 text-white"/>
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="text-2xl lg:text-3xl font-bold text-white">{product.name}</h3>
+                                                        <p className="text-gray-400">{product.description}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                                                    {product.features.map((feature, idx) => (
+                                                        <div key={idx} className="flex items-start gap-2">
+                                                            <Check className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5"/>
+                                                            <span className="text-gray-200 text-sm">{feature}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="lg:w-64 flex flex-col items-center justify-center lg:border-l lg:border-gray-700 lg:pl-8">
+                                                <div className="text-center mb-6">
+                                                    <div className="text-5xl lg:text-6xl font-bold text-white">{product.price.replace('.00', '')}</div>
+                                                    <div className="text-gray-400 text-lg">+ tax</div>
+                                                </div>
+
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <button
+                                                        onClick={() => updateQuantity(product.id, -1)}
+                                                        disabled={qty === 0}
+                                                        className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold transition-all ${
+                                                            qty === 0
+                                                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                                                                : 'bg-gray-600 hover:bg-gray-500 text-white'
+                                                        }`}
+                                                    >
+                                                        <Minus className="h-6 w-6"/>
+                                                    </button>
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        value={qty}
+                                                        onChange={(e) => setQuantityDirect(product.id, e.target.value)}
+                                                        className="w-20 text-center text-2xl font-bold text-white bg-gray-800 border-2 border-gray-600 rounded-xl py-3 focus:border-red-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                    />
+                                                    <button
+                                                        onClick={() => updateQuantity(product.id, 1)}
+                                                        className="w-12 h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold transition-all hover:scale-105"
+                                                    >
+                                                        <Plus className="h-6 w-6"/>
+                                                    </button>
+                                                </div>
+
+                                                {isSelected && (
+                                                    <div className="bg-green-500 text-white rounded-xl py-3 px-6 text-center font-bold">
+                                                        Total: ${(parseFloat(product.price.replace('$', '')) * qty).toFixed(2)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="max-w-4xl mx-auto">
+                        <div className="text-center mb-8">
+                            <h3 className="text-2xl font-bold text-navy-900">Popular Party Upgrades</h3>
+                            <p className="text-gray-600">Enhance your party experience</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {STRIPE_PARTY_PACKAGES.filter(p => p.isUpgrade).map((product) => {
+                                const qty = getQuantity(product.id);
+                                const isSelected = qty > 0;
+
+                                return (
+                                    <div
+                                        key={product.id}
+                                        className={`
+                                            rounded-2xl border-2 p-6 bg-white transition-all duration-300 relative hover-lift
+                                            ${isSelected ? 'border-red-500 shadow-xl' : 'border-gray-200 shadow-lg hover:border-red-300'}
+                                        `}
+                                    >
+                                        {isSelected && (
+                                            <div className="absolute -top-3 -right-3 bg-green-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-lg">
+                                                {qty}
+                                            </div>
+                                        )}
+
+                                        <div className="text-center">
+                                            <div className="bg-red-100 p-4 rounded-2xl inline-flex mb-4">
+                                                {product.name.includes('Bounce') && <PartyPopper className="h-8 w-8 text-red-600"/>}
+                                                {product.name.includes('Race Together') && <Users className="h-8 w-8 text-red-600"/>}
+                                                {product.name.includes('Private') && <Crown className="h-8 w-8 text-red-600"/>}
+                                            </div>
+                                            <h4 className="font-bold text-navy-900 text-lg mb-1">{product.name}</h4>
+                                            <p className="text-sm text-gray-500 mb-3">{product.description}</p>
+                                            <div className="text-2xl font-bold text-red-600 mb-4">{product.price.replace('.00', '')}</div>
+                                        </div>
+
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={() => updateQuantity(product.id, -1)}
+                                                disabled={qty === 0}
+                                                className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold transition-colors ${
+                                                    qty === 0
+                                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                                }`}
+                                            >
+                                                <Minus className="h-5 w-5"/>
+                                            </button>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={qty}
+                                                onChange={(e) => setQuantityDirect(product.id, e.target.value)}
+                                                className="w-14 text-center text-lg font-bold text-navy-900 border-2 border-gray-200 rounded-lg py-2 focus:border-red-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            />
+                                            <button
+                                                onClick={() => updateQuantity(product.id, 1)}
+                                                className="w-10 h-10 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center font-bold transition-colors"
+                                            >
+                                                <Plus className="h-5 w-5"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div className="mt-12 max-w-6xl mx-auto" data-aos="fade-up">
