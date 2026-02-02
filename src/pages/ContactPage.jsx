@@ -1,255 +1,273 @@
-import React from 'react';
-import {Calendar, Clock, Mail, MapPin, MessageSquare, Phone, Send} from 'lucide-react';
-import ContactForm from '../components/forms/ContactForm.jsx';
-import LocationsSection from '../components/sections/LocationsSection.jsx';
-import {BUSINESS_HOURS, CONTACT_INFO} from '../lib/constants.js';
+import React from "react";
+import {
+  Calendar,
+  Clock,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Send,
+} from "lucide-react";
+import ContactForm from "../components/forms/ContactForm.jsx";
+import LocationsSection from "../components/sections/LocationsSection.jsx";
+import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/constants.js";
 
 const ContactPage = () => {
-    const contactMethods = [
-        {
-            icon: Phone,
-            title: 'Call Us',
-            description: 'Speak with our team directly',
-            info: CONTACT_INFO.phone,
-            action: `tel:${CONTACT_INFO.phone}`,
-            color: 'red',
-        },
-        {
-            icon: Mail,
-            title: 'Email Us',
-            description: 'Send us a message anytime',
-            info: CONTACT_INFO.email,
-            action: `mailto:${CONTACT_INFO.email}`,
-            color: 'navy',
-        },
-        {
-            icon: MapPin,
-            title: 'Visit Us',
-            description: 'Come see us in person',
-            info: CONTACT_INFO.address,
-            action: 'https://maps.google.com/?q=6750+N+Tx-146+Baytown+TX+77523',
-            color: 'red',
-        },
-    ];
+  const contactMethods = [
+    {
+      icon: Phone,
+      title: "Call Us",
+      description: "Speak with our team directly",
+      info: CONTACT_INFO.phone,
+      action: `tel:${CONTACT_INFO.phone}`,
+      color: "red",
+    },
+    {
+      icon: Mail,
+      title: "Email Us",
+      description: "Send us a message anytime",
+      info: CONTACT_INFO.email,
+      action: `mailto:${CONTACT_INFO.email}`,
+      color: "navy",
+    },
+    {
+      icon: MapPin,
+      title: "Visit Us",
+      description: "Come see us in person",
+      info: CONTACT_INFO.address,
+      action: "https://maps.google.com/?q=6750+N+Tx-146+Baytown+TX+77523",
+      color: "red",
+    },
+  ];
 
-    return (
-        <div className="w-full -mt-20">
-            <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-                <div className="absolute inset-0 z-0">
-                    <div
-                        className="absolute inset-0 bg-cover bg-center opacity-30"
-                        style={{backgroundImage: 'url(/images/22.JPEG)'}}
-                    />
-                </div>
+  return (
+    <div className="w-full -mt-20">
+      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-30"
+            style={{ backgroundImage: "url(/images/22.JPEG)" }}
+          />
+        </div>
 
+        <div
+          className="absolute inset-0 z-5 opacity-10"
+          style={{
+            backgroundImage:
+              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
+            backgroundSize: "20px 20px",
+            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+              GET IN TOUCH
+            </div>
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
+              We're Here to <span className="text-red-500">Help</span>
+            </h1>
+            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Have questions or ready to book? Contact us and we'll make your
+              racing experience unforgettable
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="absolute bottom-0 left-0 right-0 h-16 bg-white"
+          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
+        />
+      </section>
+
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className="max-w-3xl mx-auto text-center mb-16"
+            data-aos="fade-up"
+          >
+            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+              CONTACT METHODS
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+              Choose How to Connect
+            </h2>
+            <p className="text-xl text-gray-600">
+              Pick the method that works best for you. We're ready to assist!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+            {contactMethods.map((method, index) => (
+              <a
+                key={index}
+                href={method.action}
+                target={method.icon === MapPin ? "_blank" : undefined}
+                rel={method.icon === MapPin ? "noopener noreferrer" : undefined}
+                className={`bg-white p-8 rounded-2xl shadow-xl hover-lift text-center border-2 transition-all duration-300 ${
+                  method.color === "red"
+                    ? "border-red-200 hover:border-red-600"
+                    : "border-navy-200 hover:border-navy-600"
+                }`}
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
                 <div
-                    className="absolute inset-0 z-5 opacity-10"
-                    style={{
-                        backgroundImage: 'linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)',
-                        backgroundSize: '20px 20px',
-                        backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-                    }}
-                />
-
-                <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-                        <div
-                            className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
-                            GET IN TOUCH
-                        </div>
-                        <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-                            We're Here to <span className="text-red-500">Help</span>
-                        </h1>
-                        <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                            Have questions or ready to book? Contact us and we'll make your racing experience
-                            unforgettable
-                        </p>
-                    </div>
+                  className={`${method.color === "red" ? "bg-red-600" : "bg-navy-900"} w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg`}
+                >
+                  <method.icon className="h-8 w-8 text-white" />
                 </div>
+                <h3 className="text-2xl font-bold text-navy-900 mb-3">
+                  {method.title}
+                </h3>
+                <p className="text-gray-600 mb-4">{method.description}</p>
+                <p
+                  className={`font-semibold ${method.color === "red" ? "text-red-600" : "text-navy-900"}`}
+                >
+                  {method.info}
+                </p>
+              </a>
+            ))}
+          </div>
 
-                <div className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-                     style={{clipPath: 'polygon(0 100%, 100% 0, 100% 100%, 0% 100%)'}}/>
-            </section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
+            <div data-aos="fade-right">
+              <div className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
+                SEND MESSAGE
+              </div>
+              <h2 className="text-4xl font-bold text-navy-900 mb-6">
+                Contact Form
+              </h2>
+              <p className="text-lg text-gray-600 mb-8">
+                Fill out the form below and we'll get back to you as soon as
+                possible. For immediate assistance, please call us directly.
+              </p>
 
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-                        <div
-                            className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
-                            CONTACT METHODS
-                        </div>
-                        <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
-                            Choose How to Connect
-                        </h2>
-                        <p className="text-xl text-gray-600">
-                            Pick the method that works best for you. We're ready to assist!
-                        </p>
-                    </div>
+              <ContactForm />
+            </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
-                        {contactMethods.map((method, index) => (
-                            <a
-                                key={index}
-                                href={method.action}
-                                target={method.icon === MapPin ? '_blank' : undefined}
-                                rel={method.icon === MapPin ? 'noopener noreferrer' : undefined}
-                                className={`bg-white p-8 rounded-2xl shadow-xl hover-lift text-center border-2 transition-all duration-300 ${
-                                    method.color === 'red' ? 'border-red-200 hover:border-red-600' : 'border-navy-200 hover:border-navy-600'
-                                }`}
-                                data-aos="fade-up"
-                                data-aos-delay={index * 100}
-                            >
-                                <div
-                                    className={`${method.color === 'red' ? 'bg-red-600' : 'bg-navy-900'} w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
-                                    <method.icon className="h-8 w-8 text-white"/>
-                                </div>
-                                <h3 className="text-2xl font-bold text-navy-900 mb-3">{method.title}</h3>
-                                <p className="text-gray-600 mb-4">{method.description}</p>
-                                <p className={`font-semibold ${method.color === 'red' ? 'text-red-600' : 'text-navy-900'}`}>
-                                    {method.info}
-                                </p>
-                            </a>
-                        ))}
-                    </div>
+            <div data-aos="fade-left">
+              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+                VISIT US
+              </div>
+              <h2 className="text-4xl font-bold text-navy-900 mb-6">Find Us</h2>
+              <p className="text-lg text-gray-600 mb-8">
+                We're conveniently located in Baytown, TX. Come visit us during
+                our business hours for an unforgettable racing experience!
+              </p>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-                        <div data-aos="fade-right">
-                            <div
-                                className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
-                                SEND MESSAGE
-                            </div>
-                            <h2 className="text-4xl font-bold text-navy-900 mb-6">
-                                Contact Form
-                            </h2>
-                            <p className="text-lg text-gray-600 mb-8">
-                                Fill out the form below and we'll get back to you as soon as possible. For immediate
-                                assistance, please call us directly.
-                            </p>
+              <LocationsSection />
+            </div>
+          </div>
+        </div>
+      </section>
 
-                            <ContactForm/>
-                        </div>
-
-                        <div data-aos="fade-left">
-                            <div
-                                className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
-                                VISIT US
-                            </div>
-                            <h2 className="text-4xl font-bold text-navy-900 mb-6">
-                                Find Us
-                            </h2>
-                            <p className="text-lg text-gray-600 mb-8">
-                                We're conveniently located in Baytown, TX. Come visit us during our business hours for
-                                an unforgettable racing experience!
-                            </p>
-
-                            <LocationsSection/>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-5xl mx-auto">
-                        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-                            <div className="grid grid-cols-1 lg:grid-cols-2">
-                                <div className="bg-navy-900 text-white p-12">
-                                    <div
-                                        className="inline-block mb-6 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
-                                        BUSINESS HOURS
-                                    </div>
-                                    <h2 className="text-3xl font-bold mb-8">
-                                        When We're Open
-                                    </h2>
-                                    <div className="space-y-4">
-                                        {BUSINESS_HOURS.map((schedule, index) => (
-                                            <div key={index}
-                                                 className="flex justify-between items-center py-3 border-b border-white border-opacity-20">
-                                                <span className="font-semibold text-lg">{schedule.day}</span>
-                                                <span
-                                                    className={`${schedule.hours === 'Closed' ? 'text-red-400' : 'text-gray-300'}`}>
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-2">
+                <div className="bg-navy-900 text-white p-12">
+                  <div className="inline-block mb-6 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
+                    BUSINESS HOURS
+                  </div>
+                  <h2 className="text-3xl font-bold mb-8">When We're Open</h2>
+                  <div className="space-y-4">
+                    {BUSINESS_HOURS.map((schedule, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center py-3 border-b border-white border-opacity-20"
+                      >
+                        <span className="font-semibold text-lg">
+                          {schedule.day}
+                        </span>
+                        <span
+                          className={`${schedule.hours === "Closed" ? "text-red-400" : "text-gray-300"}`}
+                        >
                           {schedule.hours}
                         </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="mt-8 p-6 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl">
-                                        <Clock className="h-8 w-8 mb-3 text-red-500"/>
-                                        <p className="text-sm text-gray-300">
-                                            Extended hours on weekends! Visit us Saturday and Sunday from 10:30 AM to
-                                            10:30 PM for all-day racing fun.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div
-                                    className="bg-gradient-to-br from-red-600 to-red-700 text-white p-12 flex flex-col justify-center">
-                                    <MessageSquare className="h-16 w-16 mb-6"/>
-                                    <h3 className="text-3xl font-bold mb-4">
-                                        Questions About Booking?
-                                    </h3>
-                                    <p className="text-red-100 mb-8 text-lg leading-relaxed">
-                                        Our team is ready to help you plan the perfect event. Whether it's a birthday
-                                        party, corporate event, or racing league, we've got you covered.
-                                    </p>
-                                    <div className="space-y-4">
-                                        <a
-                                            href="tel:(346) 932-1266"
-                                            className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
-                                        >
-                                            <Phone className="h-5 w-5"/>
-                                            Call (346) 932-1266
-                                        </a>
-                                        <a
-                                            href={`mailto:${CONTACT_INFO.email}`}
-                                            className="flex items-center justify-center gap-3 bg-navy-900 hover:bg-navy-800 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
-                                        >
-                                            <Send className="h-5 w-5"/>
-                                            Send Email
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-8 p-6 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl">
+                    <Clock className="h-8 w-8 mb-3 text-red-500" />
+                    <p className="text-sm text-gray-300">
+                      Extended hours on weekends! Visit us Saturday and Sunday
+                      from 10:30 AM to 10:30 PM for all-day racing fun.
+                    </p>
+                  </div>
                 </div>
-            </section>
 
-            <section className="py-20 bg-navy-900 text-white">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-                        <Calendar className="h-16 w-16 mx-auto mb-6 text-red-500"/>
-                        <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-                            Ready to Book Your Visit?
-                        </h2>
-                        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                            Don't wait! Contact us today to reserve your spot for an unforgettable racing adventure.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a
-                                href="tel:(346) 932-1266"
-                                className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105"
-                            >
-                                <Phone className="h-6 w-6 mr-3"/>
-                                Call Now
-                            </a>
-                            <a
-                                href="#contact-form"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    window.scrollTo({top: 0, behavior: 'smooth'});
-                                }}
-                                className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-navy-900 px-10 py-5 rounded-xl font-bold text-xl transition-all"
-                            >
-                                <MessageSquare className="h-6 w-6 mr-3"/>
-                                Send Message
-                            </a>
-                        </div>
-                    </div>
+                <div className="bg-gradient-to-br from-red-600 to-red-700 text-white p-12 flex flex-col justify-center">
+                  <MessageSquare className="h-16 w-16 mb-6" />
+                  <h3 className="text-3xl font-bold mb-4">
+                    Questions About Booking?
+                  </h3>
+                  <p className="text-red-100 mb-8 text-lg leading-relaxed">
+                    Our team is ready to help you plan the perfect event.
+                    Whether it's a birthday party, corporate event, or racing
+                    league, we've got you covered.
+                  </p>
+                  <div className="space-y-4">
+                    <a
+                      href="tel:(346) 932-1266"
+                      className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                    >
+                      <Phone className="h-5 w-5" />
+                      Call (346) 932-1266
+                    </a>
+                    <a
+                      href={`mailto:${CONTACT_INFO.email}`}
+                      className="flex items-center justify-center gap-3 bg-navy-900 hover:bg-navy-800 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                    >
+                      <Send className="h-5 w-5" />
+                      Send Email
+                    </a>
+                  </div>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      </section>
+
+      <section className="py-20 bg-navy-900 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+            <Calendar className="h-16 w-16 mx-auto mb-6 text-red-500" />
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+              Ready to Book Your Visit?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Don't wait! Contact us today to reserve your spot for an
+              unforgettable racing adventure.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="tel:(346) 932-1266"
+                className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105"
+              >
+                <Phone className="h-6 w-6 mr-3" />
+                Call Now
+              </a>
+              <a
+                href="#contact-form"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-navy-900 px-10 py-5 rounded-xl font-bold text-xl transition-all"
+              >
+                <MessageSquare className="h-6 w-6 mr-3" />
+                Send Message
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default ContactPage;
