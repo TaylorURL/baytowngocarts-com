@@ -34,6 +34,7 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
+    "turl-release": "github:bradley-t-t/turl-release",
     "vite": "^5.4.2"
   }
 }

@@ -29,10 +29,6 @@ export default function PurchasesPage() {
   }, [user]);
 
   const fetchUserData = async () => {
-    if (!supabase) {
-      setIsLoading(false);
-      return;
-    }
     setIsLoading(true);
     try {
       const { data: purchaseData, error: purchaseError } = await supabase

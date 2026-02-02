@@ -52,8 +52,6 @@ export const useTrafficLogger = (pathname) => {
 };
 
 export const getTrafficStats = async (timeRange = "today") => {
-  if (!supabase) return [];
-
   try {
     let startDate;
     const now = new Date();

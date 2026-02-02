@@ -17,7 +17,7 @@ const SuccessPage = () => {
     const createPurchase = async () => {
       const sessionId = searchParams.get("session_id");
 
-      if (!sessionId || !user || !supabase) {
+      if (!sessionId || !user) {
         setLoading(false);
         return;
       }

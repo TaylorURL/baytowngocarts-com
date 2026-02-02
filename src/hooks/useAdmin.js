@@ -10,12 +10,6 @@ export function useAdmin() {
   }, []);
 
   const checkStaffStatus = async () => {
-    if (!supabase) {
-      setIsStaff(false);
-      setLoading(false);
-      return;
-    }
-
     try {
       const {
         data: { user },
