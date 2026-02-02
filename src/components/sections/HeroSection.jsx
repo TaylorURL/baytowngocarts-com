@@ -13,7 +13,7 @@ const HeroSection = () => {
             img.src = src;
             return img;
         });
-        
+
         Promise.all(preloadImages.map(img => 
             new Promise(resolve => {
                 if (img.complete) resolve();

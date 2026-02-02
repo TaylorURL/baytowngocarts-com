@@ -5,7 +5,7 @@ export const logPageView = async (pathname) => {
     if (pathname === '/traffic' || pathname === '/staff' || pathname.startsWith('/purchase')) {
         return;
     }
-    
+
     try {
         const userAgent = navigator.userAgent;
         const referrer = document.referrer || null;
@@ -49,7 +49,7 @@ export const useTrafficLogger = (pathname) => {
 
 export const getTrafficStats = async (timeRange = 'today') => {
     if (!supabase) return [];
-    
+
     try {
         let startDate;
         const now = new Date();

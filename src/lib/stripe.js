@@ -41,5 +41,3 @@ export const redirectToCheckout = async (product, userEmail) => {
     }
 };
 
-
-

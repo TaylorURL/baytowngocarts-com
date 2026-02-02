@@ -35,7 +35,6 @@ const SuccessPage = () => {
                     .limit(1);
 
                 if (existingPurchase && existingPurchase.length > 0) {
-                    console.log('Purchase already exists');
                     localStorage.removeItem('pendingPurchase');
                     clearCart();
                     setLoading(false);
@@ -44,7 +43,6 @@ const SuccessPage = () => {
 
                 const pendingPurchaseStr = localStorage.getItem('pendingPurchase');
                 if (!pendingPurchaseStr) {
-                    console.log('No pending purchase data found');
                     setLoading(false);
                     return;
                 }
@@ -74,13 +72,11 @@ const SuccessPage = () => {
 
                 if (error) {
                     if (error.code === '23505') {
-                        console.log('Purchase already exists (unique constraint)');
-                    } else {
+                        } else {
                         console.error('Error creating purchase:', error);
                     }
                 } else {
-                    console.log('Purchase created successfully');
-                }
+                    }
 
                 localStorage.removeItem('pendingPurchase');
                 clearCart();

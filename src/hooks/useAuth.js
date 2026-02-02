@@ -10,7 +10,7 @@ export function useAuth() {
             setLoading(false);
             return;
         }
-        
+
         supabase.auth.getSession().then(({data: {session}}) => {
             setUser(session?.user ?? null);
             setLoading(false);

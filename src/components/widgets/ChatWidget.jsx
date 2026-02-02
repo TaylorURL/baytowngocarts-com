@@ -8,7 +8,6 @@ const ChatWidget = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (message.trim()) {
-            console.log('Message sent:', message);
             setMessage('');
         }
     };

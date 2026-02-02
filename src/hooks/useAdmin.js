@@ -15,7 +15,7 @@ export function useAdmin() {
             setLoading(false);
             return;
         }
-        
+
         try {
             const {data: {user}} = await supabase.auth.getUser();
 
