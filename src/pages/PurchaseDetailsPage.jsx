@@ -33,6 +33,7 @@ export default function PurchaseDetailsPage() {
             fetchPurchaseDetails();
         }
     }, [user, orderId]);
+
     const fetchPurchaseDetails = async () => {
         if (!supabase) {
             setLoading(false);
