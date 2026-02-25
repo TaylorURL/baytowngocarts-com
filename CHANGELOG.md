@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6] - 2026-02-25
+
+- Updated the turl-release dependency to version 3.9.0 with a new commit reference.
+- Removed the direct GitHub reference for turl-release from the package.json dependencies.
+
 ## [1.5] - 2026-02-25
 
 - Updated the capacity of the private party room in `src/pages/EventsPage.jsx` from 30 to 45 guests in the birthday event features.
