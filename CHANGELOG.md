@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5] - 2026-02-25
+
+- Updated the capacity of the private party room in `src/pages/EventsPage.jsx` from 30 to 45 guests in the birthday event features.
+- Removed the entire "Party Packages" section from `src/pages/EventsPage.jsx`, including the display of Basic, Premium, and Ultimate party packages along with their pricing and features.
+- Removed the "Private Party Room" section content from `src/pages/EventsPage.jsx`, which detailed the party room's capacity, setup, and decorations.
+- Removed the import of the `Star` icon from `src/pages/EventsPage.jsx` as it is no longer used after the removal of the packages section.
+
 ## [1.4] - 2026-02-03
 
 - Updated version in `public/turl.json` from "1.2" to "1.3".

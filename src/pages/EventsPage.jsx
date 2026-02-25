@@ -8,7 +8,6 @@ import {
   PartyPopper,
   Phone,
   Shield,
-  Star,
   Trophy,
   Users,
   Zap,
@@ -25,7 +24,7 @@ const EventsPage = () => {
       image: "/images/17.JPEG",
       icon: Cake,
       features: [
-        "Private party room for 30 guests",
+        "Private party room for 45 guests",
         "Racing packages included",
         "Food & drinks available",
         "Party decorations & setup",
@@ -55,46 +54,6 @@ const EventsPage = () => {
         "Championship points system",
         "Trophies & prizes",
         "Professional lap timing",
-      ],
-    },
-  ];
-
-  const packages = [
-    {
-      title: "Basic Party",
-      price: "Starting at $299",
-      description: "Perfect for smaller gatherings",
-      features: [
-        "Up to 10 guests",
-        "5 Race passes",
-        "2 hours party room",
-        "Basic decorations",
-      ],
-    },
-    {
-      title: "Premium Party",
-      price: "Starting at $499",
-      description: "Our most popular package",
-      features: [
-        "Up to 20 guests",
-        "10 Race passes",
-        "3 hours party room",
-        "Premium decorations",
-        "Food & drinks included",
-      ],
-      isPopular: true,
-    },
-    {
-      title: "Ultimate Experience",
-      price: "Starting at $799",
-      description: "The complete celebration",
-      features: [
-        "Up to 30 guests",
-        "15 Race passes",
-        "4 hours party room",
-        "Deluxe decorations",
-        "Full catering package",
-        "Dedicated party host",
       ],
     },
   ];
@@ -250,181 +209,7 @@ const EventsPage = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="max-w-3xl mx-auto text-center mb-16"
-            data-aos="fade-up"
-          >
-            <div className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
-              PARTY PACKAGES
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
-              Choose Your Package
-            </h2>
-            <p className="text-xl text-gray-600">
-              Select the perfect package for your event or contact us for a
-              custom solution
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {packages.map((pkg, index) => (
-              <div
-                key={index}
-                className={`bg-white rounded-2xl shadow-xl p-8 relative hover-lift ${
-                  pkg.isPopular
-                    ? "border-2 border-red-600 scale-105"
-                    : "border-2 border-gray-200"
-                }`}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                {pkg.isPopular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-bold px-6 py-2 rounded-full shadow-lg flex items-center gap-2">
-                      <Star className="h-4 w-4" />
-                      MOST POPULAR
-                    </div>
-                  </div>
-                )}
-
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-navy-900 mb-2">
-                    {pkg.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4">{pkg.description}</p>
-                  <div className="text-4xl font-bold text-red-600">
-                    {pkg.price}
-                  </div>
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  {pkg.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start">
-                      <Check className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link to="/contact">
-                  <button
-                    className={`w-full py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 ${
-                      pkg.isPopular
-                        ? "bg-red-600 hover:bg-red-700 text-white"
-                        : "bg-navy-900 hover:bg-navy-800 text-white"
-                    }`}
-                  >
-                    Get Started
-                  </button>
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center" data-aos="fade-up">
-            <p className="text-gray-600 mb-4">
-              Need a custom package? We're here to help!
-            </p>
-            <a
-              href="tel:(346) 932-1266"
-              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
-            >
-              <Phone className="h-5 w-5" />
-              Call for Custom Quote
-            </a>
-          </div>
-        </div>
-      </section>
-
       <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div data-aos="fade-right">
-              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
-                PARTY ROOM
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6 leading-tight">
-                Private <span className="text-red-600">Party Room</span>
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Our private party room is the perfect space for celebrations of
-                all kinds. With comfortable seating, decorations, and space for
-                food and drinks, it's the ideal complement to your racing
-                experience.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start text-gray-700">
-                  <Check className="h-6 w-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-semibold text-navy-900">
-                      Accommodates up to 30 guests
-                    </span>
-                    <p className="text-gray-600 text-sm">
-                      Plenty of space for your entire group
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start text-gray-700">
-                  <Check className="h-6 w-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-semibold text-navy-900">
-                      Tables and chairs provided
-                    </span>
-                    <p className="text-gray-600 text-sm">
-                      Full setup included with your rental
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start text-gray-700">
-                  <Check className="h-6 w-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-semibold text-navy-900">
-                      Decorations and setup included
-                    </span>
-                    <p className="text-gray-600 text-sm">
-                      We handle all the party preparation
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start text-gray-700">
-                  <Check className="h-6 w-6 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="font-semibold text-navy-900">
-                      Food and beverage options
-                    </span>
-                    <p className="text-gray-600 text-sm">
-                      Snack bar favorites and more available
-                    </p>
-                  </div>
-                </li>
-              </ul>
-              <Link to="/contact">
-                <Button size="lg" variant="primary">
-                  Reserve Party Room
-                </Button>
-              </Link>
-            </div>
-            <div data-aos="fade-left" className="relative">
-              <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
-                <img
-                  src="/images/18.JPEG"
-                  alt="Party room"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -right-6 bg-red-600 text-white p-6 rounded-xl shadow-xl">
-                <Users className="h-8 w-8 mb-2" />
-                <div className="text-2xl font-bold">Up to 30</div>
-                <div className="text-red-100">Guests</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="max-w-3xl mx-auto text-center mb-16"
@@ -479,13 +264,13 @@ const EventsPage = () => {
                 <Phone className="h-6 w-6 mr-3" />
                 (346) 932-1266
               </a>
-              <Link to="/contact">
+              <Link to="/pricing">
                 <Button
                   size="lg"
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-red-600 text-xl px-10 py-5"
                 >
-                  Contact Form
+                  View Pricing
                 </Button>
               </Link>
             </div>
@@ -496,9 +281,9 @@ const EventsPage = () => {
                   Quick Info
                 </h4>
                 <ul className="space-y-2 text-white">
-                  <li>• Advance booking recommended</li>
-                  <li>• Groups of all sizes welcome</li>
-                  <li>• Flexible scheduling options</li>
+                  <li>Advance booking recommended</li>
+                  <li>Groups of all sizes welcome</li>
+                  <li>Flexible scheduling options</li>
                 </ul>
               </div>
               <div className="bg-navy-800 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
@@ -507,9 +292,9 @@ const EventsPage = () => {
                   What's Included
                 </h4>
                 <ul className="space-y-2 text-white">
-                  <li>• Custom packages available</li>
-                  <li>• Dedicated event coordinator</li>
-                  <li>• Setup and cleanup included</li>
+                  <li>Custom packages available</li>
+                  <li>Dedicated event coordinator</li>
+                  <li>Setup and cleanup included</li>
                 </ul>
               </div>
             </div>
