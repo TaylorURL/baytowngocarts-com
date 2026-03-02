@@ -1,51 +1,22 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../common/Button.jsx";
+import useImageSlideshow from "../../hooks/useImageSlideshow.js";
+import {
+  HERO_BACKGROUND_IMAGES,
+  HERO_STATS,
+  SLIDESHOW_INTERVAL_MS,
+} from "../../lib/constants.js";
 
 const HeroSection = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const backgroundImages = [
-    "/images/14.JPEG",
-    "/images/15.JPEG",
-    "/images/16.JPEG",
-    "/images/17.JPEG",
-    "/images/18.JPEG",
-  ];
-
-  useEffect(() => {
-    const preloadImages = backgroundImages.map((src) => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
-
-    Promise.all(
-      preloadImages.map(
-        (img) =>
-          new Promise((resolve) => {
-            if (img.complete) resolve();
-            else img.onload = resolve;
-          }),
-      ),
-    ).then(() => setImagesLoaded(true));
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex(
-        (prevIndex) => (prevIndex + 1) % backgroundImages.length,
-      );
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [currentImageIndex] = useImageSlideshow(
+    HERO_BACKGROUND_IMAGES,
+    SLIDESHOW_INTERVAL_MS,
+  );
 
   return (
     <div className="relative bg-navy-900 overflow-hidden min-h-screen">
-      {/* Background Image Slideshow */}
       <div className="absolute inset-0 z-0">
-        {backgroundImages.map((image, index) => (
+        {HERO_BACKGROUND_IMAGES.map((image, index) => (
           <div
             key={index}
             className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
@@ -56,7 +27,6 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* HeroSection Checkerboard Pattern Overlay */}
       <div
         className="absolute inset-0 z-5 opacity-10"
         style={{
@@ -67,7 +37,6 @@ const HeroSection = () => {
         }}
       />
 
-      {/* HeroSection Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 md:pt-56 md:pb-48">
         <div className="md:max-w-2xl">
           <h1
@@ -98,7 +67,6 @@ const HeroSection = () => {
                 View Pricing
               </Button>
             </Link>
-
             <Link to="/contact">
               <Button
                 size="lg"
@@ -115,25 +83,16 @@ const HeroSection = () => {
             data-aos="fade-up"
             data-aos-delay="800"
           >
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">12+</div>
-              <div className="text-gray-400 text-sm">MPH Top Speed</div>
-            </div>
-
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">1200+</div>
-              <div className="text-gray-400 text-sm">Race Hours</div>
-            </div>
-
-            <div className="text-center md:col-span-1 col-span-2">
-              <div className="text-3xl font-bold text-white">5000+</div>
-              <div className="text-gray-400 text-sm">Happy Racers</div>
-            </div>
+            {HERO_STATS.map(({ value, label, className }) => (
+              <div key={label} className={`text-center ${className ?? ""}`}>
+                <div className="text-3xl font-bold text-white">{value}</div>
+                <div className="text-gray-400 text-sm">{label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Diagonal Bottom Edge */}
       <div
         className="absolute bottom-0 left-0 right-0 h-16 bg-white"
         style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}

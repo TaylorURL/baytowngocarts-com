@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7] - 2026-03-02
+
+- Enhanced the SectionHeading component with a new badge feature, allowing for customizable badges with variant styles (red and navy), and added subtle animation with data-aos for better visual appeal.
+- Centralized contact information by integrating a constants file in the ActionSection, dynamically pulling the phone number from CONTACT_INFO instead of hardcoding it.
+- Restructured the AttractionsSection to use a SectionHeading component for consistent heading styling and introduced a badge for visual hierarchy.
+- Improved the FeatureSection by adopting the updated SectionHeading component for better title and subtitle presentation.
+- Simplified the GallarySection by removing redundant code or elements, focusing on core gallery functionality for cleaner presentation.
+- Updated the HeroSection with refined styling or content adjustments for improved user engagement on the landing page.
+- Enhanced the TestimonialSection with consistent heading styles using the SectionHeading component and minor layout tweaks for better readability.
+- Introduced a new useImageSlideshow hook to manage image slideshow functionality, likely supporting dynamic image transitions in gallery or hero sections.
+- Added a constants.js file to store reusable data like contact information and possibly other static content for easier maintenance across the application.
+- Made minor structural adjustments in HomePage.jsx to integrate the updated components and ensure cohesive rendering of all sections.
+
 ## [1.6] - 2026-02-25
 
 - Updated the turl-release dependency to version 3.9.0 with a new commit reference.

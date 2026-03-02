@@ -1,16 +1,29 @@
-import React from "react";
-
 const SectionHeading = ({
+  badge,
+  badgeVariant = "red",
   title,
   subtitle,
   centered = false,
   className = "",
 }) => {
-  const alignmentClass = centered ? "text-center" : "";
+  const badgeStyles = {
+    red: "bg-red-100 text-red-600",
+    navy: "bg-navy-900 text-white",
+  };
 
   return (
-    <div className={`mb-12 ${alignmentClass} ${className}`}>
-      <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-4">
+    <div
+      className={`mb-16 ${centered ? "text-center max-w-3xl mx-auto" : ""} ${className}`}
+      data-aos="fade-up"
+    >
+      {badge && (
+        <div
+          className={`inline-block mb-4 px-3 py-1 rounded-full text-xs font-bold tracking-wider ${badgeStyles[badgeVariant]}`}
+        >
+          {badge}
+        </div>
+      )}
+      <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
         {title}
       </h2>
       {subtitle && (

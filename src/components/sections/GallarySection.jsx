@@ -1,92 +1,36 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Camera, ChevronLeft, ChevronRight } from "lucide-react";
+import SectionHeading from "../common/SectionHeading.jsx";
+import {
+  GALLERY_IMAGES,
+  GALLERY_IMAGES_PER_SLIDE,
+} from "../../lib/constants.js";
 
 const GallarySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const totalSlides = Math.ceil(
+    GALLERY_IMAGES.length / GALLERY_IMAGES_PER_SLIDE,
+  );
 
-  const images = [
-    {
-      src: "/images/14.JPEG",
-      alt: "Go-kart racing action",
-      title: "High-Speed Racing",
-    },
-    {
-      src: "/images/15.JPEG",
-      alt: "Kids enjoying the track",
-      title: "Kids Racing",
-    },
-    {
-      src: "/images/16.JPEG",
-      alt: "Birthday party celebration",
-      title: "Birthday Parties",
-    },
-    {
-      src: "/images/18.JPEG",
-      alt: "Family fun at Speedway 146",
-      title: "Family Fun",
-    },
-    {
-      src: "/images/19.JPEG",
-      alt: "Racing excitement",
-      title: "Racing Thrills",
-    },
-    { src: "/images/20.JPEG", alt: "Party celebrations", title: "Party Time" },
-    {
-      src: "/images/21.JPEG",
-      alt: "Speedway 146 facilities",
-      title: "Our Facilities",
-    },
-    { src: "/images/22.JPEG", alt: "Racing action", title: "Racing Action" },
-  ];
+  const navigateSlide = (direction) =>
+    setCurrentSlide((prev) => (prev + direction + totalSlides) % totalSlides);
 
-  useEffect(() => {
-    let loadedCount = 0;
-    images.forEach((image) => {
-      const img = new Image();
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === images.length) {
-          setImagesLoaded(true);
-        }
-      };
-      img.src = image.src;
-    });
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.ceil(images.length / 4));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prev) =>
-        (prev - 1 + Math.ceil(images.length / 4)) %
-        Math.ceil(images.length / 4),
+  const getSlideImages = (slideIndex) =>
+    GALLERY_IMAGES.slice(
+      slideIndex * GALLERY_IMAGES_PER_SLIDE,
+      (slideIndex + 1) * GALLERY_IMAGES_PER_SLIDE,
     );
-  };
-
-  const getSlideImages = (slideIndex) => {
-    return images.slice(slideIndex * 4, (slideIndex + 1) * 4);
-  };
-
-  const totalSlides = Math.ceil(images.length / 4);
 
   return (
     <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
-            GALLERY
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
-            Experience the Action
-          </h2>
-          <p className="text-xl text-gray-600">
-            Take a look at the excitement and fun that awaits you at Speedway
-            146
-          </p>
-        </div>
+        <SectionHeading
+          badge="GALLERY"
+          badgeVariant="red"
+          title="Experience the Action"
+          subtitle="Take a look at the excitement and fun that awaits you at Speedway 146"
+          centered
+        />
 
         <div className="relative" data-aos="fade-up" data-aos-delay="200">
           <div className="relative overflow-hidden">
@@ -127,7 +71,7 @@ const GallarySection = () => {
 
           <div className="flex justify-center items-center mt-12 gap-6">
             <button
-              onClick={prevSlide}
+              onClick={() => navigateSlide(-1)}
               className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
               aria-label="Previous images"
             >
@@ -150,7 +94,7 @@ const GallarySection = () => {
             </div>
 
             <button
-              onClick={nextSlide}
+              onClick={() => navigateSlide(1)}
               className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
               aria-label="Next images"
             >
