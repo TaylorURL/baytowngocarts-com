@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+/**
+ * Shopping cart page. Displays cart items with quantity controls, calculates
+ * fees/taxes/discounts, and initiates Stripe checkout.
+ */
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -19,6 +23,14 @@ const FIXED_FEE = 0.3;
 const TEXAS_SALES_TAX_PERCENT = 0.0825;
 const GROUP_DISCOUNT_THRESHOLD = 15;
 const GROUP_DISCOUNT_PERCENT = 0.1;
+
+/** Diagonal crosshatch overlay used as a background texture. */
+const CROSSHATCH_STYLE = {
+  backgroundImage:
+    "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
+  backgroundSize: "20px 20px",
+  backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+};
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -139,12 +151,7 @@ export default function CartPage() {
 
           <div
             className="absolute inset-0 z-5 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-            }}
+            style={CROSSHATCH_STYLE}
           />
 
           <div className="relative z-10 container mx-auto px-4 text-center">
@@ -167,6 +174,9 @@ export default function CartPage() {
     );
   }
 
+  const totalItems = getTotalItems();
+  const fees = calculateFees();
+
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
@@ -179,12 +189,7 @@ export default function CartPage() {
 
         <div
           className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
+          style={CROSSHATCH_STYLE}
         />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
@@ -292,15 +297,14 @@ export default function CartPage() {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Total Items:</span>
-                  <span className="font-semibold">
-                    {getTotalItems()} people
-                  </span>
+                  <span className="font-semibold">{totalItems} people</span>
                 </div>
 
-                {getTotalItems() < 15 && (
+                {totalItems < GROUP_DISCOUNT_THRESHOLD && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                     <p className="text-xs text-blue-800 text-center">
-                      Add {15 - getTotalItems()} more to get 10% group discount!
+                      Add {GROUP_DISCOUNT_THRESHOLD - totalItems} more to get
+                      10% group discount!
                     </p>
                   </div>
                 )}
@@ -310,17 +314,17 @@ export default function CartPage() {
                 <div className="flex justify-between text-lg">
                   <span className="text-gray-700">Subtotal:</span>
                   <span className="font-semibold text-navy-900">
-                    ${calculateFees().rawSubtotal.toFixed(2)}
+                    ${fees.rawSubtotal.toFixed(2)}
                   </span>
                 </div>
 
-                {calculateFees().qualifiesForGroupDiscount && (
+                {fees.qualifiesForGroupDiscount && (
                   <div className="flex justify-between text-sm">
                     <span className="text-green-600 font-semibold">
                       Group Discount (10%):
                     </span>
                     <span className="font-semibold text-green-600">
-                      -${calculateFees().groupDiscount.toFixed(2)}
+                      -${fees.groupDiscount.toFixed(2)}
                     </span>
                   </div>
                 )}
@@ -328,14 +332,14 @@ export default function CartPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Sales Tax (8.25%):</span>
                   <span className="font-semibold text-gray-700">
-                    ${calculateFees().salesTax.toFixed(2)}
+                    ${fees.salesTax.toFixed(2)}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Transaction Fee:</span>
                   <span className="font-semibold text-gray-700">
-                    ${calculateFees().serviceFee.toFixed(2)}
+                    ${fees.serviceFee.toFixed(2)}
                   </span>
                 </div>
 
@@ -343,9 +347,7 @@ export default function CartPage() {
 
                 <div className="flex justify-between text-2xl font-bold">
                   <span className="text-navy-900">Total:</span>
-                  <span className="text-red-600">
-                    ${calculateFees().total.toFixed(2)}
-                  </span>
+                  <span className="text-red-600">${fees.total.toFixed(2)}</span>
                 </div>
               </div>
 

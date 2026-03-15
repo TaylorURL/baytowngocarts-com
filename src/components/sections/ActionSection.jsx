@@ -3,6 +3,10 @@ import { ArrowRight, Calendar, Phone, Zap } from "lucide-react";
 import Button from "../common/Button.jsx";
 import { CONTACT_INFO } from "../../lib/constants.js";
 
+/**
+ * Bold call-to-action banner with pricing and event links,
+ * plus a phone number for direct contact.
+ */
 const ActionSection = () => (
   <section className="py-20 bg-gradient-to-r from-red-600 to-red-700 text-white relative overflow-hidden">
     <div className="absolute inset-0 opacity-10">

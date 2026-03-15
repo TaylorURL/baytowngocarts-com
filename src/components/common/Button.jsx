@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * Reusable button component with primary, secondary, and outline variants,
+ * three size options, and optional full-width layout.
+ */
 const Button = ({
   children,
   variant = "primary",
@@ -14,10 +18,12 @@ const Button = ({
     "font-semibold rounded-lg transition-all duration-300 button-hover flex items-center justify-center";
 
   const variantClasses = {
-    primary: "bg-red-600 hover:bg-red-700 text-white",
-    secondary: "bg-navy-900 hover:bg-navy-800 text-white",
+    primary:
+      "bg-red-600 hover:bg-red-500 text-white shadow-red hover:shadow-lg hover:-translate-y-0.5",
+    secondary:
+      "bg-navy-800 hover:bg-navy-700 text-white shadow-lg hover:-translate-y-0.5",
     outline:
-      "border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white",
+      "border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white hover:-translate-y-0.5",
   };
 
   const sizeClasses = {

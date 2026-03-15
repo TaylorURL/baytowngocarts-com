@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+/**
+ * User dashboard / purchases page. Fetches and displays the authenticated
+ * user's order history with status badges and navigation to order details.
+ */
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -9,6 +13,14 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
+
+/** Diagonal crosshatch overlay used as a background texture. */
+const CROSSHATCH_STYLE = {
+  backgroundImage:
+    "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
+  backgroundSize: "20px 20px",
+  backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+};
 
 export default function PurchasesPage() {
   const { user, loading } = useAuth();
@@ -73,12 +85,7 @@ export default function PurchasesPage() {
 
           <div
             className="absolute inset-0 z-5 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-            }}
+            style={CROSSHATCH_STYLE}
           />
 
           <div className="relative z-10 container mx-auto px-4 text-center">

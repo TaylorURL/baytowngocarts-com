@@ -2,6 +2,11 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Baby, Check, PartyPopper, Zap } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
 
+/**
+ * Showcases the three main attractions (go-karts, bounce houses, party rooms)
+ * as image cards with feature checklists and "Learn More" links.
+ */
+
 const COLOR_STYLES = {
   red: { badge: "bg-red-600", link: "text-red-600 hover:text-red-700" },
   navy: { badge: "bg-navy-900", link: "text-navy-900 hover:text-navy-800" },

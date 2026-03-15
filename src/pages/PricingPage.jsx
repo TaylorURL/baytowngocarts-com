@@ -28,6 +28,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 
+/**
+ * Renders the Pricing page with tabbed views for party packages, individual racing, and bounce house options.
+ * Includes a shopping cart summary bar and quantity selectors for each product.
+ */
 const PricingPage = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -57,70 +61,42 @@ const PricingPage = () => {
   };
 
   const getTotalPrice = () => {
-    const regularTotal = STRIPE_PRODUCTS.reduce((sum, product) => {
+    const allProducts = [
+      ...STRIPE_PRODUCTS,
+      ...STRIPE_DOUBLE_SEATER_PRODUCTS,
+      ...STRIPE_PARTY_PACKAGES,
+    ];
+    return allProducts.reduce((sum, product) => {
       const qty = getQuantity(product.id);
       const price = parseFloat(product.price.replace("$", ""));
       return sum + qty * price;
     }, 0);
-    const doubleSeaterTotal = STRIPE_DOUBLE_SEATER_PRODUCTS.reduce(
-      (sum, product) => {
-        const qty = getQuantity(product.id);
-        const price = parseFloat(product.price.replace("$", ""));
-        return sum + qty * price;
-      },
-      0,
-    );
-    const partyTotal = STRIPE_PARTY_PACKAGES.reduce((sum, product) => {
+  };
+
+  /** Adds all selected products to the cart. */
+  const addSelectedToCart = () => {
+    const allProducts = [
+      ...STRIPE_PRODUCTS,
+      ...STRIPE_DOUBLE_SEATER_PRODUCTS,
+      ...STRIPE_PARTY_PACKAGES,
+    ];
+    allProducts.forEach((product) => {
       const qty = getQuantity(product.id);
-      const price = parseFloat(product.price.replace("$", ""));
-      return sum + qty * price;
-    }, 0);
-    return regularTotal + doubleSeaterTotal + partyTotal;
+      if (qty > 0) {
+        addItem(product, qty);
+      }
+    });
   };
 
   const handleAddAllToCart = () => {
-    STRIPE_PRODUCTS.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
-    STRIPE_DOUBLE_SEATER_PRODUCTS.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
-    STRIPE_PARTY_PACKAGES.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
+    addSelectedToCart();
     setQuantities({});
     setShowCartNotification(true);
     setTimeout(() => setShowCartNotification(false), 3000);
   };
 
   const handleGoToCart = () => {
-    STRIPE_PRODUCTS.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
-    STRIPE_DOUBLE_SEATER_PRODUCTS.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
-    STRIPE_PARTY_PACKAGES.forEach((product) => {
-      const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
-    });
+    addSelectedToCart();
     navigate("/cart");
   };
 

@@ -16,6 +16,9 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 
+/**
+ * Renders the About page with company story, stats, values, timeline, and team sections.
+ */
 const AboutPage = () => {
   const stats = [
     {

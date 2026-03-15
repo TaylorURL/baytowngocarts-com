@@ -1,3 +1,7 @@
+/**
+ * Reusable section heading with an optional colored badge, title, and subtitle.
+ * Supports centered alignment and AOS fade-up animation.
+ */
 const SectionHeading = ({
   badge,
   badgeVariant = "red",

@@ -12,6 +12,9 @@ import ContactForm from "../components/forms/ContactForm.jsx";
 import LocationsSection from "../components/sections/LocationsSection.jsx";
 import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/constants.js";
 
+/**
+ * Renders the Contact page with contact methods, a contact form, location info, and business hours.
+ */
 const ContactPage = () => {
   const contactMethods = [
     {

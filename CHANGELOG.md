@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2] - 2026-03-15
+
+- Added Inter font family alongside Bebas Neue for improved typography options
+- Updated theme color from #0a1929 to #0b1a2e across the site
+- Refactored Header component by extracting traffic light styles, dropdown hover handlers, and repeated class strings into shared constants
+- Refactored Footer component by extracting quick links into a data-driven array and consolidating repeated social link class strings
+- Extracted repeated input class string in ContactForm into a shared constant
+- Updated Button component with enhanced hover effects including shadow, lift translate, and adjusted background color shades
+- Added gradient background to the Footer (from navy-800 to navy-900) and increased vertical padding
+- Replaced hardcoded header background color with a CSS variable reference
+- Renamed DashboardPage import to PurchasesPage in App.jsx for clarity
+- Removed unnecessary empty conditional class string from nav link styling in Header
+- Added JSDoc comments across all components, hooks, pages, sections, and library files
+- Added Inter font-family as the default body font in Theme.css and updated CSS custom properties
+- Refactored LocationsSection with extracted constants for location data, info items, and shared styles
+- Refactored CartPage by extracting repeated styling into shared class constants
+- Refactored PricingPage by extracting card styling and section layout into shared constants
+- Refactored TrafficPage by consolidating repeated stat card and chart styling into constants
+- Refactored PurchasesPage by extracting status badge color mapping into a helper
+- Simplified NotFoundPage with cleaner layout and updated styling
+- Updated SuccessPage with refined spacing and visual adjustments
+- Updated StaffPanelPage with minor style refinements
+- Updated LoginPage and SignupPage with consistent styling tweaks
+- Added CSS custom properties for racing-stripe gradients, shadow utilities, and glow effects in Theme.css
+- Added shadow-red and shadow-navy box-shadow utilities in Tailwind config
+- Updated base styles in index.css with new font stack and refined global defaults
+- Replaced hardcoded Supabase URL in supabase.js with an environment variable reference
+- Added useTraffic hook enhancements with additional tracking capabilities
+
 ## [2.1] - 2026-03-15
 
 - Add SEO meta tags including Open Graph, Twitter card, keywords, canonical URL, and theme color

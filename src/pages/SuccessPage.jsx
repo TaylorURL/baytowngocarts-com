@@ -1,4 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+/**
+ * Post-checkout success page. Records the completed purchase in Supabase,
+ * clears the cart, and shows next-step instructions to the customer.
+ */
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, CheckCircle, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
@@ -70,12 +74,8 @@ const SuccessPage = () => {
 
         const { error } = await supabase.from("purchases").insert(purchaseData);
 
-        if (error) {
-          if (error.code === "23505") {
-          } else {
-            console.error("Error creating purchase:", error);
-          }
-        } else {
+        if (error && error.code !== "23505") {
+          console.error("Error creating purchase:", error);
         }
 
         localStorage.removeItem("pendingPurchase");

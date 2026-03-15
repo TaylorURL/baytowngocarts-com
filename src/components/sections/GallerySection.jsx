@@ -6,6 +6,10 @@ import {
   GALLERY_IMAGES_PER_SLIDE,
 } from "../../lib/constants.js";
 
+/**
+ * Paginated image gallery carousel with slide navigation dots and
+ * hover overlays showing each image's title.
+ */
 const GallarySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = Math.ceil(

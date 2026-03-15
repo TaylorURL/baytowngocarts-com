@@ -20,6 +20,10 @@ import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 
+/**
+ * Renders the staff-only admin panel with order stats, search, filtering, and order details.
+ * Redirects non-staff users to the home page.
+ */
 export default function StaffPanelPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -51,6 +55,7 @@ export default function StaffPanelPage() {
     }
   }, [isStaff]);
 
+  /** Fetches aggregate order stats (total/today orders and revenue) from Supabase. */
   const fetchStats = async () => {
     try {
       const { count: totalOrders } = await supabase
@@ -98,6 +103,7 @@ export default function StaffPanelPage() {
     }
   };
 
+  /** Fetches all orders from Supabase, sorted newest first. */
   const fetchRecentOrders = async () => {
     try {
       const { data, error } = await supabase
@@ -131,6 +137,7 @@ export default function StaffPanelPage() {
     return `$${(cents / 100).toFixed(2)}`;
   };
 
+  /** Filters an array of orders to only those within the selected date range. */
   const getDateFilteredOrders = (orders) => {
     if (dateFilter === "all") return orders;
 
@@ -168,11 +175,11 @@ export default function StaffPanelPage() {
       )
     : recentOrders;
 
-  const dateFilteredOrders = getDateFilteredOrders(
+  const displayOrders = getDateFilteredOrders(
     activeTab === "all" ? allOrders : filteredOrders,
   );
-  const displayOrders = dateFilteredOrders;
 
+  /** Renders a colored badge indicating order status (completed, pending, or other). */
   function StatusBadge({ status }) {
     return (
       <span

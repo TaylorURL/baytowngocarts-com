@@ -2,12 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 
+const QUICK_LINKS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Pricing", path: "/pricing" },
+  { name: "Events", path: "/events" },
+  { name: "Contact", path: "/contact" },
+  { name: "FAQ", path: "/faq" },
+];
+
+const SOCIAL_LINK_CLASS = "text-gray-300 hover:text-red-400 transition-colors";
+
+/**
+ * Site-wide footer with branding, quick links, contact details,
+ * hours of operation, and social media links.
+ */
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-900 text-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="bg-gradient-to-b from-navy-800 to-navy-900 text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -29,7 +44,7 @@ const Footer = () => {
                 href="https://www.facebook.com/p/Speedway146-61575710985956/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-red-400 transition-colors"
+                className={SOCIAL_LINK_CLASS}
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
@@ -38,7 +53,7 @@ const Footer = () => {
                 href="https://www.instagram.com/Speedway146/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-red-400 transition-colors"
+                className={SOCIAL_LINK_CLASS}
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
@@ -47,7 +62,7 @@ const Footer = () => {
                 href="https://www.tiktok.com/@Speedway146"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-300 hover:text-red-400 transition-colors"
+                className={SOCIAL_LINK_CLASS}
                 aria-label="TikTok"
               >
                 <svg
@@ -65,54 +80,16 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/about"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/pricing"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/events"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  Events
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/faq"
-                  className="text-gray-300 hover:text-red-400 transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
+              {QUICK_LINKS.map(({ name, path }) => (
+                <li key={name}>
+                  <Link
+                    to={path}
+                    className="text-gray-300 hover:text-red-400 transition-colors"
+                  >
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

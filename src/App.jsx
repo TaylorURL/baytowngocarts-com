@@ -1,4 +1,7 @@
-import React from "react";
+/**
+ * Root application component. Defines all client-side routes and wraps them
+ * in the main layout (with navbar/footer) or renders standalone auth pages.
+ */
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
@@ -10,7 +13,7 @@ import FAQPage from "./pages/FAQPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import SuccessPage from "./pages/SuccessPage";
-import DashboardPage from "./pages/PurchasesPage";
+import PurchasesPage from "./pages/PurchasesPage";
 import CartPage from "./pages/CartPage";
 import PurchaseDetailsPage from "./pages/PurchaseDetailsPage";
 import StaffPanelPage from "./pages/StaffPanelPage";
@@ -30,7 +33,7 @@ export default function App() {
           <Route path="events" element={<EventsPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="faq" element={<FAQPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="dashboard" element={<PurchasesPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="purchase/:orderId" element={<PurchaseDetailsPage />} />
           <Route path="staff" element={<StaffPanelPage />} />

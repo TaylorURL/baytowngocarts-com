@@ -15,6 +15,10 @@ import {
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
 
+/**
+ * Renders a staff-only analytics dashboard showing page views, device breakdown,
+ * traffic sources, hourly activity, and visitor locations.
+ */
 export default function TrafficPage() {
   const navigate = useNavigate();
   const { isStaff, loading: staffLoading } = useAdmin();
@@ -38,6 +42,7 @@ export default function TrafficPage() {
     fetchTraffic();
   }, [timeRange]);
 
+  /** Aggregates page views by path and returns the top 10 sorted by count. */
   const getPageViewsByPath = () => {
     const counts = {};
     traffic.forEach((view) => {
@@ -49,29 +54,32 @@ export default function TrafficPage() {
       .slice(0, 10);
   };
 
-  const getDeviceBreakdown = () => {
-    let mobile = 0;
-    let desktop = 0;
-    let tablet = 0;
-
-    traffic.forEach((view) => {
-      const ua = (view.user_agent || "").toLowerCase();
-      if (
-        ua.includes("mobile") ||
-        ua.includes("android") ||
-        ua.includes("iphone")
-      ) {
-        mobile++;
-      } else if (ua.includes("ipad") || ua.includes("tablet")) {
-        tablet++;
-      } else {
-        desktop++;
-      }
-    });
-
-    return { mobile, desktop, tablet };
+  /** Classifies a user agent string as "Mobile", "Tablet", or "Desktop". */
+  const getDeviceType = (userAgent) => {
+    const ua = (userAgent || "").toLowerCase();
+    if (
+      ua.includes("mobile") ||
+      ua.includes("android") ||
+      ua.includes("iphone")
+    ) {
+      return "Mobile";
+    }
+    if (ua.includes("ipad") || ua.includes("tablet")) {
+      return "Tablet";
+    }
+    return "Desktop";
   };
 
+  const getDeviceBreakdown = () => {
+    const counts = { mobile: 0, desktop: 0, tablet: 0 };
+    traffic.forEach((view) => {
+      const type = getDeviceType(view.user_agent).toLowerCase();
+      counts[type]++;
+    });
+    return counts;
+  };
+
+  /** Aggregates traffic sources by referrer hostname. */
   const getReferrerBreakdown = () => {
     const counts = {};
     traffic.forEach((view) => {
@@ -91,6 +99,7 @@ export default function TrafficPage() {
       .slice(0, 5);
   };
 
+  /** Returns an array of 24 elements representing page view counts per hour of the day. */
   const getHourlyBreakdown = () => {
     const hours = Array(24).fill(0);
     traffic.forEach((view) => {
@@ -100,6 +109,7 @@ export default function TrafficPage() {
     return hours;
   };
 
+  /** Aggregates visitor locations into top cities, countries, and coordinate points. */
   const getLocationBreakdown = () => {
     const cities = {};
     const countries = {};
@@ -498,20 +508,7 @@ export default function TrafficPage() {
                     </thead>
                     <tbody>
                       {traffic.slice(0, 20).map((view, idx) => {
-                        const ua = (view.user_agent || "").toLowerCase();
-                        let device = "Desktop";
-                        if (
-                          ua.includes("mobile") ||
-                          ua.includes("android") ||
-                          ua.includes("iphone")
-                        ) {
-                          device = "Mobile";
-                        } else if (
-                          ua.includes("ipad") ||
-                          ua.includes("tablet")
-                        ) {
-                          device = "Tablet";
-                        }
+                        const device = getDeviceType(view.user_agent);
 
                         let source = "Direct";
                         if (view.referrer) {

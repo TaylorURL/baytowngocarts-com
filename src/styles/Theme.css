@@ -1,47 +1,52 @@
 :root {
-  --color-navy-900: #0a1929;
-  --color-navy-800: #0f2942;
-  --color-navy-700: #153e5c;
-  --color-navy-600: #1a4971;
-  --color-navy-500: #1f5385;
+  /* Deep navy with slight warm undertone */
+  --color-navy-900: #0b1a2e;
+  --color-navy-800: #112240;
+  --color-navy-700: #1a3358;
+  --color-navy-600: #234170;
+  --color-navy-500: #2c5088;
 
+  /* Racing red — punchier, slightly warm */
   --color-red-900: #7f1d1d;
-  --color-red-800: #991b1b;
-  --color-red-700: #b91c1c;
-  --color-red-600: #dc2626;
-  --color-red-500: #ef4444;
-  --color-red-400: #f87171;
-  --color-red-300: #fca5a5;
-  --color-red-200: #fecaca;
+  --color-red-800: #9b1c1c;
+  --color-red-700: #c41e1e;
+  --color-red-600: #e02424;
+  --color-red-500: #f03e3e;
+  --color-red-400: #f76c6c;
+  --color-red-300: #fba5a5;
+  --color-red-200: #fccfcf;
   --color-red-100: #fee2e2;
   --color-red-50: #fef2f2;
 
-  --color-gray-900: #111827;
-  --color-gray-800: #1f2937;
-  --color-gray-700: #374151;
-  --color-gray-600: #4b5563;
-  --color-gray-500: #6b7280;
-  --color-gray-400: #9ca3af;
-  --color-gray-300: #d1d5db;
-  --color-gray-200: #e5e7eb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-50: #f9fafb;
+  /* Neutral grays — slightly cooler for contrast */
+  --color-gray-900: #0f172a;
+  --color-gray-800: #1e293b;
+  --color-gray-700: #334155;
+  --color-gray-600: #475569;
+  --color-gray-500: #64748b;
+  --color-gray-400: #94a3b8;
+  --color-gray-300: #cbd5e1;
+  --color-gray-200: #e2e8f0;
+  --color-gray-100: #f1f5f9;
+  --color-gray-50: #f8fafc;
 
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-yellow-400: #facc15;
-  --color-yellow-300: #fde047;
+  /* Accent gold for highlights and badges */
+  --color-yellow-400: #f59e0b;
+  --color-yellow-300: #fbbf24;
 
   --color-green-700: #15803d;
   --color-green-600: #16a34a;
   --color-green-200: #bbf7d0;
   --color-green-50: #f0fdf4;
 
+  /* Richer shadows with subtle color */
   --shadow-red:
-    0 10px 15px -3px rgba(220, 38, 38, 0.3),
-    0 4px 6px -2px rgba(220, 38, 38, 0.2);
+    0 10px 25px -5px rgba(224, 36, 36, 0.35),
+    0 4px 8px -2px rgba(224, 36, 36, 0.2);
   --shadow-racing:
-    0 10px 15px -3px rgba(220, 38, 38, 0.1),
-    0 4px 6px -2px rgba(220, 38, 38, 0.05);
+    0 10px 25px -5px rgba(224, 36, 36, 0.15),
+    0 4px 8px -2px rgba(224, 36, 36, 0.08);
 }

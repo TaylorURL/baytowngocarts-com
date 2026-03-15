@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 
+/**
+ * Accordion-style FAQ item that expands/collapses to reveal the answer.
+ * Accepts a `faq` prop with `question` and `answer` fields.
+ */
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
 

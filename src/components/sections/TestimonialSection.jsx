@@ -2,6 +2,10 @@ import { CheckCircle, Quote, Star } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
 import { TESTIMONIALS } from "../../lib/constants.js";
 
+/**
+ * Displays a grid of customer testimonial cards with star ratings,
+ * review text, and verified-badge author info.
+ */
 const TestimonialSection = () => (
   <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -10,7 +10,7 @@ html {
 
 body {
   font-family:
-    "Bebas Neue",
+    "Inter",
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
@@ -19,6 +19,15 @@ body {
     sans-serif;
   color: var(--color-gray-800);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Bebas Neue", system-ui, sans-serif;
+  letter-spacing: 0.02em;
 }
 
 main {
@@ -38,7 +47,6 @@ main {
 }
 
 /* Enhanced Hover animations */
-
 .hover-lift {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -50,11 +58,6 @@ main {
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Enhanced Card hover effects */
-
-/* Enhanced Button hover effects */
-
-/* Enhanced keyframe animations */
 @keyframes fadeIn {
   from {
     opacity: 0;

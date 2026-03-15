@@ -14,6 +14,64 @@ import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
 
+/**
+ * Returns inline styles for a traffic light dot based on whether it is active.
+ * @param {boolean} isActive - Whether this light is currently illuminated.
+ * @param {object} colors - `{ active, inactive, border, glow }` CSS color values.
+ */
+const trafficLightStyle = (isActive, { active, inactive, border, glow }) => ({
+  backgroundColor: isActive ? active : inactive,
+  border: isActive ? "none" : `1px solid ${border}`,
+  boxShadow: isActive ? `0 0 20px ${glow}` : "none",
+});
+
+const TRAFFIC_LIGHTS = [
+  {
+    active: "var(--color-red-500)",
+    inactive: "rgba(127, 29, 29, 0.3)",
+    border: "var(--color-red-900)",
+    glow: "rgba(239, 68, 68, 1)",
+  },
+  {
+    active: "var(--color-yellow-400)",
+    inactive: "rgba(161, 98, 7, 0.3)",
+    border: "rgba(161, 98, 7, 0.5)",
+    glow: "rgba(250, 204, 21, 1)",
+  },
+  {
+    active: "var(--color-green-600)",
+    inactive: "rgba(21, 128, 61, 0.3)",
+    border: "var(--color-green-700)",
+    glow: "rgba(22, 163, 74, 1)",
+  },
+];
+
+/** Hover handlers shared by dropdown menu items in the desktop user menu. */
+const dropdownHoverHandlers = {
+  onMouseEnter: (e) => {
+    e.currentTarget.style.backgroundColor = "rgba(220, 38, 38, 0.2)";
+    e.currentTarget.style.color = "var(--color-white)";
+    e.currentTarget.style.borderColor = "var(--color-red-500)";
+  },
+  onMouseLeave: (e) => {
+    e.currentTarget.style.backgroundColor = "transparent";
+    e.currentTarget.style.color = "var(--color-gray-300)";
+    e.currentTarget.style.borderColor = "transparent";
+  },
+};
+
+const DROPDOWN_ITEM_CLASS =
+  "w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4";
+
+const DROPDOWN_ITEM_STYLE = {
+  color: "var(--color-gray-300)",
+  borderColor: "transparent",
+};
+
+/**
+ * Site-wide fixed header with animated traffic light decoration, responsive
+ * navigation, shopping cart badge, and authenticated user dropdown menu.
+ */
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -71,7 +129,7 @@ const Header = () => {
     <header
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        backgroundColor: "#0a1929",
+        backgroundColor: "var(--color-navy-900)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,114 +142,17 @@ const Header = () => {
                 borderColor: "var(--color-navy-700)",
               }}
             >
-              <div className="flex flex-col gap-1.5">
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 0 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 0
-                        ? "var(--color-red-500)"
-                        : "rgba(127, 29, 29, 0.3)",
-                    border:
-                      activeLight === 0
-                        ? "none"
-                        : "1px solid var(--color-red-900)",
-                    boxShadow:
-                      activeLight === 0
-                        ? "0 0 20px rgba(239, 68, 68, 1)"
-                        : "none",
-                  }}
-                ></div>
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 0 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 0
-                        ? "var(--color-red-500)"
-                        : "rgba(127, 29, 29, 0.3)",
-                    border:
-                      activeLight === 0
-                        ? "none"
-                        : "1px solid var(--color-red-900)",
-                    boxShadow:
-                      activeLight === 0
-                        ? "0 0 20px rgba(239, 68, 68, 1)"
-                        : "none",
-                  }}
-                ></div>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 1 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 1
-                        ? "var(--color-yellow-400)"
-                        : "rgba(161, 98, 7, 0.3)",
-                    border:
-                      activeLight === 1
-                        ? "none"
-                        : "1px solid rgba(161, 98, 7, 0.5)",
-                    boxShadow:
-                      activeLight === 1
-                        ? "0 0 20px rgba(250, 204, 21, 1)"
-                        : "none",
-                  }}
-                ></div>
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 1 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 1
-                        ? "var(--color-yellow-400)"
-                        : "rgba(161, 98, 7, 0.3)",
-                    border:
-                      activeLight === 1
-                        ? "none"
-                        : "1px solid rgba(161, 98, 7, 0.5)",
-                    boxShadow:
-                      activeLight === 1
-                        ? "0 0 20px rgba(250, 204, 21, 1)"
-                        : "none",
-                  }}
-                ></div>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 2 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 2
-                        ? "var(--color-green-600)"
-                        : "rgba(21, 128, 61, 0.3)",
-                    border:
-                      activeLight === 2
-                        ? "none"
-                        : "1px solid var(--color-green-700)",
-                    boxShadow:
-                      activeLight === 2
-                        ? "0 0 20px rgba(22, 163, 74, 1)"
-                        : "none",
-                  }}
-                ></div>
-                <div
-                  className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === 2 ? "animate-pulse" : ""}`}
-                  style={{
-                    backgroundColor:
-                      activeLight === 2
-                        ? "var(--color-green-600)"
-                        : "rgba(21, 128, 61, 0.3)",
-                    border:
-                      activeLight === 2
-                        ? "none"
-                        : "1px solid var(--color-green-700)",
-                    boxShadow:
-                      activeLight === 2
-                        ? "0 0 20px rgba(22, 163, 74, 1)"
-                        : "none",
-                  }}
-                ></div>
-              </div>
+              {TRAFFIC_LIGHTS.map((colors, i) => (
+                <div key={i} className="flex flex-col gap-1.5">
+                  {[0, 1].map((j) => (
+                    <div
+                      key={j}
+                      className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === i ? "animate-pulse" : ""}`}
+                      style={trafficLightStyle(activeLight === i, colors)}
+                    />
+                  ))}
+                </div>
+              ))}
             </div>
             <Link
               to="/"
@@ -224,9 +185,7 @@ const Header = () => {
                 key={item.name}
                 to={item.path}
                 onClick={scrollToTop}
-                className={`px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all duration-300 relative ${
-                  location.pathname === item.path ? "" : ""
-                }`}
+                className="px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all duration-300 relative"
                 style={{
                   color:
                     location.pathname === item.path
@@ -332,23 +291,9 @@ const Header = () => {
                     <Link
                       to="/dashboard"
                       onClick={() => setIsUserMenuOpen(false)}
-                      className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
-                      style={{
-                        color: "var(--color-gray-300)",
-                        borderColor: "transparent",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor =
-                          "rgba(220, 38, 38, 0.2)";
-                        e.currentTarget.style.color = "var(--color-white)";
-                        e.currentTarget.style.borderColor =
-                          "var(--color-red-500)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "var(--color-gray-300)";
-                        e.currentTarget.style.borderColor = "transparent";
-                      }}
+                      className={DROPDOWN_ITEM_CLASS}
+                      style={DROPDOWN_ITEM_STYLE}
+                      {...dropdownHoverHandlers}
                     >
                       <ShoppingBag className="h-5 w-5" />
                       <span>My Purchases</span>
@@ -358,23 +303,9 @@ const Header = () => {
                       <Link
                         to="/staff"
                         onClick={() => setIsUserMenuOpen(false)}
-                        className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
-                        style={{
-                          color: "var(--color-gray-300)",
-                          borderColor: "transparent",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "rgba(220, 38, 38, 0.2)";
-                          e.currentTarget.style.color = "var(--color-white)";
-                          e.currentTarget.style.borderColor =
-                            "var(--color-red-500)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.color = "var(--color-gray-300)";
-                          e.currentTarget.style.borderColor = "transparent";
-                        }}
+                        className={DROPDOWN_ITEM_CLASS}
+                        style={DROPDOWN_ITEM_STYLE}
+                        {...dropdownHoverHandlers}
                       >
                         <Shield className="h-5 w-5" />
                         <span>Staff Panel</span>
@@ -385,23 +316,9 @@ const Header = () => {
                       <Link
                         to="/traffic"
                         onClick={() => setIsUserMenuOpen(false)}
-                        className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
-                        style={{
-                          color: "var(--color-gray-300)",
-                          borderColor: "transparent",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "rgba(220, 38, 38, 0.2)";
-                          e.currentTarget.style.color = "var(--color-white)";
-                          e.currentTarget.style.borderColor =
-                            "var(--color-red-500)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.color = "var(--color-gray-300)";
-                          e.currentTarget.style.borderColor = "transparent";
-                        }}
+                        className={DROPDOWN_ITEM_CLASS}
+                        style={DROPDOWN_ITEM_STYLE}
+                        {...dropdownHoverHandlers}
                       >
                         <BarChart3 className="h-5 w-5" />
                         <span>Site Traffic</span>
@@ -410,23 +327,9 @@ const Header = () => {
 
                     <button
                       onClick={handleSignOut}
-                      className="w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4"
-                      style={{
-                        color: "var(--color-gray-300)",
-                        borderColor: "transparent",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor =
-                          "rgba(220, 38, 38, 0.2)";
-                        e.currentTarget.style.color = "var(--color-white)";
-                        e.currentTarget.style.borderColor =
-                          "var(--color-red-500)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "var(--color-gray-300)";
-                        e.currentTarget.style.borderColor = "transparent";
-                      }}
+                      className={DROPDOWN_ITEM_CLASS}
+                      style={DROPDOWN_ITEM_STYLE}
+                      {...dropdownHoverHandlers}
                     >
                       <LogOut className="h-5 w-5" />
                       <span>Sign Out</span>

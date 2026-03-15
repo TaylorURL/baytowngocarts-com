@@ -7,6 +7,10 @@ import {
   SLIDESHOW_INTERVAL_MS,
 } from "../../lib/constants.js";
 
+/**
+ * Full-screen hero section with a crossfading background slideshow,
+ * headline text, call-to-action buttons, and key stats.
+ */
 const HeroSection = () => {
   const [currentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,

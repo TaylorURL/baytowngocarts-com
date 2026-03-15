@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+/**
+ * Account registration page. Validates passwords, creates a new user via
+ * Supabase auth, and redirects to the home page on success.
+ */
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Eye, EyeOff } from "lucide-react";

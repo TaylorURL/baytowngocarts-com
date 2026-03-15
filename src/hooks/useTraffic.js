@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { supabase } from "../lib/supabase";
 
+/**
+ * Logs a page view to the `site_traffic` table in Supabase, including
+ * user agent, referrer, screen size, and geolocation data.
+ * Skips logging for staff-only pages (traffic, staff, purchase details).
+ * @param {string} pathname - The current route path to log.
+ */
 export const logPageView = async (pathname) => {
   if (
     pathname === "/traffic" ||
@@ -45,12 +51,22 @@ export const logPageView = async (pathname) => {
   }
 };
 
+/**
+ * React hook that logs a page view whenever the pathname changes.
+ * @param {string} pathname - The current route path.
+ */
 export const useTrafficLogger = (pathname) => {
   useEffect(() => {
     logPageView(pathname);
   }, [pathname]);
 };
 
+/**
+ * Fetches traffic records from Supabase filtered by the given time range.
+ * Excludes staff-only pages from results.
+ * @param {string} timeRange - One of "today", "week", "month", "quarter", or "year".
+ * @returns {Promise<Array>} Array of traffic records.
+ */
 export const getTrafficStats = async (timeRange = "today") => {
   try {
     let startDate;

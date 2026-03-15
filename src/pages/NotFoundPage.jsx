@@ -1,5 +1,17 @@
+/**
+ * 404 page displayed for unmatched routes. Shows a themed error message
+ * with links back to the home and pricing pages.
+ */
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft } from "lucide-react";
+
+/** Diagonal crosshatch overlay used as a background texture. */
+const CROSSHATCH_STYLE = {
+  backgroundImage:
+    "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
+  backgroundSize: "20px 20px",
+  backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
+};
 
 export default function NotFoundPage() {
   return (
@@ -14,12 +26,7 @@ export default function NotFoundPage() {
 
         <div
           className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
+          style={CROSSHATCH_STYLE}
         />
 
         <div className="relative z-10 container mx-auto px-4 text-center">

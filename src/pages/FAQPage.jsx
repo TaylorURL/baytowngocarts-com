@@ -15,6 +15,9 @@ import {
   Zap,
 } from "lucide-react";
 
+/**
+ * Renders the FAQ page with searchable, filterable frequently asked questions.
+ */
 const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

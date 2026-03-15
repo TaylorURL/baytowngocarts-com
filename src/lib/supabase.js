@@ -4,11 +4,10 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("Supabase URL:", supabaseUrl);
-  console.error("Supabase Anon Key:", supabaseAnonKey ? "Present" : "Missing");
   throw new Error(
     `Missing Supabase environment variables. URL: ${supabaseUrl ? "Present" : "Missing"}, Key: ${supabaseAnonKey ? "Present" : "Missing"}`,
   );
 }
 
+/** Shared Supabase client instance used across the application. */
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

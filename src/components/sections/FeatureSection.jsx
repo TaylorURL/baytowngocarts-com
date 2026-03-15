@@ -1,6 +1,11 @@
 import { Shield, Trophy, Users, Zap } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
 
+/**
+ * Grid of four feature cards highlighting key selling points
+ * (speed, family fun, competition, flexible hours) with icons.
+ */
+
 const FEATURES = [
   {
     icon: Zap,

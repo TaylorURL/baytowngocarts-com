@@ -16,6 +16,10 @@ import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 
+/**
+ * Renders the full details of a single purchase order, including items, totals,
+ * visit information, and downloadable documents. Accessible to the purchasing user or staff.
+ */
 export default function PurchaseDetailsPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();

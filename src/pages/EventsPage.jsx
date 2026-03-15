@@ -15,6 +15,9 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 
+/**
+ * Renders the Events page showcasing birthday parties, corporate events, and racing leagues.
+ */
 const EventsPage = () => {
   const eventTypes = [
     {

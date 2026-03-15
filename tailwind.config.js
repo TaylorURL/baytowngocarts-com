@@ -39,6 +39,10 @@ export default {
           400: "var(--color-yellow-400)",
           300: "var(--color-yellow-300)",
         },
+        amber: {
+          500: "var(--color-yellow-400)",
+          400: "var(--color-yellow-300)",
+        },
         green: {
           700: "var(--color-green-700)",
           600: "var(--color-green-600)",

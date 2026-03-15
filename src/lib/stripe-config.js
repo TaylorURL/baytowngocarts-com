@@ -1,3 +1,4 @@
+/** When true, prepends test Stripe products to the product list for payment testing. */
 export const ENABLE_TEST_PRODUCTS = false;
 
 const TEST_PRODUCTS = [
@@ -200,10 +201,13 @@ const PARTY_PACKAGES = [
   },
 ];
 
+/** Party package products (base packages and upgrade add-ons). */
 export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
 
+/** Double-seater go-kart products (1, 2, and 3 race options). */
 export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
 
+/** Individual racing products; includes test products when ENABLE_TEST_PRODUCTS is true. */
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS
   ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS]
   : LIVE_PRODUCTS;

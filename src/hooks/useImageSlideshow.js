@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 
+/**
+ * Cycles through an array of images on a timed interval.
+ * @param {Array} images - The list of image sources to cycle through.
+ * @param {number} intervalMs - Milliseconds between each slide transition.
+ * @returns {[number, Function]} The current image index and a setter to override it.
+ */
 const useImageSlideshow = (images, intervalMs) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 

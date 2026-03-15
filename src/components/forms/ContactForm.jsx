@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { Send } from "lucide-react";
 import Button from "../common/Button.jsx";
 
+const INPUT_CLASS =
+  "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent";
+
+/**
+ * Contact/inquiry form with fields for name, email, phone, event date,
+ * inquiry type, and a message. Includes waiver download links.
+ */
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -53,7 +60,7 @@ const ContactForm = () => {
               required
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -71,7 +78,7 @@ const ContactForm = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              className={INPUT_CLASS}
             />
           </div>
         </div>
@@ -91,7 +98,7 @@ const ContactForm = () => {
               required
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -109,7 +116,7 @@ const ContactForm = () => {
               required
               value={formData.eventDate}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              className={INPUT_CLASS}
             />
           </div>
         </div>
@@ -127,7 +134,7 @@ const ContactForm = () => {
             required
             value={formData.eventType}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className={INPUT_CLASS}
           >
             <option value="">Select inquiry type</option>
             <option value="go-kart-racing">Go-Kart Racing</option>
@@ -156,7 +163,7 @@ const ContactForm = () => {
             rows={6}
             value={formData.message}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className={INPUT_CLASS}
             placeholder="Tell us about your event, number of guests, specific requirements, etc."
           ></textarea>
         </div>

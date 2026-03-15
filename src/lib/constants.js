@@ -1,3 +1,4 @@
+/** Background images for the home page hero slideshow. */
 export const HERO_BACKGROUND_IMAGES = [
   "/images/14.JPEG",
   "/images/15.JPEG",
@@ -50,6 +51,7 @@ export const GALLERY_IMAGES = [
 export const SLIDESHOW_INTERVAL_MS = 2000;
 export const GALLERY_IMAGES_PER_SLIDE = 4;
 
+/** Primary navigation links used in the header/footer. */
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -59,6 +61,7 @@ export const NAV_ITEMS = [
   { label: "FAQ", href: "/faq" },
 ];
 
+/** Weekly business hours displayed on the Contact and other pages. */
 export const BUSINESS_HOURS = [
   { day: "Thursday", hours: "5:00 PM – 10:30 PM" },
   { day: "Friday", hours: "5:00 PM – 10:30 PM" },
@@ -109,6 +112,7 @@ export const BOUNCE_PRICING = [
   },
 ];
 
+/** Frequently asked questions displayed on the FAQ page, each tagged with a category. */
 export const FAQS = [
   {
     question: "What are your hours of operation?",
