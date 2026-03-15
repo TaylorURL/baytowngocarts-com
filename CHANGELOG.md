@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8] - 2026-03-15
+
+- Replaced turl-release with nit as the release tooling
+- Removed turl-release dev dependency and its lock file entry
+- Removed the turl.json config file from public directory
+- Cleaned up stale package-lock copy file
+
 ## [1.7] - 2026-03-02
 
 - Enhanced the SectionHeading component with a new badge feature, allowing for customizable badges with variant styles (red and navy), and added subtle animation with data-aos for better visual appeal.
