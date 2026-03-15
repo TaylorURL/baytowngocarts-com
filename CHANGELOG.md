@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1] - 2026-03-15
+
+- Add SEO meta tags including Open Graph, Twitter card, keywords, canonical URL, and theme color
+- Add robots.txt to block crawlers from internal pages and sitemap.xml for public pages
+- Add a custom 404 Not Found page with links back to home and pricing
+- Close the user menu and mobile nav when clicking outside or navigating to a new page
+- Redesign the cart page layout for better mobile responsiveness, moving the delete button to the top-right corner
+- Fix typo in Footer logo className from "h9" to "h-9"
+- Fix typo in Footer email from "speedsway146" to "speedway146"
+- Make the copyright year dynamic instead of hardcoded
+- Replace dead anchor links for Privacy Policy and Terms of Service with React Router links to /faq
+- Fix GallerySection filename typo (was "GallarySection")
+- Remove unused ProductsSection component, ChatWidget, and Stripe checkout library
+- Update environment type declarations to reflect actual env vars used (Supabase and Stripe keys instead of OpenAI)
+- Optimize cart checkout to calculate fees once instead of calling calculateFees() three times
+
 ## [2.0] - 2026-03-15
 
 - Add staff access to the purchase details page so staff can view any order without the user_id filter

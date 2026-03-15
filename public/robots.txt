@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /staff
+Disallow: /traffic
+Disallow: /dashboard
+Disallow: /purchase/
+Disallow: /success
+Disallow: /login
+Disallow: /signup
+
+Sitemap: https://baytowngocarts.com/sitemap.xml

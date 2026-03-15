@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
@@ -18,6 +18,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [activeLight, setActiveLight] = useState(0);
+  const userMenuRef = useRef(null);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { isStaff } = useAdmin();
@@ -30,6 +31,23 @@ const Header = () => {
 
     return () => clearInterval(lightInterval);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    if (isUserMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isUserMenuOpen]);
+
+  useEffect(() => {
+    setIsUserMenuOpen(false);
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -274,7 +292,7 @@ const Header = () => {
             </Link>
 
             {user ? (
-              <div className="relative">
+              <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-3 px-5 py-2.5 rounded-lg transition-all duration-300 border"

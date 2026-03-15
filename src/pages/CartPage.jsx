@@ -71,13 +71,14 @@ export default function CartPage() {
         quantity: item.quantity,
       }));
 
+      const fees = calculateFees();
       localStorage.setItem(
         "pendingPurchase",
         JSON.stringify({
           items: checkoutItems,
-          subtotal: calculateFees().subtotal,
-          serviceFee: calculateFees().serviceFee,
-          total: calculateFees().total,
+          subtotal: fees.subtotal,
+          serviceFee: fees.serviceFee,
+          total: fees.total,
           totalQuantity: getTotalItems(),
         }),
       );
@@ -227,23 +228,31 @@ export default function CartPage() {
                     key={item.product.id}
                     className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-xl transition-all"
                   >
-                    <div className="flex flex-col md:flex-row md:items-center gap-6">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-navy-900 mb-2">
-                          {item.product.name}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-4">
-                          {item.product.description}
-                        </p>
-                        <p className="text-xl font-bold text-navy-900">
-                          ${price.toFixed(2)}{" "}
-                          <span className="text-sm font-normal text-gray-600">
-                            per person
-                          </span>
-                        </p>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="text-lg sm:text-2xl font-bold text-navy-900 mb-1">
+                            {item.product.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-2">
+                            {item.product.description}
+                          </p>
+                          <p className="text-lg font-bold text-navy-900">
+                            ${price.toFixed(2)}{" "}
+                            <span className="text-sm font-normal text-gray-600">
+                              per person
+                            </span>
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => removeItem(item.product.id)}
+                          className="p-2 hover:bg-red-50 rounded-lg transition-colors ml-2 flex-shrink-0"
+                        >
+                          <Trash2 className="h-5 w-5 text-red-600" />
+                        </button>
                       </div>
 
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-2">
                           <button
                             onClick={() =>
@@ -253,7 +262,7 @@ export default function CartPage() {
                           >
                             <Minus className="h-4 w-4 text-navy-900" />
                           </button>
-                          <span className="w-12 text-center text-xl font-bold text-navy-900">
+                          <span className="w-10 text-center text-xl font-bold text-navy-900">
                             {item.quantity}
                           </span>
                           <button
@@ -266,19 +275,12 @@ export default function CartPage() {
                           </button>
                         </div>
 
-                        <div className="text-right min-w-[100px]">
+                        <div className="text-right">
                           <div className="text-2xl font-black text-red-600">
                             ${subtotal.toFixed(2)}
                           </div>
                           <div className="text-xs text-gray-500">subtotal</div>
                         </div>
-
-                        <button
-                          onClick={() => removeItem(item.product.id)}
-                          className="p-3 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="h-5 w-5 text-red-600" />
-                        </button>
                       </div>
                     </div>
                   </div>

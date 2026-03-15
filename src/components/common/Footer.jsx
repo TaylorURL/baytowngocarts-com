@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-navy-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -14,7 +16,7 @@ const Footer = () => {
                 alt="Speedway 146 Logo"
                 loading="lazy"
                 decoding="async"
-                className="h9 w-9 rounded-lg"
+                className="h-9 w-9 rounded-lg"
               />
               <span className="text-xl font-bold">SPEEDWAY146</span>
             </div>
@@ -129,7 +131,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-red-400" />
-                <span className="text-gray-300">speedsway146@gmail.com</span>
+                <span className="text-gray-300">speedway146@gmail.com</span>
               </div>
             </div>
           </div>
@@ -173,15 +175,21 @@ const Footer = () => {
 
         <div className="border-t border-navy-700 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            © 2025 Speedway 146. All rights reserved.
+            &copy; {currentYear} Speedway 146. All rights reserved.
           </p>
           <div className="flex justify-center space-x-4 mt-2">
-            <a href="#" className="text-gray-400 hover:text-red-400 text-sm">
+            <Link
+              to="/faq"
+              className="text-gray-400 hover:text-red-400 text-sm"
+            >
               Privacy Policy
-            </a>
-            <a href="#" className="text-gray-400 hover:text-red-400 text-sm">
+            </Link>
+            <Link
+              to="/faq"
+              className="text-gray-400 hover:text-red-400 text-sm"
+            >
               Terms of Service
-            </a>
+            </Link>
           </div>
           <p className="text-gray-400 text-sm mt-4">
             Design by{" "}
