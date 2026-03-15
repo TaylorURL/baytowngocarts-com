@@ -4,13 +4,17 @@ import {
   AlertCircle,
   Calendar,
   CheckCircle,
+  ChevronDown,
   Clock,
   DollarSign,
   Eye,
+  Mail,
   Search,
   Shield,
   ShoppingBag,
   TrendingUp,
+  Users,
+  X,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
@@ -32,6 +36,7 @@ export default function StaffPanelPage() {
   const [recentOrders, setRecentOrders] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedOrder, setExpandedOrder] = useState(null);
 
   useEffect(() => {
     if (!staffLoading && !isStaff) {
@@ -168,6 +173,29 @@ export default function StaffPanelPage() {
   );
   const displayOrders = dateFilteredOrders;
 
+  function StatusBadge({ status }) {
+    return (
+      <span
+        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
+          status === "completed"
+            ? "bg-green-100 text-green-700"
+            : status === "pending"
+              ? "bg-yellow-100 text-yellow-700"
+              : "bg-red-100 text-red-700"
+        }`}
+      >
+        {status === "completed" ? (
+          <CheckCircle className="h-3 w-3" />
+        ) : status === "pending" ? (
+          <Clock className="h-3 w-3" />
+        ) : (
+          <AlertCircle className="h-3 w-3" />
+        )}
+        {status}
+      </span>
+    );
+  }
+
   if (staffLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
@@ -217,71 +245,73 @@ export default function StaffPanelPage() {
       <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-red-100 rounded-lg">
-                    <ShoppingBag className="h-6 w-6 text-red-600" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="p-2 sm:p-3 bg-red-100 rounded-lg">
+                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
                   </div>
-                  <TrendingUp className="h-5 w-5 text-green-500" />
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
                 </div>
-                <h3 className="text-gray-600 text-sm font-medium mb-1">
+                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Total Orders
                 </h3>
-                <p className="text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
                   {stats.totalOrders}
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-green-100 rounded-lg">
-                    <DollarSign className="h-6 w-6 text-green-600" />
+              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="p-2 sm:p-3 bg-green-100 rounded-lg">
+                    <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                   </div>
-                  <TrendingUp className="h-5 w-5 text-green-500" />
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
                 </div>
-                <h3 className="text-gray-600 text-sm font-medium mb-1">
+                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Total Revenue
                 </h3>
-                <p className="text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
                   ${stats.totalRevenue.toFixed(2)}
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <Calendar className="h-6 w-6 text-blue-600" />
+              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
+                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                   </div>
-                  <Clock className="h-5 w-5 text-blue-500" />
+                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
                 </div>
-                <h3 className="text-gray-600 text-sm font-medium mb-1">
+                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Today's Orders
                 </h3>
-                <p className="text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
                   {stats.todayOrders}
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-yellow-100 rounded-lg">
-                    <DollarSign className="h-6 w-6 text-yellow-600" />
+              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg">
+                    <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
                   </div>
-                  <Clock className="h-5 w-5 text-blue-500" />
+                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
                 </div>
-                <h3 className="text-gray-600 text-sm font-medium mb-1">
+                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Today's Revenue
                 </h3>
-                <p className="text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
                   ${stats.todayRevenue.toFixed(2)}
                 </p>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-8">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <h2 className="text-2xl font-bold text-navy-900">Orders</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-navy-900">
+                  Orders
+                </h2>
                 <div className="flex flex-col md:flex-row gap-3 flex-1 md:max-w-2xl">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -387,119 +417,211 @@ export default function StaffPanelPage() {
                 </div>
               )}
 
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b-2 border-gray-200">
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Order #
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Customer
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Items
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Quantity
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Amount
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Date
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Status
-                      </th>
-                      <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {displayOrders.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan="8"
-                          className="text-center py-8 text-gray-500"
+              {displayOrders.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  {searchQuery
+                    ? `No orders found matching "${searchQuery}"`
+                    : "No orders yet"}
+                </div>
+              ) : (
+                <>
+                  {/* Desktop table */}
+                  <div className="hidden lg:block overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b-2 border-gray-200">
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Order #
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Customer
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Items
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Qty
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Amount
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Date
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Status
+                          </th>
+                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {displayOrders.map((order) => (
+                          <tr
+                            key={order.id}
+                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                            onClick={() =>
+                              setExpandedOrder(
+                                expandedOrder === order.id ? null : order.id,
+                              )
+                            }
+                          >
+                            <td className="py-4 px-4">
+                              <span className="font-mono text-sm font-semibold text-navy-900">
+                                {order.order_number}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <span className="text-sm text-gray-700">
+                                {order.customer_email || "N/A"}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <span className="text-sm text-gray-700">
+                                {order.items?.length || 0} item(s)
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <span className="text-sm font-semibold text-navy-900">
+                                {order.total_quantity} people
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <span className="text-sm font-bold text-green-600">
+                                {formatCurrency(order.total_amount)}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <span className="text-xs text-gray-500">
+                                {formatDate(order.created_at)}
+                              </span>
+                            </td>
+                            <td className="py-4 px-4">
+                              <StatusBadge status={order.status} />
+                            </td>
+                            <td className="py-4 px-4">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/purchase/${order.id}`);
+                                }}
+                                className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1"
+                              >
+                                <Eye className="h-4 w-4" />
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile cards */}
+                  <div className="lg:hidden space-y-3">
+                    {displayOrders.map((order) => (
+                      <div
+                        key={order.id}
+                        className="border border-gray-200 rounded-xl overflow-hidden"
+                      >
+                        <button
+                          onClick={() =>
+                            setExpandedOrder(
+                              expandedOrder === order.id ? null : order.id,
+                            )
+                          }
+                          className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
                         >
-                          {searchQuery
-                            ? `No orders found matching "${searchQuery}"`
-                            : "No orders yet"}
-                        </td>
-                      </tr>
-                    ) : (
-                      displayOrders.map((order) => (
-                        <tr
-                          key={order.id}
-                          className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                        >
-                          <td className="py-4 px-4">
-                            <span className="font-mono text-sm font-semibold text-navy-900">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-mono text-sm font-bold text-navy-900">
                               {order.order_number}
                             </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm text-gray-700">
-                              {order.customer_email || "N/A"}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm text-gray-700">
-                              {order.items?.length || 0} item(s)
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm font-semibold text-navy-900">
-                              {order.total_quantity} people
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm font-bold text-green-600">
-                              {formatCurrency(order.total_amount)}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-xs text-gray-500">
-                              {formatDate(order.created_at)}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span
-                              className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
-                                order.status === "completed"
-                                  ? "bg-green-100 text-green-700"
-                                  : order.status === "pending"
-                                    ? "bg-yellow-100 text-yellow-700"
-                                    : "bg-red-100 text-red-700"
+                            <StatusBadge status={order.status} />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg font-bold text-green-600">
+                                {formatCurrency(order.total_amount)}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {order.total_quantity} people
+                              </span>
+                            </div>
+                            <ChevronDown
+                              className={`h-5 w-5 text-gray-400 transition-transform ${
+                                expandedOrder === order.id ? "rotate-180" : ""
                               }`}
-                            >
-                              {order.status === "completed" ? (
-                                <CheckCircle className="h-3 w-3" />
-                              ) : order.status === "pending" ? (
-                                <Clock className="h-3 w-3" />
-                              ) : (
-                                <AlertCircle className="h-3 w-3" />
-                              )}
-                              {order.status}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
+                            />
+                          </div>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {formatDate(order.created_at)}
+                          </p>
+                        </button>
+
+                        {expandedOrder === order.id && (
+                          <div className="border-t border-gray-200 bg-gray-50 p-4 space-y-4">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Mail className="h-4 w-4 text-gray-400" />
+                              <span>{order.customer_email || "N/A"}</span>
+                            </div>
+
+                            <div>
+                              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                                Items
+                              </h4>
+                              <div className="space-y-2">
+                                {order.items?.map((item, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="flex justify-between items-center bg-white rounded-lg p-3 border border-gray-100"
+                                  >
+                                    <div>
+                                      <p className="font-medium text-navy-900 text-sm">
+                                        {item.product_name}
+                                      </p>
+                                      <p className="text-xs text-gray-500">
+                                        {item.quantity} x{" "}
+                                        {formatCurrency(item.price)}
+                                      </p>
+                                    </div>
+                                    <span className="font-bold text-navy-900 text-sm">
+                                      {formatCurrency(item.subtotal)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex justify-between items-center bg-white rounded-lg p-3 border-2 border-gray-200">
+                              <div>
+                                <p className="font-bold text-navy-900">Total</p>
+                                <p className="text-xs text-gray-500">
+                                  {order.total_quantity}{" "}
+                                  {order.total_quantity > 1
+                                    ? "people"
+                                    : "person"}
+                                </p>
+                              </div>
+                              <span className="text-xl font-black text-red-600">
+                                {formatCurrency(order.total_amount)}
+                              </span>
+                            </div>
+
                             <button
                               onClick={() => navigate(`/purchase/${order.id}`)}
-                              className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1"
+                              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                             >
                               <Eye className="h-4 w-4" />
-                              View
+                              Full Order Details
                             </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9] - 2026-03-15
+
+- Make staff panel stats cards and order table fully responsive for mobile screens
+- Add mobile card layout for orders with expandable details showing customer email, itemized breakdown, and total
+- Extract reusable StatusBadge component for order status display
+- Add click-to-expand interaction on order rows in both desktop and mobile views
+- Adjust stat card grid from single-column to two-column on small screens
+
 ## [1.8] - 2026-03-15
 
 - Replaced turl-release with nit as the release tooling
