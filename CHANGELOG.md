@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5] - 2026-03-15
+
+- Added Privacy Policy page with full policy content at /privacy
+- Added Terms of Service page with full terms content at /terms
+- Added routes for the new privacy and terms pages in App.jsx
+- Moved footer copyright, legal links, and website credit from a centered bottom section into the left column with a more compact layout
+- Fixed Privacy Policy and Terms of Service links to point to their actual pages instead of /faq
+
 ## [2.4] - 2026-03-15
 
 - Redesigned the entire site from a dark navy theme to a light gray/white color scheme

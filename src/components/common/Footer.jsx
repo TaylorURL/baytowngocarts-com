@@ -80,6 +80,36 @@ const Footer = () => {
                 </svg>
               </a>
             </div>
+
+            <div className="pt-4 mt-4 border-t border-gray-300 space-y-1.5 text-xs text-gray-500">
+              <p>&copy; {currentYear} Speedway 146. All rights reserved.</p>
+              <div className="flex gap-3">
+                <Link
+                  to="/privacy"
+                  className="hover:text-gray-700 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <span className="text-gray-400">|</span>
+                <Link
+                  to="/terms"
+                  className="hover:text-gray-700 transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </div>
+              <p>
+                Website by{" "}
+                <a
+                  href="https://taylorurl.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  TaylorURL.com
+                </a>
+              </p>
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -160,37 +190,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="border-t border-gray-300 mt-8 pt-8 text-center">
-          <p className="text-gray-600">
-            &copy; {currentYear} Speedway 146. All rights reserved.
-          </p>
-          <div className="flex justify-center space-x-4 mt-2">
-            <Link
-              to="/faq"
-              className="text-gray-500 hover:text-red-600 text-sm"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              to="/faq"
-              className="text-gray-500 hover:text-red-600 text-sm"
-            >
-              Terms of Service
-            </Link>
-          </div>
-          <p className="text-gray-500 text-sm mt-4">
-            Website by{" "}
-            <a
-              href="https://taylorurl.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-red-600 transition-colors"
-            >
-              TaylorURL.com
-            </a>
-          </p>
         </div>
       </div>
     </footer>
