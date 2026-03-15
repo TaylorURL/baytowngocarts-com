@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0] - 2026-03-15
+
+- Add staff access to the purchase details page so staff can view any order without the user_id filter
+- Wait for staff loading state before fetching purchase details to avoid race conditions
+- Route staff users back to the staff panel instead of the dashboard on navigation and errors
+- Update the back button label to show "Back to Staff Panel" for staff users
+
 ## [1.9] - 2026-03-15
 
 - Make staff panel stats cards and order table fully responsive for mobile screens

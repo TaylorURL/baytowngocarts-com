@@ -13,12 +13,14 @@ import {
   Phone,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 
 export default function PurchaseDetailsPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { isStaff, loading: staffLoading } = useAdmin();
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,26 +31,27 @@ export default function PurchaseDetailsPage() {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (user && orderId) {
+    if (user && orderId && !staffLoading) {
       fetchPurchaseDetails();
     }
-  }, [user, orderId]);
+  }, [user, orderId, staffLoading]);
 
   const fetchPurchaseDetails = async () => {
     try {
-      const { data, error } = await supabase
-        .from("purchases")
-        .select("*")
-        .eq("id", orderId)
-        .eq("user_id", user.id)
-        .single();
+      let query = supabase.from("purchases").select("*").eq("id", orderId);
+
+      if (!isStaff) {
+        query = query.eq("user_id", user.id);
+      }
+
+      const { data, error } = await query.single();
 
       if (error) throw error;
       setPurchase(data);
     } catch (error) {
       console.error("Error fetching purchase details:", error);
       alert("Unable to load order details");
-      navigate("/dashboard");
+      navigate(isStaff ? "/staff" : "/dashboard");
     } finally {
       setLoading(false);
     }
@@ -106,11 +109,11 @@ export default function PurchaseDetailsPage() {
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate(isStaff ? "/staff" : "/dashboard")}
               className="flex items-center gap-2 text-white hover:text-red-500 transition-colors mb-6 font-semibold"
             >
               <ArrowLeft className="h-5 w-5" />
-              Back to Purchases
+              {isStaff ? "Back to Staff Panel" : "Back to Purchases"}
             </button>
 
             <div className="text-center">
