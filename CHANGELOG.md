@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7] - 2026-03-15
+
+- Redesigned the Pricing page hero section with vertically centered content and a taller minimum height
+- Increased background image opacity and removed the gradient overlay for a bolder look
+- Added a diagonal crosshatch pattern overlay to the hero background
+- Added a "PRICING" badge above the heading and highlighted "Packages" in red
+- Bumped up heading and subtitle font sizes for larger screens
+- Added a fade-up animation to the hero content
+- Added an angled bottom edge transition from the hero into the next section
+
 ## [2.6] - 2026-03-15
 
 - Redesigned the site header with a two-bar layout: a silver top bar for logo, contact info, and auth, and a dark navy bottom bar for navigation links
