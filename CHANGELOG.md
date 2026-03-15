@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3] - 2026-03-15
+
+- Removed the Inter font entirely, making Bebas Neue the primary body font instead of just using it for headings
+- Removed the separate heading font-family rule for h1/h2/h3 since Bebas Neue is now the global body font
+- Removed the "Speedway 146" text labels from the header logo (both desktop and mobile nav) and the footer, leaving just the logo image
+
 ## [2.2] - 2026-03-15
 
 - Added Inter font family alongside Bebas Neue for improved typography options

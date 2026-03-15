@@ -33,7 +33,6 @@ const Footer = () => {
                 decoding="async"
                 className="h-9 w-9 rounded-lg"
               />
-              <span className="text-xl font-bold">SPEEDWAY146</span>
             </div>
             <p className="text-gray-300">
               Baytown's go-to spot for family fun! Experience exciting go-kart

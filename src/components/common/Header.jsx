@@ -167,15 +167,6 @@ const Header = () => {
                   filter: "drop-shadow(0 0 15px rgba(220, 38, 38, 0.5))",
                 }}
               />
-              <span
-                className="text-2xl font-black hidden sm:block bg-gradient-to-r bg-clip-text text-transparent group-hover:from-[var(--color-red-400)] group-hover:to-[var(--color-red-600)] transition-all duration-500"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to right, var(--color-red-500), var(--color-red-600))",
-                }}
-              >
-                Speedway 146
-              </span>
             </Link>
           </div>
 
@@ -451,7 +442,6 @@ const Header = () => {
                 loading="eager"
                 className="h-10 w-10 object-contain"
               />
-              <span className="text-lg font-bold text-white">Speedway 146</span>
             </Link>
             <button
               onClick={() => setIsMenuOpen(false)}
