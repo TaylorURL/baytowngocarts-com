@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8] - 2026-03-15
+
+- Fixed sticky section positioning on FAQ page by using precise pixel values (top-[58px] and lg:top-[112px]) instead of Tailwind spacing classes
+
 ## [2.7] - 2026-03-15
 
 - Redesigned the Pricing page hero section with vertically centered content and a taller minimum height
