@@ -263,7 +263,7 @@ export default function StaffPanelPage() {
                 <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Total Orders
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
                   {stats.totalOrders}
                 </p>
               </div>
@@ -278,7 +278,7 @@ export default function StaffPanelPage() {
                 <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Total Revenue
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
                   ${stats.totalRevenue.toFixed(2)}
                 </p>
               </div>
@@ -293,7 +293,7 @@ export default function StaffPanelPage() {
                 <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Today's Orders
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
                   {stats.todayOrders}
                 </p>
               </div>
@@ -308,7 +308,7 @@ export default function StaffPanelPage() {
                 <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                   Today's Revenue
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-navy-900">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
                   ${stats.todayRevenue.toFixed(2)}
                 </p>
               </div>
@@ -316,7 +316,7 @@ export default function StaffPanelPage() {
 
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-navy-900">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
                   Orders
                 </h2>
                 <div className="flex flex-col md:flex-row gap-3 flex-1 md:max-w-2xl">
@@ -360,7 +360,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("today")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "today"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -370,7 +370,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("week")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "week"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -380,7 +380,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("month")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "month"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -390,7 +390,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("quarter")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "quarter"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -400,7 +400,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("year")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "year"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -410,7 +410,7 @@ export default function StaffPanelPage() {
                   onClick={() => setDateFilter("all")}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     dateFilter === "all"
-                      ? "bg-navy-900 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                 >
@@ -475,7 +475,7 @@ export default function StaffPanelPage() {
                             }
                           >
                             <td className="py-4 px-4">
-                              <span className="font-mono text-sm font-semibold text-navy-900">
+                              <span className="font-mono text-sm font-semibold text-gray-800">
                                 {order.order_number}
                               </span>
                             </td>
@@ -490,7 +490,7 @@ export default function StaffPanelPage() {
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm font-semibold text-navy-900">
+                              <span className="text-sm font-semibold text-gray-800">
                                 {order.total_quantity} people
                               </span>
                             </td>
@@ -541,7 +541,7 @@ export default function StaffPanelPage() {
                           className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-mono text-sm font-bold text-navy-900">
+                            <span className="font-mono text-sm font-bold text-gray-800">
                               {order.order_number}
                             </span>
                             <StatusBadge status={order.status} />
@@ -584,7 +584,7 @@ export default function StaffPanelPage() {
                                     className="flex justify-between items-center bg-white rounded-lg p-3 border border-gray-100"
                                   >
                                     <div>
-                                      <p className="font-medium text-navy-900 text-sm">
+                                      <p className="font-medium text-gray-800 text-sm">
                                         {item.product_name}
                                       </p>
                                       <p className="text-xs text-gray-500">
@@ -592,7 +592,7 @@ export default function StaffPanelPage() {
                                         {formatCurrency(item.price)}
                                       </p>
                                     </div>
-                                    <span className="font-bold text-navy-900 text-sm">
+                                    <span className="font-bold text-gray-800 text-sm">
                                       {formatCurrency(item.subtotal)}
                                     </span>
                                   </div>
@@ -602,7 +602,7 @@ export default function StaffPanelPage() {
 
                             <div className="flex justify-between items-center bg-white rounded-lg p-3 border-2 border-gray-200">
                               <div>
-                                <p className="font-bold text-navy-900">Total</p>
+                                <p className="font-bold text-gray-800">Total</p>
                                 <p className="text-xs text-gray-500">
                                   {order.total_quantity}{" "}
                                   {order.total_quantity > 1

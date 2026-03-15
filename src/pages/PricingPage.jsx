@@ -148,7 +148,7 @@ const PricingPage = () => {
               Choose the perfect experience for your visit
             </p>
 
-            <div className="inline-flex bg-navy-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
+            <div className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
               <button
                 onClick={() => setActiveTab("parties")}
                 className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition-all ${
@@ -204,7 +204,7 @@ const PricingPage = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Your Selection</p>
-              <p className="text-xl font-bold text-navy-900">
+              <p className="text-xl font-bold text-gray-800">
                 {getTotalItems()} {getTotalItems() === 1 ? "item" : "items"} - $
                 {getTotalPrice().toFixed(2)}
               </p>
@@ -213,7 +213,7 @@ const PricingPage = () => {
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={handleAddAllToCart}
-              className="flex-1 sm:flex-none bg-navy-900 hover:bg-navy-800 text-white px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
             >
               <Plus className="h-5 w-5" />
               Add to Cart
@@ -234,7 +234,7 @@ const PricingPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-navy-900 mb-2">
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Party Packages
                 </h2>
                 <p className="text-gray-600">
@@ -264,7 +264,7 @@ const PricingPage = () => {
                         </div>
 
                         <div className="p-6 md:p-8">
-                          <h2 className="text-2xl md:text-3xl font-bold text-navy-900 mb-2">
+                          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
                             {product.name}
                           </h2>
                           <p className="text-gray-600 mb-4">
@@ -283,7 +283,7 @@ const PricingPage = () => {
                               <div key={idx} className="flex items-start gap-3">
                                 <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                                 <span
-                                  className={`${idx < 2 || idx === 6 ? "font-semibold text-navy-900" : "text-gray-700"}`}
+                                  className={`${idx < 2 || idx === 6 ? "font-semibold text-gray-800" : "text-gray-700"}`}
                                 >
                                   {feature}
                                 </span>
@@ -306,7 +306,7 @@ const PricingPage = () => {
                               onChange={(e) =>
                                 setQuantityDirect(product.id, e.target.value)
                               }
-                              className="w-16 text-center font-bold text-navy-900 border-2 border-gray-200 rounded-lg py-2 text-lg"
+                              className="w-16 text-center font-bold text-gray-800 border-2 border-gray-200 rounded-lg py-2 text-lg"
                             />
                             <button
                               onClick={() => updateQuantity(product.id, 1)}
@@ -345,7 +345,7 @@ const PricingPage = () => {
 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                       <Zap className="h-5 w-5 text-orange-500" />
                       Party Upgrades
                     </h3>
@@ -380,14 +380,14 @@ const PricingPage = () => {
                                   />
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="font-bold text-navy-900">
+                                  <h4 className="font-bold text-gray-800">
                                     {product.name}
                                   </h4>
                                   <p className="text-sm text-gray-500">
                                     {product.description}
                                   </p>
                                 </div>
-                                <div className="text-xl font-bold text-navy-900">
+                                <div className="text-xl font-bold text-gray-800">
                                   {product.price}
                                 </div>
                               </div>
@@ -409,7 +409,7 @@ const PricingPage = () => {
                                       e.target.value,
                                     )
                                   }
-                                  className="w-12 text-center font-bold text-navy-900 border border-gray-200 rounded-lg py-1 text-sm"
+                                  className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                                 />
                                 <button
                                   onClick={() => updateQuantity(product.id, 1)}
@@ -464,14 +464,14 @@ const PricingPage = () => {
                     </div>
                   </div>
 
-                  <div className="bg-navy-900 rounded-xl p-6 text-white text-center">
+                  <div className="bg-gray-800 rounded-xl p-6 text-white text-center">
                     <h4 className="font-bold text-lg mb-2">Questions?</h4>
                     <p className="text-gray-300 text-sm mb-4">
                       Call us to customize your party
                     </p>
                     <a
                       href="tel:(346) 932-1266"
-                      className="inline-flex items-center gap-2 bg-white text-navy-900 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all"
+                      className="inline-flex items-center gap-2 bg-white text-gray-800 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all"
                     >
                       <Phone className="h-5 w-5" />
                       (346) 932-1266
@@ -489,7 +489,7 @@ const PricingPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-navy-900 mb-2">
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Go-Kart Racing Packages
                 </h2>
                 <p className="text-gray-600">
@@ -529,10 +529,10 @@ const PricingPage = () => {
                             className={`h-5 w-5 ${product.isPopular ? "text-red-600" : "text-gray-600"}`}
                           />
                         </div>
-                        <h3 className="font-bold text-navy-900 text-sm leading-tight">
+                        <h3 className="font-bold text-gray-800 text-sm leading-tight">
                           {product.name}
                         </h3>
-                        <div className="text-2xl font-bold text-navy-900 mt-1">
+                        <div className="text-2xl font-bold text-gray-800 mt-1">
                           {product.price}
                         </div>
                         <p className="text-xs text-gray-500">per person</p>
@@ -568,7 +568,7 @@ const PricingPage = () => {
                           onChange={(e) =>
                             setQuantityDirect(product.id, e.target.value)
                           }
-                          className="w-12 text-center font-bold text-navy-900 border border-gray-200 rounded-lg py-1 text-sm"
+                          className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                         />
                         <button
                           onClick={() => updateQuantity(product.id, 1)}
@@ -593,7 +593,7 @@ const PricingPage = () => {
               </div>
 
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-navy-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   Double Seater Racing
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -626,13 +626,13 @@ const PricingPage = () => {
                         </div>
                       )}
                       <div className="text-center mb-3">
-                        <div className="inline-flex p-2 rounded-lg mb-2 bg-navy-900">
+                        <div className="inline-flex p-2 rounded-lg mb-2 bg-gray-700">
                           <Icon className="h-5 w-5 text-white" />
                         </div>
-                        <h3 className="font-bold text-navy-900 text-sm leading-tight">
+                        <h3 className="font-bold text-gray-800 text-sm leading-tight">
                           {product.name}
                         </h3>
-                        <div className="text-2xl font-bold text-navy-900 mt-1">
+                        <div className="text-2xl font-bold text-gray-800 mt-1">
                           {product.price}
                         </div>
                         <p className="text-xs text-gray-500">per kart</p>
@@ -668,7 +668,7 @@ const PricingPage = () => {
                           onChange={(e) =>
                             setQuantityDirect(product.id, e.target.value)
                           }
-                          className="w-12 text-center font-bold text-navy-900 border border-gray-200 rounded-lg py-1 text-sm"
+                          className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                         />
                         <button
                           onClick={() => updateQuantity(product.id, 1)}
@@ -692,7 +692,7 @@ const PricingPage = () => {
                 })}
               </div>
 
-              <div className="bg-navy-900 rounded-2xl p-6 text-white max-w-4xl mx-auto">
+              <div className="bg-gray-800 rounded-2xl p-6 text-white max-w-4xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
@@ -761,7 +761,7 @@ const PricingPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-navy-900 mb-2">
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Bounce House Fun
                 </h2>
                 <p className="text-gray-600">
@@ -783,10 +783,10 @@ const PricingPage = () => {
                       </div>
                     )}
                     <div className="text-center mb-4">
-                      <div className="inline-flex bg-red-100 p-3 rounded-xl mb-3">
-                        <Baby className="h-6 w-6 text-red-600" />
+                      <div className="inline-flex bg-gray-100 p-3 rounded-xl mb-3">
+                        <Baby className="h-6 w-6 text-gray-600" />
                       </div>
-                      <h3 className="text-xl font-bold text-navy-900">
+                      <h3 className="text-xl font-bold text-gray-800">
                         {plan.title}
                       </h3>
                       {plan.description && (
@@ -796,7 +796,7 @@ const PricingPage = () => {
                       )}
                     </div>
                     <div className="text-center mb-4">
-                      <span className="text-4xl font-bold text-navy-900">
+                      <span className="text-4xl font-bold text-gray-800">
                         {plan.price}
                       </span>
                       <span className="text-gray-500 text-sm ml-1">
@@ -819,7 +819,7 @@ const PricingPage = () => {
                       className={`w-full py-3 rounded-xl font-bold transition-all ${
                         plan.isPopular
                           ? "bg-red-600 hover:bg-red-700 text-white"
-                          : "bg-navy-900 hover:bg-navy-800 text-white"
+                          : "bg-gray-800 hover:bg-gray-700 text-white"
                       }`}
                     >
                       Reserve Now
@@ -831,10 +831,10 @@ const PricingPage = () => {
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="bg-red-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Shield className="h-6 w-6 text-red-600" />
+                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <Shield className="h-6 w-6 text-gray-600" />
                     </div>
-                    <h4 className="font-bold text-navy-900 mb-1">
+                    <h4 className="font-bold text-gray-800 mb-1">
                       Safe & Clean
                     </h4>
                     <p className="text-gray-600 text-sm">
@@ -842,10 +842,10 @@ const PricingPage = () => {
                     </p>
                   </div>
                   <div>
-                    <div className="bg-red-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Zap className="h-6 w-6 text-red-600" />
+                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <Zap className="h-6 w-6 text-gray-600" />
                     </div>
-                    <h4 className="font-bold text-navy-900 mb-1">
+                    <h4 className="font-bold text-gray-800 mb-1">
                       Climate Controlled
                     </h4>
                     <p className="text-gray-600 text-sm">
@@ -853,10 +853,10 @@ const PricingPage = () => {
                     </p>
                   </div>
                   <div>
-                    <div className="bg-red-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Users className="h-6 w-6 text-red-600" />
+                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <Users className="h-6 w-6 text-gray-600" />
                     </div>
-                    <h4 className="font-bold text-navy-900 mb-1">
+                    <h4 className="font-bold text-gray-800 mb-1">
                       All Ages Welcome
                     </h4>
                     <p className="text-gray-600 text-sm">
@@ -873,7 +873,7 @@ const PricingPage = () => {
       <section className="py-12 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-navy-900 rounded-2xl p-6 md:p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gray-800 rounded-2xl p-6 md:p-8">
               <div className="text-center md:text-left">
                 <h3 className="text-xl font-bold text-white mb-1">
                   Download Waivers
@@ -905,11 +905,19 @@ const PricingPage = () => {
         </div>
       </section>
 
-      <section className="py-12 bg-gradient-to-r from-red-600 to-red-700 text-white">
+      <section
+        className="py-12 text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
+        }}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-3">Questions?</h2>
-            <p className="text-red-100 mb-6">Check our FAQ or give us a call</p>
+            <p className="text-gray-300 mb-6">
+              Check our FAQ or give us a call
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/faq"

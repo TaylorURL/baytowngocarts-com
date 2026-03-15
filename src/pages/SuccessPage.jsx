@@ -107,7 +107,7 @@ const SuccessPage = () => {
         <div className="bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="mb-6">
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-navy-900 mb-2">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">
               Payment Successful!
             </h1>
             <p className="text-gray-600">

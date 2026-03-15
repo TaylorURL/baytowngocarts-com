@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4] - 2026-03-15
+
+- Redesigned the entire site from a dark navy theme to a light gray/white color scheme
+- Updated the Header with a light gradient background, lighter border styling, and revised hover states for navigation links
+- Converted the Footer from a dark navy gradient to a light gray gradient with updated text and icon colors
+- Changed the mobile menu sidebar to use the new light theme with matching border and background colors
+- Updated the mobile menu overlay from 60% to 40% opacity
+- Replaced navy-based button secondary variant with gray-700 styling
+- Updated SectionHeading component to use gray-800 text and gray-700 badge background instead of navy
+- Changed the ActionSection background from a red gradient to a dark slate gradient
+- Updated the theme-color meta tag from dark navy (#0b1a2e) to light gray (#e8ecf1)
+- Adjusted dropdown menu styling in the Header to use white backgrounds and gray text instead of navy
+- Updated cart and user menu button styles from navy backgrounds to semi-transparent white
+- Changed icon colors throughout the Header from red-500 to gray-500
+- Updated Footer link hover colors from red-400 to red-600 and text colors from gray-300 to gray-600
+- Changed the Footer attribution text from "Design by" to "Website by"
+- Added new Tailwind config extensions for the light theme
+- Updated Theme.css with revised CSS custom properties to support the new light color palette
+- Refreshed styling across all page components (About, Cart, Contact, Events, FAQ, Pricing, Purchases, PurchaseDetails, StaffPanel, Success, Traffic) to align with the new light theme
+- Updated section components (Attractions, Feature, Gallery, Locations, Question, Testimonial) with matching light-theme color adjustments
+- Removed backdrop-blur effect from the Header traffic light container
+- Softened the logo drop-shadow from a red glow to a subtle dark shadow
+
 ## [2.3] - 2026-03-15
 
 - Removed the Inter font entirely, making Bebas Neue the primary body font instead of just using it for headings

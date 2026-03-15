@@ -155,14 +155,14 @@ export default function PurchaseDetailsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <Package className="h-6 w-6 text-red-600" />
                 Order Summary
               </h2>
 
               <div className="space-y-6">
                 <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-navy-900 mb-4">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4">
                     Order Items
                   </h3>
                   <div className="space-y-3">
@@ -172,7 +172,7 @@ export default function PurchaseDetailsPage() {
                         className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0"
                       >
                         <div>
-                          <p className="font-semibold text-navy-900">
+                          <p className="font-semibold text-gray-800">
                             {item.product_name}
                           </p>
                           <p className="text-sm text-gray-600">
@@ -180,7 +180,7 @@ export default function PurchaseDetailsPage() {
                             {formatPrice(item.price)}
                           </p>
                         </div>
-                        <p className="font-bold text-navy-900">
+                        <p className="font-bold text-gray-800">
                           {formatPrice(item.subtotal)}
                         </p>
                       </div>
@@ -188,7 +188,7 @@ export default function PurchaseDetailsPage() {
                   </div>
                   <div className="mt-4 pt-4 border-t-2 border-gray-300 flex justify-between items-center">
                     <div>
-                      <p className="text-lg font-bold text-navy-900">
+                      <p className="text-lg font-bold text-gray-800">
                         Order Total
                       </p>
                       <p className="text-sm text-gray-600">
@@ -211,7 +211,7 @@ export default function PurchaseDetailsPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Order Date</p>
-                      <p className="font-semibold text-navy-900">
+                      <p className="font-semibold text-gray-800">
                         {formatDate(purchase.created_at)}
                       </p>
                     </div>
@@ -225,7 +225,7 @@ export default function PurchaseDetailsPage() {
                       <p className="text-sm text-gray-500 mb-1">
                         Payment Method
                       </p>
-                      <p className="font-semibold text-navy-900">
+                      <p className="font-semibold text-gray-800">
                         {purchase.stripe_session_id?.startsWith("debug_")
                           ? "Debug/Test Order"
                           : "Credit Card (Stripe)"}
@@ -239,7 +239,7 @@ export default function PurchaseDetailsPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Product ID</p>
-                      <p className="font-semibold text-navy-900">
+                      <p className="font-semibold text-gray-800">
                         {purchase.product_id}
                       </p>
                     </div>
@@ -251,7 +251,7 @@ export default function PurchaseDetailsPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Order Status</p>
-                      <p className="font-semibold text-navy-900 capitalize">
+                      <p className="font-semibold text-gray-800 capitalize">
                         {purchase.status}
                       </p>
                     </div>
@@ -261,14 +261,14 @@ export default function PurchaseDetailsPage() {
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border-2 border-blue-200 p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <MapPin className="h-6 w-6 text-blue-600" />
                 Visit Information
               </h2>
 
               <div className="space-y-4">
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h3 className="font-bold text-navy-900 mb-2">Speedway 146</h3>
+                  <h3 className="font-bold text-gray-800 mb-2">Speedway 146</h3>
                   <p className="text-gray-700 mb-3">
                     6750 N TX-146, Baytown, TX 77523
                   </p>
@@ -296,7 +296,7 @@ export default function PurchaseDetailsPage() {
                 </div>
 
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h4 className="font-bold text-navy-900 mb-2">
+                  <h4 className="font-bold text-gray-800 mb-2">
                     What to Bring
                   </h4>
                   <ul className="space-y-1 text-gray-700">
@@ -312,7 +312,7 @@ export default function PurchaseDetailsPage() {
             </div>
 
             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-4 flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <Download className="h-6 w-6 text-red-600" />
                 Important Documents
               </h2>
@@ -329,7 +329,7 @@ export default function PurchaseDetailsPage() {
                       <Download className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-bold text-navy-900">Download Waiver</p>
+                      <p className="font-bold text-gray-800">Download Waiver</p>
                       <p className="text-sm text-gray-600">
                         Required for all participants
                       </p>
@@ -347,7 +347,7 @@ export default function PurchaseDetailsPage() {
                       <Download className="h-5 w-5 text-white" />
                     </div>
                     <div className="text-left">
-                      <p className="font-bold text-navy-900">
+                      <p className="font-bold text-gray-800">
                         Print Order Confirmation
                       </p>
                       <p className="text-sm text-gray-600">
@@ -361,7 +361,7 @@ export default function PurchaseDetailsPage() {
             </div>
 
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-navy-900 mb-4">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 Need Help?
               </h2>
               <p className="text-gray-600 mb-6">

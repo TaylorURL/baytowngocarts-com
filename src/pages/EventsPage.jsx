@@ -149,10 +149,10 @@ const EventsPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
               EVENT TYPES
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
               Events for Every Occasion
             </h2>
             <p className="text-xl text-gray-600">
@@ -165,7 +165,7 @@ const EventsPage = () => {
             {eventTypes.map((eventType, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-red-400 transition-all duration-300"
+                className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-gray-400 transition-all duration-300"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
@@ -175,13 +175,13 @@ const EventsPage = () => {
                     alt={eventType.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 right-4 bg-red-600 p-3 rounded-xl shadow-lg">
+                  <div className="absolute top-4 right-4 bg-gray-600 p-3 rounded-xl shadow-lg">
                     <eventType.icon className="h-6 w-6 text-white" />
                   </div>
                 </div>
 
                 <div className="p-8">
-                  <h3 className="text-2xl font-bold text-navy-900 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
                     {eventType.title}
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
@@ -218,7 +218,7 @@ const EventsPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
               Why Choose Speedway 146?
             </h2>
             <p className="text-xl text-gray-600">
@@ -235,10 +235,10 @@ const EventsPage = () => {
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="bg-red-100 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <benefit.icon className="h-8 w-8 text-red-600" />
+                <div className="bg-gray-100 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <benefit.icon className="h-8 w-8 text-gray-600" />
                 </div>
-                <h3 className="text-xl font-bold text-navy-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-600">{benefit.description}</p>
@@ -248,14 +248,20 @@ const EventsPage = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-red-600 to-red-700 text-white">
+      <section
+        className="py-20 text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
+        }}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <PartyPopper className="h-16 w-16 mx-auto mb-6" />
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Ready to Book Your Event?
             </h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Contact us today to discuss your event needs. We'll create a
               custom package perfect for your celebration!
             </p>
@@ -271,14 +277,14 @@ const EventsPage = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-red-600 text-xl px-10 py-5"
+                  className="border-white text-white hover:bg-white hover:text-gray-800 text-xl px-10 py-5"
                 >
                   View Pricing
                 </Button>
               </Link>
             </div>
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-2xl mx-auto">
-              <div className="bg-navy-800 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+              <div className="bg-gray-700 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
                 <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
                   <Clock className="h-5 w-5" />
                   Quick Info
@@ -289,7 +295,7 @@ const EventsPage = () => {
                   <li>Flexible scheduling options</li>
                 </ul>
               </div>
-              <div className="bg-navy-800 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+              <div className="bg-gray-700 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
                 <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
                   <Gift className="h-5 w-5" />
                   What's Included

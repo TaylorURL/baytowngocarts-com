@@ -25,25 +25,25 @@ const AboutPage = () => {
       icon: Users,
       label: "Happy Customers",
       value: "5,000+",
-      color: "bg-red-600",
+      color: "bg-gray-600",
     },
     {
       icon: Award,
       label: "Years of Experience",
       value: "5+",
-      color: "bg-navy-900",
+      color: "bg-gray-700",
     },
     {
       icon: Clock,
       label: "Hours of Fun Daily",
       value: "12+",
-      color: "bg-red-600",
+      color: "bg-gray-600",
     },
     {
       icon: MapPin,
       label: "Track Length",
       value: "1/4 Mile",
-      color: "bg-navy-900",
+      color: "bg-gray-700",
     },
   ];
 
@@ -163,7 +163,7 @@ const AboutPage = () => {
         />
       </section>
 
-      <section className="py-20 bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
@@ -186,7 +186,7 @@ const AboutPage = () => {
                 <div className="text-4xl lg:text-5xl font-bold mb-2">
                   {stat.value}
                 </div>
-                <div className="text-red-100 text-sm lg:text-base font-semibold tracking-wide">
+                <div className="text-gray-300 text-sm lg:text-base font-semibold tracking-wide">
                   {stat.label}
                 </div>
               </div>
@@ -199,10 +199,10 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
                 OUR STORY
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6 leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
                 Built on <span className="text-red-600">Passion</span> for
                 Racing
               </h2>
@@ -232,9 +232,9 @@ const AboutPage = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-xl shadow-xl max-w-xs">
+              <div className="absolute -bottom-6 -left-6 bg-gray-700 text-white p-6 rounded-xl shadow-xl max-w-xs">
                 <div className="text-3xl font-bold mb-1">5+ Years</div>
-                <div className="text-red-100">of thrilling experiences</div>
+                <div className="text-gray-300">of thrilling experiences</div>
               </div>
             </div>
           </div>
@@ -247,10 +247,10 @@ const AboutPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
               WHY CHOOSE US
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
               The Ultimate Racing Experience
             </h2>
             <p className="text-xl text-gray-600">
@@ -267,10 +267,10 @@ const AboutPage = () => {
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="bg-gradient-to-br from-red-600 to-red-700 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <div className="bg-gradient-to-br from-gray-600 to-gray-700 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-navy-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">{feature.text}</p>
@@ -280,7 +280,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-navy-900 text-white relative overflow-hidden">
+      <section className="py-24 bg-gray-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -308,11 +308,11 @@ const AboutPage = () => {
             {values.map((value, index) => (
               <div
                 key={index}
-                className="bg-navy-800 bg-opacity-50 backdrop-blur-md p-8 rounded-2xl hover-lift border border-red-600 border-opacity-30"
+                className="bg-gray-700 bg-opacity-50 backdrop-blur-md p-8 rounded-2xl hover-lift border border-gray-500 border-opacity-30"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="bg-red-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                <div className="bg-gray-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
                   <value.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-white">
@@ -333,10 +333,10 @@ const AboutPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
               OUR JOURNEY
             </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
               Racing Through The Years
             </h2>
             <p className="text-xl text-gray-600">
@@ -356,7 +356,7 @@ const AboutPage = () => {
                 >
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
-                      <div className="bg-red-600 text-white w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="bg-gray-600 text-white w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
                         <item.icon className="h-7 w-7" />
                       </div>
                     </div>
@@ -364,7 +364,7 @@ const AboutPage = () => {
                       <div className="text-red-600 font-bold text-lg mb-2">
                         {item.year}
                       </div>
-                      <h3 className="text-2xl font-bold text-navy-900 mb-3">
+                      <h3 className="text-2xl font-bold text-gray-800 mb-3">
                         {item.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
@@ -390,16 +390,16 @@ const AboutPage = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -top-6 -right-6 bg-navy-900 text-white p-6 rounded-xl shadow-xl">
+              <div className="absolute -top-6 -right-6 bg-gray-700 text-white p-6 rounded-xl shadow-xl">
                 <Target className="h-8 w-8 mb-2" />
                 <div className="text-sm">Expert Team</div>
               </div>
             </div>
             <div data-aos="fade-left" className="lg:order-2 order-1">
-              <div className="inline-block mb-4 px-3 py-1 bg-navy-900 text-white rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
                 OUR TEAM
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6 leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
                 Passionate About{" "}
                 <span className="text-red-600">Your Experience</span>
               </h2>
@@ -415,15 +415,15 @@ const AboutPage = () => {
                 leave with a smile and memories that last a lifetime.
               </p>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-3 bg-red-50 px-6 py-3 rounded-full">
-                  <Shield className="h-5 w-5 text-red-600" />
-                  <span className="text-navy-900 font-bold">
+                <div className="flex items-center gap-3 bg-gray-100 px-6 py-3 rounded-full">
+                  <Shield className="h-5 w-5 text-gray-600" />
+                  <span className="text-gray-800 font-bold">
                     Safety Certified
                   </span>
                 </div>
-                <div className="flex items-center gap-3 bg-red-50 px-6 py-3 rounded-full">
-                  <Award className="h-5 w-5 text-red-600" />
-                  <span className="text-navy-900 font-bold">Expert Staff</span>
+                <div className="flex items-center gap-3 bg-gray-100 px-6 py-3 rounded-full">
+                  <Award className="h-5 w-5 text-gray-600" />
+                  <span className="text-gray-800 font-bold">Expert Staff</span>
                 </div>
               </div>
             </div>
@@ -431,13 +431,19 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-red-600 to-red-700 text-white">
+      <section
+        className="py-20 text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
+        }}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Ready to Experience The Thrill?
             </h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Join thousands of happy racers and create unforgettable memories
               at Speedway 146
             </p>
@@ -455,7 +461,7 @@ const AboutPage = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-red-600"
+                  className="border-white text-white hover:bg-white hover:text-gray-800"
                 >
                   Contact Us
                 </Button>

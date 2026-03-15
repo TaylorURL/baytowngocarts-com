@@ -76,7 +76,7 @@ const GallarySection = () => {
           <div className="flex justify-center items-center mt-12 gap-6">
             <button
               onClick={() => navigateSlide(-1)}
-              className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
               aria-label="Previous images"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -99,7 +99,7 @@ const GallarySection = () => {
 
             <button
               onClick={() => navigateSlide(1)}
-              className="bg-navy-900 hover:bg-navy-800 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
               aria-label="Next images"
             >
               <ChevronRight className="h-6 w-6" />

@@ -12,7 +12,7 @@ const SectionHeading = ({
 }) => {
   const badgeStyles = {
     red: "bg-red-100 text-red-600",
-    navy: "bg-navy-900 text-white",
+    navy: "bg-gray-700 text-white",
   };
 
   return (
@@ -27,7 +27,7 @@ const SectionHeading = ({
           {badge}
         </div>
       )}
-      <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-6">
+      <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
         {title}
       </h2>
       {subtitle && (

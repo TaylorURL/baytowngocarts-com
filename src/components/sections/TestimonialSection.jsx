@@ -25,7 +25,7 @@ const TestimonialSection = () => (
             data-aos="fade-up"
             data-aos-delay={index * 100}
           >
-            <div className="absolute -top-4 -right-4 bg-red-600 p-3 rounded-full shadow-lg">
+            <div className="absolute -top-4 -right-4 bg-gray-400 p-3 rounded-full shadow-lg">
               <Quote className="h-6 w-6 text-white" />
             </div>
 
@@ -44,7 +44,7 @@ const TestimonialSection = () => (
 
             <div className="border-t border-gray-200 pt-6">
               <div className="flex items-center gap-2">
-                <h4 className="font-bold text-navy-900">{name}</h4>
+                <h4 className="font-bold text-gray-800">{name}</h4>
                 <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
               <p className="text-gray-600 text-sm">{location}</p>

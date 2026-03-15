@@ -50,10 +50,10 @@ const FeatureSection = () => (
             data-aos="fade-up"
             data-aos-delay={index * 100}
           >
-            <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Icon className="h-8 w-8 text-red-600" />
+            <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Icon className="h-8 w-8 text-gray-600" />
             </div>
-            <h3 className="text-xl font-bold text-navy-900 mb-4">{title}</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{title}</h3>
             <p className="text-gray-600">{description}</p>
           </div>
         ))}

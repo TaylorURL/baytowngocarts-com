@@ -24,7 +24,7 @@ const QuestionSection = ({ faq }) => {
           </div>
           <h3
             className={`text-lg font-bold pr-4 transition-colors duration-300 ${
-              isOpen ? "text-red-600" : "text-navy-900"
+              isOpen ? "text-red-600" : "text-gray-800"
             }`}
           >
             {faq.question}

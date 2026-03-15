@@ -1,12 +1,12 @@
 :root {
-  /* Deep navy with slight warm undertone */
+  /* Navy — reserved for hero sections only */
   --color-navy-900: #0b1a2e;
   --color-navy-800: #112240;
   --color-navy-700: #1a3358;
   --color-navy-600: #234170;
   --color-navy-500: #2c5088;
 
-  /* Racing red — punchier, slightly warm */
+  /* Racing red — primary CTAs and accents */
   --color-red-900: #7f1d1d;
   --color-red-800: #9b1c1c;
   --color-red-700: #c41e1e;
@@ -18,7 +18,7 @@
   --color-red-100: #fee2e2;
   --color-red-50: #fef2f2;
 
-  /* Neutral grays — slightly cooler for contrast */
+  /* Silver/Gray — site chrome, text, panels */
   --color-gray-900: #0f172a;
   --color-gray-800: #1e293b;
   --color-gray-700: #334155;
@@ -29,6 +29,11 @@
   --color-gray-200: #e2e8f0;
   --color-gray-100: #f1f5f9;
   --color-gray-50: #f8fafc;
+
+  /* Silver accents */
+  --color-silver-light: #c0c7d0;
+  --color-silver: #8b95a5;
+  --color-silver-dark: #5a6577;
 
   --color-white: #ffffff;
   --color-black: #000000;
@@ -42,11 +47,11 @@
   --color-green-200: #bbf7d0;
   --color-green-50: #f0fdf4;
 
-  /* Richer shadows with subtle color */
+  /* Shadows */
   --shadow-red:
     0 10px 25px -5px rgba(224, 36, 36, 0.35),
     0 4px 8px -2px rgba(224, 36, 36, 0.2);
   --shadow-racing:
-    0 10px 25px -5px rgba(224, 36, 36, 0.15),
-    0 4px 8px -2px rgba(224, 36, 36, 0.08);
+    0 10px 25px -5px rgba(15, 23, 42, 0.25),
+    0 4px 8px -2px rgba(15, 23, 42, 0.15);
 }

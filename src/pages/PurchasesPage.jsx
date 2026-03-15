@@ -160,7 +160,7 @@ export default function PurchasesPage() {
                   <div className="bg-gray-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Package className="h-10 w-10 text-gray-400" />
                   </div>
-                  <h3 className="text-2xl font-bold text-navy-900 mb-4">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
                     No Orders Yet
                   </h3>
                   <p className="text-gray-600 mb-8 text-lg">
@@ -175,7 +175,7 @@ export default function PurchasesPage() {
                   </button>
 
                   <div className="mt-8 pt-8 border-t border-gray-200">
-                    <h4 className="text-lg font-bold text-navy-900 mb-3">
+                    <h4 className="text-lg font-bold text-gray-800 mb-3">
                       What You'll See Here
                     </h4>
                     <ul className="text-gray-600 text-sm space-y-2 text-left max-w-md mx-auto">
@@ -190,7 +190,7 @@ export default function PurchasesPage() {
             ) : (
               <div>
                 <div className="text-center mb-12" data-aos="fade-up">
-                  <h2 className="text-3xl lg:text-4xl font-bold text-navy-900 mb-4">
+                  <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
                     Your Order History
                   </h2>
                   <p className="text-xl text-gray-600">
@@ -215,7 +215,7 @@ export default function PurchasesPage() {
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2 flex-wrap">
-                                <h3 className="text-2xl font-bold text-navy-900">
+                                <h3 className="text-2xl font-bold text-gray-800">
                                   Order #{order.order_number}
                                 </h3>
                               </div>
@@ -288,7 +288,7 @@ export default function PurchasesPage() {
                         <Package className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-navy-900 mb-2">
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
                           How Orders Work
                         </h3>
                         <ul className="text-gray-700 text-sm space-y-2">
@@ -312,7 +312,7 @@ export default function PurchasesPage() {
                         <CheckCircle className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-navy-900 mb-2">
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
                           Ready to Race?
                         </h3>
                         <ul className="text-gray-700 text-sm space-y-2">

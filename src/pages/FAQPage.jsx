@@ -116,7 +116,7 @@ const FAQPage = () => {
                   placeholder="Search questions and answers..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-navy-900 border-2 border-transparent focus:border-red-600 focus:outline-none shadow-lg"
+                  className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-gray-500 focus:outline-none shadow-lg"
                 />
                 {searchTerm && (
                   <button
@@ -148,7 +148,7 @@ const FAQPage = () => {
       <section
         ref={stickyRef}
         className={`py-4 border-b-2 sticky top-20 z-40 transition-all duration-300 ${
-          isSticky ? "bg-navy-900 border-red-600" : "bg-white border-gray-100"
+          isSticky ? "bg-gray-800 border-red-600" : "bg-white border-gray-100"
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,7 +167,7 @@ const FAQPage = () => {
                       isActive
                         ? "bg-red-600 text-white shadow-lg scale-105"
                         : isSticky
-                          ? "bg-navy-800 text-gray-300 hover:bg-navy-700 hover:scale-105"
+                          ? "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105"
                           : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                     }`}
                   >
@@ -178,7 +178,7 @@ const FAQPage = () => {
                         isActive
                           ? "bg-white text-red-600"
                           : isSticky
-                            ? "bg-navy-700 text-gray-400"
+                            ? "bg-gray-600 text-gray-400"
                             : "bg-gray-200 text-gray-600"
                       }`}
                     >
@@ -201,7 +201,7 @@ const FAQPage = () => {
             >
               {filteredFAQs.length > 0 ? (
                 <>
-                  <div className="px-8 py-6 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+                  <div className="px-8 py-6 bg-gradient-to-r from-gray-800 to-gray-700 text-white">
                     <h2 className="text-2xl font-bold">
                       {searchTerm
                         ? `${filteredFAQs.length} Result${filteredFAQs.length !== 1 ? "s" : ""}`
@@ -220,7 +220,7 @@ const FAQPage = () => {
               ) : (
                 <div className="p-12 text-center">
                   <HelpCircle className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-navy-900 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
                     No results found
                   </h3>
                   <p className="text-gray-600 mb-6">
@@ -240,7 +240,7 @@ const FAQPage = () => {
                     {selectedCategory !== "All" && (
                       <button
                         onClick={() => setSelectedCategory("All")}
-                        className="bg-gray-200 hover:bg-gray-300 text-navy-900 px-8 py-3 rounded-xl font-bold transition-all"
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-bold transition-all"
                       >
                         Show All
                       </button>
@@ -256,7 +256,7 @@ const FAQPage = () => {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-navy-900 to-navy-800 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl shadow-2xl overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-12">
                   <HelpCircle className="h-16 w-16 text-red-500 mb-6" />
@@ -298,11 +298,17 @@ const FAQPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-red-600 to-red-700 p-12 flex flex-col justify-center">
+                <div
+                  className="p-12 flex flex-col justify-center"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #334155 0%, #1e293b 100%)",
+                  }}
+                >
                   <h3 className="text-3xl font-bold text-white mb-6">
                     Get in Touch
                   </h3>
-                  <p className="text-red-100 mb-8 text-lg">
+                  <p className="text-gray-300 mb-8 text-lg">
                     Choose the best way to reach us
                   </p>
                   <div className="space-y-4">
@@ -314,14 +320,14 @@ const FAQPage = () => {
                       (346) 932-1266
                     </a>
                     <Link to="/contact">
-                      <button className="w-full flex items-center justify-center gap-3 bg-navy-900 hover:bg-navy-800 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105">
+                      <button className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105">
                         <MessageSquare className="h-5 w-5" />
                         Contact Form
                       </button>
                     </Link>
                   </div>
                   <div className="mt-8 pt-8 border-t border-white border-opacity-20">
-                    <p className="text-red-100 text-sm text-center">
+                    <p className="text-gray-300 text-sm text-center">
                       Available Thursday-Sunday during business hours
                     </p>
                   </div>
@@ -332,13 +338,19 @@ const FAQPage = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-red-600 to-red-700 text-white">
+      <section
+        className="py-20 text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
+        }}
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
               Ready to Race?
             </h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Now that you have your answers, come experience the thrill of
               Speedway 146!
             </p>
@@ -356,7 +368,7 @@ const FAQPage = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-red-600 text-xl px-10 py-5"
+                  className="border-white text-white hover:bg-white hover:text-gray-800 text-xl px-10 py-5"
                 >
                   Book Event
                 </Button>

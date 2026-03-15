@@ -200,7 +200,7 @@ export default function TrafficPage() {
                   className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
                     timeRange === range
                       ? "bg-red-600 text-white"
-                      : "bg-navy-800 text-gray-300 hover:bg-navy-700"
+                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                   }`}
                 >
                   {range.charAt(0).toUpperCase() + range.slice(1)}
@@ -228,7 +228,7 @@ export default function TrafficPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Total Views</p>
-                      <p className="text-3xl font-bold text-navy-900">
+                      <p className="text-3xl font-bold text-gray-800">
                         {traffic.length}
                       </p>
                     </div>
@@ -242,7 +242,7 @@ export default function TrafficPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Desktop</p>
-                      <p className="text-3xl font-bold text-navy-900">
+                      <p className="text-3xl font-bold text-gray-800">
                         {devices.desktop}
                       </p>
                     </div>
@@ -256,7 +256,7 @@ export default function TrafficPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Mobile</p>
-                      <p className="text-3xl font-bold text-navy-900">
+                      <p className="text-3xl font-bold text-gray-800">
                         {devices.mobile}
                       </p>
                     </div>
@@ -270,7 +270,7 @@ export default function TrafficPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">Unique Pages</p>
-                      <p className="text-3xl font-bold text-navy-900">
+                      <p className="text-3xl font-bold text-gray-800">
                         {pageViews.length}
                       </p>
                     </div>
@@ -280,7 +280,7 @@ export default function TrafficPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <MousePointer className="h-5 w-5 text-red-600" />
                     Top Pages
                   </h3>
@@ -308,7 +308,7 @@ export default function TrafficPage() {
                                 }}
                               />
                             </div>
-                            <span className="text-sm font-bold text-navy-900 w-12 text-right">
+                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
                               {count}
                             </span>
                           </div>
@@ -323,7 +323,7 @@ export default function TrafficPage() {
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <Globe className="h-5 w-5 text-red-600" />
                     Traffic Sources
                   </h3>
@@ -351,7 +351,7 @@ export default function TrafficPage() {
                                 }}
                               />
                             </div>
-                            <span className="text-sm font-bold text-navy-900 w-12 text-right">
+                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
                               {count}
                             </span>
                           </div>
@@ -367,7 +367,7 @@ export default function TrafficPage() {
               </div>
 
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
-                <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-red-600" />
                   Traffic by Hour
                 </h3>
@@ -397,7 +397,7 @@ export default function TrafficPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-red-600" />
                     Top Cities
                   </h3>
@@ -425,7 +425,7 @@ export default function TrafficPage() {
                                 }}
                               />
                             </div>
-                            <span className="text-sm font-bold text-navy-900 w-12 text-right">
+                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
                               {count}
                             </span>
                           </div>
@@ -440,7 +440,7 @@ export default function TrafficPage() {
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <Globe className="h-5 w-5 text-red-600" />
                     Top Countries
                   </h3>
@@ -468,7 +468,7 @@ export default function TrafficPage() {
                                 }}
                               />
                             </div>
-                            <span className="text-sm font-bold text-navy-900 w-12 text-right">
+                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
                               {count}
                             </span>
                           </div>
@@ -484,7 +484,7 @@ export default function TrafficPage() {
               </div>
 
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <h3 className="text-xl font-bold text-navy-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-red-600" />
                   Recent Activity
                 </h3>
@@ -527,7 +527,7 @@ export default function TrafficPage() {
                             <td className="py-3 px-4 text-sm text-gray-600">
                               {new Date(view.timestamp).toLocaleString()}
                             </td>
-                            <td className="py-3 px-4 text-sm font-medium text-navy-900">
+                            <td className="py-3 px-4 text-sm font-medium text-gray-800">
                               {view.page_path}
                             </td>
                             <td className="py-3 px-4">

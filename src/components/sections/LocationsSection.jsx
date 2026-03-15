@@ -5,11 +5,11 @@ import { BUSINESS_HOURS, CONTACT_INFO } from "../../lib/constants.js";
 /** Renders an icon, label, and content row used in the contact info list. */
 const ContactRow = ({ icon: Icon, label, children }) => (
   <div className="flex items-start space-x-4">
-    <div className="bg-red-100 p-3 rounded-full">
-      <Icon className="h-6 w-6 text-red-600" />
+    <div className="bg-gray-100 p-3 rounded-full">
+      <Icon className="h-6 w-6 text-gray-500" />
     </div>
     <div>
-      <h3 className="text-lg font-semibold text-navy-900 mb-1">{label}</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-1">{label}</h3>
       {children}
     </div>
   </div>

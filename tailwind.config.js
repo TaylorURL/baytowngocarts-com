@@ -49,6 +49,11 @@ export default {
           200: "var(--color-green-200)",
           50: "var(--color-green-50)",
         },
+        silver: {
+          light: "var(--color-silver-light)",
+          DEFAULT: "var(--color-silver)",
+          dark: "var(--color-silver-dark)",
+        },
         white: "var(--color-white)",
         black: "var(--color-black)",
       },

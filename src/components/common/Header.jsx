@@ -49,13 +49,13 @@ const TRAFFIC_LIGHTS = [
 /** Hover handlers shared by dropdown menu items in the desktop user menu. */
 const dropdownHoverHandlers = {
   onMouseEnter: (e) => {
-    e.currentTarget.style.backgroundColor = "rgba(220, 38, 38, 0.2)";
-    e.currentTarget.style.color = "var(--color-white)";
+    e.currentTarget.style.backgroundColor = "var(--color-gray-100)";
+    e.currentTarget.style.color = "var(--color-gray-900)";
     e.currentTarget.style.borderColor = "var(--color-red-500)";
   },
   onMouseLeave: (e) => {
     e.currentTarget.style.backgroundColor = "transparent";
-    e.currentTarget.style.color = "var(--color-gray-300)";
+    e.currentTarget.style.color = "var(--color-gray-700)";
     e.currentTarget.style.borderColor = "transparent";
   },
 };
@@ -64,7 +64,7 @@ const DROPDOWN_ITEM_CLASS =
   "w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4";
 
 const DROPDOWN_ITEM_STYLE = {
-  color: "var(--color-gray-300)",
+  color: "var(--color-gray-700)",
   borderColor: "transparent",
 };
 
@@ -127,19 +127,20 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50"
+      className="fixed top-0 left-0 right-0 z-50 border-b"
       style={{
-        backgroundColor: "var(--color-navy-900)",
+        background: "linear-gradient(to bottom, #e8ecf1, #d5dbe3)",
+        borderColor: "var(--color-gray-300)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center gap-6">
             <div
-              className="hidden sm:flex gap-2 p-3 rounded-xl border backdrop-blur-sm"
+              className="hidden sm:flex gap-2 p-3 rounded-xl border"
               style={{
-                backgroundColor: "rgba(10, 25, 41, 0.8)",
-                borderColor: "var(--color-navy-700)",
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                borderColor: "var(--color-gray-300)",
               }}
             >
               {TRAFFIC_LIGHTS.map((colors, i) => (
@@ -164,52 +165,53 @@ const Header = () => {
                 alt="Speedway 146 Logo"
                 className="h-14 w-14 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"
                 style={{
-                  filter: "drop-shadow(0 0 15px rgba(220, 38, 38, 0.5))",
+                  filter: "drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))",
                 }}
               />
             </Link>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                onClick={scrollToTop}
-                className="px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all duration-300 relative"
-                style={{
-                  color:
-                    location.pathname === item.path
-                      ? "var(--color-red-500)"
-                      : "var(--color-gray-300)",
-                  backgroundColor:
-                    location.pathname === item.path
-                      ? "rgba(220, 38, 38, 0.1)"
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  onClick={scrollToTop}
+                  className="px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all duration-300"
+                  style={{
+                    color: isActive
+                      ? "var(--color-red-600)"
+                      : "var(--color-gray-600)",
+                    backgroundColor: isActive
+                      ? "rgba(220, 38, 38, 0.08)"
                       : "transparent",
-                  border:
-                    location.pathname === item.path
-                      ? "1px solid var(--color-red-800)"
+                    border: isActive
+                      ? "1px solid rgba(220, 38, 38, 0.2)"
                       : "1px solid transparent",
-                }}
-                onMouseEnter={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.color = "var(--color-white)";
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(220, 38, 38, 0.15)";
-                    e.currentTarget.style.borderColor = "var(--color-red-900)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (location.pathname !== item.path) {
-                    e.currentTarget.style.color = "var(--color-gray-300)";
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.borderColor = "transparent";
-                  }
-                }}
-              >
-                {item.name}
-              </Link>
-            ))}
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = "var(--color-gray-900)";
+                      e.currentTarget.style.backgroundColor =
+                        "rgba(255, 255, 255, 0.7)";
+                      e.currentTarget.style.borderColor =
+                        "var(--color-gray-300)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = "var(--color-gray-600)";
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.borderColor = "transparent";
+                    }
+                  }}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -217,22 +219,24 @@ const Header = () => {
               to="/cart"
               className="relative px-4 py-2.5 rounded-lg transition-all duration-300 border"
               style={{
-                backgroundColor: "var(--color-navy-800)",
-                borderColor: "var(--color-navy-600)",
-                color: "var(--color-white)",
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                borderColor: "var(--color-gray-300)",
+                color: "var(--color-gray-700)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-navy-700)";
-                e.currentTarget.style.borderColor = "var(--color-red-700)";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(255, 255, 255, 0.9)";
+                e.currentTarget.style.borderColor = "var(--color-gray-400)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-navy-800)";
-                e.currentTarget.style.borderColor = "var(--color-navy-600)";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(255, 255, 255, 0.6)";
+                e.currentTarget.style.borderColor = "var(--color-gray-300)";
               }}
             >
               <ShoppingCart
                 className="h-5 w-5"
-                style={{ color: "var(--color-red-500)" }}
+                style={{ color: "var(--color-gray-500)" }}
               />
               {getTotalItems() > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
@@ -247,24 +251,24 @@ const Header = () => {
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-3 px-5 py-2.5 rounded-lg transition-all duration-300 border"
                   style={{
-                    backgroundColor: "var(--color-navy-800)",
-                    borderColor: "var(--color-navy-600)",
-                    color: "var(--color-white)",
+                    backgroundColor: "rgba(255, 255, 255, 0.6)",
+                    borderColor: "var(--color-gray-300)",
+                    color: "var(--color-gray-700)",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor =
-                      "var(--color-navy-700)";
-                    e.currentTarget.style.borderColor = "var(--color-red-700)";
+                      "rgba(255, 255, 255, 0.9)";
+                    e.currentTarget.style.borderColor = "var(--color-gray-400)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor =
-                      "var(--color-navy-800)";
-                    e.currentTarget.style.borderColor = "var(--color-navy-600)";
+                      "rgba(255, 255, 255, 0.6)";
+                    e.currentTarget.style.borderColor = "var(--color-gray-300)";
                   }}
                 >
                   <User
                     className="h-5 w-5"
-                    style={{ color: "var(--color-red-500)" }}
+                    style={{ color: "var(--color-gray-500)" }}
                   />
                   <span className="text-sm font-medium max-w-[150px] truncate">
                     {user.email}
@@ -275,8 +279,8 @@ const Header = () => {
                   <div
                     className="absolute right-0 mt-3 w-56 rounded-lg shadow-2xl overflow-hidden border"
                     style={{
-                      backgroundColor: "var(--color-navy-800)",
-                      borderColor: "var(--color-navy-600)",
+                      backgroundColor: "var(--color-white)",
+                      borderColor: "var(--color-gray-200)",
                     }}
                   >
                     <Link
@@ -333,12 +337,12 @@ const Header = () => {
                 <Link
                   to="/login"
                   className="px-5 py-2.5 text-sm font-bold transition-all duration-300 hover:scale-105"
-                  style={{ color: "var(--color-gray-300)" }}
+                  style={{ color: "var(--color-gray-600)" }}
                   onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "var(--color-white)")
+                    (e.currentTarget.style.color = "var(--color-gray-900)")
                   }
                   onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "var(--color-gray-300)")
+                    (e.currentTarget.style.color = "var(--color-gray-600)")
                   }
                 >
                   Sign In
@@ -376,12 +380,12 @@ const Header = () => {
               to="/cart"
               className="relative p-3 rounded-lg transition-all duration-300"
               style={{
-                color: "var(--color-white)",
+                color: "var(--color-gray-700)",
               }}
             >
               <ShoppingCart
                 className="h-6 w-6"
-                style={{ color: "var(--color-red-500)" }}
+                style={{ color: "var(--color-gray-500)" }}
               />
               {getTotalItems() > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -390,12 +394,11 @@ const Header = () => {
               )}
             </Link>
             <button
-              className="p-3 rounded-lg transition-all duration-300 border"
+              className="p-3 rounded-lg transition-all duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
               style={{
-                color: "var(--color-white)",
-                borderColor: "transparent",
+                color: "var(--color-gray-700)",
               }}
             >
               {isMenuOpen ? (
@@ -410,7 +413,7 @@ const Header = () => {
 
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
@@ -420,13 +423,13 @@ const Header = () => {
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{
-          backgroundColor: "var(--color-navy-900)",
+          background: "linear-gradient(to bottom, #e8ecf1, #d5dbe3)",
         }}
       >
         <div className="flex flex-col h-full">
           <div
             className="flex items-center justify-between p-4 border-b"
-            style={{ borderColor: "var(--color-navy-700)" }}
+            style={{ borderColor: "var(--color-gray-300)" }}
           >
             <Link
               to="/"
@@ -446,49 +449,50 @@ const Header = () => {
             <button
               onClick={() => setIsMenuOpen(false)}
               className="p-2 rounded-lg"
-              style={{ color: "var(--color-gray-400)" }}
+              style={{ color: "var(--color-gray-500)" }}
             >
               <X className="h-6 w-6" />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200"
-                style={{
-                  color:
-                    location.pathname === item.path
-                      ? "var(--color-red-500)"
-                      : "var(--color-gray-300)",
-                  backgroundColor:
-                    location.pathname === item.path
-                      ? "rgba(220, 38, 38, 0.15)"
+          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className="block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200"
+                  style={{
+                    color: isActive
+                      ? "var(--color-red-600)"
+                      : "var(--color-gray-700)",
+                    backgroundColor: isActive
+                      ? "rgba(220, 38, 38, 0.08)"
                       : "transparent",
-                }}
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  scrollToTop();
-                }}
-              >
-                {item.name}
-              </Link>
-            ))}
+                  }}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    scrollToTop();
+                  }}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </nav>
 
           <div
             className="p-4 border-t space-y-3"
-            style={{ borderColor: "var(--color-navy-700)" }}
+            style={{ borderColor: "var(--color-gray-300)" }}
           >
             {user ? (
               <>
                 <div
                   className="px-4 py-2 text-sm truncate rounded-lg"
                   style={{
-                    color: "var(--color-gray-400)",
-                    backgroundColor: "rgba(31, 41, 55, 0.5)",
+                    color: "var(--color-gray-500)",
+                    backgroundColor: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
                   {user.email}
@@ -498,8 +502,8 @@ const Header = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                   style={{
-                    color: "var(--color-gray-300)",
-                    backgroundColor: "var(--color-navy-800)",
+                    color: "var(--color-gray-700)",
+                    backgroundColor: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
                   <ShoppingBag className="h-5 w-5" />
@@ -511,8 +515,8 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                     style={{
-                      color: "var(--color-gray-300)",
-                      backgroundColor: "var(--color-navy-800)",
+                      color: "var(--color-gray-700)",
+                      backgroundColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <Shield className="h-5 w-5" />
@@ -525,8 +529,8 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                     style={{
-                      color: "var(--color-gray-300)",
-                      backgroundColor: "var(--color-navy-800)",
+                      color: "var(--color-gray-700)",
+                      backgroundColor: "rgba(255, 255, 255, 0.5)",
                     }}
                   >
                     <BarChart3 className="h-5 w-5" />
@@ -540,8 +544,8 @@ const Header = () => {
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
                   style={{
-                    color: "var(--color-red-400)",
-                    backgroundColor: "rgba(220, 38, 38, 0.15)",
+                    color: "var(--color-red-600)",
+                    backgroundColor: "rgba(220, 38, 38, 0.08)",
                   }}
                 >
                   <LogOut className="h-5 w-5" />
@@ -555,8 +559,8 @@ const Header = () => {
                   className="block text-center px-4 py-3 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                   style={{
-                    color: "var(--color-gray-300)",
-                    backgroundColor: "var(--color-navy-800)",
+                    color: "var(--color-gray-700)",
+                    backgroundColor: "rgba(255, 255, 255, 0.6)",
                   }}
                 >
                   Sign In

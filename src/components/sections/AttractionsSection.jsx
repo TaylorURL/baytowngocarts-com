@@ -8,8 +8,8 @@ import SectionHeading from "../common/SectionHeading.jsx";
  */
 
 const COLOR_STYLES = {
-  red: { badge: "bg-red-600", link: "text-red-600 hover:text-red-700" },
-  navy: { badge: "bg-navy-900", link: "text-navy-900 hover:text-navy-800" },
+  red: { badge: "bg-gray-600", link: "text-gray-600 hover:text-gray-700" },
+  navy: { badge: "bg-gray-700", link: "text-gray-700 hover:text-gray-800" },
 };
 
 const ATTRACTIONS = [
@@ -61,7 +61,7 @@ const AttractionsSection = () => (
           ) => (
             <div
               key={title}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-red-400 transition-all duration-300"
+              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-gray-400 transition-all duration-300"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
@@ -79,7 +79,7 @@ const AttractionsSection = () => (
               </div>
 
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-navy-900 mb-4">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
                   {title}
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
