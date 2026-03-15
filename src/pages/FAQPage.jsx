@@ -147,7 +147,7 @@ const FAQPage = () => {
 
       <section
         ref={stickyRef}
-        className={`py-4 border-b-2 sticky top-20 z-40 transition-all duration-300 ${
+        className={`py-4 border-b-2 sticky top-20 lg:top-24 z-40 transition-all duration-300 ${
           isSticky ? "bg-gray-800 border-red-600" : "bg-white border-gray-100"
         }`}
       >

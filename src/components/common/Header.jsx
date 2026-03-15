@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
+  ChevronDown,
+  Clock,
   LogOut,
+  MapPin,
   Menu,
+  Phone,
   Shield,
   ShoppingBag,
   ShoppingCart,
@@ -14,64 +18,60 @@ import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
 
-/**
- * Returns inline styles for a traffic light dot based on whether it is active.
- * @param {boolean} isActive - Whether this light is currently illuminated.
- * @param {object} colors - `{ active, inactive, border, glow }` CSS color values.
- */
-const trafficLightStyle = (isActive, { active, inactive, border, glow }) => ({
-  backgroundColor: isActive ? active : inactive,
-  border: isActive ? "none" : `1px solid ${border}`,
-  boxShadow: isActive ? `0 0 20px ${glow}` : "none",
-});
-
-const TRAFFIC_LIGHTS = [
-  {
-    active: "var(--color-red-500)",
-    inactive: "rgba(127, 29, 29, 0.3)",
-    border: "var(--color-red-900)",
-    glow: "rgba(239, 68, 68, 1)",
-  },
-  {
-    active: "var(--color-yellow-400)",
-    inactive: "rgba(161, 98, 7, 0.3)",
-    border: "rgba(161, 98, 7, 0.5)",
-    glow: "rgba(250, 204, 21, 1)",
-  },
-  {
-    active: "var(--color-green-600)",
-    inactive: "rgba(21, 128, 61, 0.3)",
-    border: "var(--color-green-700)",
-    glow: "rgba(22, 163, 74, 1)",
-  },
+const LIGHT_COLORS = [
+  { on: "#ef4444", glow: "rgba(239,68,68,0.8)", dim: "#3d1111" },
+  { on: "#facc15", glow: "rgba(250,204,21,0.8)", dim: "#3d2e05" },
+  { on: "#16a34a", glow: "rgba(22,163,74,0.8)", dim: "#0a3d1a" },
 ];
 
-/** Hover handlers shared by dropdown menu items in the desktop user menu. */
-const dropdownHoverHandlers = {
-  onMouseEnter: (e) => {
-    e.currentTarget.style.backgroundColor = "var(--color-gray-100)";
-    e.currentTarget.style.color = "var(--color-gray-900)";
-    e.currentTarget.style.borderColor = "var(--color-red-500)";
-  },
-  onMouseLeave: (e) => {
-    e.currentTarget.style.backgroundColor = "transparent";
-    e.currentTarget.style.color = "var(--color-gray-700)";
-    e.currentTarget.style.borderColor = "transparent";
-  },
-};
+const NAV_ITEMS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Pricing", path: "/pricing" },
+  { name: "Events", path: "/events" },
+  { name: "Contact", path: "/contact" },
+  { name: "FAQ", path: "/faq" },
+];
 
-const DROPDOWN_ITEM_CLASS =
-  "w-full flex items-center gap-3 px-5 py-4 text-sm font-medium transition-all duration-300 border-l-4";
+const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
+  <div className="flex items-center" style={{ gap: `${gap * 4}px` }}>
+    {LIGHT_COLORS.map((c, i) => {
+      const lit = activeLight === i;
+      return (
+        <div
+          key={i}
+          className="relative flex items-center justify-center"
+          style={{ width: size + 6, height: size + 6 }}
+        >
+          {lit && (
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: size + 10,
+                height: size + 10,
+                backgroundColor: c.glow,
+                filter: "blur(5px)",
+                opacity: 0.5,
+              }}
+            />
+          )}
+          <div
+            className="relative rounded-full transition-all duration-500"
+            style={{
+              width: size,
+              height: size,
+              backgroundColor: lit ? c.on : c.dim,
+              boxShadow: lit
+                ? `0 0 4px 1px ${c.glow}, inset 0 -1px 2px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.2)`
+                : "inset 0 1px 3px rgba(0,0,0,0.5)",
+            }}
+          />
+        </div>
+      );
+    })}
+  </div>
+);
 
-const DROPDOWN_ITEM_STYLE = {
-  color: "var(--color-gray-700)",
-  borderColor: "transparent",
-};
-
-/**
- * Site-wide fixed header with animated traffic light decoration, responsive
- * navigation, shopping cart badge, and authenticated user dropdown menu.
- */
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -83,22 +83,17 @@ const Header = () => {
   const { getTotalItems } = useCart();
 
   useEffect(() => {
-    const lightInterval = setInterval(() => {
-      setActiveLight((prev) => (prev + 1) % 3);
-    }, 1000);
-
-    return () => clearInterval(lightInterval);
+    const id = setInterval(() => setActiveLight((p) => (p + 1) % 3), 1000);
+    return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target))
         setIsUserMenuOpen(false);
-      }
     };
-    if (isUserMenuOpen) {
+    if (isUserMenuOpen)
       document.addEventListener("mousedown", handleClickOutside);
-    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isUserMenuOpen]);
 
@@ -107,329 +102,285 @@ const Header = () => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const handleSignOut = async () => {
     await signOut();
     setIsUserMenuOpen(false);
   };
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Pricing", path: "/pricing" },
-    { name: "Events", path: "/events" },
-    { name: "Contact", path: "/contact" },
-    { name: "FAQ", path: "/faq" },
-  ];
+  const cartCount = getTotalItems();
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 border-b"
-      style={{
-        background: "linear-gradient(to bottom, #e8ecf1, #d5dbe3)",
-        borderColor: "var(--color-gray-300)",
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex items-center gap-6">
-            <div
-              className="hidden sm:flex gap-2 p-3 rounded-xl border"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.6)",
-                borderColor: "var(--color-gray-300)",
-              }}
-            >
-              {TRAFFIC_LIGHTS.map((colors, i) => (
-                <div key={i} className="flex flex-col gap-1.5">
-                  {[0, 1].map((j) => (
-                    <div
-                      key={j}
-                      className={`w-3 h-3 rounded-full transition-all duration-500 ${activeLight === i ? "animate-pulse" : ""}`}
-                      style={trafficLightStyle(activeLight === i, colors)}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      {/* ─── Top Bar: Silver — Logo, info, cart, auth ─── */}
+      <div
+        style={{
+          background: "linear-gradient(to bottom, #edf0f4, #d8dce4)",
+          borderBottom: "1px solid rgba(180, 188, 200, 0.3)",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-[68px]">
+            {/* Left: Logo + Name */}
             <Link
               to="/"
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-4 group"
               onClick={scrollToTop}
             >
               <img
                 src="/images/logo.png"
                 alt="Speedway 146 Logo"
-                className="h-14 w-14 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"
-                style={{
-                  filter: "drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))",
-                }}
+                className="h-14 w-14 object-contain transition-transform duration-500 group-hover:scale-105"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.15))" }}
               />
-            </Link>
-          </div>
-
-          <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={scrollToTop}
-                  className="px-5 py-2.5 rounded-lg text-sm font-bold tracking-wide transition-all duration-300"
-                  style={{
-                    color: isActive
-                      ? "var(--color-red-600)"
-                      : "var(--color-gray-600)",
-                    backgroundColor: isActive
-                      ? "rgba(220, 38, 38, 0.08)"
-                      : "transparent",
-                    border: isActive
-                      ? "1px solid rgba(220, 38, 38, 0.2)"
-                      : "1px solid transparent",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.color = "var(--color-gray-900)";
-                      e.currentTarget.style.backgroundColor =
-                        "rgba(255, 255, 255, 0.7)";
-                      e.currentTarget.style.borderColor =
-                        "var(--color-gray-300)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) {
-                      e.currentTarget.style.color = "var(--color-gray-600)";
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.borderColor = "transparent";
-                    }
-                  }}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <Link
-              to="/cart"
-              className="relative px-4 py-2.5 rounded-lg transition-all duration-300 border"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.6)",
-                borderColor: "var(--color-gray-300)",
-                color: "var(--color-gray-700)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  "rgba(255, 255, 255, 0.9)";
-                e.currentTarget.style.borderColor = "var(--color-gray-400)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  "rgba(255, 255, 255, 0.6)";
-                e.currentTarget.style.borderColor = "var(--color-gray-300)";
-              }}
-            >
-              <ShoppingCart
-                className="h-5 w-5"
-                style={{ color: "var(--color-gray-500)" }}
-              />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                  {getTotalItems()}
+              <div className="hidden sm:block">
+                <span className="block text-xl font-bold text-gray-800 leading-tight tracking-wide">
+                  SPEEDWAY 146
                 </span>
-              )}
+                <span className="block text-[11px] font-medium text-gray-400 tracking-widest uppercase">
+                  Go-Kart Racing & Family Fun
+                </span>
+              </div>
             </Link>
 
-            {user ? (
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-3 px-5 py-2.5 rounded-lg transition-all duration-300 border"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.6)",
-                    borderColor: "var(--color-gray-300)",
-                    color: "var(--color-gray-700)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 0.9)";
-                    e.currentTarget.style.borderColor = "var(--color-gray-400)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 255, 255, 0.6)";
-                    e.currentTarget.style.borderColor = "var(--color-gray-300)";
-                  }}
-                >
-                  <User
-                    className="h-5 w-5"
-                    style={{ color: "var(--color-gray-500)" }}
-                  />
-                  <span className="text-sm font-medium max-w-[150px] truncate">
-                    {user.email}
+            {/* Center: Contact Info (desktop only) */}
+            <div className="hidden xl:flex items-center gap-8 text-gray-500">
+              <div className="flex items-center gap-2">
+                <Phone className="h-3.5 w-3.5" />
+                <span className="text-xs font-semibold tracking-wide">
+                  (346) 932-1266
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-3.5 w-3.5" />
+                <span className="text-xs font-semibold tracking-wide">
+                  6750 N TX-146, Baytown, TX
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-3.5 w-3.5" />
+                <span className="text-xs font-semibold tracking-wide">
+                  Thu–Sun
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Cart + Auth */}
+            <div className="hidden lg:flex items-center gap-3">
+              <Link
+                to="/cart"
+                className="relative p-2.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-white/50 transition-all duration-200"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-white/80">
+                    {cartCount}
                   </span>
-                </button>
-
-                {isUserMenuOpen && (
-                  <div
-                    className="absolute right-0 mt-3 w-56 rounded-lg shadow-2xl overflow-hidden border"
-                    style={{
-                      backgroundColor: "var(--color-white)",
-                      borderColor: "var(--color-gray-200)",
-                    }}
-                  >
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className={DROPDOWN_ITEM_CLASS}
-                      style={DROPDOWN_ITEM_STYLE}
-                      {...dropdownHoverHandlers}
-                    >
-                      <ShoppingBag className="h-5 w-5" />
-                      <span>My Purchases</span>
-                    </Link>
-
-                    {isStaff && (
-                      <Link
-                        to="/staff"
-                        onClick={() => setIsUserMenuOpen(false)}
-                        className={DROPDOWN_ITEM_CLASS}
-                        style={DROPDOWN_ITEM_STYLE}
-                        {...dropdownHoverHandlers}
-                      >
-                        <Shield className="h-5 w-5" />
-                        <span>Staff Panel</span>
-                      </Link>
-                    )}
-
-                    {isStaff && (
-                      <Link
-                        to="/traffic"
-                        onClick={() => setIsUserMenuOpen(false)}
-                        className={DROPDOWN_ITEM_CLASS}
-                        style={DROPDOWN_ITEM_STYLE}
-                        {...dropdownHoverHandlers}
-                      >
-                        <BarChart3 className="h-5 w-5" />
-                        <span>Site Traffic</span>
-                      </Link>
-                    )}
-
-                    <button
-                      onClick={handleSignOut}
-                      className={DROPDOWN_ITEM_CLASS}
-                      style={DROPDOWN_ITEM_STYLE}
-                      {...dropdownHoverHandlers}
-                    >
-                      <LogOut className="h-5 w-5" />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
                 )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-4">
-                <Link
-                  to="/login"
-                  className="px-5 py-2.5 text-sm font-bold transition-all duration-300 hover:scale-105"
-                  style={{ color: "var(--color-gray-600)" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "var(--color-gray-900)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "var(--color-gray-600)")
-                  }
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-7 py-3 rounded-lg font-bold text-sm transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 border"
-                  style={{
-                    backgroundColor: "var(--color-red-600)",
-                    color: "var(--color-white)",
-                    borderColor: "var(--color-red-700)",
-                    boxShadow: "0 4px 14px 0 rgba(220, 38, 38, 0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "var(--color-red-500)";
-                    e.currentTarget.style.boxShadow =
-                      "0 8px 20px 0 rgba(220, 38, 38, 0.6)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "var(--color-red-600)";
-                    e.currentTarget.style.boxShadow =
-                      "0 4px 14px 0 rgba(220, 38, 38, 0.4)";
-                  }}
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
-          </div>
+              </Link>
 
-          <div className="flex items-center gap-2 lg:hidden">
-            <Link
-              to="/cart"
-              className="relative p-3 rounded-lg transition-all duration-300"
-              style={{
-                color: "var(--color-gray-700)",
-              }}
-            >
-              <ShoppingCart
-                className="h-6 w-6"
-                style={{ color: "var(--color-gray-500)" }}
-              />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {getTotalItems()}
-                </span>
-              )}
-            </Link>
-            <button
-              className="p-3 rounded-lg transition-all duration-300"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
-              style={{
-                color: "var(--color-gray-700)",
-              }}
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
+              <div className="w-px h-6 bg-gray-400/25" />
+
+              {user ? (
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-white/50 transition-all duration-200"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gray-300/50 flex items-center justify-center">
+                      <User className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <span className="text-sm font-semibold max-w-[120px] truncate hidden xl:block">
+                      {user.email?.split("@")[0]}
+                    </span>
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {isUserMenuOpen && (
+                    <div
+                      className="absolute right-0 mt-2 w-60 rounded-xl overflow-hidden border border-gray-200/80 bg-white"
+                      style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.12)" }}
+                    >
+                      <div className="px-5 py-3.5 border-b border-gray-100 bg-gray-50/50">
+                        <p className="text-xs text-gray-400 font-medium">
+                          Signed in as
+                        </p>
+                        <p className="text-sm text-gray-700 font-semibold truncate mt-0.5">
+                          {user.email}
+                        </p>
+                      </div>
+                      <div className="py-1.5">
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="flex items-center gap-3 px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                        >
+                          <ShoppingBag className="h-4 w-4" />
+                          My Purchases
+                        </Link>
+                        {isStaff && (
+                          <Link
+                            to="/staff"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                          >
+                            <Shield className="h-4 w-4" />
+                            Staff Panel
+                          </Link>
+                        )}
+                        {isStaff && (
+                          <Link
+                            to="/traffic"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-5 py-2.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+                          >
+                            <BarChart3 className="h-4 w-4" />
+                            Site Traffic
+                          </Link>
+                        )}
+                      </div>
+                      <div className="border-t border-gray-100 py-1.5">
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-3 px-5 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : (
-                <Menu className="h-6 w-6" />
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="px-5 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors duration-200"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="px-6 py-2.5 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-500 transition-all duration-200 hover:shadow-lg hover:shadow-red-600/25"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
               )}
-            </button>
+            </div>
+
+            {/* Mobile: Cart + Hamburger */}
+            <div className="flex items-center gap-1 lg:hidden">
+              <Link
+                to="/cart"
+                className="relative p-2.5 rounded-lg text-gray-600"
+              >
+                <ShoppingCart className="h-6 w-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-red-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-white/80">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <button
+                className="p-2.5 rounded-lg text-gray-600 hover:bg-white/50 transition-colors"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* ─── Bottom Bar: Navy — Nav links with traffic lights ─── */}
+      <div
+        className="hidden lg:block"
+        style={{
+          background: "linear-gradient(to bottom, #1e293b, #0f172a)",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center">
+            {/* Traffic lights — left */}
+            <TrafficLights activeLight={activeLight} size={10} gap={1.5} />
+
+            <div className="w-px h-5 bg-white/10 mx-5" />
+
+            {/* Nav links */}
+            <nav className="flex items-center">
+              {NAV_ITEMS.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    onClick={scrollToTop}
+                    className="relative group"
+                  >
+                    <span
+                      className={`block px-5 py-3 text-sm font-bold tracking-widest uppercase transition-colors duration-200 ${
+                        isActive
+                          ? "text-white"
+                          : "text-gray-400 group-hover:text-gray-200"
+                      }`}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full transition-all duration-300"
+                      style={{
+                        width: isActive ? "60%" : "0%",
+                        backgroundColor: "#ef4444",
+                      }}
+                    />
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="w-px h-5 bg-white/10 mx-5" />
+
+            {/* Traffic lights — right */}
+            <TrafficLights activeLight={activeLight} size={10} gap={1.5} />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
+      {/* Mobile drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden transform transition-transform duration-300 ease-out ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{
-          background: "linear-gradient(to bottom, #e8ecf1, #d5dbe3)",
+          background: "linear-gradient(180deg, #f0f2f5 0%, #e2e6eb 100%)",
+          boxShadow: isMenuOpen ? "-8px 0 30px rgba(0,0,0,0.1)" : "none",
         }}
       >
         <div className="flex flex-col h-full">
+          {/* Drawer header */}
           <div
-            className="flex items-center justify-between p-4 border-b"
-            style={{ borderColor: "var(--color-gray-300)" }}
+            className="flex items-center justify-between px-5 py-4"
+            style={{
+              background: "linear-gradient(to bottom, #1e293b, #0f172a)",
+            }}
           >
             <Link
               to="/"
@@ -437,7 +388,7 @@ const Header = () => {
                 setIsMenuOpen(false);
                 scrollToTop();
               }}
-              className="flex items-center gap-2"
+              className="flex items-center gap-3"
             >
               <img
                 src="/images/logo.png"
@@ -445,96 +396,85 @@ const Header = () => {
                 loading="eager"
                 className="h-10 w-10 object-contain"
               />
+              <div>
+                <span className="block text-sm font-bold text-white tracking-wide">
+                  SPEEDWAY 146
+                </span>
+                <div className="mt-1">
+                  <TrafficLights activeLight={activeLight} size={6} gap={1} />
+                </div>
+              </div>
             </Link>
             <button
               onClick={() => setIsMenuOpen(false)}
-              className="p-2 rounded-lg"
-              style={{ color: "var(--color-gray-500)" }}
+              className="p-2 rounded-lg text-gray-400 hover:text-white transition-colors"
             >
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-            {navItems.map((item) => {
+          {/* Nav links */}
+          <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-0.5">
+            {NAV_ITEMS.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200"
-                  style={{
-                    color: isActive
-                      ? "var(--color-red-600)"
-                      : "var(--color-gray-700)",
-                    backgroundColor: isActive
-                      ? "rgba(220, 38, 38, 0.08)"
-                      : "transparent",
-                  }}
+                  className={`block px-4 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase transition-all duration-200 ${
+                    isActive
+                      ? "text-white bg-gray-800 shadow-sm"
+                      : "text-gray-500 hover:text-gray-800 hover:bg-white/40"
+                  }`}
                   onClick={() => {
                     setIsMenuOpen(false);
                     scrollToTop();
                   }}
                 >
-                  {item.name}
+                  <span className="flex items-center gap-3">
+                    {isActive && (
+                      <span className="w-1 h-4 rounded-full bg-red-500" />
+                    )}
+                    {item.name}
+                  </span>
                 </Link>
               );
             })}
           </nav>
 
-          <div
-            className="p-4 border-t space-y-3"
-            style={{ borderColor: "var(--color-gray-300)" }}
-          >
+          {/* Drawer footer */}
+          <div className="p-4 border-t border-gray-300/50 space-y-2">
             {user ? (
               <>
-                <div
-                  className="px-4 py-2 text-sm truncate rounded-lg"
-                  style={{
-                    color: "var(--color-gray-500)",
-                    backgroundColor: "rgba(255, 255, 255, 0.5)",
-                  }}
-                >
+                <div className="px-4 py-2.5 text-xs text-gray-400 font-medium truncate bg-white/40 rounded-lg">
                   {user.email}
                 </div>
                 <Link
                   to="/dashboard"
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
-                  style={{
-                    color: "var(--color-gray-700)",
-                    backgroundColor: "rgba(255, 255, 255, 0.5)",
-                  }}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 hover:bg-white/50 transition-colors"
                 >
-                  <ShoppingBag className="h-5 w-5" />
-                  <span>My Purchases</span>
+                  <ShoppingBag className="h-4 w-4" />
+                  My Purchases
                 </Link>
                 {isStaff && (
                   <Link
                     to="/staff"
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
-                    style={{
-                      color: "var(--color-gray-700)",
-                      backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 hover:bg-white/50 transition-colors"
                   >
-                    <Shield className="h-5 w-5" />
-                    <span>Staff Panel</span>
+                    <Shield className="h-4 w-4" />
+                    Staff Panel
                   </Link>
                 )}
                 {isStaff && (
                   <Link
                     to="/traffic"
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
-                    style={{
-                      color: "var(--color-gray-700)",
-                      backgroundColor: "rgba(255, 255, 255, 0.5)",
-                    }}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 hover:bg-white/50 transition-colors"
                   >
-                    <BarChart3 className="h-5 w-5" />
-                    <span>Site Traffic</span>
+                    <BarChart3 className="h-4 w-4" />
+                    Site Traffic
                   </Link>
                 )}
                 <button
@@ -542,41 +482,29 @@ const Header = () => {
                     handleSignOut();
                     setIsMenuOpen(false);
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-semibold"
-                  style={{
-                    color: "var(--color-red-600)",
-                    backgroundColor: "rgba(220, 38, 38, 0.08)",
-                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
                 >
-                  <LogOut className="h-5 w-5" />
-                  <span>Sign Out</span>
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
                 </button>
               </>
             ) : (
-              <>
+              <div className="flex gap-2">
                 <Link
                   to="/login"
-                  className="block text-center px-4 py-3 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
-                  style={{
-                    color: "var(--color-gray-700)",
-                    backgroundColor: "rgba(255, 255, 255, 0.6)",
-                  }}
+                  className="flex-1 text-center px-4 py-3 rounded-xl text-sm font-bold text-gray-600 bg-white/60 hover:bg-white/80 transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="block text-center px-4 py-3 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
-                  style={{
-                    backgroundColor: "var(--color-red-600)",
-                    color: "var(--color-white)",
-                  }}
+                  className="flex-1 text-center px-4 py-3 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-500 transition-colors"
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>

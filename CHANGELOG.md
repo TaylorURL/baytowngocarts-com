@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6] - 2026-03-15
+
+- Redesigned the site header with a two-bar layout: a silver top bar for logo, contact info, and auth, and a dark navy bottom bar for navigation links
+- Added contact info (phone number, address, hours) to the desktop header using new Clock, MapPin, and Phone icons
+- Replaced the old traffic light grid with a new TrafficLights component featuring glow effects and a more polished appearance, positioned on both sides of the nav bar
+- Moved navigation items to a module-level constant and restyled nav links with uppercase tracking, white-on-dark text, and an animated red underline indicator
+- Redesigned the user dropdown menu with a "Signed in as" header section and cleaner layout
+- Added a ChevronDown icon to the user menu button that rotates when the menu is open
+- Simplified the mobile menu drawer with a dark-themed header, updated styling, and added traffic lights decoration
+- Replaced inline hover style handlers throughout with Tailwind utility classes for cleaner hover/focus states
+- Updated the mobile overlay to include a backdrop blur effect
+- Changed the displayed user identifier from full email to just the username portion before the @ symbol
+- Updated the FAQ page title from "Frequently Asked Questions" to "FAQ"
+
 ## [2.5] - 2026-03-15
 
 - Added Privacy Policy page with full policy content at /privacy
