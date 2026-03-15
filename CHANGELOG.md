@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9] - 2026-03-15
+
+- Redesigned the Staff Panel hero section with a taller layout, vertical centering, and a crosshatch pattern overlay
+- Replaced the gradient overlay with increased background image opacity for better visual impact
+- Swapped the Shield icon header for an "ADMIN" badge pill with a split-color "Staff Panel" heading
+- Added fade-up animation to the hero content area
+- Enlarged heading and subtitle text with improved responsive sizing and spacing
+
 ## [2.8] - 2026-03-15
 
 - Fixed sticky section positioning on FAQ page by using precise pixel values (top-[58px] and lg:top-[112px]) instead of Tailwind spacing classes
