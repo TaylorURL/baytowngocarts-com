@@ -68,11 +68,7 @@ serve(async (req) => {
     if (event.type === "checkout.session.completed") {
       console.log("Processing checkout.session.completed");
       const session = event.data.object;
-      console.log("User ID from metadata:", session.metadata?.user_id);
-      console.log(
-        "Customer email:",
-        session.customer_email || session.customer_details?.email,
-      );
+      console.log("Session metadata and customer details present");
 
       const lineItems = await stripe.checkout.sessions.listLineItems(
         session.id,
@@ -93,7 +89,7 @@ serve(async (req) => {
       console.log("Items to save:", items.length);
 
       const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-      console.log("Order number:", orderNumber);
+      console.log("Order number generated");
 
       const purchaseData = {
         user_id: session.metadata?.user_id,
@@ -121,7 +117,7 @@ serve(async (req) => {
         });
       }
 
-      console.log("Purchase saved successfully", data);
+      console.log("Purchase saved successfully");
     } else {
       console.log("Ignoring event type:", event.type);
     }
