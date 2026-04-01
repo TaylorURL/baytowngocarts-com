@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1] - 2026-04-01
+
+- Reformatted JSON error response objects across the create-checkout and stripe-webhook edge functions for consistent multi-line style
+
 ## [3.0] - 2026-04-01
 
 - Reformatted error response objects in the create-checkout edge function for improved readability — headers and status are now on separate lines across all four validation error responses

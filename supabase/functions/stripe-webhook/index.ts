@@ -42,7 +42,9 @@ serve(async (req) => {
   if (!signature || !webhookSecret) {
     console.error("Missing signature or webhook secret");
     return new Response(
-      JSON.stringify({ error: "An internal error occurred. Please try again." }),
+      JSON.stringify({
+        error: "An internal error occurred. Please try again.",
+      }),
       {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -100,7 +102,9 @@ serve(async (req) => {
       if (error) {
         console.error("Error saving purchase:", error);
         return new Response(
-          JSON.stringify({ error: "An internal error occurred. Please try again." }),
+          JSON.stringify({
+            error: "An internal error occurred. Please try again.",
+          }),
           {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -116,7 +120,9 @@ serve(async (req) => {
   } catch (err) {
     console.error("Webhook error:", err);
     return new Response(
-      JSON.stringify({ error: "An internal error occurred. Please try again." }),
+      JSON.stringify({
+        error: "An internal error occurred. Please try again.",
+      }),
       {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
