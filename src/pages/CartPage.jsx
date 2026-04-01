@@ -96,7 +96,7 @@ export default function CartPage() {
       );
 
       const response = await fetch(
-        "https://ggkqadmnvrjsewnazdxj.supabase.co/functions/v1/create-checkout",
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout`,
         {
           method: "POST",
           headers: {
