@@ -9,8 +9,10 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
   httpClient: Stripe.createFetchHttpClient(),
 });
 
+const ALLOWED_ORIGIN = "https://baytowngocarts.com";
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
@@ -31,6 +33,42 @@ serve(async (req) => {
   try {
     const { items, successUrl, cancelUrl, customerEmail, userId } =
       await req.json();
+
+    // --- Input validation ---
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const uuidPattern = /^[0-9a-f-]{36}$/i;
+
+    if (!customerEmail || !emailPattern.test(customerEmail)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid or missing customerEmail." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+      );
+    }
+
+    if (!userId || !uuidPattern.test(userId)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid or missing userId. Expected a UUID." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+      );
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return new Response(
+        JSON.stringify({ error: "items must be a non-empty array." }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+      );
+    }
+
+    for (const item of items) {
+      const quantity = item.quantity;
+      if (!Number.isInteger(quantity) || quantity < 1 || quantity > 100) {
+        return new Response(
+          JSON.stringify({ error: `Item quantity must be an integer between 1 and 100. Got: ${quantity}` }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+        );
+      }
+    }
+    // --- End input validation ---
 
     let rawSubtotal = 0;
     let totalQuantity = 0;
