@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.1] - 2026-04-01
+
+- Speedway 146 Release v3.1.1
+
 ## [3.1] - 2026-04-01
 
 - Reformatted JSON error response objects across the create-checkout and stripe-webhook edge functions for consistent multi-line style

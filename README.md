@@ -59,18 +59,18 @@ The entire visual system is built on CSS custom properties — `--color-navy`, `
 
 ### Tech Stack
 
-| Layer | Technology |
-|---|---|
-| UI Framework | React 18 |
-| Build Tool | Vite 5 |
-| Global State | Zustand 5 |
-| Styling | Tailwind CSS 3 + CSS Custom Properties |
-| Animation | Framer Motion, AOS |
-| Auth & Database | Supabase (PostgreSQL + RLS) |
-| Serverless Functions | Supabase Deno Edge Functions |
-| Payments | Stripe Checkout |
-| Geolocation | ipapi.co |
-| Deployment | Vercel |
+| Layer                | Technology                             |
+| -------------------- | -------------------------------------- |
+| UI Framework         | React 18                               |
+| Build Tool           | Vite 5                                 |
+| Global State         | Zustand 5                              |
+| Styling              | Tailwind CSS 3 + CSS Custom Properties |
+| Animation            | Framer Motion, AOS                     |
+| Auth & Database      | Supabase (PostgreSQL + RLS)            |
+| Serverless Functions | Supabase Deno Edge Functions           |
+| Payments             | Stripe Checkout                        |
+| Geolocation          | ipapi.co                               |
+| Deployment           | Vercel                                 |
 
 ### Data Flow
 
@@ -90,17 +90,17 @@ Pages
 
 ## Project Stats
 
-| Metric | Value |
-|---|---|
-| Routes | 17 |
-| Products | 12+ |
-| FAQs | 33 (categorized) |
-| Testimonials | 6 |
-| Fee Components | 5 (transaction, platform, tax, subtotal, group discount) |
-| Edge Functions | 2 (checkout, fee calculation) |
-| Hero Slides | 5 |
-| Gallery Images | 8 |
-| Security Headers | 5 |
+| Metric           | Value                                                    |
+| ---------------- | -------------------------------------------------------- |
+| Routes           | 17                                                       |
+| Products         | 12+                                                      |
+| FAQs             | 33 (categorized)                                         |
+| Testimonials     | 6                                                        |
+| Fee Components   | 5 (transaction, platform, tax, subtotal, group discount) |
+| Edge Functions   | 2 (checkout, fee calculation)                            |
+| Hero Slides      | 5                                                        |
+| Gallery Images   | 8                                                        |
+| Security Headers | 5                                                        |
 
 ---
 
