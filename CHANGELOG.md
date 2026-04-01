@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0] - 2026-04-01
+
+- Reformatted error response objects in the create-checkout edge function for improved readability — headers and status are now on separate lines across all four validation error responses
+
 ## [2.9] - 2026-03-15
 
 - Redesigned the Staff Panel hero section with a taller layout, vertical centering, and a crosshatch pattern overlay
