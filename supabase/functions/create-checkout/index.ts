@@ -41,21 +41,32 @@ serve(async (req) => {
     if (!customerEmail || !emailPattern.test(customerEmail)) {
       return new Response(
         JSON.stringify({ error: "Invalid or missing customerEmail." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        },
       );
     }
 
     if (!userId || !uuidPattern.test(userId)) {
       return new Response(
-        JSON.stringify({ error: "Invalid or missing userId. Expected a UUID." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+        JSON.stringify({
+          error: "Invalid or missing userId. Expected a UUID.",
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        },
       );
     }
 
     if (!Array.isArray(items) || items.length === 0) {
       return new Response(
         JSON.stringify({ error: "items must be a non-empty array." }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        },
       );
     }
 
@@ -63,8 +74,13 @@ serve(async (req) => {
       const quantity = item.quantity;
       if (!Number.isInteger(quantity) || quantity < 1 || quantity > 100) {
         return new Response(
-          JSON.stringify({ error: `Item quantity must be an integer between 1 and 100. Got: ${quantity}` }),
-          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 },
+          JSON.stringify({
+            error: `Item quantity must be an integer between 1 and 100. Got: ${quantity}`,
+          }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          },
         );
       }
     }
@@ -185,13 +201,10 @@ serve(async (req) => {
   } catch (error) {
     console.error("Checkout error:", error);
     return new Response(
-      JSON.stringify({
-        error: error.message,
-        details: error.toString(),
-      }),
+      JSON.stringify({ error: "An internal error occurred. Please try again." }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
+        status: 500,
       },
     );
   }

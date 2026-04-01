@@ -35,19 +35,14 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  console.log("Webhook received");
-
   const signature = req.headers.get("stripe-signature");
   // @ts-ignore
   const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
-  console.log("Webhook secret exists:", !!webhookSecret);
-  console.log("Signature exists:", !!signature);
-
   if (!signature || !webhookSecret) {
     console.error("Missing signature or webhook secret");
     return new Response(
-      JSON.stringify({ error: "Missing signature or webhook secret" }),
+      JSON.stringify({ error: "An internal error occurred. Please try again." }),
       {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -57,24 +52,19 @@ serve(async (req) => {
 
   try {
     const body = await req.text();
-    console.log("Body received, length:", body.length);
 
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
       webhookSecret,
     );
-    console.log("Event verified:", event.type);
 
     if (event.type === "checkout.session.completed") {
-      console.log("Processing checkout.session.completed");
       const session = event.data.object;
-      console.log("Session metadata and customer details present");
 
       const lineItems = await stripe.checkout.sessions.listLineItems(
         session.id,
       );
-      console.log("Line items fetched:", lineItems.data.length);
 
       const items = [];
       for (const item of lineItems.data) {
@@ -87,10 +77,8 @@ serve(async (req) => {
           });
         }
       }
-      console.log("Items to save:", items.length);
 
       const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-      console.log("Order number generated");
 
       const purchaseData = {
         user_id: session.metadata?.user_id,
@@ -104,23 +92,21 @@ serve(async (req) => {
           session.customer_email || session.customer_details?.email,
       };
 
-      console.log("Saving purchase to database...");
-      const { error, data } = await supabaseClient
+      const { error } = await supabaseClient
         .from("purchases")
         .insert(purchaseData)
         .select();
 
       if (error) {
         console.error("Error saving purchase:", error);
-        return new Response(JSON.stringify({ error: error.message }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({ error: "An internal error occurred. Please try again." }),
+          {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
       }
-
-      console.log("Purchase saved successfully");
-    } else {
-      console.log("Ignoring event type:", event.type);
     }
 
     return new Response(JSON.stringify({ received: true }), {
@@ -129,9 +115,12 @@ serve(async (req) => {
     });
   } catch (err) {
     console.error("Webhook error:", err);
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "An internal error occurred. Please try again." }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 });
