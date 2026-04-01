@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 - Speedway 146 Release v3.1.2
 
+## [3.1.2] - 2026-04-01
+
+- Speedway 146 Release v3.1.2
+
 ## [3.1.1] - 2026-04-01
 
 - Speedway 146 Release v3.1.1
