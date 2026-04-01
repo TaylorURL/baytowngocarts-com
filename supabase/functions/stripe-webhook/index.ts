@@ -5,8 +5,9 @@ import Stripe from "https://esm.sh/stripe@13.10.0?target=deno";
 // @ts-ignore
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// Stripe webhooks are server-to-server — no browser CORS origin header needed.
+// We keep Allow-Headers so Supabase infrastructure can forward Stripe's signature header.
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, stripe-signature",
 };
