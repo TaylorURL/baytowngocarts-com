@@ -25,6 +25,22 @@ const GROUP_DISCOUNT_PERCENT = 0.1;
 // @ts-ignore
 const CONNECTED_ACCOUNT_ID = Deno.env.get("STRIPE_CONNECTED_ACCOUNT_ID") || "";
 
+/** Server-side canonical product price map — source of truth for checkout pricing. */
+const PRODUCT_PRICES: Record<string, number> = {
+  "prod_SuF7rI45RLsQlo": 13.99,    // Adult Race
+  "prod_SuF7XrzxLfJWw6": 13.99,    // Kid Race
+  "prod_SuF8q9mSRcmCcU": 34.99,    // 3-Race Combo
+  "prod_family_deal": 59.99,        // Family Deal
+  "prod_SuF9rhy87orqYS": 44.99,    // 2.5 Hour Racing
+  "prod_double_ride_along": 19.99,  // Ride Along Rush
+  "prod_double_drift": 37.99,       // Double Drift
+  "prod_track_titan": 39.99,        // Track Titan
+  "prod_party_all_access": 699.00,  // All-Access Family Race Party
+  "prod_party_bounce_upgrade": 150.00, // Bounce House + Game Tables
+  "prod_party_race_together": 150.00,  // Race Together Upgrade
+  "prod_party_private_track": 700.00,  // Private Track (2 Hours)
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -84,13 +100,41 @@ serve(async (req) => {
         );
       }
     }
+
+    // --- Server-side price validation ---
+    for (const item of items) {
+      const clientPrice = parseFloat(
+        typeof item.price === "string" ? item.price.replace("$", "") : item.price,
+      );
+      const canonicalPrice = PRODUCT_PRICES[item.id];
+
+      if (canonicalPrice === undefined) {
+        return new Response(
+          JSON.stringify({ error: `Unknown product: ${item.id}` }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          },
+        );
+      }
+
+      if (Math.abs(clientPrice - canonicalPrice) > 0.01) {
+        return new Response(
+          JSON.stringify({ error: "Price mismatch detected. Please refresh and try again." }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          },
+        );
+      }
+    }
     // --- End input validation ---
 
     let rawSubtotal = 0;
     let totalQuantity = 0;
 
     for (const item of items) {
-      const itemPrice = parseFloat(item.price.replace("$", ""));
+      const itemPrice = PRODUCT_PRICES[item.id];
       rawSubtotal += itemPrice * item.quantity;
       totalQuantity += item.quantity;
     }
@@ -107,7 +151,7 @@ serve(async (req) => {
     const lineItems = [];
 
     for (const item of items) {
-      const itemPrice = parseFloat(item.price.replace("$", ""));
+      const itemPrice = PRODUCT_PRICES[item.id];
       const discountedPrice = itemPrice * discountMultiplier;
 
       lineItems.push({
