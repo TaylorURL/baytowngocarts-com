@@ -26,7 +26,12 @@ const STAT_CARDS = [
   { key: "totalViews", label: "Total Views", icon: Users, color: "red" },
   { key: "desktop", label: "Desktop", icon: Monitor, color: "blue" },
   { key: "mobile", label: "Mobile", icon: Activity, color: "green" },
-  { key: "uniquePages", label: "Unique Pages", icon: BarChart3, color: "purple" },
+  {
+    key: "uniquePages",
+    label: "Unique Pages",
+    icon: BarChart3,
+    color: "purple",
+  },
 ];
 
 const TIME_RANGES = ["today", "week", "month", "quarter", "year"];
@@ -69,7 +74,14 @@ const countByKey = (traffic, keyFn, limit = 10) => {
 };
 
 /** Reusable numbered list with progress bars. */
-const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) => (
+const RankedList = ({
+  icon: Icon,
+  title,
+  entries,
+  total,
+  barColor,
+  emptyText,
+}) => (
   <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
     <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
       <Icon className="h-5 w-5 text-red-600" />
@@ -80,8 +92,12 @@ const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) 
         {entries.map(([label, count], idx) => (
           <div key={label} className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-bold text-gray-400 w-6">{idx + 1}</span>
-              <span className="text-gray-700 font-medium truncate max-w-[200px]">{label}</span>
+              <span className="text-sm font-bold text-gray-400 w-6">
+                {idx + 1}
+              </span>
+              <span className="text-gray-700 font-medium truncate max-w-[200px]">
+                {label}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-24 bg-gray-200 rounded-full h-2">
@@ -90,7 +106,9 @@ const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) 
                   style={{ width: `${(count / total) * 100}%` }}
                 />
               </div>
-              <span className="text-sm font-bold text-gray-800 w-12 text-right">{count}</span>
+              <span className="text-sm font-bold text-gray-800 w-12 text-right">
+                {count}
+              </span>
             </div>
           </div>
         ))}
@@ -105,17 +123,17 @@ const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) 
 const StatCard = ({ icon: Icon, label, value, color }) => {
   const colors = COLOR_CLASSES[color] || COLOR_CLASSES.red;
   return (
-  <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-    <div className="flex items-center gap-4">
-      <div className={`${colors.bg} p-3 rounded-xl`}>
-        <Icon className={`h-6 w-6 ${colors.text}`} />
-      </div>
-      <div>
-        <p className="text-sm text-gray-600">{label}</p>
-        <p className="text-3xl font-bold text-gray-800">{value}</p>
+    <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+      <div className="flex items-center gap-4">
+        <div className={`${colors.bg} p-3 rounded-xl`}>
+          <Icon className={`h-6 w-6 ${colors.text}`} />
+        </div>
+        <div>
+          <p className="text-sm text-gray-600">{label}</p>
+          <p className="text-3xl font-bold text-gray-800">{value}</p>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 
@@ -163,14 +181,21 @@ export default function TrafficPage() {
 
   const hourlyData = useMemo(() => {
     const hours = Array(24).fill(0);
-    traffic.forEach((v) => { hours[new Date(v.timestamp).getHours()]++; });
+    traffic.forEach((v) => {
+      hours[new Date(v.timestamp).getHours()]++;
+    });
     return hours;
   }, [traffic]);
 
-  const locationData = useMemo(() => ({
-    cities: countByKey(traffic, (v) => v.city && v.region ? `${v.city}, ${v.region}` : null),
-    countries: countByKey(traffic, (v) => v.country || null),
-  }), [traffic]);
+  const locationData = useMemo(
+    () => ({
+      cities: countByKey(traffic, (v) =>
+        v.city && v.region ? `${v.city}, ${v.region}` : null,
+      ),
+      countries: countByKey(traffic, (v) => v.country || null),
+    }),
+    [traffic],
+  );
 
   const maxHourly = Math.max(...hourlyData, 1);
 
@@ -212,8 +237,12 @@ export default function TrafficPage() {
               <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
                 ANALYTICS
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">Site Traffic</h1>
-              <p className="text-gray-300">Monitor visitor activity and page performance</p>
+              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">
+                Site Traffic
+              </h1>
+              <p className="text-gray-300">
+                Monitor visitor activity and page performance
+              </p>
             </div>
 
             <div className="flex gap-2 flex-wrap">
@@ -246,18 +275,30 @@ export default function TrafficPage() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 {STAT_CARDS.map((card) => (
-                  <StatCard key={card.key} {...card} value={statValues[card.key]} />
+                  <StatCard
+                    key={card.key}
+                    {...card}
+                    value={statValues[card.key]}
+                  />
                 ))}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <RankedList
-                  icon={MousePointer} title="Top Pages" entries={pageViews}
-                  total={traffic.length} barColor="bg-red-600" emptyText="No page views recorded"
+                  icon={MousePointer}
+                  title="Top Pages"
+                  entries={pageViews}
+                  total={traffic.length}
+                  barColor="bg-red-600"
+                  emptyText="No page views recorded"
                 />
                 <RankedList
-                  icon={Globe} title="Traffic Sources" entries={referrers}
-                  total={traffic.length} barColor="bg-blue-600" emptyText="No referrer data"
+                  icon={Globe}
+                  title="Traffic Sources"
+                  entries={referrers}
+                  total={traffic.length}
+                  barColor="bg-blue-600"
+                  emptyText="No referrer data"
                 />
               </div>
 
@@ -268,13 +309,23 @@ export default function TrafficPage() {
                 </h3>
                 <div className="flex items-end gap-1 h-40">
                   {hourlyData.map((count, hour) => (
-                    <div key={hour} className="flex-1 flex flex-col items-center">
+                    <div
+                      key={hour}
+                      className="flex-1 flex flex-col items-center"
+                    >
                       <div
                         className="w-full bg-red-600 rounded-t transition-all hover:bg-red-500"
-                        style={{ height: `${(count / maxHourly) * 100}%`, minHeight: count > 0 ? "4px" : "0" }}
+                        style={{
+                          height: `${(count / maxHourly) * 100}%`,
+                          minHeight: count > 0 ? "4px" : "0",
+                        }}
                         title={`${hour}:00 - ${count} views`}
                       />
-                      {hour % 3 === 0 && <span className="text-xs text-gray-500 mt-1">{hour}</span>}
+                      {hour % 3 === 0 && (
+                        <span className="text-xs text-gray-500 mt-1">
+                          {hour}
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -282,12 +333,20 @@ export default function TrafficPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <RankedList
-                  icon={MapPin} title="Top Cities" entries={locationData.cities}
-                  total={traffic.length} barColor="bg-green-600" emptyText="No location data available"
+                  icon={MapPin}
+                  title="Top Cities"
+                  entries={locationData.cities}
+                  total={traffic.length}
+                  barColor="bg-green-600"
+                  emptyText="No location data available"
                 />
                 <RankedList
-                  icon={Globe} title="Top Countries" entries={locationData.countries}
-                  total={traffic.length} barColor="bg-purple-600" emptyText="No location data available"
+                  icon={Globe}
+                  title="Top Countries"
+                  entries={locationData.countries}
+                  total={traffic.length}
+                  barColor="bg-purple-600"
+                  emptyText="No location data available"
                 />
               </div>
 
@@ -301,7 +360,12 @@ export default function TrafficPage() {
                     <thead className="sticky top-0 bg-white">
                       <tr className="border-b-2 border-gray-200">
                         {["Time", "Page", "Device", "Source"].map((h) => (
-                          <th key={h} className="text-left py-3 px-4 text-sm font-bold text-gray-600">{h}</th>
+                          <th
+                            key={h}
+                            className="text-left py-3 px-4 text-sm font-bold text-gray-600"
+                          >
+                            {h}
+                          </th>
                         ))}
                       </tr>
                     </thead>
@@ -309,13 +373,20 @@ export default function TrafficPage() {
                       {traffic.slice(0, 20).map((view, idx) => {
                         const device = getDeviceType(view.user_agent);
                         return (
-                          <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
+                          <tr
+                            key={idx}
+                            className="border-b border-gray-100 hover:bg-gray-50"
+                          >
                             <td className="py-3 px-4 text-sm text-gray-600">
                               {new Date(view.timestamp).toLocaleString()}
                             </td>
-                            <td className="py-3 px-4 text-sm font-medium text-gray-800">{view.page_path}</td>
+                            <td className="py-3 px-4 text-sm font-medium text-gray-800">
+                              {view.page_path}
+                            </td>
                             <td className="py-3 px-4">
-                              <span className={`text-xs px-2 py-1 rounded-full font-bold ${DEVICE_BADGE_COLORS[device]}`}>
+                              <span
+                                className={`text-xs px-2 py-1 rounded-full font-bold ${DEVICE_BADGE_COLORS[device]}`}
+                              >
                                 {device}
                               </span>
                             </td>
@@ -328,7 +399,9 @@ export default function TrafficPage() {
                     </tbody>
                   </table>
                   {traffic.length === 0 && (
-                    <p className="text-gray-500 text-center py-8">No traffic recorded for this period</p>
+                    <p className="text-gray-500 text-center py-8">
+                      No traffic recorded for this period
+                    </p>
                   )}
                 </div>
               </div>
