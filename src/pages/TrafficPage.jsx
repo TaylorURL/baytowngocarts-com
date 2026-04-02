@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Activity,
@@ -15,6 +15,100 @@ import {
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
 
+const STAT_CARDS = [
+  { key: "totalViews", label: "Total Views", icon: Users, color: "red" },
+  { key: "desktop", label: "Desktop", icon: Monitor, color: "blue" },
+  { key: "mobile", label: "Mobile", icon: Activity, color: "green" },
+  { key: "uniquePages", label: "Unique Pages", icon: BarChart3, color: "purple" },
+];
+
+const TIME_RANGES = ["today", "week", "month", "quarter", "year"];
+
+/** Classifies a user agent string as "Mobile", "Tablet", or "Desktop". */
+const getDeviceType = (userAgent) => {
+  const ua = (userAgent || "").toLowerCase();
+  if (ua.includes("mobile") || ua.includes("android") || ua.includes("iphone"))
+    return "Mobile";
+  if (ua.includes("ipad") || ua.includes("tablet")) return "Tablet";
+  return "Desktop";
+};
+
+const DEVICE_BADGE_COLORS = {
+  Mobile: "bg-green-100 text-green-700",
+  Tablet: "bg-purple-100 text-purple-700",
+  Desktop: "bg-blue-100 text-blue-700",
+};
+
+/** Extracts referrer hostname from a URL, falling back to "Direct". */
+const parseSource = (referrer) => {
+  if (!referrer) return "Direct";
+  try {
+    return new URL(referrer).hostname;
+  } catch {
+    return referrer;
+  }
+};
+
+/** Counts occurrences of a key extractor across traffic entries, returns sorted top N. */
+const countByKey = (traffic, keyFn, limit = 10) => {
+  const counts = {};
+  traffic.forEach((view) => {
+    const key = keyFn(view);
+    if (key) counts[key] = (counts[key] || 0) + 1;
+  });
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit);
+};
+
+/** Reusable numbered list with progress bars. */
+const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) => (
+  <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <Icon className="h-5 w-5 text-red-600" />
+      {title}
+    </h3>
+    {entries.length > 0 ? (
+      <div className="space-y-3">
+        {entries.map(([label, count], idx) => (
+          <div key={label} className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-bold text-gray-400 w-6">{idx + 1}</span>
+              <span className="text-gray-700 font-medium truncate max-w-[200px]">{label}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-24 bg-gray-200 rounded-full h-2">
+                <div
+                  className={`${barColor} h-2 rounded-full`}
+                  style={{ width: `${(count / total) * 100}%` }}
+                />
+              </div>
+              <span className="text-sm font-bold text-gray-800 w-12 text-right">{count}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p className="text-gray-500 text-center py-4">{emptyText}</p>
+    )}
+  </div>
+);
+
+/** Stat card with icon, label, and value. */
+const StatCard = ({ icon: Icon, label, value, color }) => (
+  <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+    <div className="flex items-center gap-4">
+      <div className={`bg-${color}-100 p-3 rounded-xl`}>
+        <Icon className={`h-6 w-6 text-${color}-600`} />
+      </div>
+      <div>
+        <p className="text-sm text-gray-600">{label}</p>
+        <p className="text-3xl font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
+  </div>
+);
+
 /**
  * Renders a staff-only analytics dashboard showing page views, device breakdown,
  * traffic sources, hourly activity, and visitor locations.
@@ -27,121 +121,54 @@ export default function TrafficPage() {
   const [timeRange, setTimeRange] = useState("today");
 
   useEffect(() => {
-    if (!staffLoading && !isStaff) {
-      navigate("/");
-    }
+    if (!staffLoading && !isStaff) navigate("/");
   }, [isStaff, staffLoading, navigate]);
 
   useEffect(() => {
     const fetchTraffic = async () => {
       setLoading(true);
-      const data = await getTrafficStats(timeRange);
-      setTraffic(data);
+      setTraffic(await getTrafficStats(timeRange));
       setLoading(false);
     };
     fetchTraffic();
   }, [timeRange]);
 
-  /** Aggregates page views by path and returns the top 10 sorted by count. */
-  const getPageViewsByPath = () => {
-    const counts = {};
-    traffic.forEach((view) => {
-      const path = view.page_path || "Unknown";
-      counts[path] = (counts[path] || 0) + 1;
-    });
-    return Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10);
-  };
+  const pageViews = useMemo(
+    () => countByKey(traffic, (v) => v.page_path || "Unknown"),
+    [traffic],
+  );
 
-  /** Classifies a user agent string as "Mobile", "Tablet", or "Desktop". */
-  const getDeviceType = (userAgent) => {
-    const ua = (userAgent || "").toLowerCase();
-    if (
-      ua.includes("mobile") ||
-      ua.includes("android") ||
-      ua.includes("iphone")
-    ) {
-      return "Mobile";
-    }
-    if (ua.includes("ipad") || ua.includes("tablet")) {
-      return "Tablet";
-    }
-    return "Desktop";
-  };
-
-  const getDeviceBreakdown = () => {
+  const devices = useMemo(() => {
     const counts = { mobile: 0, desktop: 0, tablet: 0 };
-    traffic.forEach((view) => {
-      const type = getDeviceType(view.user_agent).toLowerCase();
-      counts[type]++;
+    traffic.forEach((v) => {
+      counts[getDeviceType(v.user_agent).toLowerCase()]++;
     });
     return counts;
-  };
+  }, [traffic]);
 
-  /** Aggregates traffic sources by referrer hostname. */
-  const getReferrerBreakdown = () => {
-    const counts = {};
-    traffic.forEach((view) => {
-      let source = "Direct";
-      if (view.referrer) {
-        try {
-          const url = new URL(view.referrer);
-          source = url.hostname;
-        } catch {
-          source = view.referrer;
-        }
-      }
-      counts[source] = (counts[source] || 0) + 1;
-    });
-    return Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
-  };
+  const referrers = useMemo(
+    () => countByKey(traffic, (v) => parseSource(v.referrer), 5),
+    [traffic],
+  );
 
-  /** Returns an array of 24 elements representing page view counts per hour of the day. */
-  const getHourlyBreakdown = () => {
+  const hourlyData = useMemo(() => {
     const hours = Array(24).fill(0);
-    traffic.forEach((view) => {
-      const hour = new Date(view.timestamp).getHours();
-      hours[hour]++;
-    });
+    traffic.forEach((v) => { hours[new Date(v.timestamp).getHours()]++; });
     return hours;
-  };
+  }, [traffic]);
 
-  /** Aggregates visitor locations into top cities, countries, and coordinate points. */
-  const getLocationBreakdown = () => {
-    const cities = {};
-    const countries = {};
-    const locations = [];
+  const locationData = useMemo(() => ({
+    cities: countByKey(traffic, (v) => v.city && v.region ? `${v.city}, ${v.region}` : null),
+    countries: countByKey(traffic, (v) => v.country || null),
+  }), [traffic]);
 
-    traffic.forEach((view) => {
-      if (view.city && view.region) {
-        const cityKey = `${view.city}, ${view.region}`;
-        cities[cityKey] = (cities[cityKey] || 0) + 1;
-      }
-      if (view.country) {
-        countries[view.country] = (countries[view.country] || 0) + 1;
-      }
-      if (view.latitude && view.longitude) {
-        locations.push({
-          lat: view.latitude,
-          lng: view.longitude,
-          city: view.city,
-          country: view.country,
-        });
-      }
-    });
+  const maxHourly = Math.max(...hourlyData, 1);
 
-    return {
-      cities: Object.entries(cities)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10),
-      countries: Object.entries(countries)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10),
-      locations,
-    };
+  const statValues = {
+    totalViews: traffic.length,
+    desktop: devices.desktop,
+    mobile: devices.mobile,
+    uniquePages: pageViews.length,
   };
 
   if (staffLoading) {
@@ -152,16 +179,7 @@ export default function TrafficPage() {
     );
   }
 
-  if (!isStaff) {
-    return null;
-  }
-
-  const pageViews = getPageViewsByPath();
-  const devices = getDeviceBreakdown();
-  const referrers = getReferrerBreakdown();
-  const hourlyData = getHourlyBreakdown();
-  const locationData = getLocationBreakdown();
-  const maxHourly = Math.max(...hourlyData, 1);
+  if (!isStaff) return null;
 
   return (
     <div className="w-full -mt-20">
@@ -184,16 +202,12 @@ export default function TrafficPage() {
               <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
                 ANALYTICS
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">
-                Site Traffic
-              </h1>
-              <p className="text-gray-300">
-                Monitor visitor activity and page performance
-              </p>
+              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">Site Traffic</h1>
+              <p className="text-gray-300">Monitor visitor activity and page performance</p>
             </div>
 
             <div className="flex gap-2 flex-wrap">
-              {["today", "week", "month", "quarter", "year"].map((range) => (
+              {TIME_RANGES.map((range) => (
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
@@ -215,155 +229,26 @@ export default function TrafficPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto" />
               <p className="mt-4 text-gray-600">Loading traffic data...</p>
             </div>
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-red-100 p-3 rounded-xl">
-                      <Users className="h-6 w-6 text-red-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Total Views</p>
-                      <p className="text-3xl font-bold text-gray-800">
-                        {traffic.length}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-blue-100 p-3 rounded-xl">
-                      <Monitor className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Desktop</p>
-                      <p className="text-3xl font-bold text-gray-800">
-                        {devices.desktop}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-green-100 p-3 rounded-xl">
-                      <Activity className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Mobile</p>
-                      <p className="text-3xl font-bold text-gray-800">
-                        {devices.mobile}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-purple-100 p-3 rounded-xl">
-                      <BarChart3 className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Unique Pages</p>
-                      <p className="text-3xl font-bold text-gray-800">
-                        {pageViews.length}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                {STAT_CARDS.map((card) => (
+                  <StatCard key={card.key} {...card} value={statValues[card.key]} />
+                ))}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <MousePointer className="h-5 w-5 text-red-600" />
-                    Top Pages
-                  </h3>
-                  {pageViews.length > 0 ? (
-                    <div className="space-y-3">
-                      {pageViews.map(([path, count], idx) => (
-                        <div
-                          key={path}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm font-bold text-gray-400 w-6">
-                              {idx + 1}
-                            </span>
-                            <span className="text-gray-700 font-medium">
-                              {path}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-red-600 h-2 rounded-full"
-                                style={{
-                                  width: `${(count / traffic.length) * 100}%`,
-                                }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
-                              {count}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">
-                      No page views recorded
-                    </p>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-red-600" />
-                    Traffic Sources
-                  </h3>
-                  {referrers.length > 0 ? (
-                    <div className="space-y-3">
-                      {referrers.map(([source, count], idx) => (
-                        <div
-                          key={source}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm font-bold text-gray-400 w-6">
-                              {idx + 1}
-                            </span>
-                            <span className="text-gray-700 font-medium truncate max-w-[200px]">
-                              {source}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-600 h-2 rounded-full"
-                                style={{
-                                  width: `${(count / traffic.length) * 100}%`,
-                                }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
-                              {count}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">
-                      No referrer data
-                    </p>
-                  )}
-                </div>
+                <RankedList
+                  icon={MousePointer} title="Top Pages" entries={pageViews}
+                  total={traffic.length} barColor="bg-red-600" emptyText="No page views recorded"
+                />
+                <RankedList
+                  icon={Globe} title="Traffic Sources" entries={referrers}
+                  total={traffic.length} barColor="bg-blue-600" emptyText="No referrer data"
+                />
               </div>
 
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
@@ -373,114 +258,27 @@ export default function TrafficPage() {
                 </h3>
                 <div className="flex items-end gap-1 h-40">
                   {hourlyData.map((count, hour) => (
-                    <div
-                      key={hour}
-                      className="flex-1 flex flex-col items-center"
-                    >
+                    <div key={hour} className="flex-1 flex flex-col items-center">
                       <div
                         className="w-full bg-red-600 rounded-t transition-all hover:bg-red-500"
-                        style={{
-                          height: `${(count / maxHourly) * 100}%`,
-                          minHeight: count > 0 ? "4px" : "0",
-                        }}
+                        style={{ height: `${(count / maxHourly) * 100}%`, minHeight: count > 0 ? "4px" : "0" }}
                         title={`${hour}:00 - ${count} views`}
                       />
-                      {hour % 3 === 0 && (
-                        <span className="text-xs text-gray-500 mt-1">
-                          {hour}
-                        </span>
-                      )}
+                      {hour % 3 === 0 && <span className="text-xs text-gray-500 mt-1">{hour}</span>}
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-red-600" />
-                    Top Cities
-                  </h3>
-                  {locationData.cities.length > 0 ? (
-                    <div className="space-y-3">
-                      {locationData.cities.map(([city, count], idx) => (
-                        <div
-                          key={city}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm font-bold text-gray-400 w-6">
-                              {idx + 1}
-                            </span>
-                            <span className="text-gray-700 font-medium">
-                              {city}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-green-600 h-2 rounded-full"
-                                style={{
-                                  width: `${(count / traffic.length) * 100}%`,
-                                }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
-                              {count}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">
-                      No location data available
-                    </p>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-red-600" />
-                    Top Countries
-                  </h3>
-                  {locationData.countries.length > 0 ? (
-                    <div className="space-y-3">
-                      {locationData.countries.map(([country, count], idx) => (
-                        <div
-                          key={country}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm font-bold text-gray-400 w-6">
-                              {idx + 1}
-                            </span>
-                            <span className="text-gray-700 font-medium">
-                              {country}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-purple-600 h-2 rounded-full"
-                                style={{
-                                  width: `${(count / traffic.length) * 100}%`,
-                                }}
-                              />
-                            </div>
-                            <span className="text-sm font-bold text-gray-800 w-12 text-right">
-                              {count}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">
-                      No location data available
-                    </p>
-                  )}
-                </div>
+                <RankedList
+                  icon={MapPin} title="Top Cities" entries={locationData.cities}
+                  total={traffic.length} barColor="bg-green-600" emptyText="No location data available"
+                />
+                <RankedList
+                  icon={Globe} title="Top Countries" entries={locationData.countries}
+                  total={traffic.length} barColor="bg-purple-600" emptyText="No location data available"
+                />
               </div>
 
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
@@ -492,59 +290,27 @@ export default function TrafficPage() {
                   <table className="w-full">
                     <thead className="sticky top-0 bg-white">
                       <tr className="border-b-2 border-gray-200">
-                        <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">
-                          Time
-                        </th>
-                        <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">
-                          Page
-                        </th>
-                        <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">
-                          Device
-                        </th>
-                        <th className="text-left py-3 px-4 text-sm font-bold text-gray-600">
-                          Source
-                        </th>
+                        {["Time", "Page", "Device", "Source"].map((h) => (
+                          <th key={h} className="text-left py-3 px-4 text-sm font-bold text-gray-600">{h}</th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody>
                       {traffic.slice(0, 20).map((view, idx) => {
                         const device = getDeviceType(view.user_agent);
-
-                        let source = "Direct";
-                        if (view.referrer) {
-                          try {
-                            source = new URL(view.referrer).hostname;
-                          } catch {
-                            source = view.referrer;
-                          }
-                        }
-
                         return (
-                          <tr
-                            key={idx}
-                            className="border-b border-gray-100 hover:bg-gray-50"
-                          >
+                          <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
                             <td className="py-3 px-4 text-sm text-gray-600">
                               {new Date(view.timestamp).toLocaleString()}
                             </td>
-                            <td className="py-3 px-4 text-sm font-medium text-gray-800">
-                              {view.page_path}
-                            </td>
+                            <td className="py-3 px-4 text-sm font-medium text-gray-800">{view.page_path}</td>
                             <td className="py-3 px-4">
-                              <span
-                                className={`text-xs px-2 py-1 rounded-full font-bold ${
-                                  device === "Mobile"
-                                    ? "bg-green-100 text-green-700"
-                                    : device === "Tablet"
-                                      ? "bg-purple-100 text-purple-700"
-                                      : "bg-blue-100 text-blue-700"
-                                }`}
-                              >
+                              <span className={`text-xs px-2 py-1 rounded-full font-bold ${DEVICE_BADGE_COLORS[device]}`}>
                                 {device}
                               </span>
                             </td>
                             <td className="py-3 px-4 text-sm text-gray-600 truncate max-w-[150px]">
-                              {source}
+                              {parseSource(view.referrer)}
                             </td>
                           </tr>
                         );
@@ -552,9 +318,7 @@ export default function TrafficPage() {
                     </tbody>
                   </table>
                   {traffic.length === 0 && (
-                    <p className="text-gray-500 text-center py-8">
-                      No traffic recorded for this period
-                    </p>
+                    <p className="text-gray-500 text-center py-8">No traffic recorded for this period</p>
                   )}
                 </div>
               </div>
