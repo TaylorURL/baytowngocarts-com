@@ -5,6 +5,14 @@ import "./styles/Theme.css";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import ErrorReporterUtility, {
+  ErrorBoundary,
+} from "./lib/ErrorReporterUtility";
+
+ErrorReporterUtility.init({
+  project: "baytowngocarts.com",
+  apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+});
 
 AOS.init({
   duration: 800,
@@ -15,6 +23,8 @@ AOS.init({
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 );
