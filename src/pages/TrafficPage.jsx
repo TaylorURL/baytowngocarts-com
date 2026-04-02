@@ -15,6 +15,13 @@ import {
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
 
+const COLOR_CLASSES = {
+  red: { bg: "bg-red-100", text: "text-red-600" },
+  blue: { bg: "bg-blue-100", text: "text-blue-600" },
+  green: { bg: "bg-green-100", text: "text-green-600" },
+  purple: { bg: "bg-purple-100", text: "text-purple-600" },
+};
+
 const STAT_CARDS = [
   { key: "totalViews", label: "Total Views", icon: Users, color: "red" },
   { key: "desktop", label: "Desktop", icon: Monitor, color: "blue" },
@@ -95,11 +102,13 @@ const RankedList = ({ icon: Icon, title, entries, total, barColor, emptyText }) 
 );
 
 /** Stat card with icon, label, and value. */
-const StatCard = ({ icon: Icon, label, value, color }) => (
+const StatCard = ({ icon: Icon, label, value, color }) => {
+  const colors = COLOR_CLASSES[color] || COLOR_CLASSES.red;
+  return (
   <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
     <div className="flex items-center gap-4">
-      <div className={`bg-${color}-100 p-3 rounded-xl`}>
-        <Icon className={`h-6 w-6 text-${color}-600`} />
+      <div className={`${colors.bg} p-3 rounded-xl`}>
+        <Icon className={`h-6 w-6 ${colors.text}`} />
       </div>
       <div>
         <p className="text-sm text-gray-600">{label}</p>
@@ -107,7 +116,8 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
       </div>
     </div>
   </div>
-);
+  );
+};
 
 /**
  * Renders a staff-only analytics dashboard showing page views, device breakdown,
