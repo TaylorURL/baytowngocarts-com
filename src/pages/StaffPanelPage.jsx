@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AlertCircle,
@@ -10,15 +10,127 @@ import {
   Eye,
   Mail,
   Search,
-  Shield,
   ShoppingBag,
   TrendingUp,
-  Users,
-  X,
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
+
+const STAT_CARDS = [
+  {
+    key: "totalOrders",
+    label: "Total Orders",
+    icon: ShoppingBag,
+    iconBg: "bg-red-100",
+    iconColor: "text-red-600",
+    trailingIcon: TrendingUp,
+    trailingColor: "text-green-500",
+    format: (v) => v,
+  },
+  {
+    key: "totalRevenue",
+    label: "Total Revenue",
+    icon: DollarSign,
+    iconBg: "bg-green-100",
+    iconColor: "text-green-600",
+    trailingIcon: TrendingUp,
+    trailingColor: "text-green-500",
+    format: (v) => `$${v.toFixed(2)}`,
+  },
+  {
+    key: "todayOrders",
+    label: "Today's Orders",
+    icon: Calendar,
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-600",
+    trailingIcon: Clock,
+    trailingColor: "text-blue-500",
+    format: (v) => v,
+  },
+  {
+    key: "todayRevenue",
+    label: "Today's Revenue",
+    icon: DollarSign,
+    iconBg: "bg-yellow-100",
+    iconColor: "text-yellow-600",
+    trailingIcon: Clock,
+    trailingColor: "text-blue-500",
+    format: (v) => `$${v.toFixed(2)}`,
+  },
+];
+
+const DATE_FILTERS = [
+  { key: "today", label: "Today" },
+  { key: "week", label: "This Week" },
+  { key: "month", label: "This Month" },
+  { key: "quarter", label: "This Quarter" },
+  { key: "year", label: "This Year" },
+  { key: "all", label: "All Time" },
+];
+
+const DEFAULT_STATS = {
+  totalOrders: 0,
+  totalRevenue: 0,
+  todayOrders: 0,
+  todayRevenue: 0,
+};
+
+const STATUS_CONFIG = {
+  completed: { className: "bg-green-100 text-green-700", icon: CheckCircle },
+  pending: { className: "bg-yellow-100 text-yellow-700", icon: Clock },
+};
+
+const DEFAULT_STATUS = {
+  className: "bg-red-100 text-red-700",
+  icon: AlertCircle,
+};
+
+function StatusBadge({ status }) {
+  const config = STATUS_CONFIG[status] ?? DEFAULT_STATUS;
+  const Icon = config.icon;
+  return (
+    <span
+      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${config.className}`}
+    >
+      <Icon className="h-3 w-3" />
+      {status}
+    </span>
+  );
+}
+
+function getDateFilterStart(filterKey) {
+  if (filterKey === "all") return null;
+  const now = new Date();
+  switch (filterKey) {
+    case "today":
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    case "week": {
+      const d = new Date(now);
+      d.setDate(now.getDate() - 7);
+      return d;
+    }
+    case "month":
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    case "quarter":
+      return new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+    case "year":
+      return new Date(now.getFullYear(), 0, 1);
+    default:
+      return null;
+  }
+}
+
+const formatDate = (dateString) =>
+  new Date(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const formatCurrency = (cents) => `$${(cents / 100).toFixed(2)}`;
 
 /**
  * Renders the staff-only admin panel with order stats, search, filtering, and order details.
@@ -31,12 +143,7 @@ export default function StaffPanelPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [dateFilter, setDateFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [stats, setStats] = useState({
-    totalOrders: 0,
-    totalRevenue: 0,
-    todayOrders: 0,
-    todayRevenue: 0,
-  });
+  const [stats, setStats] = useState(DEFAULT_STATS);
   const [recentOrders, setRecentOrders] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +162,6 @@ export default function StaffPanelPage() {
     }
   }, [isStaff]);
 
-  /** Fetches aggregate order stats (total/today orders and revenue) from Supabase. */
   const fetchStats = async () => {
     try {
       const { count: totalOrders } = await supabase
@@ -66,44 +172,33 @@ export default function StaffPanelPage() {
         .from("purchases")
         .select("total_amount, created_at");
 
-      let totalRevenue = 0;
-      let todayOrdersCount = 0;
-      let todayRevenue = 0;
-
-      if (revenueData) {
-        totalRevenue =
-          revenueData.reduce((sum, order) => sum + order.total_amount, 0) / 100;
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const todayOrders = revenueData.filter(
-          (order) => new Date(order.created_at) >= today,
-        );
-
-        todayOrdersCount = todayOrders.length;
-        todayRevenue =
-          todayOrders.reduce((sum, order) => sum + order.total_amount, 0) / 100;
+      if (!revenueData) {
+        setStats({ ...DEFAULT_STATS, totalOrders: totalOrders || 0 });
+        return;
       }
+
+      const totalRevenue =
+        revenueData.reduce((sum, order) => sum + order.total_amount, 0) / 100;
+
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayOrders = revenueData.filter(
+        (order) => new Date(order.created_at) >= todayStart,
+      );
 
       setStats({
         totalOrders: totalOrders || 0,
         totalRevenue,
-        todayOrders: todayOrdersCount,
-        todayRevenue,
+        todayOrders: todayOrders.length,
+        todayRevenue:
+          todayOrders.reduce((sum, order) => sum + order.total_amount, 0) / 100,
       });
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-      setStats({
-        totalOrders: 0,
-        totalRevenue: 0,
-        todayOrders: 0,
-        todayRevenue: 0,
-      });
+    } catch {
+      setStats(DEFAULT_STATS);
     }
   };
 
-  /** Fetches all orders from Supabase, sorted newest first. */
   const fetchRecentOrders = async () => {
     try {
       const { data, error } = await supabase
@@ -114,8 +209,7 @@ export default function StaffPanelPage() {
       if (error) throw error;
       setAllOrders(data || []);
       setRecentOrders((data || []).slice(0, 10));
-    } catch (error) {
-      console.error("Error fetching recent orders:", error);
+    } catch {
       setAllOrders([]);
       setRecentOrders([]);
     } finally {
@@ -123,49 +217,9 @@ export default function StaffPanelPage() {
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const formatCurrency = (cents) => {
-    return `$${(cents / 100).toFixed(2)}`;
-  };
-
-  /** Filters an array of orders to only those within the selected date range. */
   const getDateFilteredOrders = (orders) => {
-    if (dateFilter === "all") return orders;
-
-    const now = new Date();
-    let startDate;
-
-    switch (dateFilter) {
-      case "today":
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        break;
-      case "week":
-        startDate = new Date(now);
-        startDate.setDate(now.getDate() - 7);
-        break;
-      case "month":
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        break;
-      case "quarter":
-        const quarter = Math.floor(now.getMonth() / 3);
-        startDate = new Date(now.getFullYear(), quarter * 3, 1);
-        break;
-      case "year":
-        startDate = new Date(now.getFullYear(), 0, 1);
-        break;
-      default:
-        return orders;
-    }
-
+    const startDate = getDateFilterStart(dateFilter);
+    if (!startDate) return orders;
     return orders.filter((order) => new Date(order.created_at) >= startDate);
   };
 
@@ -179,29 +233,8 @@ export default function StaffPanelPage() {
     activeTab === "all" ? allOrders : filteredOrders,
   );
 
-  /** Renders a colored badge indicating order status (completed, pending, or other). */
-  function StatusBadge({ status }) {
-    return (
-      <span
-        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
-          status === "completed"
-            ? "bg-green-100 text-green-700"
-            : status === "pending"
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-red-100 text-red-700"
-        }`}
-      >
-        {status === "completed" ? (
-          <CheckCircle className="h-3 w-3" />
-        ) : status === "pending" ? (
-          <Clock className="h-3 w-3" />
-        ) : (
-          <AlertCircle className="h-3 w-3" />
-        )}
-        {status}
-      </span>
-    );
-  }
+  const toggleOrder = (orderId) =>
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
 
   if (staffLoading || loading) {
     return (
@@ -214,9 +247,7 @@ export default function StaffPanelPage() {
     );
   }
 
-  if (!isStaff) {
-    return null;
-  }
+  if (!isStaff) return null;
 
   return (
     <div className="w-full -mt-20">
@@ -262,65 +293,40 @@ export default function StaffPanelPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="p-2 sm:p-3 bg-red-100 rounded-lg">
-                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
+              {STAT_CARDS.map(
+                ({
+                  key,
+                  label,
+                  icon: Icon,
+                  iconBg,
+                  iconColor,
+                  trailingIcon: TrailingIcon,
+                  trailingColor,
+                  format,
+                }) => (
+                  <div
+                    key={key}
+                    className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6"
+                  >
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <div className={`p-2 sm:p-3 ${iconBg} rounded-lg`}>
+                        <Icon
+                          className={`h-5 w-5 sm:h-6 sm:w-6 ${iconColor}`}
+                        />
+                      </div>
+                      <TrailingIcon
+                        className={`h-4 w-4 sm:h-5 sm:w-5 ${trailingColor}`}
+                      />
+                    </div>
+                    <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
+                      {label}
+                    </h3>
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-800">
+                      {format(stats[key])}
+                    </p>
                   </div>
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                </div>
-                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
-                  Total Orders
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
-                  {stats.totalOrders}
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="p-2 sm:p-3 bg-green-100 rounded-lg">
-                    <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
-                  </div>
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                </div>
-                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
-                  Total Revenue
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
-                  ${stats.totalRevenue.toFixed(2)}
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
-                    <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-                  </div>
-                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
-                </div>
-                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
-                  Today's Orders
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
-                  {stats.todayOrders}
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg">
-                    <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
-                  </div>
-                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
-                </div>
-                <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
-                  Today's Revenue
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-gray-800">
-                  ${stats.todayRevenue.toFixed(2)}
-                </p>
-              </div>
+                ),
+              )}
             </div>
 
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
@@ -340,91 +346,37 @@ export default function StaffPanelPage() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => setActiveTab("overview")}
-                      className={`px-4 py-2 rounded-lg font-semibold transition-all whitespace-nowrap ${
-                        activeTab === "overview"
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      Recent
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("all")}
-                      className={`px-4 py-2 rounded-lg font-semibold transition-all whitespace-nowrap ${
-                        activeTab === "all"
-                          ? "bg-red-600 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      All
-                    </button>
+                    {["overview", "all"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`px-4 py-2 rounded-lg font-semibold transition-all whitespace-nowrap ${
+                          activeTab === tab
+                            ? "bg-red-600 text-white"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                      >
+                        {tab === "overview" ? "Recent" : "All"}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-2 mb-6">
-                <button
-                  onClick={() => setDateFilter("today")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "today"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  Today
-                </button>
-                <button
-                  onClick={() => setDateFilter("week")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "week"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  This Week
-                </button>
-                <button
-                  onClick={() => setDateFilter("month")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "month"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  This Month
-                </button>
-                <button
-                  onClick={() => setDateFilter("quarter")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "quarter"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  This Quarter
-                </button>
-                <button
-                  onClick={() => setDateFilter("year")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "year"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  This Year
-                </button>
-                <button
-                  onClick={() => setDateFilter("all")}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    dateFilter === "all"
-                      ? "bg-gray-800 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  All Time
-                </button>
+                {DATE_FILTERS.map(({ key, label }) => (
+                  <button
+                    key={key}
+                    onClick={() => setDateFilter(key)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      dateFilter === key
+                        ? "bg-gray-800 text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
 
               {searchQuery && (
@@ -446,30 +398,23 @@ export default function StaffPanelPage() {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b-2 border-gray-200">
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Order #
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Customer
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Items
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Qty
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Amount
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Date
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Status
-                          </th>
-                          <th className="text-left py-4 px-4 text-sm font-semibold text-gray-600">
-                            Action
-                          </th>
+                          {[
+                            "Order #",
+                            "Customer",
+                            "Items",
+                            "Qty",
+                            "Amount",
+                            "Date",
+                            "Status",
+                            "Action",
+                          ].map((header) => (
+                            <th
+                              key={header}
+                              className="text-left py-4 px-4 text-sm font-semibold text-gray-600"
+                            >
+                              {header}
+                            </th>
+                          ))}
                         </tr>
                       </thead>
                       <tbody>
@@ -477,11 +422,7 @@ export default function StaffPanelPage() {
                           <tr
                             key={order.id}
                             className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                            onClick={() =>
-                              setExpandedOrder(
-                                expandedOrder === order.id ? null : order.id,
-                              )
-                            }
+                            onClick={() => toggleOrder(order.id)}
                           >
                             <td className="py-4 px-4">
                               <span className="font-mono text-sm font-semibold text-gray-800">
@@ -542,11 +483,7 @@ export default function StaffPanelPage() {
                         className="border border-gray-200 rounded-xl overflow-hidden"
                       >
                         <button
-                          onClick={() =>
-                            setExpandedOrder(
-                              expandedOrder === order.id ? null : order.id,
-                            )
-                          }
+                          onClick={() => toggleOrder(order.id)}
                           className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
