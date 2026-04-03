@@ -3,7 +3,7 @@
  * user's order history with status badges and navigation to order details.
  */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Calendar,
   CheckCircle,
@@ -25,12 +25,13 @@ const CROSSHATCH_STYLE = {
 export default function PurchasesPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [purchases, setPurchases] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/login");
+      navigate("/login", { state: { from: location } });
     }
   }, [user, loading, navigate]);
 
