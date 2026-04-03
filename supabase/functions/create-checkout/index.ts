@@ -51,6 +51,18 @@ serve(async (req) => {
       await req.json();
 
     // --- Input validation ---
+    if (
+      !successUrl ||
+      !cancelUrl ||
+      !successUrl.startsWith(ALLOWED_ORIGIN) ||
+      !cancelUrl.startsWith(ALLOWED_ORIGIN)
+    ) {
+      return new Response(JSON.stringify({ error: "Invalid redirect URL." }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      });
+    }
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const uuidPattern = /^[0-9a-f-]{36}$/i;
 
