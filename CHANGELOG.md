@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.8] - 2026-04-03
+
+- `package.json`
+- `package-lock.json`
+- `public/nit.json`
+- `src/components/forms/ContactForm.jsx`
+
 ## [3.1.7] - 2026-04-03
 
 - Speedway 146 Release v3.1.7
