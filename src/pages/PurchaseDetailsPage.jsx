@@ -238,9 +238,9 @@ export default function PurchaseDetailsPage() {
                       <Package className="h-5 w-5 text-green-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Product ID</p>
+                      <p className="text-sm text-gray-500 mb-1">Order Number</p>
                       <p className="font-semibold text-gray-800">
-                        {purchase.product_id}
+                        {purchase.order_number}
                       </p>
                     </div>
                   </div>
