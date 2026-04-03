@@ -47,21 +47,10 @@ const ContactPage = () => {
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: "url(/images/22.JPEG)" }}
-          />
+          <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
         </div>
 
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
@@ -78,10 +67,7 @@ const ContactPage = () => {
           </div>
         </div>
 
-        <div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
 
       <section className="py-24 bg-white">
@@ -202,13 +188,7 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <div
-                  className="text-white p-12 flex flex-col justify-center"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #334155 0%, #1e293b 100%)",
-                  }}
-                >
+                <div className="text-white p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
                   <MessageSquare className="h-16 w-16 mb-6" />
                   <h3 className="text-3xl font-bold mb-4">
                     Questions About Booking?
