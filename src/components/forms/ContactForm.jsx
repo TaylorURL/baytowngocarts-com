@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Send } from "lucide-react";
+import { CheckCircle, Send } from "lucide-react";
 import Button from "../common/Button.jsx";
 
 const INPUT_CLASS =
   "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent";
+
+const CONTACT_EMAIL = "speedsway146@gmail.com";
 
 /**
  * Contact/inquiry form with fields for name, email, phone, event date,
@@ -19,6 +21,7 @@ const ContactForm = () => {
     guestCount: "",
     message: "",
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -29,7 +32,41 @@ const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const subject = encodeURIComponent(
+      `Speedway 146 Inquiry — ${formData.eventType || "General"} — ${formData.name}`,
+    );
+    const body = encodeURIComponent(
+      [
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        `Phone: ${formData.phone}`,
+        `Preferred Date: ${formData.eventDate || "Not specified"}`,
+        `Inquiry Type: ${formData.eventType || "Not specified"}`,
+        formData.message ? `\nMessage:\n${formData.message}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    );
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    setSubmitted(true);
   };
+
+  if (submitted) {
+    return (
+      <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center space-y-4">
+        <CheckCircle className="h-12 w-12 text-green-600 mx-auto" />
+        <h3 className="text-lg font-semibold text-green-900">Request Sent!</h3>
+        <p className="text-green-700 text-sm">
+          Your email client should have opened with your inquiry pre-filled. If
+          it didn't open automatically, please email us directly at{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">
+            {CONTACT_EMAIL}
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
