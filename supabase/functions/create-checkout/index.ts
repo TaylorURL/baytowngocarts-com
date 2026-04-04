@@ -25,7 +25,7 @@ const GROUP_DISCOUNT_PERCENT = 0.1;
 // @ts-ignore
 const CONNECTED_ACCOUNT_ID = Deno.env.get("STRIPE_CONNECTED_ACCOUNT_ID") || "";
 
-/** Server-side canonical product price map — source of truth for checkout pricing. */
+/** Server-side canonical product price map — source of truth for checkout pricing (in dollars). */
 const PRODUCT_PRICES: Record<string, number> = {
   prod_SuF7rI45RLsQlo: 13.99, // Adult Race
   prod_SuF7XrzxLfJWw6: 13.99, // Kid Race
@@ -40,6 +40,11 @@ const PRODUCT_PRICES: Record<string, number> = {
   prod_party_race_together: 150.0, // Race Together Upgrade
   prod_party_private_track: 700.0, // Private Track (2 Hours)
 };
+
+/** Convert a dollar price to cents with proper rounding (avoids floating-point errors). */
+function toCents(dollars: number): number {
+  return Math.round(dollars * 100);
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -167,8 +172,8 @@ serve(async (req) => {
     const lineItems = [];
 
     for (const item of items) {
-      const itemPrice = PRODUCT_PRICES[item.id];
-      const discountedPrice = itemPrice * discountMultiplier;
+      const itemPriceCents = toCents(PRODUCT_PRICES[item.id]);
+      const discountedCents = Math.round(itemPriceCents * discountMultiplier);
 
       lineItems.push({
         price_data: {
@@ -179,7 +184,7 @@ serve(async (req) => {
               : item.name,
             description: item.description,
           },
-          unit_amount: Math.round(discountedPrice * 100),
+          unit_amount: discountedCents,
         },
         quantity: item.quantity,
       });
@@ -196,7 +201,7 @@ serve(async (req) => {
         product_data: {
           name: "Sales Tax",
         },
-        unit_amount: Math.round(salesTax * 100),
+        unit_amount: toCents(salesTax),
       },
       quantity: 1,
     });
@@ -207,16 +212,14 @@ serve(async (req) => {
         product_data: {
           name: "Transaction Fee",
         },
-        unit_amount: Math.round(totalFees * 100),
+        unit_amount: toCents(totalFees),
       },
       quantity: 1,
     });
 
     const total = subtotal + salesTax + totalFees;
     const stripeProcessingFee = total * 0.029 + 0.3;
-    const applicationFeeAmount = Math.round(
-      (platformFee + stripeProcessingFee) * 100,
-    );
+    const applicationFeeAmount = toCents(platformFee + stripeProcessingFee);
 
     const sessionConfig: any = {
       line_items: lineItems,
