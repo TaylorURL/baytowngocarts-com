@@ -1,20 +1,105 @@
 /**
- * Post-checkout success page. Clears the cart and shows next-step instructions.
- * Purchase records are written exclusively by the Stripe webhook — never from the browser.
+ * Post-checkout success page. Records the completed purchase in Supabase,
+ * clears the cart, and shows next-step instructions to the customer.
  */
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, CheckCircle, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
+import { useAuth } from "../hooks/useAuth";
+import { supabase } from "../lib/supabase";
 import { useCart } from "../hooks/useCart";
 
 const SuccessPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
   const { clearCart } = useCart();
+  const purchaseAttempted = useRef(false);
 
   useEffect(() => {
-    localStorage.removeItem("pendingPurchase");
-    clearCart();
-  }, []);
+    const createPurchase = async () => {
+      const sessionId = searchParams.get("session_id");
+
+      if (!sessionId || !user) {
+        setLoading(false);
+        return;
+      }
+
+      if (purchaseAttempted.current) {
+        return;
+      }
+      purchaseAttempted.current = true;
+
+      try {
+        const { data: existingPurchase } = await supabase
+          .from("purchases")
+          .select("id")
+          .eq("stripe_session_id", sessionId)
+          .limit(1);
+
+        if (existingPurchase && existingPurchase.length > 0) {
+          localStorage.removeItem("pendingPurchase");
+          clearCart();
+          setLoading(false);
+          return;
+        }
+
+        const pendingPurchaseStr = localStorage.getItem("pendingPurchase");
+        if (!pendingPurchaseStr) {
+          setLoading(false);
+          return;
+        }
+
+        const pendingPurchase = JSON.parse(pendingPurchaseStr);
+        const orderNumber = `SPW146-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
+
+        const purchaseData = {
+          user_id: user.id,
+          order_number: orderNumber,
+          items: pendingPurchase.items.map((item) => ({
+            product_name: item.name,
+            price: Math.round(parseFloat(item.price.replace("$", "")) * 100),
+            quantity: item.quantity,
+            subtotal:
+              Math.round(parseFloat(item.price.replace("$", "")) * 100) *
+              item.quantity,
+          })),
+          total_amount: Math.round(pendingPurchase.total * 100),
+          total_quantity: pendingPurchase.totalQuantity,
+          status: "completed",
+          stripe_session_id: sessionId,
+          customer_email: user.email,
+        };
+
+        const { error } = await supabase.from("purchases").insert(purchaseData);
+
+        if (error && error.code !== "23505") {
+          console.error("Error creating purchase:", error);
+        }
+
+        localStorage.removeItem("pendingPurchase");
+        clearCart();
+      } catch (error) {
+        console.error("Error in createPurchase:", error);
+      }
+
+      setLoading(false);
+    };
+
+    createPurchase();
+  }, [searchParams, user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">Processing your payment...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
