@@ -7,37 +7,29 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Eye, EyeOff } from "lucide-react";
 import Button from "../components/common/Button";
-
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-
     const { error } = await signIn(email, password);
-
     if (error) {
       setMessage({ type: "error", text: error.message });
     } else {
       setMessage({ type: "success", text: "Successfully signed in!" });
       setTimeout(() => navigate(from, { replace: true }), 1000);
     }
-
     setLoading(false);
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -63,7 +55,6 @@ const LoginPage = () => {
             </Link>
           </p>
         </div>
-
         <div className="bg-white rounded-lg shadow-xl p-8">
           {message && (
             <div
@@ -76,7 +67,6 @@ const LoginPage = () => {
               {message.text}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
@@ -97,7 +87,6 @@ const LoginPage = () => {
                 placeholder="Enter your email"
               />
             </div>
-
             <div>
               <label
                 htmlFor="password"
@@ -130,7 +119,6 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
-
             <Button
               type="submit"
               variant="primary"
@@ -140,7 +128,6 @@ const LoginPage = () => {
               {loading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
-
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
@@ -157,5 +144,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;

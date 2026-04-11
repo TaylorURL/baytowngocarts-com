@@ -15,7 +15,6 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
-
 /**
  * Renders the full details of a single purchase order, including items, totals,
  * visit information, and downloadable documents. Accessible to the purchasing user or staff.
@@ -27,29 +26,23 @@ export default function PurchaseDetailsPage() {
   const { isStaff, loading: staffLoading } = useAdmin();
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/login");
     }
   }, [user, authLoading, navigate]);
-
   useEffect(() => {
     if (user && orderId && !staffLoading) {
       fetchPurchaseDetails();
     }
   }, [user, orderId, staffLoading]);
-
   const fetchPurchaseDetails = async () => {
     try {
       let query = supabase.from("purchases").select("*").eq("id", orderId);
-
       if (!isStaff) {
         query = query.eq("user_id", user.id);
       }
-
       const { data, error } = await query.single();
-
       if (error) throw error;
       setPurchase(data);
     } catch (error) {
@@ -60,7 +53,6 @@ export default function PurchaseDetailsPage() {
       setLoading(false);
     }
   };
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -70,11 +62,9 @@ export default function PurchaseDetailsPage() {
       minute: "2-digit",
     });
   };
-
   const formatPrice = (cents) => {
     return `$${(cents / 100).toFixed(2)}`;
   };
-
   if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
@@ -85,11 +75,9 @@ export default function PurchaseDetailsPage() {
       </div>
     );
   }
-
   if (!purchase) {
     return null;
   }
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
@@ -99,7 +87,6 @@ export default function PurchaseDetailsPage() {
             style={{ backgroundImage: "url(/images/19.JPEG)" }}
           />
         </div>
-
         <div
           className="absolute inset-0 z-5 opacity-10"
           style={{
@@ -109,7 +96,6 @@ export default function PurchaseDetailsPage() {
             backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
           }}
         />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
@@ -119,7 +105,6 @@ export default function PurchaseDetailsPage() {
               <ArrowLeft className="h-5 w-5" />
               {isStaff ? "Back to Staff Panel" : "Back to Purchases"}
             </button>
-
             <div className="text-center">
               <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
                 ORDER DETAILS
@@ -144,13 +129,11 @@ export default function PurchaseDetailsPage() {
             </div>
           </div>
         </div>
-
         <div
           className="absolute bottom-0 left-0 right-0 h-16 bg-white"
           style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
         />
       </section>
-
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
@@ -159,7 +142,6 @@ export default function PurchaseDetailsPage() {
                 <Package className="h-6 w-6 text-red-600" />
                 Order Summary
               </h2>
-
               <div className="space-y-6">
                 <div className="border-b border-gray-200 pb-6">
                   <h3 className="text-lg font-bold text-gray-800 mb-4">
@@ -203,7 +185,6 @@ export default function PurchaseDetailsPage() {
                     </div>
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex items-start gap-3">
                     <div className="bg-blue-100 p-2 rounded-lg">
@@ -216,7 +197,6 @@ export default function PurchaseDetailsPage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-3">
                     <div className="bg-purple-100 p-2 rounded-lg">
                       <CreditCard className="h-5 w-5 text-purple-600" />
@@ -232,7 +212,6 @@ export default function PurchaseDetailsPage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-3">
                     <div className="bg-green-100 p-2 rounded-lg">
                       <Package className="h-5 w-5 text-green-600" />
@@ -244,7 +223,6 @@ export default function PurchaseDetailsPage() {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-3">
                     <div className="bg-red-100 p-2 rounded-lg">
                       <CheckCircle className="h-5 w-5 text-red-600" />
@@ -259,20 +237,17 @@ export default function PurchaseDetailsPage() {
                 </div>
               </div>
             </div>
-
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border-2 border-blue-200 p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <MapPin className="h-6 w-6 text-blue-600" />
                 Visit Information
               </h2>
-
               <div className="space-y-4">
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
                   <h3 className="font-bold text-gray-800 mb-2">Speedway 146</h3>
                   <p className="text-gray-700 mb-3">
                     6750 N TX-146, Baytown, TX 77523
                   </p>
-
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-700">
                       <Phone className="h-4 w-4 text-red-600" />
@@ -294,7 +269,6 @@ export default function PurchaseDetailsPage() {
                     </div>
                   </div>
                 </div>
-
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
                   <h4 className="font-bold text-gray-800 mb-2">
                     What to Bring
@@ -310,13 +284,11 @@ export default function PurchaseDetailsPage() {
                 </div>
               </div>
             </div>
-
             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <Download className="h-6 w-6 text-red-600" />
                 Important Documents
               </h2>
-
               <div className="space-y-3">
                 <a
                   href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
@@ -337,7 +309,6 @@ export default function PurchaseDetailsPage() {
                   </div>
                   <span className="text-red-600 font-semibold">PDF</span>
                 </a>
-
                 <button
                   onClick={() => window.print()}
                   className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
@@ -359,7 +330,6 @@ export default function PurchaseDetailsPage() {
                 </button>
               </div>
             </div>
-
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">
                 Need Help?

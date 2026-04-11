@@ -4,7 +4,6 @@
  */
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft } from "lucide-react";
-
 /** Diagonal crosshatch overlay used as a background texture. */
 const CROSSHATCH_STYLE = {
   backgroundImage:
@@ -12,7 +11,6 @@ const CROSSHATCH_STYLE = {
   backgroundSize: "20px 20px",
   backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
 };
-
 export default function NotFoundPage() {
   return (
     <div className="w-full -mt-20">
@@ -23,12 +21,10 @@ export default function NotFoundPage() {
             style={{ backgroundImage: "url(/images/18.JPEG)" }}
           />
         </div>
-
         <div
           className="absolute inset-0 z-5 opacity-10"
           style={CROSSHATCH_STYLE}
         />
-
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-8xl md:text-9xl font-black text-red-600 mb-4">
             404

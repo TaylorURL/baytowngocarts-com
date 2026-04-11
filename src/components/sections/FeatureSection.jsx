@@ -1,11 +1,9 @@
 import { Shield, Trophy, Users, Zap } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
-
 /**
  * Grid of four feature cards highlighting key selling points
  * (speed, family fun, competition, flexible hours) with icons.
  */
-
 const FEATURES = [
   {
     icon: Zap,
@@ -32,7 +30,6 @@ const FEATURES = [
       "Open Thursday through Sunday with extended weekend hours for maximum fun.",
   },
 ];
-
 const FeatureSection = () => (
   <section className="py-20 bg-gray-50">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +38,6 @@ const FeatureSection = () => (
         subtitle="We deliver the ultimate racing experience with top-notch facilities and unmatched excitement."
         centered
       />
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {FEATURES.map(({ icon: Icon, title, description }, index) => (
           <div
@@ -61,5 +57,4 @@ const FeatureSection = () => (
     </div>
   </section>
 );
-
 export default FeatureSection;

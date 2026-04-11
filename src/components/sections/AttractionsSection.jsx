@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Baby, Check, PartyPopper, Zap } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
-
 /**
  * Showcases the three main attractions (go-karts, bounce houses, party rooms)
  * as image cards with feature checklists and "Learn More" links.
  */
-
 const COLOR_STYLES = {
   red: { badge: "bg-gray-600", link: "text-gray-600 hover:text-gray-700" },
   navy: { badge: "bg-gray-700", link: "text-gray-700 hover:text-gray-800" },
 };
-
 const ATTRACTIONS = [
   {
     title: "Go-Kart Racing",
@@ -41,7 +38,6 @@ const ATTRACTIONS = [
     color: "red",
   },
 ];
-
 const AttractionsSection = () => (
   <section className="py-24 bg-white">
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +48,6 @@ const AttractionsSection = () => (
         subtitle="Discover all the exciting activities and amenities we have to offer for your next adventure"
         centered
       />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {ATTRACTIONS.map(
           (
@@ -77,7 +72,6 @@ const AttractionsSection = () => (
                   <Icon className="h-6 w-6 text-white" />
                 </div>
               </div>
-
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">
                   {title}
@@ -85,7 +79,6 @@ const AttractionsSection = () => (
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {description}
                 </p>
-
                 <ul className="space-y-3 mb-6">
                   {features.map((feature) => (
                     <li
@@ -97,7 +90,6 @@ const AttractionsSection = () => (
                     </li>
                   ))}
                 </ul>
-
                 <Link
                   to="/pricing"
                   className={`inline-flex items-center ${COLOR_STYLES[color].link} font-bold transition-colors group`}
@@ -113,5 +105,4 @@ const AttractionsSection = () => (
     </div>
   </section>
 );
-
 export default AttractionsSection;

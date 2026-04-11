@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { NAV_ITEMS, BUSINESS_HOURS, CONTACT_INFO } from "../../lib/constants";
-
 const FACEBOOK_URL = "https://www.facebook.com/p/Speedway146-61575710985956/";
 const INSTAGRAM_URL = "https://www.instagram.com/Speedway146/";
 const TIKTOK_URL = "https://www.tiktok.com/@Speedway146";
-
 const SOCIAL_LINKS = [
   { label: "Facebook", href: FACEBOOK_URL, icon: Facebook },
   { label: "Instagram", href: INSTAGRAM_URL, icon: Instagram },
@@ -24,9 +22,7 @@ const SOCIAL_LINKS = [
     ),
   },
 ];
-
 const SOCIAL_LINK_CLASS = "text-gray-500 hover:text-red-600 transition-colors";
-
 const SocialLink = ({ href, label, icon: Icon }) => (
   <a
     href={href}
@@ -38,7 +34,6 @@ const SocialLink = ({ href, label, icon: Icon }) => (
     <Icon className="h-5 w-5" />
   </a>
 );
-
 const ContactRow = ({ icon: Icon, children, alignTop }) => (
   <div
     className={`flex space-x-3 ${alignTop ? "items-start" : "items-center"}`}
@@ -47,14 +42,12 @@ const ContactRow = ({ icon: Icon, children, alignTop }) => (
     <span className="text-gray-600">{children}</span>
   </div>
 );
-
 /**
  * Site-wide footer with branding, quick links, contact details,
  * hours of operation, and social media links.
  */
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
   return (
     <footer className="border-t border-gray-300 bg-gradient-to-b from-[#dce1e8] to-[#cdd4de]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -79,7 +72,6 @@ const Footer = () => {
                 <SocialLink key={link.label} {...link} />
               ))}
             </div>
-
             <div className="pt-4 mt-4 border-t border-gray-300 space-y-1.5 text-xs text-gray-500">
               <p>&copy; {currentYear} Speedway 146. All rights reserved.</p>
               <div className="flex gap-3">
@@ -110,7 +102,6 @@ const Footer = () => {
               </p>
             </div>
           </div>
-
           {/* Quick links */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800">Quick Links</h3>
@@ -127,7 +118,6 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-
           {/* Contact info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800">Contact Us</h3>
@@ -139,7 +129,6 @@ const Footer = () => {
               <ContactRow icon={Mail}>{CONTACT_INFO.email}</ContactRow>
             </div>
           </div>
-
           {/* Hours of operation */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-800">
@@ -164,5 +153,4 @@ const Footer = () => {
     </footer>
   );
 };
-
 export default Footer;

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, Phone, Zap } from "lucide-react";
 import Button from "../common/Button.jsx";
 import { CONTACT_INFO } from "../../lib/constants.js";
-
 /**
  * Bold call-to-action banner with pricing and event links,
  * plus a phone number for direct contact.
@@ -19,7 +18,6 @@ const ActionSection = () => (
       <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
       <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
     </div>
-
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div className="max-w-4xl mx-auto" data-aos="fade-up">
         <Zap className="h-16 w-16 mx-auto mb-6 text-gray-300" />
@@ -30,7 +28,6 @@ const ActionSection = () => (
           Bring your family and friends to Speedway 146 for a day filled with
           racing, bouncing, and creating memories that last a lifetime
         </p>
-
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link to="/pricing">
             <Button
@@ -42,7 +39,6 @@ const ActionSection = () => (
               <ArrowRight className="h-6 w-6" />
             </Button>
           </Link>
-
           <Link to="/events">
             <Button
               size="lg"
@@ -54,7 +50,6 @@ const ActionSection = () => (
             </Button>
           </Link>
         </div>
-
         <div className="mt-12 pt-12 border-t border-white border-opacity-20">
           <p className="text-gray-400 mb-4">
             Need help planning? Give us a call!
@@ -71,5 +66,4 @@ const ActionSection = () => (
     </div>
   </section>
 );
-
 export default ActionSection;

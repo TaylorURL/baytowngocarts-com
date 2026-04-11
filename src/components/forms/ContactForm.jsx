@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { CheckCircle, Send } from "lucide-react";
 import Button from "../common/Button.jsx";
-
 const INPUT_CLASS =
   "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent";
-
 const CONTACT_EMAIL = "speedsway146@gmail.com";
-
 /**
  * Contact/inquiry form with fields for name, email, phone, event date,
  * inquiry type, and a message. Includes waiver download links.
@@ -22,14 +19,12 @@ const ContactForm = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const subject = encodeURIComponent(
@@ -50,7 +45,6 @@ const ContactForm = () => {
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
-
   if (submitted) {
     return (
       <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center space-y-4">
@@ -67,7 +61,6 @@ const ContactForm = () => {
       </div>
     );
   }
-
   return (
     <div className="space-y-8">
       <div className="bg-red-50 border border-red-200 rounded-lg p-6">
@@ -80,7 +73,6 @@ const ContactForm = () => {
           call us directly at (346) 932-1266.
         </p>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -100,7 +92,6 @@ const ContactForm = () => {
               className={INPUT_CLASS}
             />
           </div>
-
           <div>
             <label
               htmlFor="email"
@@ -119,7 +110,6 @@ const ContactForm = () => {
             />
           </div>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label
@@ -138,7 +128,6 @@ const ContactForm = () => {
               className={INPUT_CLASS}
             />
           </div>
-
           <div>
             <label
               htmlFor="eventDate"
@@ -157,7 +146,6 @@ const ContactForm = () => {
             />
           </div>
         </div>
-
         <div>
           <label
             htmlFor="eventType"
@@ -186,7 +174,6 @@ const ContactForm = () => {
             <option value="other">Other</option>
           </select>
         </div>
-
         <div>
           <label
             htmlFor="message"
@@ -204,14 +191,12 @@ const ContactForm = () => {
             placeholder="Tell us about your event, number of guests, specific requirements, etc."
           ></textarea>
         </div>
-
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600">
             * Required fields. For immediate assistance or to make reservations,
             please call us at (346) 932-1266.
           </p>
         </div>
-
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <h4 className="text-lg font-semibold text-red-900 mb-3">
             Required Waivers
@@ -237,7 +222,6 @@ const ContactForm = () => {
             </a>
           </div>
         </div>
-
         <Button
           type="submit"
           variant="primary"
@@ -251,5 +235,4 @@ const ContactForm = () => {
     </div>
   );
 };
-
 export default ContactForm;

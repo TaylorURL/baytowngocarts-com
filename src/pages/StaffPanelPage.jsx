@@ -16,7 +16,6 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
-
 const STAT_CARDS = [
   {
     key: "totalOrders",
@@ -59,7 +58,6 @@ const STAT_CARDS = [
     format: (v) => `$${v.toFixed(2)}`,
   },
 ];
-
 const DATE_FILTERS = [
   { key: "today", label: "Today" },
   { key: "week", label: "This Week" },
@@ -68,24 +66,20 @@ const DATE_FILTERS = [
   { key: "year", label: "This Year" },
   { key: "all", label: "All Time" },
 ];
-
 const DEFAULT_STATS = {
   totalOrders: 0,
   totalRevenue: 0,
   todayOrders: 0,
   todayRevenue: 0,
 };
-
 const STATUS_CONFIG = {
   completed: { className: "bg-green-100 text-green-700", icon: CheckCircle },
   pending: { className: "bg-yellow-100 text-yellow-700", icon: Clock },
 };
-
 const DEFAULT_STATUS = {
   className: "bg-red-100 text-red-700",
   icon: AlertCircle,
 };
-
 function StatusBadge({ status }) {
   const config = STATUS_CONFIG[status] ?? DEFAULT_STATUS;
   const Icon = config.icon;
@@ -98,7 +92,6 @@ function StatusBadge({ status }) {
     </span>
   );
 }
-
 function getDateFilterStart(filterKey) {
   if (filterKey === "all") return null;
   const now = new Date();
@@ -120,7 +113,6 @@ function getDateFilterStart(filterKey) {
       return null;
   }
 }
-
 const formatDate = (dateString) =>
   new Date(dateString).toLocaleDateString("en-US", {
     month: "short",
@@ -129,9 +121,7 @@ const formatDate = (dateString) =>
     hour: "2-digit",
     minute: "2-digit",
   });
-
 const formatCurrency = (cents) => `$${(cents / 100).toFixed(2)}`;
-
 /**
  * Renders the staff-only admin panel with order stats, search, filtering, and order details.
  * Redirects non-staff users to the home page.
@@ -148,45 +138,36 @@ export default function StaffPanelPage() {
   const [allOrders, setAllOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrder, setExpandedOrder] = useState(null);
-
   useEffect(() => {
     if (!staffLoading && !isStaff) {
       navigate("/");
     }
   }, [isStaff, staffLoading, navigate]);
-
   useEffect(() => {
     if (isStaff) {
       fetchStats();
       fetchRecentOrders();
     }
   }, [isStaff]);
-
   const fetchStats = async () => {
     try {
       const { count: totalOrders } = await supabase
         .from("purchases")
         .select("*", { count: "exact", head: true });
-
       const { data: revenueData } = await supabase
         .from("purchases")
         .select("total_amount, created_at");
-
       if (!revenueData) {
         setStats({ ...DEFAULT_STATS, totalOrders: totalOrders || 0 });
         return;
       }
-
       const totalRevenue =
         revenueData.reduce((sum, order) => sum + order.total_amount, 0) / 100;
-
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0);
-
       const todayOrders = revenueData.filter(
         (order) => new Date(order.created_at) >= todayStart,
       );
-
       setStats({
         totalOrders: totalOrders || 0,
         totalRevenue,
@@ -198,14 +179,12 @@ export default function StaffPanelPage() {
       setStats(DEFAULT_STATS);
     }
   };
-
   const fetchRecentOrders = async () => {
     try {
       const { data, error } = await supabase
         .from("purchases")
         .select("*")
         .order("created_at", { ascending: false });
-
       if (error) throw error;
       setAllOrders(data || []);
       setRecentOrders((data || []).slice(0, 10));
@@ -216,26 +195,21 @@ export default function StaffPanelPage() {
       setLoading(false);
     }
   };
-
   const getDateFilteredOrders = (orders) => {
     const startDate = getDateFilterStart(dateFilter);
     if (!startDate) return orders;
     return orders.filter((order) => new Date(order.created_at) >= startDate);
   };
-
   const filteredOrders = searchQuery.trim()
     ? allOrders.filter((order) =>
         order.order_number.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : recentOrders;
-
   const displayOrders = getDateFilteredOrders(
     activeTab === "all" ? allOrders : filteredOrders,
   );
-
   const toggleOrder = (orderId) =>
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
-
   if (staffLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
@@ -246,18 +220,14 @@ export default function StaffPanelPage() {
       </div>
     );
   }
-
   if (!isStaff) return null;
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
         </div>
-
         <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -271,10 +241,8 @@ export default function StaffPanelPage() {
             </p>
           </div>
         </div>
-
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
-
       <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -314,7 +282,6 @@ export default function StaffPanelPage() {
                 ),
               )}
             </div>
-
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
@@ -348,7 +315,6 @@ export default function StaffPanelPage() {
                   </div>
                 </div>
               </div>
-
               <div className="flex flex-wrap gap-2 mb-6">
                 {DATE_FILTERS.map(({ key, label }) => (
                   <button
@@ -364,13 +330,11 @@ export default function StaffPanelPage() {
                   </button>
                 ))}
               </div>
-
               {searchQuery && (
                 <div className="mb-4 text-sm text-gray-600">
                   Found {displayOrders.length} order(s) matching "{searchQuery}"
                 </div>
               )}
-
               {displayOrders.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   {searchQuery
@@ -460,7 +424,6 @@ export default function StaffPanelPage() {
                       </tbody>
                     </table>
                   </div>
-
                   {/* Mobile cards */}
                   <div className="lg:hidden space-y-3">
                     {displayOrders.map((order) => (
@@ -497,14 +460,12 @@ export default function StaffPanelPage() {
                             {formatDate(order.created_at)}
                           </p>
                         </button>
-
                         {expandedOrder === order.id && (
                           <div className="border-t border-gray-200 bg-gray-50 p-4 space-y-4">
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <Mail className="h-4 w-4 text-gray-400" />
                               <span>{order.customer_email || "N/A"}</span>
                             </div>
-
                             <div>
                               <h4 className="text-sm font-semibold text-gray-700 mb-2">
                                 Items
@@ -531,7 +492,6 @@ export default function StaffPanelPage() {
                                 ))}
                               </div>
                             </div>
-
                             <div className="flex justify-between items-center bg-white rounded-lg p-3 border-2 border-gray-200">
                               <div>
                                 <p className="font-bold text-gray-800">Total</p>
@@ -546,7 +506,6 @@ export default function StaffPanelPage() {
                                 {formatCurrency(order.total_amount)}
                               </span>
                             </div>
-
                             <button
                               onClick={() => navigate(`/purchase/${order.id}`)}
                               className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"

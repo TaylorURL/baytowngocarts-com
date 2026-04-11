@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-
 /**
  * Checks whether the current authenticated user has staff privileges
  * by querying the `staff` table in Supabase.
@@ -9,29 +8,24 @@ import { supabase } from "../lib/supabase";
 export function useAdmin() {
   const [isStaff, setIsStaff] = useState(false);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     checkStaffStatus();
   }, []);
-
   const checkStaffStatus = async () => {
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
       if (!user) {
         setIsStaff(false);
         setLoading(false);
         return;
       }
-
       const { data, error } = await supabase
         .from("staff")
         .select("id")
         .eq("user_id", user.id)
         .single();
-
       if (error) {
         if (error.code === "PGRST116") {
           setIsStaff(false);
@@ -63,7 +57,6 @@ export function useAdmin() {
       setLoading(false);
     }
   };
-
   return {
     isAdmin: isStaff,
     isStaff,

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2] - 2026-04-11
+
+- Removed blank lines throughout the codebase across components, hooks, pages, layouts, and lib files for a more compact style
+- Cleaned up whitespace in common components (Button, Footer, Header, ScrollToTop, SectionHeading) and forms (ContactForm)
+- Tightened spacing in section components (Action, Attractions, Feature, Gallery, Hero, Locations, Question, Testimonial)
+- Condensed formatting in hooks (useAdmin, useAuth, useCart, useImageSlideshow, useTraffic)
+- Removed empty lines from page components (About, Cart, Contact, Events, FAQ, Home, Login, NotFound, Pricing, Privacy, PurchaseDetails, Purchases, Signup, StaffPanel, Terms, Traffic)
+- Trimmed whitespace in lib files (ErrorReporterUtility, constants, stripe-config, supabase) and entry points (App, main, MainLayout, vite-env.d.ts)
+
 ## [3.1.9] - 2026-04-03
 
 - Speedway 146 Release v3.1.9

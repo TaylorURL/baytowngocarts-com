@@ -6,7 +6,6 @@ export const HERO_BACKGROUND_IMAGES = [
   "/images/17.JPEG",
   "/images/18.JPEG",
 ];
-
 export const HERO_STATS = [
   { value: "12+", label: "MPH Top Speed" },
   { value: "1200+", label: "Race Hours" },
@@ -16,7 +15,6 @@ export const HERO_STATS = [
     className: "md:col-span-1 col-span-2",
   },
 ];
-
 export const GALLERY_IMAGES = [
   {
     src: "/images/14.JPEG",
@@ -47,10 +45,8 @@ export const GALLERY_IMAGES = [
   },
   { src: "/images/22.JPEG", alt: "Racing action", title: "Racing Action" },
 ];
-
 export const SLIDESHOW_INTERVAL_MS = 2000;
 export const GALLERY_IMAGES_PER_SLIDE = 4;
-
 /** Primary navigation links used in the header/footer. */
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -60,7 +56,6 @@ export const NAV_ITEMS = [
   { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
 ];
-
 /** Weekly business hours displayed on the Contact and other pages. */
 export const BUSINESS_HOURS = [
   { day: "Thursday", hours: "5:00 PM – 10:30 PM" },
@@ -71,13 +66,11 @@ export const BUSINESS_HOURS = [
   { day: "Tuesday", hours: "Closed" },
   { day: "Wednesday", hours: "Closed" },
 ];
-
 export const CONTACT_INFO = {
   phone: "(346) 932-1266",
   email: "speedsway146@gmail.com",
   address: "6750 N TX-146, Baytown, TX 77523",
 };
-
 export const BOUNCE_PRICING = [
   {
     title: "Weekday Unlimited",
@@ -111,7 +104,6 @@ export const BOUNCE_PRICING = [
     isPopular: true,
   },
 ];
-
 /** Frequently asked questions displayed on the FAQ page, each tagged with a category. */
 export const FAQS = [
   {
@@ -303,7 +295,6 @@ export const FAQS = [
     category: "Policies",
   },
 ];
-
 export const TESTIMONIALS = [
   {
     name: "Jessica M.",

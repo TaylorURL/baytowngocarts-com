@@ -14,7 +14,6 @@ const SectionHeading = ({
     red: "bg-red-100 text-red-600",
     navy: "bg-gray-700 text-white",
   };
-
   return (
     <div
       className={`mb-16 ${centered ? "text-center max-w-3xl mx-auto" : ""} ${className}`}
@@ -36,5 +35,4 @@ const SectionHeading = ({
     </div>
   );
 };
-
 export default SectionHeading;

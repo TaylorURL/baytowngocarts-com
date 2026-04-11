@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
-
 /** Diagonal crosshatch overlay used as a background texture. */
 const CROSSHATCH_STYLE = {
   backgroundImage:
@@ -21,26 +20,22 @@ const CROSSHATCH_STYLE = {
   backgroundSize: "20px 20px",
   backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
 };
-
 export default function PurchasesPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [purchases, setPurchases] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (!loading && !user) {
       navigate("/login", { state: { from: location } });
     }
   }, [user, loading, navigate]);
-
   useEffect(() => {
     if (user) {
       fetchUserData();
     }
   }, [user]);
-
   const fetchUserData = async () => {
     setIsLoading(true);
     try {
@@ -49,7 +44,6 @@ export default function PurchasesPage() {
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-
       if (purchaseError) throw purchaseError;
       setPurchases(purchaseData || []);
     } catch (error) {
@@ -58,7 +52,6 @@ export default function PurchasesPage() {
       setIsLoading(false);
     }
   };
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -68,11 +61,9 @@ export default function PurchasesPage() {
       minute: "2-digit",
     });
   };
-
   const formatPrice = (amount) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
-
   if (loading || isLoading) {
     return (
       <div className="w-full -mt-20">
@@ -83,12 +74,10 @@ export default function PurchasesPage() {
               style={{ backgroundImage: "url(/images/20.JPEG)" }}
             />
           </div>
-
           <div
             className="absolute inset-0 z-5 opacity-10"
             style={CROSSHATCH_STYLE}
           />
-
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div
               className="animate-spin rounded-full h-16 w-16 border-4 mx-auto mb-4"
@@ -103,7 +92,6 @@ export default function PurchasesPage() {
       </div>
     );
   }
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center">
@@ -113,7 +101,6 @@ export default function PurchasesPage() {
             style={{ backgroundImage: "url(/images/21.JPEG)" }}
           />
         </div>
-
         <div
           className="absolute inset-0 z-5 opacity-10"
           style={{
@@ -123,7 +110,6 @@ export default function PurchasesPage() {
             backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
           }}
         />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -145,13 +131,11 @@ export default function PurchasesPage() {
             </div>
           </div>
         </div>
-
         <div
           className="absolute bottom-0 left-0 right-0 h-16 bg-white"
           style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
         />
       </section>
-
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -174,7 +158,6 @@ export default function PurchasesPage() {
                   >
                     Browse Racing Packages
                   </button>
-
                   <div className="mt-8 pt-8 border-t border-gray-200">
                     <h4 className="text-lg font-bold text-gray-800 mb-3">
                       What You'll See Here
@@ -198,7 +181,6 @@ export default function PurchasesPage() {
                     Track all your exciting racing adventures and bookings
                   </p>
                 </div>
-
                 <div className="grid grid-cols-1 gap-6">
                   {purchases.map((order, index) => (
                     <div
@@ -278,7 +260,6 @@ export default function PurchasesPage() {
                     </div>
                   ))}
                 </div>
-
                 <div
                   className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6"
                   data-aos="fade-up"
@@ -306,7 +287,6 @@ export default function PurchasesPage() {
                       </div>
                     </div>
                   </div>
-
                   <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border-2 border-green-200">
                     <div className="flex items-start gap-4">
                       <div className="bg-green-600 p-3 rounded-xl flex-shrink-0">

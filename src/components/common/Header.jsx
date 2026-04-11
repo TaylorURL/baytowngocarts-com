@@ -17,13 +17,11 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
-
 const LIGHT_COLORS = [
   { on: "#ef4444", glow: "rgba(239,68,68,0.8)", dim: "#3d1111" },
   { on: "#facc15", glow: "rgba(250,204,21,0.8)", dim: "#3d2e05" },
   { on: "#16a34a", glow: "rgba(22,163,74,0.8)", dim: "#0a3d1a" },
 ];
-
 const NAV_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
@@ -32,7 +30,6 @@ const NAV_ITEMS = [
   { name: "Contact", path: "/contact" },
   { name: "FAQ", path: "/faq" },
 ];
-
 const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
   <div className="flex items-center" style={{ gap: `${gap * 4}px` }}>
     {LIGHT_COLORS.map((c, i) => {
@@ -71,7 +68,6 @@ const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
     })}
   </div>
 );
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -81,12 +77,10 @@ const Header = () => {
   const { user, signOut } = useAuth();
   const { isStaff } = useAdmin();
   const { getTotalItems } = useCart();
-
   useEffect(() => {
     const id = setInterval(() => setActiveLight((p) => (p + 1) % 3), 1000);
     return () => clearInterval(id);
   }, []);
-
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target))
@@ -96,21 +90,16 @@ const Header = () => {
       document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isUserMenuOpen]);
-
   useEffect(() => {
     setIsUserMenuOpen(false);
     setIsMenuOpen(false);
   }, [location.pathname]);
-
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
   const handleSignOut = async () => {
     await signOut();
     setIsUserMenuOpen(false);
   };
-
   const cartCount = getTotalItems();
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* ─── Top Bar: Silver — Logo, info, cart, auth ─── */}
@@ -143,7 +132,6 @@ const Header = () => {
                 </span>
               </div>
             </Link>
-
             {/* Center: Contact Info (desktop only) */}
             <div className="hidden xl:flex items-center gap-8 text-gray-500">
               <div className="flex items-center gap-2">
@@ -165,7 +153,6 @@ const Header = () => {
                 </span>
               </div>
             </div>
-
             {/* Right: Cart + Auth */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
@@ -179,9 +166,7 @@ const Header = () => {
                   </span>
                 )}
               </Link>
-
               <div className="w-px h-6 bg-gray-400/25" />
-
               {user ? (
                 <div className="relative" ref={userMenuRef}>
                   <button
@@ -198,7 +183,6 @@ const Header = () => {
                       className={`h-3.5 w-3.5 transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""}`}
                     />
                   </button>
-
                   {isUserMenuOpen && (
                     <div
                       className="absolute right-0 mt-2 w-60 rounded-xl overflow-hidden border border-gray-200/80 bg-white"
@@ -271,7 +255,6 @@ const Header = () => {
                 </div>
               )}
             </div>
-
             {/* Mobile: Cart + Hamburger */}
             <div className="flex items-center gap-1 lg:hidden">
               <Link
@@ -300,7 +283,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
       {/* ─── Bottom Bar: Navy — Nav links with traffic lights ─── */}
       <div
         className="hidden lg:block"
@@ -313,9 +295,7 @@ const Header = () => {
           <div className="flex items-center justify-center">
             {/* Traffic lights — left */}
             <TrafficLights activeLight={activeLight} size={10} gap={1.5} />
-
             <div className="w-px h-5 bg-white/10 mx-5" />
-
             {/* Nav links */}
             <nav className="flex items-center">
               {NAV_ITEMS.map((item) => {
@@ -347,15 +327,12 @@ const Header = () => {
                 );
               })}
             </nav>
-
             <div className="w-px h-5 bg-white/10 mx-5" />
-
             {/* Traffic lights — right */}
             <TrafficLights activeLight={activeLight} size={10} gap={1.5} />
           </div>
         </div>
       </div>
-
       {/* Mobile overlay */}
       {isMenuOpen && (
         <div
@@ -363,7 +340,6 @@ const Header = () => {
           onClick={() => setIsMenuOpen(false)}
         />
       )}
-
       {/* Mobile drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden transform transition-transform duration-300 ease-out ${
@@ -412,7 +388,6 @@ const Header = () => {
               <X className="h-5 w-5" />
             </button>
           </div>
-
           {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-0.5">
             {NAV_ITEMS.map((item) => {
@@ -441,7 +416,6 @@ const Header = () => {
               );
             })}
           </nav>
-
           {/* Drawer footer */}
           <div className="p-4 border-t border-gray-300/50 space-y-2">
             {user ? (
@@ -512,5 +486,4 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;

@@ -22,7 +22,6 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
-
 export default function App() {
   return (
     <Router>

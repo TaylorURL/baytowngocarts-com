@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FileText } from "lucide-react";
-
 const TermsPage = () => (
   <div className="w-full -mt-20">
     <section
@@ -27,7 +26,6 @@ const TermsPage = () => (
         style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
       />
     </section>
-
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto prose prose-gray text-gray-700 space-y-8">
@@ -43,7 +41,6 @@ const TermsPage = () => (
               website or services.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               2. Services
@@ -55,7 +52,6 @@ const TermsPage = () => (
               without notice.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               3. User Accounts
@@ -68,7 +64,6 @@ const TermsPage = () => (
               information and to update it as necessary.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               4. Purchases and Payments
@@ -92,7 +87,6 @@ const TermsPage = () => (
               </li>
             </ul>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               5. Assumption of Risk and Liability Waiver
@@ -111,7 +105,6 @@ const TermsPage = () => (
               use of our facilities, services, or website.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               6. Data Usage and Consent
@@ -151,7 +144,6 @@ const TermsPage = () => (
               .
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               7. Intellectual Property
@@ -164,7 +156,6 @@ const TermsPage = () => (
               works from our content without written permission.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               8. User Conduct
@@ -192,7 +183,6 @@ const TermsPage = () => (
               </li>
             </ul>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               9. Age Requirements
@@ -205,7 +195,6 @@ const TermsPage = () => (
               our services.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               10. Event Bookings
@@ -217,7 +206,6 @@ const TermsPage = () => (
               communicated at the time of booking.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               11. Disclaimer of Warranties
@@ -230,7 +218,6 @@ const TermsPage = () => (
               purpose, and non-infringement.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               12. Limitation of Liability
@@ -242,7 +229,6 @@ const TermsPage = () => (
               website or services, regardless of the theory of liability.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               13. Indemnification
@@ -254,7 +240,6 @@ const TermsPage = () => (
               website or violation of these terms.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               14. Governing Law
@@ -265,7 +250,6 @@ const TermsPage = () => (
               shall be resolved in the courts of Harris County, Texas.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               15. Changes to Terms
@@ -277,7 +261,6 @@ const TermsPage = () => (
               constitutes acceptance of the revised terms.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               16. Contact Us
@@ -292,7 +275,6 @@ const TermsPage = () => (
               <li>Address: 6750 N TX-146, Baytown, TX 77523</li>
             </ul>
           </div>
-
           <div className="pt-8 border-t border-gray-200 text-center">
             <Link
               to="/privacy"
@@ -306,5 +288,4 @@ const TermsPage = () => (
     </section>
   </div>
 );
-
 export default TermsPage;

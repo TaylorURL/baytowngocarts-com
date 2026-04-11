@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { supabase } from "../lib/supabase";
-
 /**
  * Logs a page view to the `site_traffic` table in Supabase, including
  * user agent, referrer, screen size, and geolocation data.
@@ -15,13 +14,11 @@ export const logPageView = async (pathname) => {
   ) {
     return;
   }
-
   try {
     const userAgent = navigator.userAgent;
     const referrer = document.referrer || null;
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
-
     let geoData = null;
     try {
       const geoResponse = await fetch("https://ipapi.co/json/");
@@ -31,7 +28,6 @@ export const logPageView = async (pathname) => {
     } catch (geoError) {
       console.error("Geolocation fetch failed:", geoError);
     }
-
     await supabase.from("site_traffic").insert({
       page_path: pathname,
       user_agent: userAgent,
@@ -50,7 +46,6 @@ export const logPageView = async (pathname) => {
     console.error("Error logging page view:", error);
   }
 };
-
 /**
  * React hook that logs a page view whenever the pathname changes.
  * @param {string} pathname - The current route path.
@@ -60,7 +55,6 @@ export const useTrafficLogger = (pathname) => {
     logPageView(pathname);
   }, [pathname]);
 };
-
 /**
  * Fetches traffic records from Supabase filtered by the given time range.
  * Excludes staff-only pages from results.
@@ -71,7 +65,6 @@ export const getTrafficStats = async (timeRange = "today") => {
   try {
     let startDate;
     const now = new Date();
-
     switch (timeRange) {
       case "today":
         startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -92,7 +85,6 @@ export const getTrafficStats = async (timeRange = "today") => {
       default:
         startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
-
     const { data, error } = await supabase
       .from("site_traffic")
       .select("*")
@@ -101,9 +93,7 @@ export const getTrafficStats = async (timeRange = "today") => {
       .neq("page_path", "/staff")
       .not("page_path", "like", "/purchase%")
       .order("timestamp", { ascending: false });
-
     if (error) throw error;
-
     return data || [];
   } catch (error) {
     console.error("Error fetching traffic stats:", error);

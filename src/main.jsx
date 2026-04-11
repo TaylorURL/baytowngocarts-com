@@ -8,19 +8,16 @@ import "aos/dist/aos.css";
 import ErrorReporterUtility, {
   ErrorBoundary,
 } from "./lib/ErrorReporterUtility";
-
 ErrorReporterUtility.init({
   project: "baytowngocarts.com",
   apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
 });
-
 AOS.init({
   duration: 800,
   easing: "ease-out-cubic",
   once: true,
   offset: 100,
 });
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary>

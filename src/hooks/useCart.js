@@ -1,16 +1,13 @@
 import { create } from "zustand";
-
 /**
  * Zustand store for shopping cart state. Provides methods to add, remove,
  * and update items, plus computed totals for price and item count.
  */
 export const useCart = create((set, get) => ({
   items: [],
-
   addItem: (product, quantity = 1) => {
     const items = get().items;
     const existingItem = items.find((item) => item.product.id === product.id);
-
     if (existingItem) {
       set({
         items: items.map((item) =>
@@ -23,11 +20,9 @@ export const useCart = create((set, get) => ({
       set({ items: [...items, { product, quantity }] });
     }
   },
-
   removeItem: (productId) => {
     set({ items: get().items.filter((item) => item.product.id !== productId) });
   },
-
   updateQuantity: (productId, quantity) => {
     if (quantity <= 0) {
       get().removeItem(productId);
@@ -39,16 +34,13 @@ export const useCart = create((set, get) => ({
       ),
     });
   },
-
   clearCart: () => set({ items: [] }),
-
   getTotal: () => {
     return get().items.reduce((total, item) => {
       const price = parseFloat(item.product.price.replace("$", ""));
       return total + price * item.quantity;
     }, 0);
   },
-
   getTotalItems: () => {
     return get().items.reduce((total, item) => total + item.quantity, 0);
   },

@@ -11,7 +11,6 @@ import {
 import ContactForm from "../components/forms/ContactForm.jsx";
 import LocationsSection from "../components/sections/LocationsSection.jsx";
 import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/constants.js";
-
 /**
  * Renders the Contact page with contact methods, a contact form, location info, and business hours.
  */
@@ -42,16 +41,13 @@ const ContactPage = () => {
       color: "red",
     },
   ];
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
         </div>
-
         <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -66,10 +62,8 @@ const ContactPage = () => {
             </p>
           </div>
         </div>
-
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
-
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -86,7 +80,6 @@ const ContactPage = () => {
               Pick the method that works best for you. We're ready to assist!
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
             {contactMethods.map((method, index) => (
               <a
@@ -119,7 +112,6 @@ const ContactPage = () => {
               </a>
             ))}
           </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             <div data-aos="fade-right">
               <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
@@ -132,10 +124,8 @@ const ContactPage = () => {
                 Fill out the form below and we'll get back to you as soon as
                 possible. For immediate assistance, please call us directly.
               </p>
-
               <ContactForm />
             </div>
-
             <div data-aos="fade-left">
               <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
                 VISIT US
@@ -145,13 +135,11 @@ const ContactPage = () => {
                 We're conveniently located in Baytown, TX. Come visit us during
                 our business hours for an unforgettable racing experience!
               </p>
-
               <LocationsSection />
             </div>
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
@@ -187,7 +175,6 @@ const ContactPage = () => {
                     </p>
                   </div>
                 </div>
-
                 <div className="text-white p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
                   <MessageSquare className="h-16 w-16 mb-6" />
                   <h3 className="text-3xl font-bold mb-4">
@@ -220,7 +207,6 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-20 bg-gray-800 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
@@ -258,5 +244,4 @@ const ContactPage = () => {
     </div>
   );
 };
-
 export default ContactPage;

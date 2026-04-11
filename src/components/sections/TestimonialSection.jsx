@@ -1,7 +1,6 @@
 import { CheckCircle, Quote, Star } from "lucide-react";
 import SectionHeading from "../common/SectionHeading.jsx";
 import { TESTIMONIALS } from "../../lib/constants.js";
-
 /**
  * Displays a grid of customer testimonial cards with star ratings,
  * review text, and verified-badge author info.
@@ -16,7 +15,6 @@ const TestimonialSection = () => (
         subtitle="Don't just take our word for it - hear from families and racing enthusiasts who've experienced the thrill"
         centered
       />
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {TESTIMONIALS.map(({ name, rating, text, location }, index) => (
           <div
@@ -28,7 +26,6 @@ const TestimonialSection = () => (
             <div className="absolute -top-4 -right-4 bg-gray-400 p-3 rounded-full shadow-lg">
               <Quote className="h-6 w-6 text-white" />
             </div>
-
             <div className="flex items-center gap-2 mb-4">
               {[...Array(rating)].map((_, i) => (
                 <Star
@@ -37,11 +34,9 @@ const TestimonialSection = () => (
                 />
               ))}
             </div>
-
             <p className="text-gray-700 mb-6 leading-relaxed italic">
               "{text}"
             </p>
-
             <div className="border-t border-gray-200 pt-6">
               <div className="flex items-center gap-2">
                 <h4 className="font-bold text-gray-800">{name}</h4>
@@ -55,5 +50,4 @@ const TestimonialSection = () => (
     </div>
   </section>
 );
-
 export default TestimonialSection;

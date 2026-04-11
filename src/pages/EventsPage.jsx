@@ -14,15 +14,12 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 import { CONTACT_INFO } from "../lib/constants.js";
-
 const HERO_IMAGE_PATH = "/images/14.JPEG";
-
 const HERO_BADGES = [
   { icon: PartyPopper, label: "Birthday Parties" },
   { icon: Briefcase, label: "Corporate Events" },
   { icon: Trophy, label: "Racing Leagues" },
 ];
-
 const EVENT_TYPES = [
   {
     title: "Birthday Parties",
@@ -64,7 +61,6 @@ const EVENT_TYPES = [
     ],
   },
 ];
-
 const BENEFITS = [
   {
     icon: Shield,
@@ -87,7 +83,6 @@ const BENEFITS = [
     description: "Tailored solutions for your specific needs and budget",
   },
 ];
-
 const CTA_INFO_CARDS = [
   {
     icon: Clock,
@@ -108,7 +103,6 @@ const CTA_INFO_CARDS = [
     ],
   },
 ];
-
 /** Renders the Events page showcasing birthday parties, corporate events, and racing leagues. */
 const EventsPage = () => (
   <div className="w-full -mt-20">
@@ -119,10 +113,8 @@ const EventsPage = () => (
           className={`absolute inset-0 bg-cover bg-center opacity-30 bg-[url('${HERO_IMAGE_PATH}')]`}
         />
       </div>
-
       {/* Decorative checkerboard overlay */}
       <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
-
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -148,10 +140,8 @@ const EventsPage = () => (
           </div>
         </div>
       </div>
-
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </section>
-
     {/* Event Types */}
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,7 +157,6 @@ const EventsPage = () => (
             perfect event solution
           </p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {EVENT_TYPES.map((eventType, index) => (
             <div
@@ -186,7 +175,6 @@ const EventsPage = () => (
                   <eventType.icon className="h-6 w-6 text-white" />
                 </div>
               </div>
-
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">
                   {eventType.title}
@@ -194,7 +182,6 @@ const EventsPage = () => (
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {eventType.description}
                 </p>
-
                 <ul className="space-y-3 mb-6">
                   {eventType.features.map((feature) => (
                     <li
@@ -206,7 +193,6 @@ const EventsPage = () => (
                     </li>
                   ))}
                 </ul>
-
                 <Link
                   to="/contact"
                   className="block w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 text-center"
@@ -219,7 +205,6 @@ const EventsPage = () => (
         </div>
       </div>
     </section>
-
     {/* Benefits */}
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -232,7 +217,6 @@ const EventsPage = () => (
             unforgettable
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {BENEFITS.map((benefit, index) => (
             <div
@@ -253,7 +237,6 @@ const EventsPage = () => (
         </div>
       </div>
     </section>
-
     {/* CTA */}
     <section className="py-20 text-white bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -307,5 +290,4 @@ const EventsPage = () => (
     </section>
   </div>
 );
-
 export default EventsPage;

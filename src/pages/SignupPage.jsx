@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Eye, EyeOff } from "lucide-react";
 import Button from "../components/common/Button";
-
 const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,21 +15,17 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-
   const { signUp } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-
     if (password !== confirmPassword) {
       setMessage({ type: "error", text: "Passwords do not match" });
       setLoading(false);
       return;
     }
-
     if (password.length < 6) {
       setMessage({
         type: "error",
@@ -39,9 +34,7 @@ const SignupPage = () => {
       setLoading(false);
       return;
     }
-
     const { error } = await signUp(email, password);
-
     if (error) {
       setMessage({ type: "error", text: error.message });
     } else {
@@ -51,10 +44,8 @@ const SignupPage = () => {
       });
       setTimeout(() => navigate("/"), 1500);
     }
-
     setLoading(false);
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -78,7 +69,6 @@ const SignupPage = () => {
             </Link>
           </p>
         </div>
-
         <div className="bg-white rounded-lg shadow-xl p-8">
           {message && (
             <div
@@ -91,7 +81,6 @@ const SignupPage = () => {
               {message.text}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
@@ -112,7 +101,6 @@ const SignupPage = () => {
                 placeholder="Enter your email"
               />
             </div>
-
             <div>
               <label
                 htmlFor="password"
@@ -145,7 +133,6 @@ const SignupPage = () => {
                 </button>
               </div>
             </div>
-
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -178,7 +165,6 @@ const SignupPage = () => {
                 </button>
               </div>
             </div>
-
             <Button
               type="submit"
               variant="primary"
@@ -188,7 +174,6 @@ const SignupPage = () => {
               {loading ? "Creating account..." : "Create account"}
             </Button>
           </form>
-
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
@@ -205,5 +190,4 @@ const SignupPage = () => {
     </div>
   );
 };
-
 export default SignupPage;

@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
-
 /**
  * Renders the About page with company story, stats, values, timeline, and team sections.
  */
@@ -46,7 +45,6 @@ const AboutPage = () => {
       color: "bg-gray-700",
     },
   ];
-
   const values = [
     {
       icon: Heart,
@@ -67,7 +65,6 @@ const AboutPage = () => {
         "Safety is our top priority, but we never forget that the ultimate goal is to have an amazing, thrilling, and unforgettable racing experience.",
     },
   ];
-
   const timeline = [
     {
       year: "2019",
@@ -98,7 +95,6 @@ const AboutPage = () => {
         "Celebrating over 5,000 happy customers and countless unforgettable racing moments.",
     },
   ];
-
   const features = [
     {
       icon: Zap,
@@ -121,7 +117,6 @@ const AboutPage = () => {
       text: "Open Thursday through Sunday with special event bookings available",
     },
   ];
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
@@ -131,7 +126,6 @@ const AboutPage = () => {
             style={{ backgroundImage: "url(/images/16.JPEG)" }}
           />
         </div>
-
         <div
           className="absolute inset-0 z-5 opacity-10"
           style={{
@@ -141,7 +135,6 @@ const AboutPage = () => {
             backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
           }}
         />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -156,19 +149,16 @@ const AboutPage = () => {
             </p>
           </div>
         </div>
-
         <div
           className="absolute bottom-0 left-0 right-0 h-16 bg-white"
           style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
         />
       </section>
-
       <section className="py-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
         </div>
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -194,7 +184,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -240,7 +229,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -258,7 +246,6 @@ const AboutPage = () => {
               commitment to excellence
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div
@@ -279,7 +266,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-gray-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div
@@ -287,7 +273,6 @@ const AboutPage = () => {
             style={{ backgroundImage: "url(/images/15.JPEG)" }}
           />
         </div>
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="max-w-3xl mx-auto text-center mb-16"
@@ -303,7 +288,6 @@ const AboutPage = () => {
               The principles that guide everything we do
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {values.map((value, index) => (
               <div
@@ -326,7 +310,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -344,7 +327,6 @@ const AboutPage = () => {
               destination
             </p>
           </div>
-
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {timeline.map((item, index) => (
@@ -378,7 +360,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -430,7 +411,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
       <section
         className="py-20 text-white"
         style={{
@@ -473,5 +453,4 @@ const AboutPage = () => {
     </div>
   );
 };
-
 export default AboutPage;

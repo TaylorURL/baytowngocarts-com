@@ -27,7 +27,6 @@ import {
 } from "../lib/stripe-config.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
-
 /**
  * Renders the Pricing page with tabbed views for party packages, individual racing, and bounce house options.
  * Includes a shopping cart summary bar and quantity selectors for each product.
@@ -38,16 +37,13 @@ const PricingPage = () => {
   const [quantities, setQuantities] = useState({});
   const [showCartNotification, setShowCartNotification] = useState(false);
   const [activeTab, setActiveTab] = useState("individual");
-
   const getQuantity = (productId) => quantities[productId] || 0;
-
   const updateQuantity = (productId, delta) => {
     setQuantities((prev) => ({
       ...prev,
       [productId]: Math.max(0, (prev[productId] || 0) + delta),
     }));
   };
-
   const setQuantityDirect = (productId, value) => {
     const num = parseInt(value) || 0;
     setQuantities((prev) => ({
@@ -55,11 +51,9 @@ const PricingPage = () => {
       [productId]: Math.max(0, num),
     }));
   };
-
   const getTotalItems = () => {
     return Object.values(quantities).reduce((sum, qty) => sum + qty, 0);
   };
-
   const getTotalPrice = () => {
     const allProducts = [
       ...STRIPE_PRODUCTS,
@@ -72,7 +66,6 @@ const PricingPage = () => {
       return sum + qty * price;
     }, 0);
   };
-
   /** Adds all selected products to the cart. */
   const addSelectedToCart = () => {
     const allProducts = [
@@ -87,19 +80,16 @@ const PricingPage = () => {
       }
     });
   };
-
   const handleAddAllToCart = () => {
     addSelectedToCart();
     setQuantities({});
     setShowCartNotification(true);
     setTimeout(() => setShowCartNotification(false), 3000);
   };
-
   const handleGoToCart = () => {
     addSelectedToCart();
     navigate("/cart");
   };
-
   const getIcon = (name) => {
     if (name.includes("Kid")) return Baby;
     if (name.includes("Adult")) return Zap;
@@ -113,7 +103,6 @@ const PricingPage = () => {
       return Users;
     return Sparkles;
   };
-
   const partyFeatures = [
     "Includes 20 Racing Bracelets",
     "2 hours of organized racing",
@@ -127,7 +116,6 @@ const PricingPage = () => {
     "Tables & chairs fully set up",
     "Wristbands included",
   ];
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
@@ -137,7 +125,6 @@ const PricingPage = () => {
             style={{ backgroundImage: "url(/images/17.JPEG)" }}
           />
         </div>
-
         <div
           className="absolute inset-0 z-5 opacity-10"
           style={{
@@ -147,7 +134,6 @@ const PricingPage = () => {
             backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
           }}
         />
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -159,7 +145,6 @@ const PricingPage = () => {
             <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
               Choose the perfect experience for your visit
             </p>
-
             <div className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
               <button
                 onClick={() => setActiveTab("parties")}
@@ -197,20 +182,17 @@ const PricingPage = () => {
             </div>
           </div>
         </div>
-
         <div
           className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50"
           style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
         />
       </section>
-
       {showCartNotification && (
         <div className="fixed top-24 right-4 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
           <Check className="h-6 w-6" />
           <span className="font-bold">Items added to cart!</span>
         </div>
       )}
-
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-red-600 shadow-2xl p-4 transition-transform duration-300 ${getTotalItems() > 0 ? "translate-y-0" : "translate-y-full"}`}
       >
@@ -245,7 +227,6 @@ const PricingPage = () => {
           </div>
         </div>
       </div>
-
       {activeTab === "parties" && (
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -258,13 +239,11 @@ const PricingPage = () => {
                   Select your package and add-ons, then checkout
                 </p>
               </div>
-
               <div className="grid lg:grid-cols-2 gap-8 items-start">
                 {STRIPE_PARTY_PACKAGES.filter((p) => !p.isUpgrade).map(
                   (product) => {
                     const qty = getQuantity(product.id);
                     const isSelected = qty > 0;
-
                     return (
                       <div
                         key={product.id}
@@ -279,7 +258,6 @@ const PricingPage = () => {
                             <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
                           </div>
                         </div>
-
                         <div className="p-6 md:p-8">
                           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
                             {product.name}
@@ -287,14 +265,12 @@ const PricingPage = () => {
                           <p className="text-gray-600 mb-4">
                             {product.description}
                           </p>
-
                           <div className="flex items-baseline gap-2 mb-6">
                             <span className="text-5xl font-bold text-red-600">
                               {product.price}
                             </span>
                             <span className="text-gray-500">+ tax</span>
                           </div>
-
                           <div className="space-y-3 mb-6">
                             {partyFeatures.map((feature, idx) => (
                               <div key={idx} className="flex items-start gap-3">
@@ -307,7 +283,6 @@ const PricingPage = () => {
                               </div>
                             ))}
                           </div>
-
                           <div className="flex items-center justify-center gap-3 mb-4">
                             <button
                               onClick={() => updateQuantity(product.id, -1)}
@@ -332,7 +307,6 @@ const PricingPage = () => {
                               <Plus className="h-5 w-5" />
                             </button>
                           </div>
-
                           {isSelected && (
                             <div className="bg-red-50 rounded-xl py-3 text-center mb-4">
                               <span className="text-red-600 font-bold text-lg">
@@ -344,7 +318,6 @@ const PricingPage = () => {
                               </span>
                             </div>
                           )}
-
                           <p className="text-center text-sm text-gray-500">
                             Or call to book:{" "}
                             <a
@@ -359,7 +332,6 @@ const PricingPage = () => {
                     );
                   },
                 )}
-
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -377,7 +349,6 @@ const PricingPage = () => {
                               ? Users
                               : Crown;
                           const isPopular = product.name.includes("Bounce");
-
                           return (
                             <div
                               key={product.id}
@@ -457,7 +428,6 @@ const PricingPage = () => {
                       Additional racing bracelets available - ask for details
                     </p>
                   </div>
-
                   <div className="bg-green-50 rounded-xl p-5 border border-green-200">
                     <h4 className="font-bold text-green-800 mb-3">
                       Why Families Love Our Parties
@@ -480,7 +450,6 @@ const PricingPage = () => {
                       ))}
                     </div>
                   </div>
-
                   <div className="bg-gray-800 rounded-xl p-6 text-white text-center">
                     <h4 className="font-bold text-lg mb-2">Questions?</h4>
                     <p className="text-gray-300 text-sm mb-4">
@@ -500,7 +469,6 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-
       {activeTab === "individual" && (
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -513,13 +481,11 @@ const PricingPage = () => {
                   Select quantities and add to cart
                 </p>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
                 {STRIPE_PRODUCTS.map((product) => {
                   const Icon = getIcon(product.name);
                   const qty = getQuantity(product.id);
                   const isSelected = qty > 0;
-
                   return (
                     <div
                       key={product.id}
@@ -554,7 +520,6 @@ const PricingPage = () => {
                         </div>
                         <p className="text-xs text-gray-500">per person</p>
                       </div>
-
                       <ul className="space-y-1 mb-3">
                         {product.features.slice(0, 2).map((feature, idx) => (
                           <li
@@ -569,7 +534,6 @@ const PricingPage = () => {
                           </li>
                         ))}
                       </ul>
-
                       <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
                         <button
                           onClick={() => updateQuantity(product.id, -1)}
@@ -608,7 +572,6 @@ const PricingPage = () => {
                   );
                 })}
               </div>
-
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   Double Seater Racing
@@ -617,13 +580,11 @@ const PricingPage = () => {
                   Driver must be 53"+ and passenger 33"+
                 </p>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
                 {STRIPE_DOUBLE_SEATER_PRODUCTS.map((product) => {
                   const Icon = getIcon(product.name);
                   const qty = getQuantity(product.id);
                   const isSelected = qty > 0;
-
                   return (
                     <div
                       key={product.id}
@@ -654,7 +615,6 @@ const PricingPage = () => {
                         </div>
                         <p className="text-xs text-gray-500">per kart</p>
                       </div>
-
                       <ul className="space-y-1 mb-3">
                         {product.features.map((feature, idx) => (
                           <li
@@ -669,7 +629,6 @@ const PricingPage = () => {
                           </li>
                         ))}
                       </ul>
-
                       <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
                         <button
                           onClick={() => updateQuantity(product.id, -1)}
@@ -708,7 +667,6 @@ const PricingPage = () => {
                   );
                 })}
               </div>
-
               <div className="bg-gray-800 rounded-2xl p-6 text-white max-w-4xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -772,7 +730,6 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-
       {activeTab === "bounce" && (
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -785,7 +742,6 @@ const PricingPage = () => {
                   Safe jumping fun for kids of all ages - climate controlled!
                 </p>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 {BOUNCE_PRICING.map((plan, idx) => (
                   <div
@@ -844,7 +800,6 @@ const PricingPage = () => {
                   </div>
                 ))}
               </div>
-
               <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                   <div>
@@ -886,7 +841,6 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-
       <section className="py-12 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -921,7 +875,6 @@ const PricingPage = () => {
           </div>
         </div>
       </section>
-
       <section
         className="py-12 text-white"
         style={{
@@ -957,5 +910,4 @@ const PricingPage = () => {
     </div>
   );
 };
-
 export default PricingPage;

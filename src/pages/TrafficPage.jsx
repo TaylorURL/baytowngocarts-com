@@ -14,14 +14,12 @@ import {
 } from "lucide-react";
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
-
 const COLOR_CLASSES = {
   red: { bg: "bg-red-100", text: "text-red-600" },
   blue: { bg: "bg-blue-100", text: "text-blue-600" },
   green: { bg: "bg-green-100", text: "text-green-600" },
   purple: { bg: "bg-purple-100", text: "text-purple-600" },
 };
-
 const STAT_CARDS = [
   { key: "totalViews", label: "Total Views", icon: Users, color: "red" },
   { key: "desktop", label: "Desktop", icon: Monitor, color: "blue" },
@@ -33,9 +31,7 @@ const STAT_CARDS = [
     color: "purple",
   },
 ];
-
 const TIME_RANGES = ["today", "week", "month", "quarter", "year"];
-
 /** Classifies a user agent string as "Mobile", "Tablet", or "Desktop". */
 const getDeviceType = (userAgent) => {
   const ua = (userAgent || "").toLowerCase();
@@ -44,13 +40,11 @@ const getDeviceType = (userAgent) => {
   if (ua.includes("ipad") || ua.includes("tablet")) return "Tablet";
   return "Desktop";
 };
-
 const DEVICE_BADGE_COLORS = {
   Mobile: "bg-green-100 text-green-700",
   Tablet: "bg-purple-100 text-purple-700",
   Desktop: "bg-blue-100 text-blue-700",
 };
-
 /** Extracts referrer hostname from a URL, falling back to "Direct". */
 const parseSource = (referrer) => {
   if (!referrer) return "Direct";
@@ -60,7 +54,6 @@ const parseSource = (referrer) => {
     return referrer;
   }
 };
-
 /** Counts occurrences of a key extractor across traffic entries, returns sorted top N. */
 const countByKey = (traffic, keyFn, limit = 10) => {
   const counts = {};
@@ -72,7 +65,6 @@ const countByKey = (traffic, keyFn, limit = 10) => {
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit);
 };
-
 /** Reusable numbered list with progress bars. */
 const RankedList = ({
   icon: Icon,
@@ -118,7 +110,6 @@ const RankedList = ({
     )}
   </div>
 );
-
 /** Stat card with icon, label, and value. */
 const StatCard = ({ icon: Icon, label, value, color }) => {
   const colors = COLOR_CLASSES[color] || COLOR_CLASSES.red;
@@ -136,7 +127,6 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
     </div>
   );
 };
-
 /**
  * Renders a staff-only analytics dashboard showing page views, device breakdown,
  * traffic sources, hourly activity, and visitor locations.
@@ -147,11 +137,9 @@ export default function TrafficPage() {
   const [traffic, setTraffic] = useState([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("today");
-
   useEffect(() => {
     if (!staffLoading && !isStaff) navigate("/");
   }, [isStaff, staffLoading, navigate]);
-
   useEffect(() => {
     const fetchTraffic = async () => {
       setLoading(true);
@@ -160,12 +148,10 @@ export default function TrafficPage() {
     };
     fetchTraffic();
   }, [timeRange]);
-
   const pageViews = useMemo(
     () => countByKey(traffic, (v) => v.page_path || "Unknown"),
     [traffic],
   );
-
   const devices = useMemo(() => {
     const counts = { mobile: 0, desktop: 0, tablet: 0 };
     traffic.forEach((v) => {
@@ -173,12 +159,10 @@ export default function TrafficPage() {
     });
     return counts;
   }, [traffic]);
-
   const referrers = useMemo(
     () => countByKey(traffic, (v) => parseSource(v.referrer), 5),
     [traffic],
   );
-
   const hourlyData = useMemo(() => {
     const hours = Array(24).fill(0);
     traffic.forEach((v) => {
@@ -186,7 +170,6 @@ export default function TrafficPage() {
     });
     return hours;
   }, [traffic]);
-
   const locationData = useMemo(
     () => ({
       cities: countByKey(traffic, (v) =>
@@ -196,16 +179,13 @@ export default function TrafficPage() {
     }),
     [traffic],
   );
-
   const maxHourly = Math.max(...hourlyData, 1);
-
   const statValues = {
     totalViews: traffic.length,
     desktop: devices.desktop,
     mobile: devices.mobile,
     uniquePages: pageViews.length,
   };
-
   if (staffLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
@@ -213,16 +193,13 @@ export default function TrafficPage() {
       </div>
     );
   }
-
   if (!isStaff) return null;
-
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-12">
         <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-navy-900" />
         </div>
-
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate(-1)}
@@ -231,7 +208,6 @@ export default function TrafficPage() {
             <ArrowLeft className="h-5 w-5" />
             Back
           </button>
-
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
@@ -244,7 +220,6 @@ export default function TrafficPage() {
                 Monitor visitor activity and page performance
               </p>
             </div>
-
             <div className="flex gap-2 flex-wrap">
               {TIME_RANGES.map((range) => (
                 <button
@@ -263,7 +238,6 @@ export default function TrafficPage() {
           </div>
         </div>
       </section>
-
       <section className="py-8 bg-gray-50 min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
@@ -282,7 +256,6 @@ export default function TrafficPage() {
                   />
                 ))}
               </div>
-
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <RankedList
                   icon={MousePointer}
@@ -301,7 +274,6 @@ export default function TrafficPage() {
                   emptyText="No referrer data"
                 />
               </div>
-
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-red-600" />
@@ -330,7 +302,6 @@ export default function TrafficPage() {
                   ))}
                 </div>
               </div>
-
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <RankedList
                   icon={MapPin}
@@ -349,7 +320,6 @@ export default function TrafficPage() {
                   emptyText="No location data available"
                 />
               </div>
-
               <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-red-600" />

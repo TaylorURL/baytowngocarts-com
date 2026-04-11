@@ -1,14 +1,11 @@
 import { Component } from "react";
-
 const REPORTING_ENDPOINT =
   "https://gujgtjqqurildqurpffh.supabase.co/functions/v1/error-reporting-service/report-batch";
-
 const DEFAULT_BATCH_SIZE = 10;
 const DEFAULT_FLUSH_INTERVAL_MS = 30_000;
 const MAX_QUEUE_SIZE = 100;
 const DEDUP_WINDOW_MS = 60_000;
 const HTTP_ERROR_THRESHOLD = 400;
-
 const BROWSER_PATTERNS = [
   [/Edg\/(\d+)/, "Edge"],
   [/OPR\/(\d+)/, "Opera"],
@@ -16,7 +13,6 @@ const BROWSER_PATTERNS = [
   [/Firefox\/(\d+)/, "Firefox"],
   [/Version\/(\d+).*Safari/, "Safari"],
 ];
-
 const OS_PATTERNS = [
   [/Windows NT 10/, "Windows 10/11"],
   [/Mac OS X (\d+[._]\d+)/, "macOS"],
@@ -24,7 +20,6 @@ const OS_PATTERNS = [
   [/iPhone OS (\d+)/, "iOS"],
   [/Linux/, "Linux"],
 ];
-
 /** @param {string} userAgent */
 function parseBrowserFromUserAgent(userAgent) {
   for (const [pattern, name] of BROWSER_PATTERNS) {
@@ -33,7 +28,6 @@ function parseBrowserFromUserAgent(userAgent) {
   }
   return "Unknown";
 }
-
 /** @param {string} userAgent */
 function parseOperatingSystemFromUserAgent(userAgent) {
   for (const [pattern, name] of OS_PATTERNS) {
@@ -43,7 +37,6 @@ function parseOperatingSystemFromUserAgent(userAgent) {
   }
   return "Unknown";
 }
-
 /**
  * Generates a simple hash string for client-side deduplication.
  * Not cryptographic -- just enough to identify duplicate errors within a short window.
@@ -56,19 +49,14 @@ function parseOperatingSystemFromUserAgent(userAgent) {
 function generateClientDedupKey(project, message, file, line) {
   return `${project}|${message}|${file ?? ""}|${line ?? ""}`;
 }
-
 /** @type {{ project: string, endpoint: string, apiKey: string | undefined, batchSize: number, flushIntervalMs: number, enabled: boolean } | null} */
 let configuration = null;
-
 /** @type {Array<Record<string, unknown>>} */
 let errorQueue = [];
-
 /** @type {Map<string, { count: number, lastSeen: number }>} */
 const recentErrorDedupMap = new Map();
-
 let flushTimerId = null;
 let isFlushing = false;
-
 function buildErrorPayload(message, source, line, column, componentStack) {
   const userAgent = navigator.userAgent ?? "";
   return {
@@ -84,17 +72,14 @@ function buildErrorPayload(message, source, line, column, componentStack) {
     os: parseOperatingSystemFromUserAgent(userAgent),
   };
 }
-
 function enqueueError(payload) {
   if (!configuration?.enabled) return;
-
   const dedupKey = generateClientDedupKey(
     payload.project,
     payload.error_message,
     payload.source_file,
     payload.line_number,
   );
-
   const now = Date.now();
   const existingDedupEntry = recentErrorDedupMap.get(dedupKey);
   if (
@@ -105,26 +90,20 @@ function enqueueError(payload) {
     existingDedupEntry.lastSeen = now;
     return;
   }
-
   recentErrorDedupMap.set(dedupKey, { count: 1, lastSeen: now });
-
   if (errorQueue.length >= MAX_QUEUE_SIZE) {
     errorQueue.shift();
   }
   errorQueue.push(payload);
-
   if (errorQueue.length >= configuration.batchSize) {
     flush();
   }
 }
-
 async function flush() {
   if (isFlushing || errorQueue.length === 0 || !configuration) return;
-
   isFlushing = true;
   const batch = errorQueue.splice(0, configuration.batchSize);
   const body = JSON.stringify({ errors: batch });
-
   try {
     await fetch(configuration.endpoint, {
       method: "POST",
@@ -144,7 +123,6 @@ async function flush() {
     isFlushing = false;
   }
 }
-
 /** Extracts the endpoint name from a URL path (e.g. '/functions/v1/verify-password' -> 'verify-password'). */
 function extractEndpointFromUrl(url) {
   try {
@@ -154,20 +132,16 @@ function extractEndpointFromUrl(url) {
     return url;
   }
 }
-
 function isReportingEndpoint(url) {
   return typeof url === "string" && url.includes("error-reporting-service");
 }
-
 /** Wraps window.fetch to capture HTTP error responses (4xx/5xx). */
 function interceptFetch() {
   const originalFetch = window.fetch;
   window.fetch = async function patchedFetch(...args) {
     const [input] = args;
     const requestUrl = typeof input === "string" ? input : (input?.url ?? "");
-
     if (isReportingEndpoint(requestUrl)) return originalFetch.apply(this, args);
-
     const response = await originalFetch.apply(this, args);
     if (response.status >= HTTP_ERROR_THRESHOLD) {
       const endpointName = extractEndpointFromUrl(requestUrl);
@@ -183,7 +157,6 @@ function interceptFetch() {
     return response;
   };
 }
-
 /** Wraps XMLHttpRequest to capture HTTP error responses (4xx/5xx). */
 function interceptXmlHttpRequest() {
   const OriginalXhrOpen = XMLHttpRequest.prototype.open;
@@ -191,7 +164,6 @@ function interceptXmlHttpRequest() {
     this._errorReporterUrl = typeof url === "string" ? url : String(url);
     return OriginalXhrOpen.call(this, method, url, ...rest);
   };
-
   const OriginalXhrSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function patchedSend(...args) {
     this.addEventListener("loadend", function onLoadEnd() {
@@ -211,14 +183,12 @@ function interceptXmlHttpRequest() {
     return OriginalXhrSend.apply(this, args);
   };
 }
-
 function handleWindowError(message, source, lineno, colno, error) {
   if (
     typeof message === "string" &&
     message.includes("error-reporting-service")
   )
     return;
-
   const payload = buildErrorPayload(
     error?.message ?? message,
     source,
@@ -228,7 +198,6 @@ function handleWindowError(message, source, lineno, colno, error) {
   );
   enqueueError(payload);
 }
-
 function handleUnhandledRejection(event) {
   const reason = event.reason;
   const message =
@@ -236,17 +205,13 @@ function handleUnhandledRejection(event) {
       ? reason.message
       : String(reason ?? "Unhandled promise rejection");
   const stack = reason instanceof Error ? reason.stack : null;
-
   if (message.includes("error-reporting-service")) return;
-
   const payload = buildErrorPayload(message, null, null, null, stack);
   enqueueError(payload);
 }
-
 function handleVisibilityChange() {
   if (document.visibilityState === "hidden") flush();
 }
-
 function startFlushTimer() {
   stopFlushTimer();
   flushTimerId = setInterval(
@@ -254,14 +219,12 @@ function startFlushTimer() {
     configuration?.flushIntervalMs ?? DEFAULT_FLUSH_INTERVAL_MS,
   );
 }
-
 function stopFlushTimer() {
   if (flushTimerId !== null) {
     clearInterval(flushTimerId);
     flushTimerId = null;
   }
 }
-
 /**
  * Cross-project client-side error reporter.
  * Captures browser errors, batches them, and sends to the centralized error-reporting-service.
@@ -283,7 +246,6 @@ const ErrorReporterUtility = {
     enabled = true,
   }) {
     if (configuration) return;
-
     configuration = {
       project,
       apiKey,
@@ -292,9 +254,7 @@ const ErrorReporterUtility = {
       flushIntervalMs,
       enabled,
     };
-
     if (!enabled) return;
-
     window.addEventListener("error", (event) => {
       handleWindowError(
         event.message,
@@ -308,10 +268,8 @@ const ErrorReporterUtility = {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     interceptFetch();
     interceptXmlHttpRequest();
-
     startFlushTimer();
   },
-
   /**
    * Manually report an error.
    * @param {Error} error
@@ -319,7 +277,6 @@ const ErrorReporterUtility = {
    */
   reportError(error, metadata) {
     if (!configuration?.enabled) return;
-
     const payload = buildErrorPayload(
       error.message,
       null,
@@ -332,10 +289,8 @@ const ErrorReporterUtility = {
     }
     enqueueError(payload);
   },
-
   /** Force flush all queued errors immediately. */
   flush,
-
   /** Tear down all listeners and timers. */
   destroy() {
     stopFlushTimer();
@@ -345,7 +300,6 @@ const ErrorReporterUtility = {
     recentErrorDedupMap.clear();
   },
 };
-
 /**
  * React ErrorBoundary that captures render errors and reports them.
  * Wrap your top-level `<App />` with this component.
@@ -360,20 +314,16 @@ class ErrorBoundary extends Component {
     super(props);
     this.state = { hasError: false };
   }
-
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-
   componentDidCatch(error, errorInfo) {
     if (!configuration?.enabled) return;
-
     const payload = buildErrorPayload(error.message, null, null, null, null);
     payload.component_stack = errorInfo?.componentStack ?? null;
     payload.stack_trace = error.stack ?? null;
     enqueueError(payload);
   }
-
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? null;
@@ -381,6 +331,5 @@ class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
-
 export default ErrorReporterUtility;
 export { ErrorBoundary };

@@ -1,7 +1,6 @@
 import React from "react";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { BUSINESS_HOURS, CONTACT_INFO } from "../../lib/constants.js";
-
 /** Renders an icon, label, and content row used in the contact info list. */
 const ContactRow = ({ icon: Icon, label, children }) => (
   <div className="flex items-start space-x-4">
@@ -14,7 +13,6 @@ const ContactRow = ({ icon: Icon, label, children }) => (
     </div>
   </div>
 );
-
 /**
  * Displays business contact details (address, phone, email, hours)
  * alongside an embedded Google Maps iframe.
@@ -25,15 +23,12 @@ const LocationsSection = () => (
       <ContactRow icon={MapPin} label="Address">
         <p className="text-gray-600">{CONTACT_INFO.address}</p>
       </ContactRow>
-
       <ContactRow icon={Phone} label="Phone">
         <p className="text-gray-600">{CONTACT_INFO.phone}</p>
       </ContactRow>
-
       <ContactRow icon={Mail} label="Email">
         <p className="text-gray-600">{CONTACT_INFO.email}</p>
       </ContactRow>
-
       <ContactRow icon={Clock} label="Hours">
         <div className="text-gray-600 space-y-1">
           {BUSINESS_HOURS.map((schedule, index) => (
@@ -45,7 +40,6 @@ const LocationsSection = () => (
         </div>
       </ContactRow>
     </div>
-
     <div className="bg-gray-200 rounded-lg h-64 overflow-hidden">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3464.8234567890123!2d-94.9876543210987!3d29.7654321098765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640c0123456789a%3A0x1234567890abcdef!2s6750%20N%20Tx-146%2C%20Baytown%2C%20TX%2077523!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
@@ -60,5 +54,4 @@ const LocationsSection = () => (
     </div>
   </div>
 );
-
 export default LocationsSection;

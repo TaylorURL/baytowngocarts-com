@@ -14,11 +14,9 @@ import {
   X,
   Zap,
 } from "lucide-react";
-
 const ALL_CATEGORIES_ID = "All";
 const STICKY_THRESHOLD_PX = 80;
 const PHONE_TEL_LINK = `tel:${CONTACT_INFO.phone}`;
-
 const FAQ_CATEGORIES = [
   { id: ALL_CATEGORIES_ID, icon: Search, label: "All Questions" },
   { id: "Racing", icon: Zap, label: "Racing" },
@@ -26,7 +24,6 @@ const FAQ_CATEGORIES = [
   { id: "Events", icon: Users, label: "Events" },
   { id: "Policies", icon: Calendar, label: "Policies" },
 ];
-
 const CONTACT_METHODS = [
   {
     icon: Phone,
@@ -39,17 +36,14 @@ const CONTACT_METHODS = [
     description: "Fill out our contact form anytime",
   },
 ];
-
 /** Pluralizes "result" based on count */
 const formatResultCount = (count) => `${count} Result${count !== 1 ? "s" : ""}`;
-
 /** Shared content-width wrapper used by every page section */
 const ContentWrapper = ({ children, className = "" }) => (
   <div className={`container mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
     <div className="max-w-4xl mx-auto">{children}</div>
   </div>
 );
-
 /** Returns Tailwind classes for a category filter button based on active/sticky state */
 const getCategoryButtonClasses = (isActive, isSticky) => {
   if (isActive) return "bg-red-600 text-white shadow-lg scale-105";
@@ -57,23 +51,19 @@ const getCategoryButtonClasses = (isActive, isSticky) => {
     return "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105";
   return "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105";
 };
-
 /** Returns Tailwind classes for the count badge inside a category button */
 const getCategoryBadgeClasses = (isActive, isSticky) => {
   if (isActive) return "bg-white text-red-600";
   if (isSticky) return "bg-gray-600 text-gray-400";
   return "bg-gray-200 text-gray-600";
 };
-
 const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
   <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
     <div className="absolute inset-0 z-0">
       <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/15.JPEG')]" />
     </div>
-
     {/* Crosshatch overlay pattern */}
     <div className="absolute inset-0 z-[5] opacity-10 bg-[length:20px_20px] bg-[linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] bg-[position:0_0,0_10px,10px_-10px,-10px_0px]" />
-
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
         <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -86,7 +76,6 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
           Find quick answers to common questions about racing, pricing, events,
           and our policies
         </p>
-
         <div className="max-w-2xl mx-auto">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
@@ -115,11 +104,9 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
         </div>
       </div>
     </div>
-
     <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
   </section>
 );
-
 const CategoryFilterBar = ({
   stickyRef,
   isSticky,
@@ -138,7 +125,6 @@ const CategoryFilterBar = ({
         {FAQ_CATEGORIES.map(({ id, icon: Icon, label }) => {
           const count = categoryCounts[id] ?? 0;
           const isActive = selectedCategory === id;
-
           return (
             <button
               key={id}
@@ -159,7 +145,6 @@ const CategoryFilterBar = ({
     </ContentWrapper>
   </section>
 );
-
 const FAQResultsList = ({
   filteredFAQs,
   resultsHeading,
@@ -169,7 +154,6 @@ const FAQResultsList = ({
   onShowAll,
 }) => {
   const isAllSelected = selectedCategory === ALL_CATEGORIES_ID;
-
   return (
     <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
       <ContentWrapper>
@@ -225,7 +209,6 @@ const FAQResultsList = ({
     </section>
   );
 };
-
 const ContactCTASection = () => (
   <section className="py-24 bg-white">
     <ContentWrapper>
@@ -255,7 +238,6 @@ const ContactCTASection = () => (
               ))}
             </div>
           </div>
-
           <div className="p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
             <h3 className="text-3xl font-bold text-white mb-6">Get in Touch</h3>
             <p className="text-gray-300 mb-8 text-lg">
@@ -288,7 +270,6 @@ const ContactCTASection = () => (
     </ContentWrapper>
   </section>
 );
-
 const ReadyToRaceCTA = () => (
   <section className="py-20 text-white bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
     <ContentWrapper>
@@ -322,7 +303,6 @@ const ReadyToRaceCTA = () => (
     </ContentWrapper>
   </section>
 );
-
 /**
  * Renders the FAQ page with searchable, filterable frequently asked questions.
  */
@@ -332,7 +312,6 @@ const FAQPage = () => {
   const [isSticky, setIsSticky] = useState(false);
   const stickyRef = useRef(null);
   const anchorRef = useRef(null);
-
   useEffect(() => {
     const handleScroll = () => {
       if (stickyRef.current) {
@@ -343,16 +322,13 @@ const FAQPage = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   const scrollToStickyPosition = () => {
     anchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
     scrollToStickyPosition();
   };
-
   const categoryCounts = useMemo(() => {
     const counts = { [ALL_CATEGORIES_ID]: FAQS.length };
     for (const faq of FAQS) {
@@ -360,7 +336,6 @@ const FAQPage = () => {
     }
     return counts;
   }, []);
-
   const filteredFAQs = useMemo(() => {
     const lowerSearch = searchTerm.toLowerCase();
     return FAQS.filter((faq) => {
@@ -374,15 +349,12 @@ const FAQPage = () => {
       return matchesCategory && matchesSearch;
     });
   }, [searchTerm, selectedCategory]);
-
   const isAllSelected = selectedCategory === ALL_CATEGORIES_ID;
-
   const resultsHeading = searchTerm
     ? formatResultCount(filteredFAQs.length)
     : isAllSelected
       ? `All Questions (${filteredFAQs.length})`
       : `${selectedCategory} (${filteredFAQs.length})`;
-
   return (
     <div className="w-full -mt-20">
       <FAQHeroSection
@@ -390,9 +362,7 @@ const FAQPage = () => {
         onSearchChange={setSearchTerm}
         filteredCount={filteredFAQs.length}
       />
-
       <div ref={anchorRef} className="scroll-mt-20" />
-
       <CategoryFilterBar
         stickyRef={stickyRef}
         isSticky={isSticky}
@@ -400,7 +370,6 @@ const FAQPage = () => {
         categoryCounts={categoryCounts}
         onCategorySelect={handleCategorySelect}
       />
-
       <FAQResultsList
         filteredFAQs={filteredFAQs}
         resultsHeading={resultsHeading}
@@ -409,11 +378,9 @@ const FAQPage = () => {
         onClearSearch={() => setSearchTerm("")}
         onShowAll={() => setSelectedCategory(ALL_CATEGORIES_ID)}
       />
-
       <ContactCTASection />
       <ReadyToRaceCTA />
     </div>
   );
 };
-
 export default FAQPage;

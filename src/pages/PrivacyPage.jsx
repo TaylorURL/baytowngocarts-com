@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Shield } from "lucide-react";
-
 const PrivacyPage = () => (
   <div className="w-full -mt-20">
     <section
@@ -27,7 +26,6 @@ const PrivacyPage = () => (
         style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
       />
     </section>
-
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto prose prose-gray text-gray-700 space-y-8">
@@ -47,7 +45,6 @@ const PrivacyPage = () => (
               collection and use of information in accordance with this policy.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               2. Information We Collect
@@ -84,7 +81,6 @@ const PrivacyPage = () => (
               </li>
             </ul>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               3. How We Use Your Information
@@ -110,7 +106,6 @@ const PrivacyPage = () => (
               </li>
             </ul>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               4. Data Sharing and Disclosure
@@ -143,7 +138,6 @@ const PrivacyPage = () => (
               </li>
             </ul>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               5. Data Retention
@@ -155,7 +149,6 @@ const PrivacyPage = () => (
               indefinitely for business, analytical, or archival purposes.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               6. Cookies and Tracking Technologies
@@ -167,7 +160,6 @@ const PrivacyPage = () => (
               features of our website may not function properly without them.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               7. Third-Party Links
@@ -179,7 +171,6 @@ const PrivacyPage = () => (
               any personal information.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               8. Children's Privacy
@@ -192,7 +183,6 @@ const PrivacyPage = () => (
               take appropriate action.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               9. Security
@@ -204,7 +194,6 @@ const PrivacyPage = () => (
               guarantee absolute security.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               10. Your Rights
@@ -217,7 +206,6 @@ const PrivacyPage = () => (
               the right to retain and use data as permitted by applicable law.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               11. Changes to This Policy
@@ -229,7 +217,6 @@ const PrivacyPage = () => (
               acceptance of the updated policy.
             </p>
           </div>
-
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               12. Contact Us
@@ -244,7 +231,6 @@ const PrivacyPage = () => (
               <li>Address: 6750 N TX-146, Baytown, TX 77523</li>
             </ul>
           </div>
-
           <div className="pt-8 border-t border-gray-200 text-center">
             <Link
               to="/terms"
@@ -258,5 +244,4 @@ const PrivacyPage = () => (
     </section>
   </div>
 );
-
 export default PrivacyPage;
