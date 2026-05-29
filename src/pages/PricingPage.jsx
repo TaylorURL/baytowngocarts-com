@@ -5,7 +5,6 @@ import {
   Check,
   Clock,
   Crown,
-  Download,
   Flag,
   HelpCircle,
   Minus,
@@ -712,6 +711,10 @@ const PricingPage = () => {
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <Check className="h-4 w-4 text-red-400" />
+                        Each race ticket = one 5-minute race
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-red-400" />
                         All packages must be used same day
                       </li>
                       <li className="flex items-center gap-2">
@@ -720,7 +723,7 @@ const PricingPage = () => {
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="h-4 w-4 text-red-400" />
-                        Signed waiver required
+                        Waivers signed in person at the front desk
                       </li>
                     </ul>
                   </div>
@@ -841,40 +844,6 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-      <section className="py-12 bg-white border-t border-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-gray-800 rounded-2xl p-6 md:p-8">
-              <div className="text-center md:text-left">
-                <h3 className="text-xl font-bold text-white mb-1">
-                  Download Waivers
-                </h3>
-                <p className="text-gray-400 text-sm">
-                  Complete before your visit for faster check-in
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
-                  download
-                  className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
-                >
-                  <Download className="h-4 w-4" />
-                  Go-Kart Waiver
-                </a>
-                <a
-                  href="/images/Bounce House Participant Waiver and Release PDF.pdf"
-                  download
-                  className="bg-white/10 hover:bg-white/20 text-white px-5 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
-                >
-                  <Download className="h-4 w-4" />
-                  Bounce House Waiver
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <section
         className="py-12 text-white"
         style={{

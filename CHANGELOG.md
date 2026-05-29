@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.1] - 2026-05-29
+
+- Updated business hours to the new 7-day summer schedule (Mon–Thu 12:00 PM–8:00 PM, Fri 12:00 PM–10:30 PM, Sat–Sun 10:30 AM–10:30 PM) in src/lib/constants.js, propagating to the Footer, Contact, and Locations sections
+- Replaced the stale "Thu–Sun" header badge with "Open Daily" and updated the "Open 7 Days a Week" copy in FeatureSection and AboutPage
+- Added a new FAQ clarifying each race is 5 minutes long and one ticket equals one race
+- Surfaced "5 minutes per race" messaging across the multi-race products in src/lib/stripe-config.js and the pricing, purchase-details, success, and purchases pages
+- Removed the waiver download/print flow from ContactForm, PricingPage, and PurchaseDetailsPage; clarified that waivers are signed in person at the front desk on the FAQ and post-purchase pages
+
 ## [3.2] - 2026-04-11
 
 - Removed blank lines throughout the codebase across components, hooks, pages, layouts, and lib files for a more compact style

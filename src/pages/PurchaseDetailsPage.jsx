@@ -275,11 +275,12 @@ export default function PurchaseDetailsPage() {
                   </h4>
                   <ul className="space-y-1 text-gray-700">
                     <li>• Valid government-issued ID</li>
-                    <li>
-                      • Signed waiver (available at facility or download below)
-                    </li>
                     <li>• This order confirmation</li>
                     <li>• Closed-toe shoes required</li>
+                    <li>
+                      • Each race ticket is one 5-minute race on the track
+                    </li>
+                    <li>• Waivers signed in person at the front desk</li>
                   </ul>
                 </div>
               </div>
@@ -287,28 +288,9 @@ export default function PurchaseDetailsPage() {
             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
                 <Download className="h-6 w-6 text-red-600" />
-                Important Documents
+                Print Your Confirmation
               </h2>
               <div className="space-y-3">
-                <a
-                  href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
-                      <Download className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-gray-800">Download Waiver</p>
-                      <p className="text-sm text-gray-600">
-                        Required for all participants
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-red-600 font-semibold">PDF</span>
-                </a>
                 <button
                   onClick={() => window.print()}
                   className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"

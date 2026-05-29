@@ -124,7 +124,8 @@ const SuccessPage = () => {
                 <li>• Check your email for order confirmation</li>
                 <li>• View your order details in My Purchases</li>
                 <li>• Visit us during business hours</li>
-                <li>• Bring a valid ID and completed waiver</li>
+                <li>• Bring a valid ID (waivers signed at the front desk)</li>
+                <li>• Each race ticket = one 5-minute race on the track</li>
               </ul>
             </div>
 

@@ -261,7 +261,7 @@ const ContactCTASection = () => (
             </div>
             <div className="mt-8 pt-8 border-t border-white/20">
               <p className="text-gray-300 text-sm text-center">
-                Available Thursday-Sunday during business hours
+                Available 7 days a week during business hours
               </p>
             </div>
           </div>

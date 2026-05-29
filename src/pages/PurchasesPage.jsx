@@ -298,7 +298,8 @@ export default function PurchasesPage() {
                         </h3>
                         <ul className="text-gray-700 text-sm space-y-2">
                           <li>• Visit us during operating hours</li>
-                          <li>• Bring valid ID and signed waiver</li>
+                          <li>• Bring valid ID (waivers signed at the front desk)</li>
+                          <li>• Each race ticket = one 5-minute race on the track</li>
                           <li>• Show your order number at check-in</li>
                           <li>• Call us: (346) 932-1266</li>
                         </ul>

@@ -6,7 +6,7 @@ const INPUT_CLASS =
 const CONTACT_EMAIL = "speedsway146@gmail.com";
 /**
  * Contact/inquiry form with fields for name, email, phone, event date,
- * inquiry type, and a message. Includes waiver download links.
+ * inquiry type, and a message.
  */
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -196,31 +196,6 @@ const ContactForm = () => {
             * Required fields. For immediate assistance or to make reservations,
             please call us at (346) 932-1266.
           </p>
-        </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h4 className="text-lg font-semibold text-red-900 mb-3">
-            Required Waivers
-          </h4>
-          <p className="text-red-700 text-sm mb-3">
-            All participants must complete a waiver before activities. Download
-            and complete before your visit:
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href="/images/Speedway146_Waiver_Address_Footer_Fixed.pdf"
-              download
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-center text-sm"
-            >
-              Download Go-Kart Waiver
-            </a>
-            <a
-              href="/images/Bounce%20House%20Participant%20Waiver%20and%20Release%20PDF.pdf"
-              download
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors text-center text-sm"
-            >
-              Download Bounce House Waiver
-            </a>
-          </div>
         </div>
         <Button
           type="submit"

@@ -149,7 +149,7 @@ const Header = () => {
               <div className="flex items-center gap-2">
                 <Clock className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold tracking-wide">
-                  Thu–Sun
+                  Open Daily
                 </span>
               </div>
             </div>

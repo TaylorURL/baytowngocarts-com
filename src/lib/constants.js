@@ -58,13 +58,13 @@ export const NAV_ITEMS = [
 ];
 /** Weekly business hours displayed on the Contact and other pages. */
 export const BUSINESS_HOURS = [
-  { day: "Thursday", hours: "5:00 PM – 10:30 PM" },
-  { day: "Friday", hours: "5:00 PM – 10:30 PM" },
+  { day: "Monday", hours: "12:00 PM – 8:00 PM" },
+  { day: "Tuesday", hours: "12:00 PM – 8:00 PM" },
+  { day: "Wednesday", hours: "12:00 PM – 8:00 PM" },
+  { day: "Thursday", hours: "12:00 PM – 8:00 PM" },
+  { day: "Friday", hours: "12:00 PM – 10:30 PM" },
   { day: "Saturday", hours: "10:30 AM – 10:30 PM" },
   { day: "Sunday", hours: "10:30 AM – 10:30 PM" },
-  { day: "Monday", hours: "Closed" },
-  { day: "Tuesday", hours: "Closed" },
-  { day: "Wednesday", hours: "Closed" },
 ];
 export const CONTACT_INFO = {
   phone: "(346) 932-1266",
@@ -109,7 +109,13 @@ export const FAQS = [
   {
     question: "What are your hours of operation?",
     answer:
-      "We are open Thursday 5:00 PM – 10:30 PM (Leagues begin at 7:30 PM — launching Q1 2026), Friday 5:00 PM – 10:30 PM, and Saturday & Sunday 10:30 AM – 10:30 PM.",
+      "We are open 7 days a week. Monday through Thursday 12:00 PM – 8:00 PM (Leagues begin at 7:30 PM — launching Q1 2026), Friday 12:00 PM – 10:30 PM, and Saturday & Sunday 10:30 AM – 10:30 PM.",
+    category: "Racing",
+  },
+  {
+    question: "How long is each race?",
+    answer:
+      "Each race is 5 minutes long, and one race ticket gets you one race. Wristbands provide unlimited racing for 2.5 hours from the time the wristband is issued.",
     category: "Racing",
   },
   {
@@ -273,7 +279,7 @@ export const FAQS = [
   {
     question: "Do riders need to sign a waiver?",
     answer:
-      "Yes. All riders must sign a waiver before entering the premises. Anyone under 18 must have a parent or legal guardian sign for them.",
+      "Yes. All riders sign a waiver in person at our front desk before entering the track — no need to print or bring one with you. Anyone under 18 must have a parent or legal guardian sign for them.",
     category: "Policies",
   },
   {

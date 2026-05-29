@@ -25,9 +25,9 @@ const FEATURES = [
   },
   {
     icon: Shield,
-    title: "Flexible Hours",
+    title: "Open 7 Days a Week",
     description:
-      "Open Thursday through Sunday with extended weekend hours for maximum fun.",
+      "Race every day of the week with extended weekend hours for maximum fun.",
   },
 ];
 const FeatureSection = () => (

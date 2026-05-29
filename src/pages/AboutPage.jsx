@@ -114,7 +114,7 @@ const AboutPage = () => {
     {
       icon: Calendar,
       title: "Flexible Options",
-      text: "Open Thursday through Sunday with special event bookings available",
+      text: "Open 7 days a week with special event bookings available",
     },
   ];
   return (
