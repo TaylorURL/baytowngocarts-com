@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0] - 2026-05-31
+
+- Introduced a typographic system in src/index.css and tailwind.config.js: Inter for all body/UI text with Bebas Neue retained for prominent headings (h1–h3) via a base layer, fixing site-wide readability while preserving the racing identity
+- Added motion and accessibility foundations: punchy easing tokens, a global :focus-visible outline, prefers-reduced-motion handling, replacement of transition:all with specific transitions, and a reusable .checker-overlay racing texture
+- Polished shared components: Button press feedback, Header inline-gradient cleanup, a GPU-friendly nav underline with hover reveal, aria-labels, and the "Open Daily" indicator; Footer social-icon hover lift
+- Refined all eight home sections (Hero, Feature, Attractions, Gallery, Testimonial, Action, Locations, Question) with racing-red accents, display-font stats, curated transitions, and standardized section rhythm
+- Refreshed every page (About, Events, Contact, FAQ, Pricing, Terms, Privacy, NotFound, Cart, Success, Purchases, PurchaseDetails, Login, Signup, StaffPanel, Traffic): red brand accents, display-font prices/stats, labeled inputs with visible focus states, consistent loading/empty states, and press feedback
+- Converted stray inline styles to Tailwind and consolidated the duplicated checkerboard pattern into a single .checker-overlay class
+
 ## [3.2.1] - 2026-05-29
 
 - Updated business hours to the new 7-day summer schedule (Mon–Thu 12:00 PM–8:00 PM, Fri 12:00 PM–10:30 PM, Sat–Sun 10:30 AM–10:30 PM) in src/lib/constants.js, propagating to the Footer, Contact, and Locations sections

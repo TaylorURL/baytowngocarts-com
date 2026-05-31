@@ -70,7 +70,7 @@ const GallarySection = () => {
           <div className="flex justify-center items-center mt-12 gap-6">
             <button
               onClick={() => navigateSlide(-1)}
-              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition duration-200 ease-out hover:scale-110 active:scale-95 shadow-lg"
               aria-label="Previous images"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -80,10 +80,10 @@ const GallarySection = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`transition-all duration-300 rounded-full ${
+                  className={`transition-[width,background-color] duration-300 ease-out rounded-full h-3 ${
                     index === currentSlide
-                      ? "bg-red-600 w-8 h-3"
-                      : "bg-gray-300 hover:bg-gray-400 w-3 h-3"
+                      ? "bg-red-600 w-8"
+                      : "bg-gray-300 hover:bg-gray-400 w-3"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -91,7 +91,7 @@ const GallarySection = () => {
             </div>
             <button
               onClick={() => navigateSlide(1)}
-              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition-all hover:scale-110 shadow-lg"
+              className="bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-xl transition duration-200 ease-out hover:scale-110 active:scale-95 shadow-lg"
               aria-label="Next images"
             >
               <ChevronRight className="h-6 w-6" />

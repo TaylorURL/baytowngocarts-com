@@ -47,7 +47,7 @@ const ContactPage = () => {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
         </div>
-        <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -70,7 +70,7 @@ const ContactPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
               CONTACT METHODS
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -87,10 +87,11 @@ const ContactPage = () => {
                 href={method.action}
                 target={method.icon === MapPin ? "_blank" : undefined}
                 rel={method.icon === MapPin ? "noopener noreferrer" : undefined}
-                className={`bg-white p-8 rounded-2xl shadow-xl hover-lift text-center border-2 transition-all duration-300 ${
+                aria-label={`${method.title}: ${method.info}`}
+                className={`bg-white p-8 rounded-2xl shadow-xl hover-lift text-center border-2 transition-colors duration-300 ease-out border-gray-200 ${
                   method.color === "red"
-                    ? "border-gray-200 hover:border-gray-500"
-                    : "border-gray-200 hover:border-gray-600"
+                    ? "hover:border-red-500"
+                    : "hover:border-gray-600"
                 }`}
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
@@ -188,14 +189,14 @@ const ContactPage = () => {
                   <div className="space-y-4">
                     <a
                       href="tel:(346) 932-1266"
-                      className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                      className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
                     >
                       <Phone className="h-5 w-5" />
                       Call (346) 932-1266
                     </a>
                     <a
                       href={`mailto:${CONTACT_INFO.email}`}
-                      className="flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                      className="flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-colors duration-200 ease-out"
                     >
                       <Send className="h-5 w-5" />
                       Send Email
@@ -207,7 +208,7 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-      <section className="py-20 bg-gray-800 text-white">
+      <section className="py-24 bg-gray-800 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <Calendar className="h-16 w-16 mx-auto mb-6 text-red-500" />
@@ -221,7 +222,7 @@ const ContactPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="tel:(346) 932-1266"
-                className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105"
+                className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-xl transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
               >
                 <Phone className="h-6 w-6 mr-3" />
                 Call Now
@@ -232,7 +233,7 @@ const ContactPage = () => {
                   e.preventDefault();
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-gray-800 px-10 py-5 rounded-xl font-bold text-xl transition-all"
+                className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-gray-800 px-10 py-5 rounded-xl font-bold text-xl transition-colors duration-200 ease-out"
               >
                 <MessageSquare className="h-6 w-6 mr-3" />
                 Send Message

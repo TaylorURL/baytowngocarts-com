@@ -227,7 +227,7 @@ export default function StaffPanelPage() {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
         </div>
-        <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -275,7 +275,7 @@ export default function StaffPanelPage() {
                     <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
                       {label}
                     </h3>
-                    <p className="text-2xl sm:text-3xl font-bold text-gray-800">
+                    <p className="font-display text-3xl sm:text-4xl tracking-wide text-gray-900 leading-none">
                       {format(stats[key])}
                     </p>
                   </div>
@@ -292,10 +292,11 @@ export default function StaffPanelPage() {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
                       type="text"
+                      aria-label="Search orders by order number"
                       placeholder="Search by order number..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-red-500 transition-colors"
+                      className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg transition-colors duration-200 ease-out focus:border-red-500"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -303,9 +304,9 @@ export default function StaffPanelPage() {
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`px-4 py-2 rounded-lg font-semibold transition-all whitespace-nowrap ${
+                        className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition-colors duration-200 ease-out active:scale-95 ${
                           activeTab === tab
-                            ? "bg-red-600 text-white"
+                            ? "bg-red-600 text-white shadow-red"
                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                       >
@@ -320,7 +321,7 @@ export default function StaffPanelPage() {
                   <button
                     key={key}
                     onClick={() => setDateFilter(key)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ease-out active:scale-95 ${
                       dateFilter === key
                         ? "bg-gray-800 text-white"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -413,7 +414,7 @@ export default function StaffPanelPage() {
                                   e.stopPropagation();
                                   navigate(`/purchase/${order.id}`);
                                 }}
-                                className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1"
+                                className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1 transition-colors duration-200 ease-out"
                               >
                                 <Eye className="h-4 w-4" />
                                 View
@@ -451,7 +452,7 @@ export default function StaffPanelPage() {
                               </span>
                             </div>
                             <ChevronDown
-                              className={`h-5 w-5 text-gray-400 transition-transform ${
+                              className={`h-5 w-5 text-gray-400 transition-transform duration-200 ease-out ${
                                 expandedOrder === order.id ? "rotate-180" : ""
                               }`}
                             />
@@ -508,7 +509,7 @@ export default function StaffPanelPage() {
                             </div>
                             <button
                               onClick={() => navigate(`/purchase/${order.id}`)}
-                              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
                             >
                               <Eye className="h-4 w-4" />
                               Full Order Details

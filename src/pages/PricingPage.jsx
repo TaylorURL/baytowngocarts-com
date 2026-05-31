@@ -27,6 +27,78 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 /**
+ * Single navigation tab in the pricing hero. Highlights the active view in
+ * racing red and gives tactile press feedback.
+ */
+const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
+  <button
+    type="button"
+    role="tab"
+    aria-selected={isActive}
+    onClick={onClick}
+    className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition duration-200 ease-out active:scale-95 ${
+      isActive
+        ? "bg-red-600 text-white shadow-red"
+        : "text-gray-300 hover:text-white hover:bg-white/5"
+    }`}
+  >
+    <Icon className="h-4 w-4 inline mr-2" />
+    {label}
+  </button>
+);
+const STEPPER_SIZES = {
+  sm: { button: "w-8 h-8", icon: "h-4 w-4", input: "w-12 py-1 text-sm" },
+  lg: { button: "w-10 h-10", icon: "h-5 w-5", input: "w-16 py-2 text-lg" },
+};
+/**
+ * Quantity selector with accessible decrement/increment steppers and a direct
+ * number input. Disables the decrement control at zero and gives press feedback.
+ */
+const QuantityStepper = ({
+  quantity,
+  productName,
+  onDecrement,
+  onIncrement,
+  onChange,
+  size = "sm",
+}) => {
+  const { button, icon, input } = STEPPER_SIZES[size];
+  const isEmpty = quantity === 0;
+  return (
+    <>
+      <button
+        type="button"
+        onClick={onDecrement}
+        disabled={isEmpty}
+        aria-label={`Decrease ${productName} quantity`}
+        className={`${button} rounded-lg flex items-center justify-center transition duration-150 ease-out ${
+          isEmpty
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-200 hover:bg-gray-300 text-gray-700 active:scale-95"
+        }`}
+      >
+        <Minus className={icon} />
+      </button>
+      <input
+        type="number"
+        min="0"
+        value={quantity}
+        onChange={onChange}
+        aria-label={`${productName} quantity`}
+        className={`${input} text-center font-bold text-gray-800 border-2 border-gray-200 rounded-lg transition-colors duration-150 ease-out focus:border-red-500`}
+      />
+      <button
+        type="button"
+        onClick={onIncrement}
+        aria-label={`Increase ${productName} quantity`}
+        className={`${button} rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition duration-150 ease-out active:scale-95`}
+      >
+        <Plus className={icon} />
+      </button>
+    </>
+  );
+};
+/**
  * Renders the Pricing page with tabbed views for party packages, individual racing, and bounce house options.
  * Includes a shopping cart summary bar and quantity selectors for each product.
  */
@@ -124,15 +196,7 @@ const PricingPage = () => {
             style={{ backgroundImage: "url(/images/17.JPEG)" }}
           />
         </div>
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -144,47 +208,33 @@ const PricingPage = () => {
             <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
               Choose the perfect experience for your visit
             </p>
-            <div className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10">
-              <button
+            <div
+              role="tablist"
+              aria-label="Pricing categories"
+              className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10"
+            >
+              <TabButton
+                icon={Flag}
+                label="Party Packages"
+                isActive={activeTab === "parties"}
                 onClick={() => setActiveTab("parties")}
-                className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition-all ${
-                  activeTab === "parties"
-                    ? "bg-red-600 text-white shadow-lg"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                <Flag className="h-4 w-4 inline mr-2" />
-                Party Packages
-              </button>
-              <button
+              />
+              <TabButton
+                icon={Users}
+                label="Individual Racing"
+                isActive={activeTab === "individual"}
                 onClick={() => setActiveTab("individual")}
-                className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition-all ${
-                  activeTab === "individual"
-                    ? "bg-red-600 text-white shadow-lg"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                <Users className="h-4 w-4 inline mr-2" />
-                Individual Racing
-              </button>
-              <button
+              />
+              <TabButton
+                icon={Baby}
+                label="Bounce House"
+                isActive={activeTab === "bounce"}
                 onClick={() => setActiveTab("bounce")}
-                className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition-all ${
-                  activeTab === "bounce"
-                    ? "bg-red-600 text-white shadow-lg"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                <Baby className="h-4 w-4 inline mr-2" />
-                Bounce House
-              </button>
+              />
             </div>
           </div>
         </div>
-        <div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50"
-          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50 [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
       {showCartNotification && (
         <div className="fixed top-24 right-4 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
@@ -203,22 +253,24 @@ const PricingPage = () => {
             <div>
               <p className="text-sm text-gray-600">Your Selection</p>
               <p className="text-xl font-bold text-gray-800">
-                {getTotalItems()} {getTotalItems() === 1 ? "item" : "items"} - $
-                {getTotalPrice().toFixed(2)}
+                {getTotalItems()} {getTotalItems() === 1 ? "item" : "items"} -{" "}
+                <span className="font-display tracking-wide">
+                  ${getTotalPrice().toFixed(2)}
+                </span>
               </p>
             </div>
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={handleAddAllToCart}
-              className="flex-1 sm:flex-none bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
             >
               <Plus className="h-5 w-5" />
               Add to Cart
             </button>
             <button
               onClick={handleGoToCart}
-              className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
             >
               <ShoppingCart className="h-5 w-5" />
               Checkout
@@ -246,12 +298,12 @@ const PricingPage = () => {
                     return (
                       <div
                         key={product.id}
-                        className={`bg-white rounded-3xl shadow-xl overflow-hidden border-2 ${isSelected ? "border-red-500 ring-2 ring-red-200" : "border-red-500"}`}
+                        className={`bg-white rounded-3xl shadow-xl overflow-hidden border-2 transition duration-200 ease-out ${isSelected ? "border-red-500 ring-2 ring-red-200" : "border-red-500"}`}
                       >
                         <div className="bg-gradient-to-r from-red-600 to-red-700 p-4 text-center">
                           <div className="flex items-center justify-center gap-2">
                             <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                            <span className="text-white font-bold">
+                            <span className="text-white font-bold tracking-wider">
                               MOST POPULAR
                             </span>
                             <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
@@ -265,7 +317,7 @@ const PricingPage = () => {
                             {product.description}
                           </p>
                           <div className="flex items-baseline gap-2 mb-6">
-                            <span className="text-5xl font-bold text-red-600">
+                            <span className="font-display text-5xl text-red-600 tracking-wide">
                               {product.price}
                             </span>
                             <span className="text-gray-500">+ tax</span>
@@ -283,32 +335,22 @@ const PricingPage = () => {
                             ))}
                           </div>
                           <div className="flex items-center justify-center gap-3 mb-4">
-                            <button
-                              onClick={() => updateQuantity(product.id, -1)}
-                              disabled={qty === 0}
-                              className={`w-10 h-10 rounded-lg flex items-center justify-center ${qty === 0 ? "bg-gray-100 text-gray-400" : "bg-gray-200 hover:bg-gray-300 text-gray-700"}`}
-                            >
-                              <Minus className="h-5 w-5" />
-                            </button>
-                            <input
-                              type="number"
-                              min="0"
-                              value={qty}
+                            <QuantityStepper
+                              size="lg"
+                              quantity={qty}
+                              productName={product.name}
+                              onDecrement={() =>
+                                updateQuantity(product.id, -1)
+                              }
+                              onIncrement={() => updateQuantity(product.id, 1)}
                               onChange={(e) =>
                                 setQuantityDirect(product.id, e.target.value)
                               }
-                              className="w-16 text-center font-bold text-gray-800 border-2 border-gray-200 rounded-lg py-2 text-lg"
                             />
-                            <button
-                              onClick={() => updateQuantity(product.id, 1)}
-                              className="w-10 h-10 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center"
-                            >
-                              <Plus className="h-5 w-5" />
-                            </button>
                           </div>
                           {isSelected && (
                             <div className="bg-red-50 rounded-xl py-3 text-center mb-4">
-                              <span className="text-red-600 font-bold text-lg">
+                              <span className="font-display text-red-600 text-2xl tracking-wide">
                                 $
                                 {(
                                   parseFloat(product.price.replace("$", "")) *
@@ -321,7 +363,7 @@ const PricingPage = () => {
                             Or call to book:{" "}
                             <a
                               href="tel:(346) 932-1266"
-                              className="text-red-600 font-semibold"
+                              className="text-red-600 font-semibold hover:text-red-700 transition-colors duration-150 ease-out"
                             >
                               (346) 932-1266
                             </a>
@@ -351,10 +393,10 @@ const PricingPage = () => {
                           return (
                             <div
                               key={product.id}
-                              className={`bg-white rounded-xl p-4 shadow-md border-2 ${isPopular ? "border-orange-400" : isSelected ? "border-red-400" : "border-gray-100"} ${isSelected ? "ring-2 ring-red-200" : ""} relative`}
+                              className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${isPopular ? "border-orange-400" : isSelected ? "border-red-400" : "border-gray-100"} ${isSelected ? "ring-2 ring-red-200" : ""} relative`}
                             >
                               {isPopular && (
-                                <div className="absolute -top-2 right-4 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                <div className="absolute -top-2 right-4 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full tracking-wider">
                                   POPULAR
                                 </div>
                               )}
@@ -374,40 +416,31 @@ const PricingPage = () => {
                                     {product.description}
                                   </p>
                                 </div>
-                                <div className="text-xl font-bold text-gray-800">
+                                <div className="font-display text-xl text-gray-800 tracking-wide">
                                   {product.price}
                                 </div>
                               </div>
                               <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
-                                <button
-                                  onClick={() => updateQuantity(product.id, -1)}
-                                  disabled={qty === 0}
-                                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${qty === 0 ? "bg-gray-100 text-gray-400" : "bg-gray-200 hover:bg-gray-300 text-gray-700"}`}
-                                >
-                                  <Minus className="h-4 w-4" />
-                                </button>
-                                <input
-                                  type="number"
-                                  min="0"
-                                  value={qty}
+                                <QuantityStepper
+                                  quantity={qty}
+                                  productName={product.name}
+                                  onDecrement={() =>
+                                    updateQuantity(product.id, -1)
+                                  }
+                                  onIncrement={() =>
+                                    updateQuantity(product.id, 1)
+                                  }
                                   onChange={(e) =>
                                     setQuantityDirect(
                                       product.id,
                                       e.target.value,
                                     )
                                   }
-                                  className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                                 />
-                                <button
-                                  onClick={() => updateQuantity(product.id, 1)}
-                                  className="w-8 h-8 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center"
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </button>
                               </div>
                               {isSelected && (
                                 <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                                  <span className="text-red-600 font-bold text-sm">
+                                  <span className="font-display text-red-600 text-lg tracking-wide">
                                     $
                                     {(
                                       parseFloat(
@@ -456,7 +489,7 @@ const PricingPage = () => {
                     </p>
                     <a
                       href="tel:(346) 932-1266"
-                      className="inline-flex items-center gap-2 bg-white text-gray-800 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all"
+                      className="inline-flex items-center gap-2 bg-white text-gray-800 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition duration-200 ease-out active:scale-95"
                     >
                       <Phone className="h-5 w-5" />
                       (346) 932-1266
@@ -488,17 +521,17 @@ const PricingPage = () => {
                   return (
                     <div
                       key={product.id}
-                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition-all ${
+                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${
                         product.isPopular
                           ? "border-red-500"
                           : isSelected
                             ? "border-red-400"
-                            : "border-gray-100 hover:border-gray-200"
+                            : "border-gray-100 hover:border-gray-200 hover:shadow-lg"
                       } ${isSelected ? "ring-2 ring-red-200" : ""}`}
                     >
                       {product.isPopular && (
                         <div className="text-center mb-2">
-                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full tracking-wider">
                             BEST VALUE
                           </span>
                         </div>
@@ -514,7 +547,7 @@ const PricingPage = () => {
                         <h3 className="font-bold text-gray-800 text-sm leading-tight">
                           {product.name}
                         </h3>
-                        <div className="text-2xl font-bold text-gray-800 mt-1">
+                        <div className="font-display text-3xl text-gray-800 mt-1 tracking-wide">
                           {product.price}
                         </div>
                         <p className="text-xs text-gray-500">per person</p>
@@ -534,32 +567,19 @@ const PricingPage = () => {
                         ))}
                       </ul>
                       <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
-                        <button
-                          onClick={() => updateQuantity(product.id, -1)}
-                          disabled={qty === 0}
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center ${qty === 0 ? "bg-gray-100 text-gray-400" : "bg-gray-200 hover:bg-gray-300 text-gray-700"}`}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </button>
-                        <input
-                          type="number"
-                          min="0"
-                          value={qty}
+                        <QuantityStepper
+                          quantity={qty}
+                          productName={product.name}
+                          onDecrement={() => updateQuantity(product.id, -1)}
+                          onIncrement={() => updateQuantity(product.id, 1)}
                           onChange={(e) =>
                             setQuantityDirect(product.id, e.target.value)
                           }
-                          className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                         />
-                        <button
-                          onClick={() => updateQuantity(product.id, 1)}
-                          className="w-8 h-8 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </button>
                       </div>
                       {isSelected && (
                         <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                          <span className="text-red-600 font-bold text-sm">
+                          <span className="font-display text-red-600 text-lg tracking-wide">
                             $
                             {(
                               parseFloat(product.price.replace("$", "")) * qty
@@ -587,17 +607,17 @@ const PricingPage = () => {
                   return (
                     <div
                       key={product.id}
-                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition-all ${
+                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${
                         product.isPopular
                           ? "border-red-500"
                           : isSelected
                             ? "border-red-400"
-                            : "border-gray-100 hover:border-gray-200"
+                            : "border-gray-100 hover:border-gray-200 hover:shadow-lg"
                       } ${isSelected ? "ring-2 ring-red-200" : ""}`}
                     >
                       {product.isPopular && (
                         <div className="text-center mb-2">
-                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full tracking-wider">
                             BEST VALUE
                           </span>
                         </div>
@@ -609,7 +629,7 @@ const PricingPage = () => {
                         <h3 className="font-bold text-gray-800 text-sm leading-tight">
                           {product.name}
                         </h3>
-                        <div className="text-2xl font-bold text-gray-800 mt-1">
+                        <div className="font-display text-3xl text-gray-800 mt-1 tracking-wide">
                           {product.price}
                         </div>
                         <p className="text-xs text-gray-500">per kart</p>
@@ -629,32 +649,19 @@ const PricingPage = () => {
                         ))}
                       </ul>
                       <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
-                        <button
-                          onClick={() => updateQuantity(product.id, -1)}
-                          disabled={qty === 0}
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center ${qty === 0 ? "bg-gray-100 text-gray-400" : "bg-gray-200 hover:bg-gray-300 text-gray-700"}`}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </button>
-                        <input
-                          type="number"
-                          min="0"
-                          value={qty}
+                        <QuantityStepper
+                          quantity={qty}
+                          productName={product.name}
+                          onDecrement={() => updateQuantity(product.id, -1)}
+                          onIncrement={() => updateQuantity(product.id, 1)}
                           onChange={(e) =>
                             setQuantityDirect(product.id, e.target.value)
                           }
-                          className="w-12 text-center font-bold text-gray-800 border border-gray-200 rounded-lg py-1 text-sm"
                         />
-                        <button
-                          onClick={() => updateQuantity(product.id, 1)}
-                          className="w-8 h-8 rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </button>
                       </div>
                       {isSelected && (
                         <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                          <span className="text-red-600 font-bold text-sm">
+                          <span className="font-display text-red-600 text-lg tracking-wide">
                             $
                             {(
                               parseFloat(product.price.replace("$", "")) * qty
@@ -749,11 +756,11 @@ const PricingPage = () => {
                 {BOUNCE_PRICING.map((plan, idx) => (
                   <div
                     key={idx}
-                    className={`bg-white rounded-xl p-6 shadow-md border-2 ${plan.isPopular ? "border-red-500" : "border-gray-100"} relative`}
+                    className={`bg-white rounded-xl p-6 shadow-md border-2 transition duration-200 ease-out ${plan.isPopular ? "border-red-500" : "border-gray-100 hover:border-gray-200 hover:shadow-lg"} relative`}
                   >
                     {plan.isPopular && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full tracking-wider">
                           MOST POPULAR
                         </span>
                       </div>
@@ -772,7 +779,7 @@ const PricingPage = () => {
                       )}
                     </div>
                     <div className="text-center mb-4">
-                      <span className="text-4xl font-bold text-gray-800">
+                      <span className="font-display text-4xl text-gray-800 tracking-wide">
                         {plan.price}
                       </span>
                       <span className="text-gray-500 text-sm ml-1">
@@ -792,7 +799,7 @@ const PricingPage = () => {
                     </ul>
                     <button
                       onClick={() => (window.location.href = "/contact")}
-                      className={`w-full py-3 rounded-xl font-bold transition-all ${
+                      className={`w-full py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 ${
                         plan.isPopular
                           ? "bg-red-600 hover:bg-red-700 text-white"
                           : "bg-gray-800 hover:bg-gray-700 text-white"
@@ -844,13 +851,7 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-      <section
-        className="py-12 text-white"
-        style={{
-          background:
-            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
-        }}
-      >
+      <section className="py-12 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-3">Questions?</h2>
@@ -860,14 +861,14 @@ const PricingPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/faq"
-                className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+                className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
               >
                 <HelpCircle className="h-5 w-5" />
                 View FAQ
               </Link>
               <a
                 href="tel:(346) 932-1266"
-                className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+                className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
               >
                 <Phone className="h-5 w-5" />
                 (346) 932-1266

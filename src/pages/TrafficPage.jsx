@@ -121,7 +121,9 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
         </div>
         <div>
           <p className="text-sm text-gray-600">{label}</p>
-          <p className="text-3xl font-bold text-gray-800">{value}</p>
+          <p className="font-display text-4xl tracking-wide text-gray-900 leading-none">
+            {value}
+          </p>
         </div>
       </div>
     </div>
@@ -203,7 +205,7 @@ export default function TrafficPage() {
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors"
+            className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors duration-200 ease-out"
           >
             <ArrowLeft className="h-5 w-5" />
             Back
@@ -225,9 +227,9 @@ export default function TrafficPage() {
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
-                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${
+                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors duration-200 ease-out active:scale-95 ${
                     timeRange === range
-                      ? "bg-red-600 text-white"
+                      ? "bg-red-600 text-white shadow-red"
                       : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                   }`}
                 >
@@ -286,7 +288,7 @@ export default function TrafficPage() {
                       className="flex-1 flex flex-col items-center"
                     >
                       <div
-                        className="w-full bg-red-600 rounded-t transition-all hover:bg-red-500"
+                        className="w-full bg-red-600 rounded-t transition-[height,background-color] duration-300 ease-out hover:bg-red-500"
                         style={{
                           height: `${(count / maxHourly) * 100}%`,
                           minHeight: count > 0 ? "4px" : "0",
@@ -325,7 +327,7 @@ export default function TrafficPage() {
                   <TrendingUp className="h-5 w-5 text-red-600" />
                   Recent Activity
                 </h3>
-                <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+                <div className="overflow-y-auto max-h-[400px]">
                   <table className="w-full">
                     <thead className="sticky top-0 bg-white">
                       <tr className="border-b-2 border-gray-200">
@@ -345,7 +347,7 @@ export default function TrafficPage() {
                         return (
                           <tr
                             key={idx}
-                            className="border-b border-gray-100 hover:bg-gray-50"
+                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150 ease-out"
                           >
                             <td className="py-3 px-4 text-sm text-gray-600">
                               {new Date(view.timestamp).toLocaleString()}

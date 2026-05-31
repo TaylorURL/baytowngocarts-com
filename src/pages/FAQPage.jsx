@@ -63,7 +63,7 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
       <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/15.JPEG')]" />
     </div>
     {/* Crosshatch overlay pattern */}
-    <div className="absolute inset-0 z-[5] opacity-10 bg-[length:20px_20px] bg-[linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] bg-[position:0_0,0_10px,10px_-10px,-10px_0px]" />
+    <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
         <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -84,7 +84,7 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
               placeholder="Search questions and answers..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-gray-500 focus:outline-none shadow-lg"
+              className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
             />
             {searchTerm && (
               <button
@@ -116,7 +116,7 @@ const CategoryFilterBar = ({
 }) => (
   <section
     ref={stickyRef}
-    className={`py-4 border-b-2 sticky top-[58px] lg:top-[112px] z-40 transition-all duration-300 ${
+    className={`py-4 border-b-2 sticky top-[58px] lg:top-[112px] z-40 transition-colors duration-300 ease-out ${
       isSticky ? "bg-gray-800 border-red-600" : "bg-white border-gray-100"
     }`}
   >
@@ -129,7 +129,8 @@ const CategoryFilterBar = ({
             <button
               key={id}
               onClick={() => onCategorySelect(id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition-all duration-300 ${getCategoryButtonClasses(isActive, isSticky)}`}
+              aria-pressed={isActive}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition duration-200 ease-out active:scale-95 ${getCategoryButtonClasses(isActive, isSticky)}`}
             >
               <Icon className="h-4 w-4" />
               <span className="text-sm">{label}</span>
@@ -188,7 +189,7 @@ const FAQResultsList = ({
                 {searchTerm && (
                   <button
                     onClick={onClearSearch}
-                    className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-xl font-bold transition-all"
+                    className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-bold transition-colors duration-200 ease-out active:scale-95"
                   >
                     Clear Search
                   </button>
@@ -196,7 +197,7 @@ const FAQResultsList = ({
                 {!isAllSelected && (
                   <button
                     onClick={onShowAll}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-bold transition-all"
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-bold transition-colors duration-200 ease-out active:scale-95"
                   >
                     Show All
                   </button>
@@ -246,14 +247,14 @@ const ContactCTASection = () => (
             <div className="space-y-4">
               <a
                 href={PHONE_TEL_LINK}
-                className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
               >
                 <Phone className="h-5 w-5" />
                 {CONTACT_INFO.phone}
               </a>
               <Link
                 to="/contact"
-                className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+                className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
               >
                 <MessageSquare className="h-5 w-5" />
                 Contact Form

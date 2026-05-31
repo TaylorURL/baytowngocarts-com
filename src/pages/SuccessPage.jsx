@@ -94,7 +94,7 @@ const SuccessPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <div className="h-16 w-16 rounded-full border-4 border-white/25 border-t-white animate-spin mx-auto mb-4" />
           <p className="text-white text-lg">Processing your payment...</p>
         </div>
       </div>
@@ -106,8 +106,10 @@ const SuccessPage = () => {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-xl p-8 text-center">
           <div className="mb-6">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 ring-1 ring-green-200 mx-auto mb-4">
+              <CheckCircle className="h-12 w-12 text-green-600" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
               Payment Successful!
             </h1>
             <p className="text-gray-600">
@@ -131,10 +133,10 @@ const SuccessPage = () => {
 
             <div className="flex flex-col space-y-3">
               <Link to="/dashboard">
-                <button className="w-full inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105">
+                <button className="group w-full inline-flex items-center justify-center bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95">
                   <ShoppingBag className="h-5 w-5 mr-2" />
                   View My Purchases
-                  <ArrowRight className="h-5 w-5 ml-2" />
+                  <ArrowRight className="h-5 w-5 ml-2 transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
                 </button>
               </Link>
 

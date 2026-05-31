@@ -121,20 +121,9 @@ const AboutPage = () => {
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
         <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: "url(/images/16.JPEG)" }}
-          />
+          <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/16.JPEG')]" />
         </div>
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -149,12 +138,9 @@ const AboutPage = () => {
             </p>
           </div>
         </div>
-        <div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
-      <section className="py-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
@@ -164,7 +150,7 @@ const AboutPage = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="text-center transform hover:scale-110 transition-all duration-300"
+                className="text-center transform transition-transform duration-300 ease-out hover:scale-110 active:scale-95"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
@@ -173,7 +159,7 @@ const AboutPage = () => {
                 >
                   <stat.icon className="h-10 w-10 text-white" />
                 </div>
-                <div className="text-4xl lg:text-5xl font-bold mb-2">
+                <div className="font-display text-5xl lg:text-6xl mb-2 tracking-wide">
                   {stat.value}
                 </div>
                 <div className="text-gray-300 text-sm lg:text-base font-semibold tracking-wide">
@@ -188,7 +174,7 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-              <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
                 OUR STORY
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
@@ -222,7 +208,9 @@ const AboutPage = () => {
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-gray-700 text-white p-6 rounded-xl shadow-xl max-w-xs">
-                <div className="text-3xl font-bold mb-1">5+ Years</div>
+                <div className="font-display text-4xl mb-1 tracking-wide">
+                  5+ Years
+                </div>
                 <div className="text-gray-300">of thrilling experiences</div>
               </div>
             </div>
@@ -254,7 +242,7 @@ const AboutPage = () => {
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                <div className="bg-gradient-to-br from-gray-600 to-gray-700 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <div className="bg-gradient-to-br from-red-500 to-red-600 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
@@ -268,10 +256,7 @@ const AboutPage = () => {
       </section>
       <section className="py-24 bg-gray-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url(/images/15.JPEG)" }}
-          />
+          <div className="absolute inset-0 bg-cover bg-center bg-[url('/images/15.JPEG')]" />
         </div>
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -338,12 +323,12 @@ const AboutPage = () => {
                 >
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
-                      <div className="bg-gray-600 text-white w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="bg-red-600 text-white w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
                         <item.icon className="h-7 w-7" />
                       </div>
                     </div>
                     <div className="flex-grow">
-                      <div className="text-red-600 font-bold text-lg mb-2">
+                      <div className="font-display text-red-600 text-2xl mb-2 tracking-wide">
                         {item.year}
                       </div>
                       <h3 className="text-2xl font-bold text-gray-800 mb-3">
@@ -411,13 +396,7 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-      <section
-        className="py-20 text-white"
-        style={{
-          background:
-            "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
-        }}
-      >
+      <section className="py-24 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">

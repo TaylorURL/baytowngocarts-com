@@ -7,20 +7,14 @@ import { CONTACT_INFO } from "../../lib/constants.js";
  * plus a phone number for direct contact.
  */
 const ActionSection = () => (
-  <section
-    className="py-20 text-white relative overflow-hidden"
-    style={{
-      background:
-        "linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%)",
-    }}
-  >
+  <section className="py-24 text-white relative overflow-hidden bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
     <div className="absolute inset-0 opacity-5">
       <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
       <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
     </div>
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div className="max-w-4xl mx-auto" data-aos="fade-up">
-        <Zap className="h-16 w-16 mx-auto mb-6 text-gray-300" />
+        <Zap className="h-16 w-16 mx-auto mb-6 text-red-500" />
         <h2 className="text-4xl lg:text-5xl font-bold mb-6">
           Ready for an Unforgettable Experience?
         </h2>
@@ -56,7 +50,7 @@ const ActionSection = () => (
           </p>
           <a
             href={`tel:${CONTACT_INFO.phone}`}
-            className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105"
+            className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
           >
             <Phone className="h-5 w-5" />
             {CONTACT_INFO.phone}

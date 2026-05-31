@@ -42,26 +42,27 @@ const LoginPage = () => {
               className="h-20 mx-auto"
             />
           </Link>
-          <h2 className="text-3xl font-bold text-white">
+          <h2 className="text-4xl font-bold text-white tracking-wide">
             Sign in to your account
           </h2>
           <p className="mt-2 text-gray-300">
             Or{" "}
             <Link
               to="/signup"
-              className="text-red-400 hover:text-red-300 font-medium"
+              className="text-red-400 hover:text-red-300 font-medium transition-colors duration-200 ease-out"
             >
               create a new account
             </Link>
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white rounded-xl shadow-xl p-8">
           {message && (
             <div
-              className={`mb-4 p-4 rounded-lg ${
+              role="alert"
+              className={`mb-4 p-4 rounded-lg border-l-4 text-sm font-medium ${
                 message.type === "error"
-                  ? "bg-red-50 border border-red-200 text-red-700"
-                  : "bg-green-50 border border-green-200 text-green-700"
+                  ? "bg-red-50 border-red-500 text-red-700"
+                  : "bg-green-50 border-green-600 text-green-700"
               }`}
             >
               {message.text}
@@ -83,7 +84,7 @@ const LoginPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 ease-out focus:ring-2 focus:ring-red-600 focus:border-transparent"
                 placeholder="Enter your email"
               />
             </div>
@@ -103,13 +104,15 @@ const LoginPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent pr-12"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 ease-out focus:ring-2 focus:ring-red-600 focus:border-transparent pr-12"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 transition-colors duration-200 ease-out hover:text-red-600"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -133,7 +136,7 @@ const LoginPage = () => {
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-red-600 hover:text-red-500 font-medium"
+                className="text-red-600 hover:text-red-500 font-semibold transition-colors duration-200 ease-out"
               >
                 Sign up here
               </Link>

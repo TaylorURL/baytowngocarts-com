@@ -23,7 +23,7 @@ const TestimonialSection = () => (
             data-aos="fade-up"
             data-aos-delay={index * 100}
           >
-            <div className="absolute -top-4 -right-4 bg-gray-400 p-3 rounded-full shadow-lg">
+            <div className="absolute -top-4 -right-4 bg-red-600 p-3 rounded-full shadow-lg">
               <Quote className="h-6 w-6 text-white" />
             </div>
             <div className="flex items-center gap-2 mb-4">

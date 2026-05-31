@@ -7,10 +7,11 @@ import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border-b border-gray-200 last:border-b-0 transition-all duration-300">
+    <div className="border-b border-gray-200 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-8 py-6 text-left flex items-center justify-between transition-all duration-300 ${
+        aria-expanded={isOpen}
+        className={`w-full px-8 py-6 text-left flex items-center justify-between transition-colors duration-300 ${
           isOpen ? "bg-red-50" : "hover:bg-gray-50"
         }`}
       >

@@ -27,13 +27,6 @@ const CART_HERO_IMAGE = "/images/17.JPEG";
 const PENDING_PURCHASE_KEY = "pendingPurchase";
 const GROUP_DISCOUNT_DISPLAY = `${GROUP_DISCOUNT_PERCENT * 100}%`;
 const SALES_TAX_DISPLAY = `${TEXAS_SALES_TAX_PERCENT * 100}%`;
-/** Diagonal crosshatch overlay used as a background texture. */
-const CROSSHATCH_STYLE = {
-  backgroundImage:
-    "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-  backgroundSize: "20px 20px",
-  backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-};
 /**
  * Pure fee calculator. Applies group discount when the total number of
  * people meets the threshold, then layers on sales tax and service fees.
@@ -93,7 +86,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
   const unitPrice = parseFloat(item.product.price.replace("$", ""));
   const lineSubtotal = unitPrice * item.quantity;
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-xl transition-all">
+    <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-xl hover:border-red-300 transition-[box-shadow,border-color] duration-200 ease-out">
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -104,7 +97,9 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
               {item.product.description}
             </p>
             <p className="text-lg font-bold text-gray-800">
-              ${unitPrice.toFixed(2)}{" "}
+              <span className="font-display text-2xl tracking-wide">
+                ${unitPrice.toFixed(2)}
+              </span>{" "}
               <span className="text-sm font-normal text-gray-600">
                 per person
               </span>
@@ -113,7 +108,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
           <button
             onClick={() => onRemove(item.product.id)}
             aria-label={`Remove ${item.product.name} from cart`}
-            className="p-2 hover:bg-red-50 rounded-lg transition-colors ml-2 flex-shrink-0"
+            className="p-2 hover:bg-red-50 rounded-lg transition-colors duration-150 ease-out active:scale-95 ml-2 flex-shrink-0"
           >
             <Trash2 className="h-5 w-5 text-red-600" />
           </button>
@@ -125,11 +120,11 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
                 onUpdateQuantity(item.product.id, item.quantity - 1)
               }
               aria-label={`Decrease ${item.product.name} quantity`}
-              className="w-10 h-10 rounded-lg bg-white hover:bg-red-100 transition-colors flex items-center justify-center"
+              className="w-10 h-10 rounded-lg bg-white hover:bg-red-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
               <Minus className="h-4 w-4 text-gray-800" />
             </button>
-            <span className="w-10 text-center text-xl font-bold text-gray-800">
+            <span className="w-10 text-center font-display text-2xl text-gray-800">
               {item.quantity}
             </span>
             <button
@@ -137,16 +132,18 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
                 onUpdateQuantity(item.product.id, item.quantity + 1)
               }
               aria-label={`Increase ${item.product.name} quantity`}
-              className="w-10 h-10 rounded-lg bg-white hover:bg-green-100 transition-colors flex items-center justify-center"
+              className="w-10 h-10 rounded-lg bg-white hover:bg-green-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
               <Plus className="h-4 w-4 text-gray-800" />
             </button>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-black text-gray-800">
+            <div className="font-display text-3xl text-gray-800 tracking-wide">
               ${lineSubtotal.toFixed(2)}
             </div>
-            <div className="text-xs text-gray-500">subtotal</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider">
+              subtotal
+            </div>
           </div>
         </div>
       </div>
@@ -203,17 +200,23 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
           </span>
         </div>
         <div className="border-t-2 border-gray-300 pt-4" />
-        <div className="flex justify-between text-2xl font-bold">
-          <span className="text-gray-800">Total:</span>
-          <span className="text-gray-800">${fees.total.toFixed(2)}</span>
+        <div className="flex justify-between items-baseline">
+          <span className="text-2xl font-bold text-gray-800">Total:</span>
+          <span className="font-display text-4xl text-gray-900 tracking-wide">
+            ${fees.total.toFixed(2)}
+          </span>
         </div>
       </div>
       <button
         onClick={onCheckout}
         disabled={isProcessing}
-        className={`w-full ${isProcessing ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"} text-white px-8 py-4 rounded-xl font-bold text-lg transition-all ${!isProcessing && "hover:scale-105"} flex items-center justify-center gap-2`}
+        className={`w-full ${isProcessing ? "bg-gray-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-500 shadow-red hover:shadow-lg hover:-translate-y-0.5 active:scale-95"} text-white px-8 py-4 rounded-xl font-bold text-lg transition duration-200 ease-out flex items-center justify-center gap-2`}
       >
-        <CreditCard className="h-6 w-6" />
+        {isProcessing ? (
+          <span className="h-6 w-6 rounded-full border-[3px] border-white/40 border-t-white animate-spin" />
+        ) : (
+          <CreditCard className="h-6 w-6" />
+        )}
         {isProcessing ? "Processing..." : "Proceed to Checkout"}
       </button>
       <p className="text-sm text-gray-500 text-center mt-4">
@@ -273,12 +276,11 @@ export default function CartPage() {
               style={{ backgroundImage: `url(${EMPTY_CART_HERO_IMAGE})` }}
             />
           </div>
-          <div
-            className="absolute inset-0 z-5 opacity-10"
-            style={CROSSHATCH_STYLE}
-          />
+          <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
           <div className="relative z-10 container mx-auto px-4 text-center">
-            <ShoppingCart className="h-20 w-20 text-gray-600 mx-auto mb-6" />
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-red-600/10 ring-1 ring-red-500/30 mx-auto mb-6">
+              <ShoppingCart className="h-12 w-12 text-red-500" />
+            </div>
             <h1 className="text-4xl font-bold text-white mb-4">
               Your Cart is Empty
             </h1>
@@ -287,7 +289,7 @@ export default function CartPage() {
             </p>
             <button
               onClick={() => navigate("/pricing")}
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105"
+              className="bg-red-600 hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
             >
               Browse Packages
             </button>
@@ -307,10 +309,7 @@ export default function CartPage() {
             style={{ backgroundImage: `url(${CART_HERO_IMAGE})` }}
           />
         </div>
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={CROSSHATCH_STYLE}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">

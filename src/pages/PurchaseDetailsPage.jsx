@@ -17,7 +17,7 @@ import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 /**
  * Renders the full details of a single purchase order, including items, totals,
- * visit information, and downloadable documents. Accessible to the purchasing user or staff.
+ * visit information, and a printable confirmation. Accessible to the purchasing user or staff.
  */
 export default function PurchaseDetailsPage() {
   const { orderId } = useParams();
@@ -69,7 +69,7 @@ export default function PurchaseDetailsPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <div className="h-16 w-16 rounded-full border-4 border-gray-200 border-t-red-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600 text-lg">Loading order details...</p>
         </div>
       </div>
@@ -87,15 +87,7 @@ export default function PurchaseDetailsPage() {
             style={{ backgroundImage: "url(/images/19.JPEG)" }}
           />
         </div>
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
@@ -129,10 +121,7 @@ export default function PurchaseDetailsPage() {
             </div>
           </div>
         </div>
-        <div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -179,7 +168,7 @@ export default function PurchaseDetailsPage() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-black text-red-600">
+                      <div className="font-display text-4xl text-red-600 tracking-wide">
                         {formatPrice(purchase.total_amount)}
                       </div>
                     </div>
@@ -293,10 +282,10 @@ export default function PurchaseDetailsPage() {
               <div className="space-y-3">
                 <button
                   onClick={() => window.print()}
-                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors border border-red-200 group"
+                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors duration-200 ease-out active:scale-[0.99] border border-red-200 group"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 transition-transform">
+                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 group-active:scale-95 transition-transform duration-200 ease-out">
                       <Download className="h-5 w-5 text-white" />
                     </div>
                     <div className="text-left">
@@ -323,14 +312,14 @@ export default function PurchaseDetailsPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
                   href="tel:(346) 932-1266"
-                  className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105"
+                  className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
                 >
                   <Phone className="h-5 w-5" />
                   Call Us
                 </a>
                 <a
                   href="/contact"
-                  className="flex-1 flex items-center justify-center gap-2 border-2 border-red-600 text-red-600 hover:bg-red-50 px-6 py-3 rounded-lg font-semibold transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 ease-out active:scale-95"
                 >
                   <Mail className="h-5 w-5" />
                   Contact Form

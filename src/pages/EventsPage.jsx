@@ -14,7 +14,6 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 import { CONTACT_INFO } from "../lib/constants.js";
-const HERO_IMAGE_PATH = "/images/14.JPEG";
 const HERO_BADGES = [
   { icon: PartyPopper, label: "Birthday Parties" },
   { icon: Briefcase, label: "Corporate Events" },
@@ -109,12 +108,10 @@ const EventsPage = () => (
     {/* Hero */}
     <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
       <div className="absolute inset-0 z-0">
-        <div
-          className={`absolute inset-0 bg-cover bg-center opacity-30 bg-[url('${HERO_IMAGE_PATH}')]`}
-        />
+        <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/14.JPEG')]" />
       </div>
       {/* Decorative checkerboard overlay */}
-      <div className="absolute inset-0 z-5 opacity-10 [background-image:linear-gradient(45deg,var(--color-black)_25%,transparent_25%),linear-gradient(-45deg,var(--color-black)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,var(--color-black)_75%),linear-gradient(-45deg,transparent_75%,var(--color-black)_75%)] [background-size:20px_20px] [background-position:0_0,0_10px,10px_-10px,-10px_0px]" />
+      <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -161,7 +158,7 @@ const EventsPage = () => (
           {EVENT_TYPES.map((eventType, index) => (
             <div
               key={eventType.title}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-gray-400 transition-all duration-300"
+              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-red-500 transition-colors duration-300 ease-out"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
@@ -171,7 +168,7 @@ const EventsPage = () => (
                   alt={eventType.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-4 right-4 bg-gray-600 p-3 rounded-xl shadow-lg">
+                <div className="absolute top-4 right-4 bg-red-600 p-3 rounded-xl shadow-lg">
                   <eventType.icon className="h-6 w-6 text-white" />
                 </div>
               </div>
@@ -195,7 +192,7 @@ const EventsPage = () => (
                 </ul>
                 <Link
                   to="/contact"
-                  className="block w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 text-center"
+                  className="block w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-lg transition-transform duration-200 ease-out hover:scale-105 active:scale-95 text-center"
                 >
                   Book Now
                 </Link>
@@ -225,8 +222,8 @@ const EventsPage = () => (
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
-              <div className="bg-gray-100 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
-                <benefit.icon className="h-8 w-8 text-gray-600" />
+              <div className="bg-red-50 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                <benefit.icon className="h-8 w-8 text-red-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-3">
                 {benefit.title}
@@ -238,10 +235,10 @@ const EventsPage = () => (
       </div>
     </section>
     {/* CTA */}
-    <section className="py-20 text-white bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
+    <section className="py-24 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <PartyPopper className="h-16 w-16 mx-auto mb-6" />
+          <PartyPopper className="h-16 w-16 mx-auto mb-6 text-red-500" />
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
             Ready to Book Your Event?
           </h2>
@@ -252,7 +249,7 @@ const EventsPage = () => (
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href={`tel:${CONTACT_INFO.phone}`}
-              className="inline-flex items-center justify-center bg-white text-red-600 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-xl transition-all hover:scale-105"
+              className="inline-flex items-center justify-center bg-white text-red-600 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-xl transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
             >
               <Phone className="h-6 w-6 mr-3" />
               {CONTACT_INFO.phone}

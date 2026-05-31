@@ -14,7 +14,7 @@ const Button = ({
   type = "button",
 }) => {
   const baseClasses =
-    "font-semibold rounded-lg transition-all duration-300 button-hover flex items-center justify-center";
+    "font-semibold rounded-lg button-hover flex items-center justify-center";
   const variantClasses = {
     primary:
       "bg-red-600 hover:bg-red-500 text-white shadow-red hover:shadow-lg hover:-translate-y-0.5",

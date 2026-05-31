@@ -28,15 +28,7 @@ const HeroSection = () => {
           />
         ))}
       </div>
-      <div
-        className="absolute inset-0 z-5 opacity-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-          backgroundSize: "20px 20px",
-          backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-        }}
-      />
+      <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 md:pt-56 md:pb-48">
         <div className="md:max-w-2xl">
           <h1
@@ -82,17 +74,18 @@ const HeroSection = () => {
           >
             {HERO_STATS.map(({ value, label, className }) => (
               <div key={label} className={`text-center ${className ?? ""}`}>
-                <div className="text-3xl font-bold text-white">{value}</div>
-                <div className="text-gray-400 text-sm">{label}</div>
+                <div className="font-display text-4xl lg:text-5xl tracking-wide text-white">
+                  {value}
+                </div>
+                <div className="text-gray-400 text-xs uppercase tracking-wider">
+                  {label}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-        style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-      />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </div>
   );
 };

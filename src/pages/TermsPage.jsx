@@ -1,18 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FileText } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 const TermsPage = () => (
   <div className="w-full -mt-20">
-    <section
-      className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center"
-      style={{
-        background:
-          "linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)",
-      }}
-    >
+    <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <FileText className="h-16 w-16 mx-auto mb-6 text-gray-300" />
+          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
+            <FileText className="h-8 w-8 text-red-500" />
+          </div>
+          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+            LEGAL
+          </div>
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
             Terms of <span className="text-red-500">Service</span>
           </h1>
@@ -21,16 +20,13 @@ const TermsPage = () => (
           </p>
         </div>
       </div>
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-        style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-      />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </section>
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto prose prose-gray text-gray-700 space-y-8">
+        <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed space-y-12">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               1. Acceptance of Terms
             </h2>
             <p>
@@ -42,7 +38,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               2. Services
             </h2>
             <p>
@@ -53,7 +49,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               3. User Accounts
             </h2>
             <p>
@@ -65,10 +61,10 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               4. Purchases and Payments
             </h2>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>
                 All prices are listed in US dollars and are subject to change
                 without notice.
@@ -88,7 +84,7 @@ const TermsPage = () => (
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               5. Assumption of Risk and Liability Waiver
             </h2>
             <p>
@@ -106,7 +102,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               6. Data Usage and Consent
             </h2>
             <p>
@@ -114,7 +110,7 @@ const TermsPage = () => (
               collection, storage, and use of your personal data by both
               Speedway 146 and TaylorURL (the website developer and operator).
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>
                 Speedway 146 and TaylorURL each have the unrestricted right to
                 use, analyze, share, and retain any data collected through this
@@ -137,7 +133,7 @@ const TermsPage = () => (
               For more details, please review our{" "}
               <Link
                 to="/privacy"
-                className="text-red-600 hover:text-red-700 font-bold"
+                className="text-red-600 hover:text-red-700 font-bold underline decoration-red-300 decoration-2 underline-offset-2 transition-colors"
               >
                 Privacy Policy
               </Link>
@@ -145,7 +141,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               7. Intellectual Property
             </h2>
             <p>
@@ -157,11 +153,11 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               8. User Conduct
             </h2>
             <p>You agree not to:</p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>
                 Use the website for any unlawful purpose or in violation of
                 these terms
@@ -184,7 +180,7 @@ const TermsPage = () => (
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               9. Age Requirements
             </h2>
             <p>
@@ -196,7 +192,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               10. Event Bookings
             </h2>
             <p>
@@ -207,7 +203,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               11. Disclaimer of Warranties
             </h2>
             <p>
@@ -219,7 +215,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               12. Limitation of Liability
             </h2>
             <p>
@@ -230,7 +226,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               13. Indemnification
             </h2>
             <p>
@@ -241,7 +237,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               14. Governing Law
             </h2>
             <p>
@@ -251,7 +247,7 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               15. Changes to Terms
             </h2>
             <p>
@@ -262,25 +258,26 @@ const TermsPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               16. Contact Us
             </h2>
             <p>
               If you have questions about these Terms of Service, please contact
               us:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>Email: speedway146@gmail.com</li>
               <li>Phone: (346) 932-1266</li>
               <li>Address: 6750 N TX-146, Baytown, TX 77523</li>
             </ul>
           </div>
-          <div className="pt-8 border-t border-gray-200 text-center">
+          <div className="pt-10 mt-4 border-t border-gray-200 text-center">
             <Link
               to="/privacy"
-              className="text-red-600 hover:text-red-700 font-bold transition-colors"
+              className="group inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
             >
-              View Privacy Policy →
+              View Privacy Policy
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

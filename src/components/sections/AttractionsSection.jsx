@@ -6,7 +6,7 @@ import SectionHeading from "../common/SectionHeading.jsx";
  * as image cards with feature checklists and "Learn More" links.
  */
 const COLOR_STYLES = {
-  red: { badge: "bg-gray-600", link: "text-gray-600 hover:text-gray-700" },
+  red: { badge: "bg-red-600", link: "text-red-600 hover:text-red-700" },
   navy: { badge: "bg-gray-700", link: "text-gray-700 hover:text-gray-800" },
 };
 const ATTRACTIONS = [
@@ -56,7 +56,7 @@ const AttractionsSection = () => (
           ) => (
             <div
               key={title}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-gray-400 transition-all duration-300"
+              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-red-200 transition-colors duration-300"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >

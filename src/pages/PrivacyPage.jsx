@@ -1,18 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Shield } from "lucide-react";
+import { ArrowRight, Shield } from "lucide-react";
 const PrivacyPage = () => (
   <div className="w-full -mt-20">
-    <section
-      className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center"
-      style={{
-        background:
-          "linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%)",
-      }}
-    >
+    <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <Shield className="h-16 w-16 mx-auto mb-6 text-gray-300" />
+          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
+            <Shield className="h-8 w-8 text-red-500" />
+          </div>
+          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+            LEGAL
+          </div>
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
             Privacy <span className="text-red-500">Policy</span>
           </h1>
@@ -21,16 +20,13 @@ const PrivacyPage = () => (
           </p>
         </div>
       </div>
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-        style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-      />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </section>
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto prose prose-gray text-gray-700 space-y-8">
+        <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed space-y-12">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               1. Introduction
             </h2>
             <p>
@@ -46,11 +42,11 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               2. Information We Collect
             </h2>
             <p>We may collect the following types of information:</p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>
                 <strong>Personal Information:</strong> Name, email address,
                 phone number, mailing address, and payment information when you
@@ -82,14 +78,14 @@ const PrivacyPage = () => (
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               3. How We Use Your Information
             </h2>
             <p>
               Speedway 146 and TaylorURL may use your information for any lawful
               purpose, including but not limited to:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>Processing transactions and managing your account</li>
               <li>Providing, maintaining, and improving our services</li>
               <li>
@@ -107,11 +103,11 @@ const PrivacyPage = () => (
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               4. Data Sharing and Disclosure
             </h2>
             <p>We may share your information with:</p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>
                 <strong>Speedway 146:</strong> As the business operator,
                 Speedway 146 has full access to and rights over all data
@@ -139,7 +135,7 @@ const PrivacyPage = () => (
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               5. Data Retention
             </h2>
             <p>
@@ -150,7 +146,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               6. Cookies and Tracking Technologies
             </h2>
             <p>
@@ -161,7 +157,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               7. Third-Party Links
             </h2>
             <p>
@@ -172,7 +168,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               8. Children's Privacy
             </h2>
             <p>
@@ -184,7 +180,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               9. Security
             </h2>
             <p>
@@ -195,7 +191,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               10. Your Rights
             </h2>
             <p>
@@ -207,7 +203,7 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               11. Changes to This Policy
             </h2>
             <p>
@@ -218,25 +214,26 @@ const PrivacyPage = () => (
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
               12. Contact Us
             </h2>
             <p>
               If you have questions about this Privacy Policy, please contact
               us:
             </p>
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
               <li>Email: speedway146@gmail.com</li>
               <li>Phone: (346) 932-1266</li>
               <li>Address: 6750 N TX-146, Baytown, TX 77523</li>
             </ul>
           </div>
-          <div className="pt-8 border-t border-gray-200 text-center">
+          <div className="pt-10 mt-4 border-t border-gray-200 text-center">
             <Link
               to="/terms"
-              className="text-red-600 hover:text-red-700 font-bold transition-colors"
+              className="group inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
             >
-              View Terms of Service →
+              View Terms of Service
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

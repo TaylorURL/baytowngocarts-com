@@ -22,7 +22,8 @@ const SOCIAL_LINKS = [
     ),
   },
 ];
-const SOCIAL_LINK_CLASS = "text-gray-500 hover:text-red-600 transition-colors";
+const SOCIAL_LINK_CLASS =
+  "text-gray-500 hover:text-red-600 hover:-translate-y-0.5 transition duration-200 ease-out";
 const SocialLink = ({ href, label, icon: Icon }) => (
   <a
     href={href}

@@ -13,13 +13,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
-/** Diagonal crosshatch overlay used as a background texture. */
-const CROSSHATCH_STYLE = {
-  backgroundImage:
-    "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-  backgroundSize: "20px 20px",
-  backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-};
 export default function PurchasesPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -74,18 +67,9 @@ export default function PurchasesPage() {
               style={{ backgroundImage: "url(/images/20.JPEG)" }}
             />
           </div>
-          <div
-            className="absolute inset-0 z-5 opacity-10"
-            style={CROSSHATCH_STYLE}
-          />
+          <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
           <div className="relative z-10 container mx-auto px-4 text-center">
-            <div
-              className="animate-spin rounded-full h-16 w-16 border-4 mx-auto mb-4"
-              style={{
-                borderColor: "var(--color-red-200)",
-                borderTopColor: "var(--color-red-600)",
-              }}
-            ></div>
+            <div className="h-16 w-16 rounded-full border-4 border-red-200/40 border-t-red-500 animate-spin mx-auto mb-4" />
             <p className="text-white text-lg">Loading your dashboard...</p>
           </div>
         </section>
@@ -101,15 +85,7 @@ export default function PurchasesPage() {
             style={{ backgroundImage: "url(/images/21.JPEG)" }}
           />
         </div>
-        <div
-          className="absolute inset-0 z-5 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(45deg, var(--color-black) 25%, transparent 25%), linear-gradient(-45deg, var(--color-black) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--color-black) 75%), linear-gradient(-45deg, transparent 75%, var(--color-black) 75%)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "0 0, 0 10px, 10px -10px, -10px 0px",
-          }}
-        />
+        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
@@ -125,16 +101,16 @@ export default function PurchasesPage() {
               <div className="flex items-center gap-2 bg-navy-800 bg-opacity-80 backdrop-blur-sm px-6 py-3 rounded-full border border-red-600 border-opacity-50">
                 <ShoppingBag className="h-5 w-5 text-red-500" />
                 <span className="text-white font-semibold">
-                  {purchases.length} Orders
+                  <span className="font-display text-2xl text-red-500 mr-1 align-baseline">
+                    {purchases.length}
+                  </span>
+                  Orders
                 </span>
               </div>
             </div>
           </div>
         </div>
-        <div
-          className="absolute bottom-0 left-0 right-0 h-16 bg-white"
-          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%, 0% 100%)" }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -142,8 +118,8 @@ export default function PurchasesPage() {
             {purchases.length === 0 ? (
               <div className="max-w-2xl mx-auto" data-aos="fade-up">
                 <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-12 text-center">
-                  <div className="bg-gray-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <Package className="h-10 w-10 text-gray-400" />
+                  <div className="bg-red-600/10 ring-1 ring-red-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <Package className="h-10 w-10 text-red-500" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-800 mb-4">
                     No Orders Yet
@@ -154,7 +130,7 @@ export default function PurchasesPage() {
                   </p>
                   <button
                     onClick={() => navigate("/pricing")}
-                    className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105"
+                    className="bg-red-600 hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
                   >
                     Browse Racing Packages
                   </button>
@@ -188,7 +164,7 @@ export default function PurchasesPage() {
                       data-aos="fade-up"
                       data-aos-delay={index * 50}
                       onClick={() => navigate(`/purchase/${order.id}`)}
-                      className="group bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-2xl transition-all duration-300 hover:border-red-300 cursor-pointer"
+                      className="group bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-2xl hover:border-red-300 hover:-translate-y-0.5 transition-[box-shadow,border-color,transform] duration-200 ease-out active:scale-[0.99] cursor-pointer"
                     >
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                         <div className="flex-1">
@@ -223,17 +199,11 @@ export default function PurchasesPage() {
                                   </span>
                                 </div>
                                 <div
-                                  className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1"
-                                  style={{
-                                    backgroundColor:
-                                      order.status === "completed"
-                                        ? "rgba(22, 163, 74, 0.15)"
-                                        : "rgba(251, 191, 36, 0.15)",
-                                    color:
-                                      order.status === "completed"
-                                        ? "var(--color-green-700)"
-                                        : "var(--color-yellow-400)",
-                                  }}
+                                  className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${
+                                    order.status === "completed"
+                                      ? "bg-green-600/15 text-green-700"
+                                      : "bg-amber-400/15 text-amber-500"
+                                  }`}
                                 >
                                   {order.status === "completed" && (
                                     <CheckCircle className="h-3 w-3" />
@@ -248,12 +218,12 @@ export default function PurchasesPage() {
                         </div>
                         <div className="flex items-center justify-between lg:justify-end gap-4">
                           <div className="text-right">
-                            <div className="text-3xl font-black text-red-600">
+                            <div className="font-display text-4xl text-red-600 tracking-wide">
                               {formatPrice(order.total_amount)}
                             </div>
                           </div>
-                          <div className="bg-red-100 p-2 rounded-lg group-hover:bg-red-600 transition-colors">
-                            <ChevronRight className="h-6 w-6 text-red-600 group-hover:text-white transition-colors" />
+                          <div className="bg-red-100 p-2 rounded-lg group-hover:bg-red-600 transition-colors duration-200 ease-out">
+                            <ChevronRight className="h-6 w-6 text-red-600 group-hover:text-white group-hover:translate-x-0.5 transition-[color,transform] duration-200 ease-out" />
                           </div>
                         </div>
                       </div>
