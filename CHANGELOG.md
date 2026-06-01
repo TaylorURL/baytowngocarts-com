@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.2] - 2026-05-31
+
+- Removed the legacy "nit" build tooling: dropped the `nit release` npm script and renamed the release manifest public/nit.json to the canonical public/release.json
+- Removed the legacy TaylorURL error/analytics beacon: deleted src/lib/ErrorReporterUtility.js, the beacon `<script>` in index.html, and its init call in main.jsx
+- Replaced the beacon shim with a self-contained src/components/common/ErrorBoundary.jsx that renders an on-brand fallback (with a Reload action) on render errors, so the app no longer depends on an external reporter
+- Fixed the hero grid pattern bleeding onto the slanted bottom edge: normalized the checker overlay to a valid z-[5] (the prior z-5 generated no CSS) and layered every hero slant at z-[6] so it always covers the grid across all hero sections
+- Retained TaylorURL legal references in the Terms and Privacy pages and the footer credit (developer/operator attribution, intentionally kept)
+
 ## [3.3.1] - 2026-05-31
 
 - Expanded Bebas Neue to all display elements per brand preference: extended the base-layer heading rule to h4–h6 and applied the display font to buttons (Button.jsx), nav links and wordmarks (Header.jsx), footer quick links (Footer.jsx), and section eyebrow badges (SectionHeading.jsx)

@@ -5,13 +5,7 @@ import "./styles/Theme.css";
 import "./index.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import ErrorReporterUtility, {
-  ErrorBoundary,
-} from "./lib/ErrorReporterUtility";
-ErrorReporterUtility.init({
-  project: "baytowngocarts.com",
-  apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-});
+import ErrorBoundary from "./components/common/ErrorBoundary.jsx";
 AOS.init({
   duration: 800,
   easing: "ease-out-cubic",

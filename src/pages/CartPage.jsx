@@ -276,7 +276,7 @@ export default function CartPage() {
               style={{ backgroundImage: `url(${EMPTY_CART_HERO_IMAGE})` }}
             />
           </div>
-          <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
+          <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-red-600/10 ring-1 ring-red-500/30 mx-auto mb-6">
               <ShoppingCart className="h-12 w-12 text-red-500" />
@@ -309,7 +309,7 @@ export default function CartPage() {
             style={{ backgroundImage: `url(${CART_HERO_IMAGE})` }}
           />
         </div>
-        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
+        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
@@ -323,7 +323,7 @@ export default function CartPage() {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -111,7 +111,7 @@ const EventsPage = () => (
         <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/14.JPEG')]" />
       </div>
       {/* Decorative checkerboard overlay */}
-      <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
+      <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
@@ -137,7 +137,7 @@ const EventsPage = () => (
           </div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </section>
     {/* Event Types */}
     <section className="py-24 bg-white">

@@ -28,7 +28,7 @@ const HeroSection = () => {
           />
         ))}
       </div>
-      <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
+      <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 md:pt-56 md:pb-48">
         <div className="md:max-w-2xl">
           <h1
@@ -85,7 +85,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
     </div>
   );
 };

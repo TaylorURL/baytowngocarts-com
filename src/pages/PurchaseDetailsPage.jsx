@@ -87,7 +87,7 @@ export default function PurchaseDetailsPage() {
             style={{ backgroundImage: "url(/images/19.JPEG)" }}
           />
         </div>
-        <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
+        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
@@ -121,7 +121,7 @@ export default function PurchaseDetailsPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
       </section>
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
