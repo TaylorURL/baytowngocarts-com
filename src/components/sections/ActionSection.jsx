@@ -36,8 +36,8 @@ const ActionSection = () => (
           <Link to="/events">
             <Button
               size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-gray-800 text-xl px-10 py-5 flex items-center gap-3"
+              variant="outlineLight"
+              className="text-xl px-10 py-5 flex items-center gap-3"
             >
               <Calendar className="h-6 w-6" />
               <span>Plan Your Event</span>

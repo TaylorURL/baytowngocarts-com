@@ -126,7 +126,7 @@ const AboutPage = () => {
         <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
               ABOUT US
             </div>
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
@@ -162,7 +162,7 @@ const AboutPage = () => {
                 <div className="font-display text-5xl lg:text-6xl mb-2 tracking-wide">
                   {stat.value}
                 </div>
-                <div className="text-gray-300 text-sm lg:text-base font-semibold tracking-wide">
+                <div className="text-gray-300 text-base lg:text-lg font-display tracking-wide">
                   {stat.label}
                 </div>
               </div>
@@ -174,7 +174,7 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-display tracking-widest">
                 OUR STORY
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
@@ -223,7 +223,7 @@ const AboutPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-sm font-display tracking-widest">
               WHY CHOOSE US
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -263,7 +263,7 @@ const AboutPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
               OUR VALUES
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6">
@@ -301,7 +301,7 @@ const AboutPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-display tracking-widest">
               OUR JOURNEY
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -362,7 +362,7 @@ const AboutPage = () => {
               </div>
             </div>
             <div data-aos="fade-left" className="lg:order-2 order-1">
-              <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-sm font-display tracking-widest">
                 OUR TEAM
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
@@ -408,20 +408,12 @@ const AboutPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/pricing">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-white text-red-600 hover:bg-gray-100 border-0"
-                >
+                <Button size="lg" variant="light">
                   View Pricing
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-gray-800"
-                >
+                <Button size="lg" variant="outlineLight">
                   Contact Us
                 </Button>
               </Link>

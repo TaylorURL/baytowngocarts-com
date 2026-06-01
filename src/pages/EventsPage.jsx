@@ -114,7 +114,7 @@ const EventsPage = () => (
       <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
             EVENTS & PARTIES
           </div>
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
@@ -143,7 +143,7 @@ const EventsPage = () => (
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
+          <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-display tracking-widest">
             EVENT TYPES
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -257,8 +257,8 @@ const EventsPage = () => (
             <Link to="/pricing">
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-gray-800 text-xl px-10 py-5"
+                variant="outlineLight"
+                className="text-xl px-10 py-5"
               >
                 View Pricing
               </Button>

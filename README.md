@@ -5,7 +5,7 @@
 <p align="center"><strong>Go-Kart Entertainment & E-Commerce Platform for Baytown, TX</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-3.3.0-blue?style=flat-square" alt="Version 3.3.0" />
+  <img src="https://img.shields.io/badge/version-3.3.1-blue?style=flat-square" alt="Version 3.3.1" />
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 5" />
   <img src="https://img.shields.io/badge/Zustand-5-433E38?style=flat-square" alt="Zustand 5" />

@@ -14,7 +14,7 @@ const Button = ({
   type = "button",
 }) => {
   const baseClasses =
-    "font-semibold rounded-lg button-hover flex items-center justify-center";
+    "font-display tracking-wide rounded-lg button-hover flex items-center justify-center";
   const variantClasses = {
     primary:
       "bg-red-600 hover:bg-red-500 text-white shadow-red hover:shadow-lg hover:-translate-y-0.5",
@@ -22,6 +22,10 @@ const Button = ({
       "bg-gray-700 hover:bg-gray-600 text-white shadow-lg hover:-translate-y-0.5",
     outline:
       "border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white hover:-translate-y-0.5",
+    light:
+      "bg-white text-red-600 hover:bg-gray-100 hover:-translate-y-0.5 shadow-lg",
+    outlineLight:
+      "border-2 border-white text-white hover:bg-white hover:text-gray-800 hover:-translate-y-0.5",
   };
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",

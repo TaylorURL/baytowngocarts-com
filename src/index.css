@@ -22,12 +22,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Prominent headings carry the Bebas Neue racing identity; smaller
-   functional sub-headings (h4–h6) stay in Inter for readability. */
+/* Headings and display elements carry the Bebas Neue racing identity;
+   Inter is reserved for body/reading text and form inputs. */
 @layer base {
   h1,
   h2,
-  h3 {
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: "Bebas Neue", system-ui, sans-serif;
     letter-spacing: 0.01em;
   }

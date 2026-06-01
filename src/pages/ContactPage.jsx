@@ -50,7 +50,7 @@ const ContactPage = () => {
         <div className="absolute inset-0 z-5 opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
               GET IN TOUCH
             </div>
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
@@ -70,7 +70,7 @@ const ContactPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold tracking-wider">
+            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-display tracking-widest">
               CONTACT METHODS
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
@@ -115,7 +115,7 @@ const ContactPage = () => {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             <div data-aos="fade-right">
-              <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-gray-700 text-white rounded-full text-sm font-display tracking-widest">
                 SEND MESSAGE
               </div>
               <h2 className="text-4xl font-bold text-gray-800 mb-6">
@@ -128,7 +128,7 @@ const ContactPage = () => {
               <ContactForm />
             </div>
             <div data-aos="fade-left">
-              <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-display tracking-widest">
                 VISIT US
               </div>
               <h2 className="text-4xl font-bold text-gray-800 mb-6">Find Us</h2>
@@ -147,7 +147,7 @@ const ContactPage = () => {
             <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="bg-gray-800 text-white p-12">
-                  <div className="inline-block mb-6 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
+                  <div className="inline-block mb-6 px-3 py-1 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
                     BUSINESS HOURS
                   </div>
                   <h2 className="text-3xl font-bold mb-8">When We're Open</h2>

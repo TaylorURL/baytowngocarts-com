@@ -21,7 +21,7 @@ const SectionHeading = ({
     >
       {badge && (
         <div
-          className={`inline-block mb-4 px-3 py-1 rounded-full text-xs font-bold tracking-wider ${badgeStyles[badgeVariant]}`}
+          className={`inline-block mb-4 px-3.5 py-1 rounded-full text-sm font-display tracking-widest ${badgeStyles[badgeVariant]}`}
         >
           {badge}
         </div>

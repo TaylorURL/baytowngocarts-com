@@ -212,7 +212,7 @@ export default function TrafficPage() {
           </button>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-bold tracking-wider">
+              <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
                 ANALYTICS
               </div>
               <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">

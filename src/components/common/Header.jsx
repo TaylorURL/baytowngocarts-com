@@ -118,7 +118,7 @@ const Header = () => {
                 className="h-14 w-14 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-transform duration-500 ease-out group-hover:scale-105"
               />
               <div className="hidden sm:block">
-                <span className="block text-xl font-bold text-gray-800 leading-tight tracking-wide">
+                <span className="block text-2xl font-display text-gray-800 leading-tight tracking-wide">
                   SPEEDWAY 146
                 </span>
                 <span className="block text-[11px] font-medium text-gray-400 tracking-widest uppercase">
@@ -297,7 +297,7 @@ const Header = () => {
                     className="relative group"
                   >
                     <span
-                      className={`block px-5 py-3 text-sm font-bold tracking-widest uppercase transition-colors duration-200 ${
+                      className={`block px-5 py-3 text-base font-display tracking-widest uppercase transition-colors duration-200 ${
                         isActive
                           ? "text-white"
                           : "text-gray-400 group-hover:text-gray-200"
@@ -353,7 +353,7 @@ const Header = () => {
                 className="h-10 w-10 object-contain"
               />
               <div>
-                <span className="block text-sm font-bold text-white tracking-wide">
+                <span className="block text-lg font-display text-white tracking-wide">
                   SPEEDWAY 146
                 </span>
                 <div className="mt-1">
@@ -376,7 +376,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`block px-4 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase transition duration-200 ${
+                  className={`block px-4 py-3.5 rounded-xl text-base font-display tracking-wider uppercase transition duration-200 ${
                     isActive
                       ? "text-white bg-gray-800 shadow-sm"
                       : "text-gray-500 hover:text-gray-800 hover:bg-white/40"

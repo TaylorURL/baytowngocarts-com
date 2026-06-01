@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.1] - 2026-05-31
+
+- Expanded Bebas Neue to all display elements per brand preference: extended the base-layer heading rule to h4–h6 and applied the display font to buttons (Button.jsx), nav links and wordmarks (Header.jsx), footer quick links (Footer.jsx), and section eyebrow badges (SectionHeading.jsx)
+- Switched the eyebrow/badge pills across all pages (About, Pricing, Events, Contact, FAQ, Cart, Terms, Privacy, NotFound, Staff, Traffic, Purchases, PurchaseDetails) to Bebas Neue at a larger, wider-tracked size so the condensed face reads clearly
+- Moved hero and About stat labels to the display font for cohesive "value + label" stat blocks
+- Kept Inter strictly for body/reading text and form inputs, preserving readability of paragraphs, FAQ answers, prices, and fields
+- Fixed an outline-button hover contrast bug by adding dedicated light and outlineLight Button variants, replacing six conflicting per-site hover overrides that rendered white-on-white text on hover
+- Ignored the local .claude/ agent directory in .gitignore
+
 ## [3.3.0] - 2026-05-31
 
 - Introduced a typographic system in src/index.css and tailwind.config.js: Inter for all body/UI text with Bebas Neue retained for prominent headings (h1–h3) via a base layer, fixing site-wide readability while preserving the racing identity

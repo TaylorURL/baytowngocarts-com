@@ -98,7 +98,7 @@ export default function PurchaseDetailsPage() {
               {isStaff ? "Back to Staff Panel" : "Back to Purchases"}
             </button>
             <div className="text-center">
-              <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+              <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
                 ORDER DETAILS
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-white leading-tight">

@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         {/* Diagonal crosshatch racing-flag texture */}
         <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
         <div className="relative z-10 container mx-auto px-4 text-center" data-aos="fade-up">
-          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
             WRONG TURN
           </div>
           <h1 className="text-8xl md:text-9xl font-black text-red-600 mb-4 leading-none [text-shadow:0_8px_30px_rgba(224,36,36,0.35)]">

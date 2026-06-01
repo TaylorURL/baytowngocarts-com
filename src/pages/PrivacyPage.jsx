@@ -9,7 +9,7 @@ const PrivacyPage = () => (
           <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
             <Shield className="h-8 w-8 text-red-500" />
           </div>
-          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
             LEGAL
           </div>
           <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">

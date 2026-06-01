@@ -77,7 +77,7 @@ const HeroSection = () => {
                 <div className="font-display text-4xl lg:text-5xl tracking-wide text-white">
                   {value}
                 </div>
-                <div className="text-gray-400 text-xs uppercase tracking-wider">
+                <div className="text-gray-400 text-sm font-display uppercase tracking-widest">
                   {label}
                 </div>
               </div>

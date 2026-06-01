@@ -66,7 +66,7 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
     <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-        <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-bold tracking-wider">
+        <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
           HELP CENTER
         </div>
         <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
@@ -282,19 +282,15 @@ const ReadyToRaceCTA = () => (
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/pricing">
-            <Button
-              size="lg"
-              variant="outline"
-              className="bg-white text-red-600 hover:bg-gray-100 border-0 text-xl px-10 py-5"
-            >
+            <Button size="lg" variant="light" className="text-xl px-10 py-5">
               View Pricing
             </Button>
           </Link>
           <Link to="/events">
             <Button
               size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-gray-800 text-xl px-10 py-5"
+              variant="outlineLight"
+              className="text-xl px-10 py-5"
             >
               Book Event
             </Button>
