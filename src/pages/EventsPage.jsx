@@ -226,7 +226,7 @@ const EventsPage = () => (
       </div>
     </section>
     {/* CTA */}
-    <section className="py-24 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
+    <section className="py-24 text-white bg-asphalt-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <PartyPopper className="h-16 w-16 mx-auto mb-6 text-red-500" />
