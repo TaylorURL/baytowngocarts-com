@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 /**
  * Accordion-style FAQ item that expands/collapses to reveal the answer.
