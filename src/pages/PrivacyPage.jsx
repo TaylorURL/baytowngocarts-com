@@ -217,16 +217,16 @@ const PrivacyPage = () => (
     <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-asphalt-900">
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
-            <Shield className="h-8 w-8 text-red-500" />
+          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-md bg-race-600/15 ring-1 ring-race-500/30">
+            <Icon name="shield" className="h-8 w-8 text-race-500" />
           </div>
           <div className="mb-6">
-            <Pill>LEGAL</Pill>
+            <Pill>Legal</Pill>
           </div>
-          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-            Privacy <span className="text-red-500">Policy</span>
+          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-chalk leading-tight">
+            Privacy <span className="text-race-500">Policy</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto tabular-nums">
             Last updated: March 15, 2026
           </p>
         </div>
