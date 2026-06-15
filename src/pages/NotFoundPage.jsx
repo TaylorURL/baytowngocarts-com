@@ -28,7 +28,7 @@ const NotFoundPage = () => (
             to="/"
             className="group inline-flex items-center justify-center gap-2 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg shadow-race transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
           >
-            <Home className="h-5 w-5" />
+            <Icon name="home" className="h-5 w-5" />
             Back to home
           </Link>
           <Link
