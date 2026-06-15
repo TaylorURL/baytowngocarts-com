@@ -1,20 +1,10 @@
-/**
- * User dashboard / purchases page. Fetches and displays the authenticated
- * user's order history with status badges and navigation to order details.
- */
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Calendar,
-  ChevronRight,
-  Package,
-  ShoppingBag,
-  CheckCircle,
-} from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
 import { formatCompactDateTime, formatCents } from "../lib/format.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import StatusBadge from "../components/common/StatusBadge.jsx";
 
