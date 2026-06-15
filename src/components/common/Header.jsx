@@ -421,7 +421,7 @@ const Header = () => {
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-race-400 hover:bg-race-950/40 transition-colors duration-base"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <Icon name="log-out" className="h-4 w-4" />
                   Sign Out
                 </button>
               </>
