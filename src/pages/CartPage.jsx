@@ -144,7 +144,6 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
     </div>
   );
 }
-/** Pricing breakdown showing subtotal, discounts, tax, fees, and total. */
 function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
   const remainingForDiscount = GROUP_DISCOUNT_THRESHOLD - totalItems;
   return (
