@@ -34,7 +34,7 @@ export default {
         slow: "320ms",
       },
       colors: {
-        asphalt: ramp("asphalt", [500, 600, 700, 800, 900, 950]),
+        asphalt: ramp("asphalt", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
         race: ramp("race", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
         ignite: ramp("ignite", [100, 300, 400, 500, 600, 700]),
         caution: ramp("caution", [100, 300, 400, 500, 700]),
