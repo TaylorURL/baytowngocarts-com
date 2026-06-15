@@ -1,60 +1,51 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Calendar,
-  ChevronDown,
-  Clock,
-  DollarSign,
-  Eye,
-  Mail,
-  Search,
-  ShoppingBag,
-  TrendingUp,
-} from "lucide-react";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 import { formatShortDateTime, formatCents } from "../lib/format.js";
-import StatusBadge from "../components/common/StatusBadge.jsx";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
+import StatusBadge from "../components/common/StatusBadge.jsx";
+
 const STAT_CARDS = [
   {
     key: "totalOrders",
-    label: "Total Orders",
-    icon: ShoppingBag,
-    iconBg: "bg-red-100",
-    iconColor: "text-red-600",
-    trailingIcon: TrendingUp,
-    trailingColor: "text-green-500",
+    label: "Orders",
+    icon: "shopping-bag",
+    iconBg: "bg-race-50",
+    iconColor: "text-race-600",
+    trailingIcon: "trending-up",
+    trailingColor: "text-green-600",
     format: (v) => v,
   },
   {
     key: "totalRevenue",
-    label: "Total Revenue",
-    icon: DollarSign,
-    iconBg: "bg-green-100",
-    iconColor: "text-green-600",
-    trailingIcon: TrendingUp,
-    trailingColor: "text-green-500",
+    label: "Revenue",
+    icon: "dollar-sign",
+    iconBg: "bg-green-50",
+    iconColor: "text-green-700",
+    trailingIcon: "trending-up",
+    trailingColor: "text-green-600",
     format: (v) => `$${v.toFixed(2)}`,
   },
   {
     key: "todayOrders",
-    label: "Today's Orders",
-    icon: Calendar,
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-    trailingIcon: Clock,
-    trailingColor: "text-blue-500",
+    label: "Today",
+    icon: "calendar",
+    iconBg: "bg-asphalt-100",
+    iconColor: "text-asphalt-700",
+    trailingIcon: "clock",
+    trailingColor: "text-asphalt-500",
     format: (v) => v,
   },
   {
     key: "todayRevenue",
     label: "Today's Revenue",
-    icon: DollarSign,
-    iconBg: "bg-yellow-100",
-    iconColor: "text-yellow-600",
-    trailingIcon: Clock,
-    trailingColor: "text-blue-500",
+    icon: "dollar-sign",
+    iconBg: "bg-caution-100",
+    iconColor: "text-caution-700",
+    trailingIcon: "clock",
+    trailingColor: "text-asphalt-500",
     format: (v) => `$${v.toFixed(2)}`,
   },
 ];
@@ -182,10 +173,12 @@ export default function StaffPanelPage() {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   if (staffLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
+      <div className="min-h-screen bg-asphalt-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading Staff Panel...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-asphalt-700 border-t-race-500 mx-auto mb-4" />
+          <p className="text-chalk text-lg font-display tracking-speedway uppercase text-sm">
+            Loading Staff Panel
+          </p>
         </div>
       </div>
     );
@@ -194,14 +187,14 @@ export default function StaffPanelPage() {
   return (
     <div className="w-full -mt-20">
       <PageHero
-        badge="ADMIN"
+        badge="Operations"
         title="Staff"
         titleAccent="Panel"
-        description="Track Operations & Order Management"
+        description="Live order ledger. Search by order number, filter by date window, expand for line items."
         backgroundImage="/images/22.JPEG"
-        dividerColorClass="bg-white"
+        dividerColorClass="bg-asphalt-50"
       />
-      <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-12 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
@@ -209,52 +202,57 @@ export default function StaffPanelPage() {
                 ({
                   key,
                   label,
-                  icon: Icon,
+                  icon,
                   iconBg,
                   iconColor,
-                  trailingIcon: TrailingIcon,
+                  trailingIcon,
                   trailingColor,
                   format,
                 }) => (
                   <div
                     key={key}
-                    className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6"
+                    className="bg-white rounded-lg border border-asphalt-200 shadow-track p-4 sm:p-6"
                   >
                     <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <div className={`p-2 sm:p-3 ${iconBg} rounded-lg`}>
+                      <div className={`p-2 sm:p-3 ${iconBg} rounded-md`}>
                         <Icon
+                          name={icon}
                           className={`h-5 w-5 sm:h-6 sm:w-6 ${iconColor}`}
                         />
                       </div>
-                      <TrailingIcon
+                      <Icon
+                        name={trailingIcon}
                         className={`h-4 w-4 sm:h-5 sm:w-5 ${trailingColor}`}
                       />
                     </div>
-                    <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
+                    <h3 className="text-asphalt-500 text-[10px] sm:text-xs font-display tracking-speedway uppercase mb-1">
                       {label}
                     </h3>
-                    <p className="font-display text-3xl sm:text-4xl tracking-wide text-gray-900 leading-none">
+                    <p className="font-display text-3xl sm:text-4xl tracking-wide text-asphalt-900 leading-none tabular-nums">
                       {format(stats[key])}
                     </p>
                   </div>
                 ),
               )}
             </div>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
+            <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-4 sm:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                <h2 className="font-display tracking-speedway uppercase text-lg text-asphalt-900">
                   Orders
                 </h2>
                 <div className="flex flex-col md:flex-row gap-3 flex-1 md:max-w-2xl">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Icon
+                      name="search"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-asphalt-400"
+                    />
                     <input
                       type="text"
                       aria-label="Search orders by order number"
-                      placeholder="Search by order number..."
+                      placeholder="Search by order number…"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg transition-colors duration-200 ease-out focus:border-red-500"
+                      className="w-full pl-10 pr-4 py-2 border-2 border-asphalt-200 rounded-md transition-colors duration-base ease-snap focus:border-race-500 focus:outline-none"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -262,10 +260,10 @@ export default function StaffPanelPage() {
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition-colors duration-200 ease-out active:scale-95 ${
+                        className={`px-4 py-2 rounded-md font-display tracking-speedway uppercase text-xs whitespace-nowrap transition-colors duration-base ease-snap active:scale-95 ${
                           activeTab === tab
-                            ? "bg-red-600 text-white shadow-red"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            ? "bg-race-600 text-chalk shadow-race"
+                            : "bg-asphalt-100 text-asphalt-600 hover:bg-asphalt-200"
                         }`}
                       >
                         {tab === "overview" ? "Recent" : "All"}
@@ -279,10 +277,10 @@ export default function StaffPanelPage() {
                   <button
                     key={key}
                     onClick={() => setDateFilter(key)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ease-out active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-md text-xs font-display tracking-speedway uppercase transition-colors duration-base ease-snap active:scale-95 ${
                       dateFilter === key
-                        ? "bg-gray-800 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        ? "bg-asphalt-800 text-chalk"
+                        : "bg-asphalt-100 text-asphalt-600 hover:bg-asphalt-200"
                     }`}
                   >
                     {label}
@@ -290,12 +288,12 @@ export default function StaffPanelPage() {
                 ))}
               </div>
               {searchQuery && (
-                <div className="mb-4 text-sm text-gray-600">
+                <div className="mb-4 text-sm text-asphalt-600">
                   Found {displayOrders.length} order(s) matching "{searchQuery}"
                 </div>
               )}
               {displayOrders.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-asphalt-500">
                   {searchQuery
                     ? `No orders found matching "${searchQuery}"`
                     : "No orders yet"}
@@ -306,7 +304,7 @@ export default function StaffPanelPage() {
                   <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b-2 border-gray-200">
+                        <tr className="border-b-2 border-asphalt-200">
                           {[
                             "Order #",
                             "Customer",
@@ -319,7 +317,7 @@ export default function StaffPanelPage() {
                           ].map((header) => (
                             <th
                               key={header}
-                              className="text-left py-4 px-4 text-sm font-semibold text-gray-600"
+                              className="text-left py-3 px-4 text-[10px] font-display tracking-speedway uppercase text-asphalt-500"
                             >
                               {header}
                             </th>
@@ -330,36 +328,36 @@ export default function StaffPanelPage() {
                         {displayOrders.map((order) => (
                           <tr
                             key={order.id}
-                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                            className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors cursor-pointer"
                             onClick={() => toggleOrder(order.id)}
                           >
                             <td className="py-4 px-4">
-                              <span className="font-mono text-sm font-semibold text-gray-800">
+                              <span className="font-mono text-sm font-semibold text-asphalt-900 tabular-nums">
                                 {order.order_number}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm text-gray-700">
+                              <span className="text-sm text-asphalt-700">
                                 {order.customer_email || "N/A"}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm text-gray-700">
-                                {order.items?.length || 0} item(s)
+                              <span className="text-sm text-asphalt-700 tabular-nums">
+                                {order.items?.length || 0}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm font-semibold text-gray-800">
-                                {order.total_quantity} people
+                              <span className="text-sm font-semibold text-asphalt-900 tabular-nums">
+                                {order.total_quantity}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm font-bold text-green-600">
+                              <span className="text-sm font-bold text-green-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-asphalt-500 tabular-nums">
                                 {formatShortDateTime(order.created_at)}
                               </span>
                             </td>
@@ -372,9 +370,9 @@ export default function StaffPanelPage() {
                                   e.stopPropagation();
                                   navigate(`/purchase/${order.id}`);
                                 }}
-                                className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1 transition-colors duration-200 ease-out"
+                                className="text-race-600 hover:text-race-700 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
                               >
-                                <Eye className="h-4 w-4" />
+                                <Icon name="eye" className="h-4 w-4" />
                                 View
                               </button>
                             </td>
@@ -388,89 +386,89 @@ export default function StaffPanelPage() {
                     {displayOrders.map((order) => (
                       <div
                         key={order.id}
-                        className="border border-gray-200 rounded-xl overflow-hidden"
+                        className="border border-asphalt-200 rounded-md overflow-hidden"
                       >
                         <button
                           onClick={() => toggleOrder(order.id)}
-                          className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
+                          className="w-full text-left p-4 hover:bg-asphalt-50 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-mono text-sm font-bold text-gray-800">
+                            <span className="font-mono text-sm font-bold text-asphalt-900 tabular-nums">
                               {order.order_number}
                             </span>
                             <StatusBadge status={order.status} />
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-lg font-bold text-green-600">
+                              <span className="text-lg font-bold text-green-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
-                              <span className="text-sm text-gray-500">
-                                {order.total_quantity} people
+                              <span className="text-sm text-asphalt-500 tabular-nums">
+                                {order.total_quantity} ppl
                               </span>
                             </div>
-                            <ChevronDown
-                              className={`h-5 w-5 text-gray-400 transition-transform duration-200 ease-out ${
+                            <Icon
+                              name="chevron-down"
+                              className={`h-5 w-5 text-asphalt-400 transition-transform duration-base ease-snap ${
                                 expandedOrder === order.id ? "rotate-180" : ""
                               }`}
                             />
                           </div>
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-asphalt-400 mt-1 tabular-nums">
                             {formatShortDateTime(order.created_at)}
                           </p>
                         </button>
                         {expandedOrder === order.id && (
-                          <div className="border-t border-gray-200 bg-gray-50 p-4 space-y-4">
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <Mail className="h-4 w-4 text-gray-400" />
+                          <div className="border-t border-asphalt-200 bg-asphalt-50 p-4 space-y-4">
+                            <div className="flex items-center gap-2 text-sm text-asphalt-600">
+                              <Icon name="mail" className="h-4 w-4 text-asphalt-400" />
                               <span>{order.customer_email || "N/A"}</span>
                             </div>
                             <div>
-                              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                              <h4 className="text-xs font-display tracking-speedway uppercase text-asphalt-500 mb-2">
                                 Items
                               </h4>
                               <div className="space-y-2">
                                 {order.items?.map((item, idx) => (
                                   <div
                                     key={idx}
-                                    className="flex justify-between items-center bg-white rounded-lg p-3 border border-gray-100"
+                                    className="flex justify-between items-center bg-white rounded-md p-3 border border-asphalt-100"
                                   >
                                     <div>
-                                      <p className="font-medium text-gray-800 text-sm">
+                                      <p className="font-medium text-asphalt-900 text-sm">
                                         {item.product_name}
                                       </p>
-                                      <p className="text-xs text-gray-500">
-                                        {item.quantity} x{" "}
-                                        {formatCents(item.price)}
+                                      <p className="text-xs text-asphalt-500 tabular-nums">
+                                        {item.quantity} × {formatCents(item.price)}
                                       </p>
                                     </div>
-                                    <span className="font-bold text-gray-800 text-sm">
+                                    <span className="font-bold text-asphalt-900 text-sm tabular-nums">
                                       {formatCents(item.subtotal)}
                                     </span>
                                   </div>
                                 ))}
                               </div>
                             </div>
-                            <div className="flex justify-between items-center bg-white rounded-lg p-3 border-2 border-gray-200">
+                            <div className="flex justify-between items-center bg-white rounded-md p-3 border-2 border-asphalt-200">
                               <div>
-                                <p className="font-bold text-gray-800">Total</p>
-                                <p className="text-xs text-gray-500">
+                                <p className="font-display tracking-speedway uppercase text-xs text-asphalt-700">
+                                  Total
+                                </p>
+                                <p className="text-xs text-asphalt-500 tabular-nums">
                                   {order.total_quantity}{" "}
-                                  {order.total_quantity > 1
-                                    ? "people"
-                                    : "person"}
+                                  {order.total_quantity > 1 ? "people" : "person"}
                                 </p>
                               </div>
-                              <span className="text-xl font-black text-red-600">
+                              <span className="text-xl font-black text-race-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
                             </div>
                             <button
                               onClick={() => navigate(`/purchase/${order.id}`)}
-                              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+                              className="w-full bg-race-600 hover:bg-race-500 text-chalk font-display tracking-speedway uppercase text-sm py-3 rounded-md transition-colors duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
                             >
-                              <Eye className="h-4 w-4" />
-                              Full Order Details
+                              <Icon name="eye" className="h-4 w-4" />
+                              Full Order
                             </button>
                           </div>
                         )}

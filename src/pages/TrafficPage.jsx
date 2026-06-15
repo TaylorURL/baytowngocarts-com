@@ -1,38 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Activity,
-  ArrowLeft,
-  BarChart3,
-  Clock,
-  Globe,
-  MapPin,
-  Monitor,
-  MousePointer,
-  TrendingUp,
-  Users,
-} from "lucide-react";
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
-const COLOR_CLASSES = {
-  red: { bg: "bg-red-100", text: "text-red-600" },
-  blue: { bg: "bg-blue-100", text: "text-blue-600" },
-  green: { bg: "bg-green-100", text: "text-green-600" },
-  purple: { bg: "bg-purple-100", text: "text-purple-600" },
-};
+import Icon from "../components/common/Icon.jsx";
+
 const STAT_CARDS = [
-  { key: "totalViews", label: "Total Views", icon: Users, color: "red" },
-  { key: "desktop", label: "Desktop", icon: Monitor, color: "blue" },
-  { key: "mobile", label: "Mobile", icon: Activity, color: "green" },
-  {
-    key: "uniquePages",
-    label: "Unique Pages",
-    icon: BarChart3,
-    color: "purple",
-  },
+  { key: "totalViews", label: "Page Views", icon: "users", accent: "race" },
+  { key: "desktop", label: "Desktop", icon: "monitor", accent: "asphalt" },
+  { key: "mobile", label: "Mobile", icon: "activity", accent: "ignite" },
+  { key: "uniquePages", label: "Unique Pages", icon: "bar-chart", accent: "race" },
 ];
+
+const ACCENT_CLASSES = {
+  race: { bg: "bg-race-50", text: "text-race-600" },
+  ignite: { bg: "bg-ignite-100", text: "text-ignite-600" },
+  asphalt: { bg: "bg-asphalt-100", text: "text-asphalt-700" },
+};
+
 const TIME_RANGES = ["today", "week", "month", "quarter", "year"];
-/** Classifies a user agent string as "Mobile", "Tablet", or "Desktop". */
+
 const getDeviceType = (userAgent) => {
   const ua = (userAgent || "").toLowerCase();
   if (ua.includes("mobile") || ua.includes("android") || ua.includes("iphone"))
@@ -40,12 +26,13 @@ const getDeviceType = (userAgent) => {
   if (ua.includes("ipad") || ua.includes("tablet")) return "Tablet";
   return "Desktop";
 };
+
 const DEVICE_BADGE_COLORS = {
   Mobile: "bg-green-100 text-green-700",
-  Tablet: "bg-purple-100 text-purple-700",
-  Desktop: "bg-blue-100 text-blue-700",
+  Tablet: "bg-ignite-100 text-ignite-700",
+  Desktop: "bg-asphalt-100 text-asphalt-700",
 };
-/** Extracts referrer hostname from a URL, falling back to "Direct". */
+
 const parseSource = (referrer) => {
   if (!referrer) return "Direct";
   try {
@@ -54,7 +41,7 @@ const parseSource = (referrer) => {
     return referrer;
   }
 };
-/** Counts occurrences of a key extractor across traffic entries, returns sorted top N. */
+
 const countByKey = (traffic, keyFn, limit = 10) => {
   const counts = {};
   traffic.forEach((view) => {
@@ -65,40 +52,33 @@ const countByKey = (traffic, keyFn, limit = 10) => {
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit);
 };
-/** Reusable numbered list with progress bars. */
-const RankedList = ({
-  icon: Icon,
-  title,
-  entries,
-  total,
-  barColor,
-  emptyText,
-}) => (
-  <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <Icon className="h-5 w-5 text-red-600" />
+
+const RankedList = ({ icon, title, entries, total, barColor, emptyText }) => (
+  <div className="bg-white rounded-lg p-6 shadow-track border border-asphalt-200">
+    <h3 className="font-display tracking-speedway uppercase text-sm text-asphalt-900 mb-4 flex items-center gap-2">
+      <Icon name={icon} className="h-4 w-4 text-race-600" />
       {title}
     </h3>
     {entries.length > 0 ? (
       <div className="space-y-3">
         {entries.map(([label, count], idx) => (
           <div key={label} className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-bold text-gray-400 w-6">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="text-sm font-bold text-asphalt-400 w-6 tabular-nums">
                 {idx + 1}
               </span>
-              <span className="text-gray-700 font-medium truncate max-w-[200px]">
+              <span className="text-asphalt-700 font-medium truncate max-w-[200px]">
                 {label}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-24 bg-gray-200 rounded-full h-2">
+              <div className="w-24 bg-asphalt-100 rounded-full h-2">
                 <div
                   className={`${barColor} h-2 rounded-full`}
                   style={{ width: `${(count / total) * 100}%` }}
                 />
               </div>
-              <span className="text-sm font-bold text-gray-800 w-12 text-right">
+              <span className="text-sm font-bold text-asphalt-900 w-12 text-right tabular-nums">
                 {count}
               </span>
             </div>
@@ -106,22 +86,24 @@ const RankedList = ({
         ))}
       </div>
     ) : (
-      <p className="text-gray-500 text-center py-4">{emptyText}</p>
+      <p className="text-asphalt-500 text-center py-4 text-sm">{emptyText}</p>
     )}
   </div>
 );
-/** Stat card with icon, label, and value. */
-const StatCard = ({ icon: Icon, label, value, color }) => {
-  const colors = COLOR_CLASSES[color] || COLOR_CLASSES.red;
+
+const StatCard = ({ icon, label, value, accent }) => {
+  const a = ACCENT_CLASSES[accent] || ACCENT_CLASSES.race;
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
+    <div className="bg-white rounded-lg p-6 shadow-track border border-asphalt-200">
       <div className="flex items-center gap-4">
-        <div className={`${colors.bg} p-3 rounded-xl`}>
-          <Icon className={`h-6 w-6 ${colors.text}`} />
+        <div className={`${a.bg} p-3 rounded-md`}>
+          <Icon name={icon} className={`h-6 w-6 ${a.text}`} />
         </div>
         <div>
-          <p className="text-sm text-gray-600">{label}</p>
-          <p className="font-display text-4xl tracking-wide text-gray-900 leading-none">
+          <p className="text-[10px] font-display tracking-speedway uppercase text-asphalt-500">
+            {label}
+          </p>
+          <p className="font-display text-4xl tracking-wide text-asphalt-900 leading-none tabular-nums">
             {value}
           </p>
         </div>
@@ -129,19 +111,18 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
     </div>
   );
 };
-/**
- * Renders a staff-only analytics dashboard showing page views, device breakdown,
- * traffic sources, hourly activity, and visitor locations.
- */
+
 export default function TrafficPage() {
   const navigate = useNavigate();
   const { isStaff, loading: staffLoading } = useAdmin();
   const [traffic, setTraffic] = useState([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("today");
+
   useEffect(() => {
     if (!staffLoading && !isStaff) navigate("/");
   }, [isStaff, staffLoading, navigate]);
+
   useEffect(() => {
     const fetchTraffic = async () => {
       setLoading(true);
@@ -150,6 +131,7 @@ export default function TrafficPage() {
     };
     fetchTraffic();
   }, [timeRange]);
+
   const pageViews = useMemo(
     () => countByKey(traffic, (v) => v.page_path || "Unknown"),
     [traffic],
@@ -188,38 +170,42 @@ export default function TrafficPage() {
     mobile: devices.mobile,
     uniquePages: pageViews.length,
   };
+
   if (staffLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen bg-asphalt-900 flex items-center justify-center">
+        <div className="text-chalk text-xl font-display tracking-speedway uppercase">
+          Loading…
+        </div>
       </div>
     );
   }
+
   if (!isStaff) return null;
+
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-12">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-navy-900" />
-        </div>
+      <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-12">
+        <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-300 hover:text-white mb-6 transition-colors duration-200 ease-out"
+            className="flex items-center gap-2 text-gray-300 hover:text-chalk mb-6 transition-colors duration-base ease-snap font-display tracking-speedway uppercase text-xs"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <Icon name="arrow-left" className="h-4 w-4" />
             Back
           </button>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <div className="inline-block mb-4 px-3 py-1 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-                ANALYTICS
+              <div className="inline-block mb-4 px-3 py-1 bg-race-600 text-chalk rounded-full text-xs font-display tracking-speedway uppercase">
+                Analytics
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2">
+              <h1 className="text-4xl lg:text-5xl font-bold text-chalk mb-2">
                 Site Traffic
               </h1>
-              <p className="text-gray-300">
-                Monitor visitor activity and page performance
+              <p className="text-gray-400">
+                Where visitors arrive from, how they navigate, and on what device.
               </p>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -227,10 +213,10 @@ export default function TrafficPage() {
                 <button
                   key={range}
                   onClick={() => setTimeRange(range)}
-                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors duration-200 ease-out active:scale-95 ${
+                  className={`px-4 py-2 rounded-md font-display tracking-speedway uppercase text-xs transition-colors duration-base ease-snap active:scale-95 ${
                     timeRange === range
-                      ? "bg-red-600 text-white shadow-red"
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      ? "bg-race-600 text-chalk shadow-race"
+                      : "bg-asphalt-800 text-gray-300 hover:bg-asphalt-700"
                   }`}
                 >
                   {range.charAt(0).toUpperCase() + range.slice(1)}
@@ -240,45 +226,48 @@ export default function TrafficPage() {
           </div>
         </div>
       </section>
-      <section className="py-8 bg-gray-50 min-h-screen">
+
+      <section className="py-8 bg-asphalt-50 min-h-screen">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto" />
-              <p className="mt-4 text-gray-600">Loading traffic data...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-asphalt-200 border-t-race-600 mx-auto" />
+              <p className="mt-4 text-asphalt-600">Loading traffic data…</p>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
                 {STAT_CARDS.map((card) => (
                   <StatCard
                     key={card.key}
-                    {...card}
+                    icon={card.icon}
+                    label={card.label}
+                    accent={card.accent}
                     value={statValues[card.key]}
                   />
                 ))}
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
                 <RankedList
-                  icon={MousePointer}
+                  icon="pointer"
                   title="Top Pages"
                   entries={pageViews}
                   total={traffic.length}
-                  barColor="bg-red-600"
+                  barColor="bg-race-600"
                   emptyText="No page views recorded"
                 />
                 <RankedList
-                  icon={Globe}
+                  icon="globe"
                   title="Traffic Sources"
                   entries={referrers}
                   total={traffic.length}
-                  barColor="bg-blue-600"
+                  barColor="bg-asphalt-700"
                   emptyText="No referrer data"
                 />
               </div>
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200 mb-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-red-600" />
+              <div className="bg-white rounded-lg p-6 shadow-track border border-asphalt-200 mb-8">
+                <h3 className="font-display tracking-speedway uppercase text-sm text-asphalt-900 mb-4 flex items-center gap-2">
+                  <Icon name="clock" className="h-4 w-4 text-race-600" />
                   Traffic by Hour
                 </h3>
                 <div className="flex items-end gap-1 h-40">
@@ -288,15 +277,15 @@ export default function TrafficPage() {
                       className="flex-1 flex flex-col items-center"
                     >
                       <div
-                        className="w-full bg-red-600 rounded-t transition-[height,background-color] duration-300 ease-out hover:bg-red-500"
+                        className="w-full bg-race-600 rounded-t transition-[height,background-color] duration-base ease-snap hover:bg-race-500"
                         style={{
                           height: `${(count / maxHourly) * 100}%`,
                           minHeight: count > 0 ? "4px" : "0",
                         }}
-                        title={`${hour}:00 - ${count} views`}
+                        title={`${hour}:00 — ${count} views`}
                       />
                       {hour % 3 === 0 && (
-                        <span className="text-xs text-gray-500 mt-1">
+                        <span className="text-xs text-asphalt-500 mt-1 tabular-nums">
                           {hour}
                         </span>
                       )}
@@ -304,9 +293,9 @@ export default function TrafficPage() {
                   ))}
                 </div>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
                 <RankedList
-                  icon={MapPin}
+                  icon="map-pin"
                   title="Top Cities"
                   entries={locationData.cities}
                   total={traffic.length}
@@ -314,27 +303,27 @@ export default function TrafficPage() {
                   emptyText="No location data available"
                 />
                 <RankedList
-                  icon={Globe}
+                  icon="globe"
                   title="Top Countries"
                   entries={locationData.countries}
                   total={traffic.length}
-                  barColor="bg-purple-600"
+                  barColor="bg-ignite-500"
                   emptyText="No location data available"
                 />
               </div>
-              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-200">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-red-600" />
+              <div className="bg-white rounded-lg p-6 shadow-track border border-asphalt-200">
+                <h3 className="font-display tracking-speedway uppercase text-sm text-asphalt-900 mb-4 flex items-center gap-2">
+                  <Icon name="trending-up" className="h-4 w-4 text-race-600" />
                   Recent Activity
                 </h3>
                 <div className="overflow-y-auto max-h-[400px]">
                   <table className="w-full">
                     <thead className="sticky top-0 bg-white">
-                      <tr className="border-b-2 border-gray-200">
+                      <tr className="border-b-2 border-asphalt-200">
                         {["Time", "Page", "Device", "Source"].map((h) => (
                           <th
                             key={h}
-                            className="text-left py-3 px-4 text-sm font-bold text-gray-600"
+                            className="text-left py-3 px-4 text-[10px] font-display tracking-speedway uppercase text-asphalt-500"
                           >
                             {h}
                           </th>
@@ -347,22 +336,22 @@ export default function TrafficPage() {
                         return (
                           <tr
                             key={idx}
-                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150 ease-out"
+                            className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors duration-base ease-snap"
                           >
-                            <td className="py-3 px-4 text-sm text-gray-600">
+                            <td className="py-3 px-4 text-sm text-asphalt-600 tabular-nums">
                               {new Date(view.timestamp).toLocaleString()}
                             </td>
-                            <td className="py-3 px-4 text-sm font-medium text-gray-800">
+                            <td className="py-3 px-4 text-sm font-medium text-asphalt-800">
                               {view.page_path}
                             </td>
                             <td className="py-3 px-4">
                               <span
-                                className={`text-xs px-2 py-1 rounded-full font-bold ${DEVICE_BADGE_COLORS[device]}`}
+                                className={`text-[10px] px-2 py-0.5 rounded-full font-display tracking-speedway uppercase ${DEVICE_BADGE_COLORS[device]}`}
                               >
                                 {device}
                               </span>
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-600 truncate max-w-[150px]">
+                            <td className="py-3 px-4 text-sm text-asphalt-600 truncate max-w-[150px]">
                               {parseSource(view.referrer)}
                             </td>
                           </tr>
@@ -371,7 +360,7 @@ export default function TrafficPage() {
                     </tbody>
                   </table>
                   {traffic.length === 0 && (
-                    <p className="text-gray-500 text-center py-8">
+                    <p className="text-asphalt-500 text-center py-8">
                       No traffic recorded for this period
                     </p>
                   )}

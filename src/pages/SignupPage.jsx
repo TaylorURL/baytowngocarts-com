@@ -4,9 +4,9 @@
  */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import Button from "../components/common/Button";
+import Icon from "../components/common/Icon.jsx";
 import AuthShell from "../components/common/AuthShell.jsx";
 
 const INPUT_CLASS =
@@ -123,11 +123,10 @@ const SignupPage = () => {
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-asphalt-400 hover:text-race-600 transition-colors duration-base ease-snap"
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
+                  <Icon
+                    name={showPassword ? "eye-off" : "eye"}
+                    className="h-5 w-5"
+                  />
                 </button>
               </div>
             </div>
@@ -161,11 +160,10 @@ const SignupPage = () => {
                   aria-pressed={showConfirmPassword}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-asphalt-400 hover:text-race-600 transition-colors duration-base ease-snap"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
+                  <Icon
+                    name={showConfirmPassword ? "eye-off" : "eye"}
+                    className="h-5 w-5"
+                  />
                 </button>
               </div>
             </div>

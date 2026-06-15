@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
+import Icon from "../common/Icon.jsx";
 import StatTile from "../common/StatTile.jsx";
 import Pill from "../common/Pill.jsx";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
@@ -11,11 +11,6 @@ import {
 } from "../../lib/content/hero.js";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
-/**
- * Full-screen home hero. Asphalt foundation, crossfading track photography,
- * race-stripe top edge, big display headline, stat tiles. Designed to read
- * "real outdoor speedway in Baytown" in one glance.
- */
 const HeroSection = () => {
   const [currentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,
@@ -71,7 +66,7 @@ const HeroSection = () => {
             <Link to="/pricing">
               <Button size="lg" variant="primary" className="group">
                 See Pricing
-                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+                <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link to="/contact">
@@ -91,14 +86,14 @@ const HeroSection = () => {
               href={CONTACT_INFO.phoneTel}
               className="inline-flex items-center gap-2 hover:text-chalk transition-colors duration-base ease-snap"
             >
-              <Phone className="h-4 w-4 text-race-500" />
-              <span className="font-semibold tracking-wide">
+              <Icon name="phone" className="h-4 w-4 text-race-500" />
+              <span className="font-semibold tracking-wide tabular-nums">
                 {CONTACT_INFO.phone}
               </span>
             </a>
             <span className="hidden sm:block h-4 w-px bg-chalk/20" />
             <span className="inline-flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-race-500" />
+              <Icon name="map-pin" className="h-4 w-4 text-race-500" />
               <span className="font-semibold tracking-wide">
                 6750 N TX-146 · Baytown
               </span>

@@ -1,34 +1,20 @@
 import { Link } from "react-router-dom";
-import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
 import {
   BUSINESS_HOURS,
   CONTACT_INFO,
   SOCIAL_URLS,
 } from "../../lib/content/business.js";
+import Icon from "./Icon.jsx";
 import Wordmark from "./Wordmark.jsx";
 
 const SOCIAL_LINKS = [
-  { label: "Facebook", href: SOCIAL_URLS.facebook, icon: Facebook },
-  { label: "Instagram", href: SOCIAL_URLS.instagram, icon: Instagram },
-  {
-    label: "TikTok",
-    href: SOCIAL_URLS.tiktok,
-    icon: ({ className }) => (
-      <svg
-        className={className}
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-      </svg>
-    ),
-  },
+  { label: "Facebook", href: SOCIAL_URLS.facebook, icon: "facebook" },
+  { label: "Instagram", href: SOCIAL_URLS.instagram, icon: "instagram" },
+  { label: "TikTok", href: SOCIAL_URLS.tiktok, icon: "tiktok" },
 ];
 
-const SocialLink = ({ href, label, icon: Icon }) => (
+const SocialLink = ({ href, label, icon }) => (
   <a
     href={href}
     target="_blank"
@@ -36,15 +22,16 @@ const SocialLink = ({ href, label, icon: Icon }) => (
     className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-asphalt-800 text-gray-300 hover:bg-race-600 hover:text-chalk hover:-translate-y-0.5 transition-[background-color,color,transform] duration-base ease-snap"
     aria-label={label}
   >
-    <Icon className="h-4 w-4" />
+    <Icon name={icon} className="h-4 w-4" />
   </a>
 );
 
-const ContactRow = ({ icon: Icon, children, alignTop }) => (
+const ContactRow = ({ icon, children, alignTop }) => (
   <div
     className={`flex gap-3 ${alignTop ? "items-start" : "items-center"} text-gray-300`}
   >
     <Icon
+      name={icon}
       className={`h-4 w-4 text-race-500 flex-shrink-0 ${alignTop ? "mt-1" : ""}`}
     />
     <span>{children}</span>
@@ -55,17 +42,15 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <footer className="relative bg-asphalt-900 text-chalk">
-      {/* Race ribbon — visually re-anchors the brand */}
       <div className="h-1.5 race-stripe" aria-hidden="true" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand + legal */}
           <div className="space-y-5">
             <Wordmark to={null} size="md" tone="dark" />
             <p className="text-gray-400 text-sm leading-relaxed">
-              Baytown's outdoor speedway. Family-friendly karting, bounce houses,
-              and party packages — every day of the week.
+              Baytown's outdoor speedway on TX-146. Real karts, real lap times,
+              and a private party room for 45 — all on the same property.
             </p>
             <div className="flex gap-2">
               {SOCIAL_LINKS.map((link) => (
@@ -103,7 +88,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick links */}
           <div className="space-y-5">
             <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
               Explore
@@ -123,24 +107,23 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
           <div className="space-y-5">
             <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
-              Contact
+              Find Us
             </h3>
             <div className="space-y-3 text-sm">
-              <ContactRow icon={MapPin} alignTop>
+              <ContactRow icon="map-pin" alignTop>
                 {CONTACT_INFO.address}
               </ContactRow>
-              <ContactRow icon={Phone}>
+              <ContactRow icon="phone">
                 <a
                   href={CONTACT_INFO.phoneTel}
-                  className="hover:text-chalk transition-colors duration-base"
+                  className="hover:text-chalk transition-colors duration-base tabular-nums"
                 >
                   {CONTACT_INFO.phone}
                 </a>
               </ContactRow>
-              <ContactRow icon={Mail}>
+              <ContactRow icon="mail">
                 <a
                   href={CONTACT_INFO.emailMailto}
                   className="hover:text-chalk transition-colors duration-base break-all"
@@ -151,13 +134,12 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Hours */}
           <div className="space-y-5">
             <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
-              Hours
+              Track Hours
             </h3>
             <div className="flex items-start gap-3">
-              <Clock className="h-4 w-4 text-race-500 mt-1 flex-shrink-0" />
+              <Icon name="clock" className="h-4 w-4 text-race-500 mt-1 flex-shrink-0" />
               <ul className="text-gray-300 text-sm space-y-1.5 tabular-nums">
                 {BUSINESS_HOURS.map(({ day, hours }) => (
                   <li

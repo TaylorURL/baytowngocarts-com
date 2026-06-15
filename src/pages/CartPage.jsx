@@ -1,22 +1,11 @@
-/**
- * Shopping cart page. Displays cart items with quantity controls, calculates
- * fees/taxes/discounts, and initiates Stripe checkout.
- */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  CreditCard,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Trash2,
-} from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 const TRANSACTION_FEE_PERCENT = 0.04;
 const PLATFORM_FEE_PERCENT = 0.01;
@@ -30,10 +19,7 @@ const CART_HERO_IMAGE = "/images/17.JPEG";
 const PENDING_PURCHASE_KEY = "pendingPurchase";
 const GROUP_DISCOUNT_DISPLAY = `${GROUP_DISCOUNT_PERCENT * 100}%`;
 const SALES_TAX_DISPLAY = `${TEXAS_SALES_TAX_PERCENT * 100}%`;
-/**
- * Pure fee calculator. Applies group discount when the total number of
- * people meets the threshold, then layers on sales tax and service fees.
- */
+
 function calculateFees(rawSubtotal, totalPeople) {
   const qualifiesForGroupDiscount = totalPeople >= GROUP_DISCOUNT_THRESHOLD;
   const groupDiscount = qualifiesForGroupDiscount
@@ -53,7 +39,6 @@ function calculateFees(rawSubtotal, totalPeople) {
     total,
   };
 }
-/** Creates a Stripe checkout session and returns the redirect URL. */
 async function createCheckoutSession(checkoutItems, user) {
   const session = await supabase.auth.getSession();
   const accessToken = session.data.session?.access_token;
@@ -84,7 +69,6 @@ async function createCheckoutSession(checkoutItems, user) {
   }
   return data.url;
 }
-/** Single cart line-item with quantity controls and remove button. */
 function CartItemRow({ item, onUpdateQuantity, onRemove }) {
   const unitPrice = parsePriceString(item.product.price);
   const lineSubtotal = unitPrice * item.quantity;
@@ -113,7 +97,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
             aria-label={`Remove ${item.product.name} from cart`}
             className="p-2 hover:bg-red-50 rounded-lg transition-colors duration-150 ease-out active:scale-95 ml-2 flex-shrink-0"
           >
-            <Trash2 className="h-5 w-5 text-red-600" />
+            <Icon name="trash" className="h-5 w-5 text-race-600" />
           </button>
         </div>
         <div className="flex items-center justify-between">
@@ -125,7 +109,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
               aria-label={`Decrease ${item.product.name} quantity`}
               className="w-10 h-10 rounded-lg bg-white hover:bg-red-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
-              <Minus className="h-4 w-4 text-gray-800" />
+              <Icon name="minus" className="h-4 w-4 text-asphalt-800" />
             </button>
             <span className="w-10 text-center font-display text-2xl text-gray-800">
               {item.quantity}
@@ -137,7 +121,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
               aria-label={`Increase ${item.product.name} quantity`}
               className="w-10 h-10 rounded-lg bg-white hover:bg-green-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
-              <Plus className="h-4 w-4 text-gray-800" />
+              <Icon name="plus" className="h-4 w-4 text-asphalt-800" />
             </button>
           </div>
           <div className="text-right">
@@ -153,7 +137,6 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
     </div>
   );
 }
-/** Pricing breakdown showing subtotal, discounts, tax, fees, and total. */
 function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
   const remainingForDiscount = GROUP_DISCOUNT_THRESHOLD - totalItems;
   return (
@@ -218,7 +201,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         {isProcessing ? (
           <span className="h-6 w-6 rounded-full border-[3px] border-white/40 border-t-white animate-spin" />
         ) : (
-          <CreditCard className="h-6 w-6" />
+          <Icon name="credit-card" className="h-6 w-6" />
         )}
         {isProcessing ? "Processing..." : "Proceed to Checkout"}
       </button>
@@ -272,7 +255,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="w-full -mt-20">
-        <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-screen flex items-center">
+        <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-20 min-h-screen flex items-center">
           <div className="absolute inset-0 z-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -282,7 +265,7 @@ export default function CartPage() {
           <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-red-600/10 ring-1 ring-red-500/30 mx-auto mb-6">
-              <ShoppingCart className="h-12 w-12 text-red-500" />
+              <Icon name="shopping-cart" className="h-12 w-12 text-race-500" />
             </div>
             <h1 className="text-4xl font-bold text-white mb-4">
               Your Cart is Empty
@@ -314,14 +297,14 @@ export default function CartPage() {
         minHeightClass="min-h-[40vh]"
         dividerColorClass="bg-white"
       />
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-24 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
               onClick={() => navigate("/pricing")}
               className="flex items-center gap-2 text-gray-800 hover:text-gray-600 transition-colors mb-8 font-semibold"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <Icon name="arrow-left" className="h-5 w-5" />
               Continue Shopping
             </button>
             <div className="space-y-6">

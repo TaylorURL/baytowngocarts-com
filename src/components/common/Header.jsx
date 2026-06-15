@@ -1,24 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  BarChart3,
-  ChevronDown,
-  Clock,
-  LogOut,
-  MapPin,
-  Menu,
-  Phone,
-  Shield,
-  ShoppingBag,
-  ShoppingCart,
-  User,
-  X,
-} from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
 import { CONTACT_INFO } from "../../lib/content/business.js";
+import Icon from "./Icon.jsx";
 import Wordmark from "./Wordmark.jsx";
 
 const LIGHT_COLORS = [
@@ -136,19 +123,19 @@ const Header = () => {
                 href={CONTACT_INFO.phoneTel}
                 className="flex items-center gap-2 hover:text-chalk transition-colors duration-base ease-snap"
               >
-                <Phone className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="phone" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   {CONTACT_INFO.phone}
                 </span>
               </a>
               <div className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="map-pin" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   6750 N TX-146, Baytown
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="clock" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   Open Daily
                 </span>
@@ -162,7 +149,7 @@ const Header = () => {
                 aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
                 className="relative p-2.5 rounded-md text-gray-300 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
               >
-                <ShoppingCart className="h-5 w-5" />
+                <Icon name="shopping-cart" className="h-5 w-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-asphalt-900">
                     {cartCount}
@@ -179,12 +166,13 @@ const Header = () => {
                     className="flex items-center gap-2.5 px-3 py-2 rounded-md text-gray-300 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
                   >
                     <div className="w-8 h-8 rounded-full bg-asphalt-700 flex items-center justify-center">
-                      <User className="h-4 w-4 text-gray-300" />
+                      <Icon name="user" className="h-4 w-4 text-gray-300" />
                     </div>
                     <span className="text-sm font-semibold max-w-[120px] truncate hidden xl:block">
                       {user.email?.split("@")[0]}
                     </span>
-                    <ChevronDown
+                    <Icon
+                      name="chevron-down"
                       className={`h-3.5 w-3.5 transition-transform duration-base ease-snap ${isUserMenuOpen ? "rotate-180" : ""}`}
                     />
                   </button>
@@ -204,7 +192,7 @@ const Header = () => {
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-5 py-2.5 text-sm text-asphalt-700 hover:text-asphalt-900 hover:bg-asphalt-50 transition-colors duration-base"
                         >
-                          <ShoppingBag className="h-4 w-4 text-race-600" />
+                          <Icon name="shopping-bag" className="h-4 w-4 text-race-600" />
                           My Purchases
                         </Link>
                         {isStaff && (
@@ -213,7 +201,7 @@ const Header = () => {
                             onClick={() => setIsUserMenuOpen(false)}
                             className="flex items-center gap-3 px-5 py-2.5 text-sm text-asphalt-700 hover:text-asphalt-900 hover:bg-asphalt-50 transition-colors duration-base"
                           >
-                            <Shield className="h-4 w-4 text-race-600" />
+                            <Icon name="shield" className="h-4 w-4 text-race-600" />
                             Staff Panel
                           </Link>
                         )}
@@ -223,7 +211,7 @@ const Header = () => {
                             onClick={() => setIsUserMenuOpen(false)}
                             className="flex items-center gap-3 px-5 py-2.5 text-sm text-asphalt-700 hover:text-asphalt-900 hover:bg-asphalt-50 transition-colors duration-base"
                           >
-                            <BarChart3 className="h-4 w-4 text-race-600" />
+                            <Icon name="bar-chart" className="h-4 w-4 text-race-600" />
                             Site Traffic
                           </Link>
                         )}
@@ -233,7 +221,7 @@ const Header = () => {
                           onClick={handleSignOut}
                           className="w-full flex items-center gap-3 px-5 py-2.5 text-sm text-race-700 hover:bg-race-50 transition-colors duration-base"
                         >
-                          <LogOut className="h-4 w-4" />
+                          <Icon name="log-out" className="h-4 w-4" />
                           Sign Out
                         </button>
                       </div>
@@ -265,7 +253,7 @@ const Header = () => {
                 aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
                 className="relative p-2.5 rounded-md text-gray-300 hover:text-chalk"
               >
-                <ShoppingCart className="h-6 w-6" />
+                <Icon name="shopping-cart" className="h-6 w-6" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-asphalt-900">
                     {cartCount}
@@ -277,11 +265,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                <Icon name={isMenuOpen ? "close" : "menu"} className="h-6 w-6" />
               </button>
             </div>
           </div>
@@ -362,7 +346,7 @@ const Header = () => {
               className="p-2 rounded-md text-gray-400 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
               aria-label="Close menu"
             >
-              <X className="h-5 w-5" />
+              <Icon name="close" className="h-5 w-5" />
             </button>
           </div>
           {/* Race ribbon under the drawer header */}
@@ -407,7 +391,7 @@ const Header = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-gray-300 hover:text-chalk hover:bg-asphalt-800 transition-colors duration-base"
                 >
-                  <ShoppingBag className="h-4 w-4 text-race-500" />
+                  <Icon name="shopping-bag" className="h-4 w-4 text-race-500" />
                   My Purchases
                 </Link>
                 {isStaff && (
@@ -416,7 +400,7 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-gray-300 hover:text-chalk hover:bg-asphalt-800 transition-colors duration-base"
                   >
-                    <Shield className="h-4 w-4 text-race-500" />
+                    <Icon name="shield" className="h-4 w-4 text-race-500" />
                     Staff Panel
                   </Link>
                 )}
@@ -426,7 +410,7 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-gray-300 hover:text-chalk hover:bg-asphalt-800 transition-colors duration-base"
                   >
-                    <BarChart3 className="h-4 w-4 text-race-500" />
+                    <Icon name="bar-chart" className="h-4 w-4 text-race-500" />
                     Site Traffic
                   </Link>
                 )}
@@ -437,7 +421,7 @@ const Header = () => {
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-race-400 hover:bg-race-950/40 transition-colors duration-base"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <Icon name="log-out" className="h-4 w-4" />
                   Sign Out
                 </button>
               </>

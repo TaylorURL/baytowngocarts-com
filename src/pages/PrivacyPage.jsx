@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield } from "lucide-react";
+import Icon from "../components/common/Icon.jsx";
 import Pill from "../components/common/Pill.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
@@ -27,7 +27,7 @@ const SECTIONS = [
     body: (
       <>
         <p>We may collect the following types of information:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             <strong>Personal Information:</strong> Name, email address, phone
             number, mailing address, and payment information when you make a
@@ -67,7 +67,7 @@ const SECTIONS = [
           Speedway 146 and TaylorURL may use your information for any lawful
           purpose, including but not limited to:
         </p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>Processing transactions and managing your account</li>
           <li>Providing, maintaining, and improving our services</li>
           <li>
@@ -90,7 +90,7 @@ const SECTIONS = [
     body: (
       <>
         <p>We may share your information with:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             <strong>Speedway 146:</strong> As the business operator, Speedway
             146 has full access to and rights over all data collected through
@@ -202,7 +202,7 @@ const SECTIONS = [
     body: (
       <>
         <p>If you have questions about this Privacy Policy, please contact us:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>Email: {CONTACT_INFO.email}</li>
           <li>Phone: {CONTACT_INFO.phone}</li>
           <li>Address: {CONTACT_INFO.address}</li>
@@ -217,40 +217,40 @@ const PrivacyPage = () => (
     <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-asphalt-900">
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
-            <Shield className="h-8 w-8 text-red-500" />
+          <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-md bg-race-600/15 ring-1 ring-race-500/30">
+            <Icon name="shield" className="h-8 w-8 text-race-500" />
           </div>
           <div className="mb-6">
-            <Pill>LEGAL</Pill>
+            <Pill>Legal</Pill>
           </div>
-          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-            Privacy <span className="text-red-500">Policy</span>
+          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-chalk leading-tight">
+            Privacy <span className="text-race-500">Policy</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto tabular-nums">
             Last updated: March 15, 2026
           </p>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider" />
     </section>
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-chalk">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed space-y-12">
+        <div className="max-w-3xl mx-auto text-asphalt-700 leading-relaxed space-y-12">
           {SECTIONS.map(({ title, body }) => (
             <div key={title}>
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
+              <h2 className="text-2xl lg:text-3xl font-bold text-asphalt-900 mb-4 pl-4 border-l-4 border-race-600">
                 {title}
               </h2>
               {body}
             </div>
           ))}
-          <div className="pt-10 mt-4 border-t border-gray-200 text-center">
+          <div className="pt-10 mt-4 border-t border-asphalt-200 text-center">
             <Link
               to="/terms"
-              className="group inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
+              className="group inline-flex items-center gap-2 text-race-600 hover:text-race-700 font-bold transition-colors"
             >
               View Terms of Service
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+              <Icon name="arrow-right" className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

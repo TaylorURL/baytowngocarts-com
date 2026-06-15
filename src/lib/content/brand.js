@@ -1,12 +1,3 @@
-/**
- * Speedway 146 — brand voice & copy presets.
- *
- * Voice: confident, plain-spoken, a little Texan. Energetic without trying
- * too hard. Headlines short and punchy; subheads earn the click with one
- * concrete promise. We don't say "rev your engines" — we let the asphalt
- * do that work.
- */
-
 export const BRAND = {
   name: "Speedway 146",
   shortName: "Speedway 146",
@@ -18,8 +9,6 @@ export const BRAND = {
   since: "2019",
 };
 
-/** Hero copy used on the home page. Picked here so the revamp can pull
- *  exact strings without re-thinking them per page. */
 export const HOME_HERO = {
   eyebrow: "Open Daily · Walk-Ins Welcome",
   title: "Real Karts.",
@@ -30,7 +19,6 @@ export const HOME_HERO = {
   secondaryCta: { label: "Book a Party", to: "/contact" },
 };
 
-/** Eyebrow microcopy by surface — keeps the tone consistent. */
 export const EYEBROWS = {
   about: "Our Story",
   pricing: "Pricing",

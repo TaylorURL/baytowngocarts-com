@@ -1,31 +1,26 @@
-import { AlertCircle, CheckCircle, Clock } from "lucide-react";
+import Icon from "./Icon.jsx";
 
 const STATUS_CONFIG = {
   completed: {
     className: "bg-green-100 text-green-700",
-    label: "COMPLETED",
-    icon: CheckCircle,
+    label: "PAID",
+    icon: "check-circle",
   },
   pending: {
-    className: "bg-yellow-100 text-yellow-700",
+    className: "bg-caution-100 text-caution-700",
     label: "PENDING",
-    icon: Clock,
+    icon: "clock",
   },
 };
 
 const FALLBACK_CONFIG = {
-  className: "bg-red-100 text-red-700",
+  className: "bg-race-100 text-race-700",
   label: null,
-  icon: AlertCircle,
+  icon: "alert-circle",
 };
 
-/**
- * Pill-shaped order status indicator. Used in staff order tables, the user
- * dashboard, and the purchase details page.
- */
 const StatusBadge = ({ status, size = "sm" }) => {
   const config = STATUS_CONFIG[status] ?? FALLBACK_CONFIG;
-  const Icon = config.icon;
   const sizing =
     size === "lg"
       ? "px-4 py-2 text-sm gap-2"
@@ -33,9 +28,9 @@ const StatusBadge = ({ status, size = "sm" }) => {
   const iconSize = size === "lg" ? "h-4 w-4" : "h-3 w-3";
   return (
     <span
-      className={`inline-flex items-center rounded-full font-bold ${config.className} ${sizing}`}
+      className={`inline-flex items-center rounded-full font-display tracking-speedway uppercase ${config.className} ${sizing}`}
     >
-      <Icon className={iconSize} />
+      <Icon name={config.icon} className={iconSize} />
       {config.label ?? status}
     </span>
   );

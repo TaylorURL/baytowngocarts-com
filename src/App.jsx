@@ -1,7 +1,3 @@
-/**
- * Root application component. Defines all client-side routes and wraps them
- * in the main layout (with navbar/footer) or renders standalone auth pages.
- */
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";

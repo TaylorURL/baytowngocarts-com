@@ -3,17 +3,13 @@ const VARIANT_CLASSES = {
   ignite:  "bg-ignite-500 text-asphalt-950",
   caution: "bg-caution-500 text-asphalt-950",
   asphalt: "bg-asphalt-800 text-chalk",
-  navy:    "bg-asphalt-800 text-chalk",           // legacy alias
-  red:     "bg-race-600 text-chalk",              // legacy alias
+  navy:    "bg-asphalt-800 text-chalk",
+  red:     "bg-race-600 text-chalk",
   light:   "bg-race-100 text-race-700",
   muted:   "bg-asphalt-100 text-asphalt-700",
   chalk:   "bg-chalk text-asphalt-900 ring-1 ring-asphalt-200",
 };
 
-/**
- * Eyebrow / category pill. Sits above titles. Restyle here once to
- * propagate everywhere.
- */
 const Pill = ({
   children,
   variant = "race",
