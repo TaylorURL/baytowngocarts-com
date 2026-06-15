@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, Plus } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
-/**
- * Accordion-style FAQ item. Click toggles the answer. The chevron rotates,
- * and the question color shifts to race-red so the open item is unmistakable.
- */
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
