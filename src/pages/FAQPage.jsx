@@ -228,7 +228,7 @@ const ContactCTASection = () => (
               ))}
             </div>
           </div>
-          <div className="p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
+          <div className="p-12 flex flex-col justify-center bg-asphalt-950">
             <h3 className="text-3xl font-bold text-white mb-6">Get in Touch</h3>
             <p className="text-gray-300 mb-8 text-lg">
               Choose the best way to reach us
