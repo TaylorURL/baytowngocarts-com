@@ -9,8 +9,6 @@ export const BRAND = {
   since: "2019",
 };
 
-/** Hero copy used on the home page. Picked here so the revamp can pull
- *  exact strings without re-thinking them per page. */
 export const HOME_HERO = {
   eyebrow: "Open Daily · Walk-Ins Welcome",
   title: "Real Karts.",
