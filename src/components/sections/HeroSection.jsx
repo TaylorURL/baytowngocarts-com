@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
+import { ArrowRight, MapPin, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
+import StatTile from "../common/StatTile.jsx";
+import Pill from "../common/Pill.jsx";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
 import {
   HERO_BACKGROUND_IMAGES,
   HERO_STATS,
   SLIDESHOW_INTERVAL_MS,
-} from "../../lib/constants.js";
+} from "../../lib/content/hero.js";
+import { CONTACT_INFO } from "../../lib/content/business.js";
+
 /**
- * Full-screen hero section with a crossfading background slideshow,
- * headline text, call-to-action buttons, and key stats.
+ * Full-screen home hero. Asphalt foundation, crossfading track photography,
+ * race-stripe top edge, big display headline, stat tiles. Designed to read
+ * "real outdoor speedway in Baytown" in one glance.
  */
 const HeroSection = () => {
   const [currentImageIndex] = useImageSlideshow(
@@ -16,77 +22,113 @@ const HeroSection = () => {
     SLIDESHOW_INTERVAL_MS,
   );
   return (
-    <div className="relative bg-navy-900 overflow-hidden min-h-screen">
-      <div className="absolute inset-0 z-0">
+    <div className="relative bg-asphalt-900 overflow-hidden min-h-screen">
+      {/* Crossfading photography */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         {HERO_BACKGROUND_IMAGES.map((image, index) => (
           <div
-            key={index}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-              index === currentImageIndex ? "opacity-30" : "opacity-0"
+            key={image}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-snap ${
+              index === currentImageIndex ? "opacity-40" : "opacity-0"
             }`}
             style={{ backgroundImage: `url(${image})` }}
           />
         ))}
       </div>
-      <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40 pb-32 md:pt-56 md:pb-48">
-        <div className="md:max-w-2xl">
+      {/* Asphalt grain + checker + vignette layers */}
+      <div className="absolute inset-0 z-[1] asphalt-grain opacity-70" aria-hidden="true" />
+      <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-b from-asphalt-950/40 via-transparent to-asphalt-950/80" aria-hidden="true" />
+      {/* Top race stripe — the starting line */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe" aria-hidden="true" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32 md:pt-44 md:pb-44">
+        <div className="md:max-w-3xl">
+          <Pill variant="race" size="sm" className="mb-6" data-aos="fade-up">
+            Outdoor Speedway · Open Daily
+          </Pill>
           <h1
-            className="text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-tight animate-fade-in italic sm:tracking-normal tracking-tighter"
+            className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight animate-fade-in"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            Real Karts.
+            <span className="block text-race-500">Real Speed.</span>
+          </h1>
+          <p
+            className="mt-6 text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            Experience the <span className="text-red-600">Thrill</span> of
-            <span className="block text-red-500">SPEEDWAY 146</span>
-          </h1>
-          <p
-            className="mt-6 text-xl text-gray-300 max-w-lg hero-text-shadow"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            Baytown's go-to spot for family fun! Exciting go-kart racing, bounce
-            houses, and party room rentals for unforgettable experiences.
+            Baytown's outdoor speedway on TX-146. 5-minute heats, family-friendly
+            track, leagues kicking off Q1 2026.
           </p>
           <div
-            className="mt-10 flex flex-col sm:flex-row gap-4"
+            className="mt-10 flex flex-col sm:flex-row gap-3"
             data-aos="fade-up"
-            data-aos-delay="600"
+            data-aos-delay="300"
           >
             <Link to="/pricing">
-              <Button size="lg" variant="primary" className="animate-slide-up">
-                View Pricing
+              <Button size="lg" variant="primary" className="group">
+                See Pricing
+                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link to="/contact">
-              <Button
-                size="lg"
-                variant="outline"
-                className="animate-slide-up delay-100"
-              >
-                Book Now
+              <Button size="lg" variant="outlineLight">
+                Book a Party
               </Button>
             </Link>
           </div>
+
+          {/* Quick-glance info pills */}
           <div
-            className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-8"
+            className="mt-10 flex flex-wrap items-center gap-4 text-sm text-gray-300"
             data-aos="fade-up"
-            data-aos-delay="800"
+            data-aos-delay="400"
           >
-            {HERO_STATS.map(({ value, label, className }) => (
-              <div key={label} className={`text-center ${className ?? ""}`}>
-                <div className="font-display text-4xl lg:text-5xl tracking-wide text-white">
-                  {value}
-                </div>
-                <div className="text-gray-400 text-sm font-display uppercase tracking-widest">
-                  {label}
-                </div>
-              </div>
-            ))}
+            <a
+              href={CONTACT_INFO.phoneTel}
+              className="inline-flex items-center gap-2 hover:text-chalk transition-colors duration-base ease-snap"
+            >
+              <Phone className="h-4 w-4 text-race-500" />
+              <span className="font-semibold tracking-wide">
+                {CONTACT_INFO.phone}
+              </span>
+            </a>
+            <span className="hidden sm:block h-4 w-px bg-chalk/20" />
+            <span className="inline-flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-race-500" />
+              <span className="font-semibold tracking-wide">
+                6750 N TX-146 · Baytown
+              </span>
+            </span>
           </div>
         </div>
+
+        <div
+          className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl"
+          data-aos="fade-up"
+          data-aos-delay="500"
+        >
+          {HERO_STATS.map(({ value, label, className }, idx) => (
+            <StatTile
+              key={label}
+              value={value}
+              label={label}
+              accent={idx === 0 ? "race" : idx === 1 ? "ignite" : "chalk"}
+              className={className ?? ""}
+            />
+          ))}
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+      {/* Slope into next section */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider"
+        aria-hidden="true"
+      />
     </div>
   );
 };
+
 export default HeroSection;
