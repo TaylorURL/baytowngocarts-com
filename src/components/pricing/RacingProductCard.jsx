@@ -3,11 +3,6 @@ import { parsePriceString } from "../../lib/pricing.js";
 import { formatDollars } from "../../lib/format.js";
 import QuantityStepper from "./QuantityStepper.jsx";
 
-/**
- * Compact racing product card used in the individual + double-seater grids.
- * Renders the product icon, name, price, top features, quantity stepper,
- * and live subtotal once a quantity is selected.
- */
 const RacingProductCard = ({
   product,
   quantity,
