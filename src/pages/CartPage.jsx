@@ -199,7 +199,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Transaction Fee:</span>
           <span className="font-semibold text-gray-700">
-            ${fees.serviceFee.toFixed(2)}
+            {formatDollars(fees.serviceFee)}
           </span>
         </div>
         <div className="border-t-2 border-gray-300 pt-4" />
