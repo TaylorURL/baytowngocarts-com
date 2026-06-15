@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import QuestionSection from "../components/sections/QuestionSection.jsx";
-import { CONTACT_INFO, FAQS } from "../lib/constants.js";
+import { CONTACT_INFO } from "../lib/content/business.js";
+import { FAQS } from "../lib/content/faqs.js";
 import Button from "../components/common/Button";
+import Pill from "../components/common/Pill.jsx";
 import { Link } from "react-router-dom";
 import {
   Calendar,
