@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import { NAV_ITEMS, BUSINESS_HOURS, CONTACT_INFO } from "../../lib/constants";
-const FACEBOOK_URL = "https://www.facebook.com/p/Speedway146-61575710985956/";
-const INSTAGRAM_URL = "https://www.instagram.com/Speedway146/";
-const TIKTOK_URL = "https://www.tiktok.com/@Speedway146";
+import { NAV_ITEMS } from "../../lib/content/navigation.js";
+import { BUSINESS_HOURS, CONTACT_INFO, SOCIAL_URLS } from "../../lib/content/business.js";
+
 const SOCIAL_LINKS = [
-  { label: "Facebook", href: FACEBOOK_URL, icon: Facebook },
-  { label: "Instagram", href: INSTAGRAM_URL, icon: Instagram },
+  { label: "Facebook", href: SOCIAL_URLS.facebook, icon: Facebook },
+  { label: "Instagram", href: SOCIAL_URLS.instagram, icon: Instagram },
   {
     label: "TikTok",
-    href: TIKTOK_URL,
+    href: SOCIAL_URLS.tiktok,
     icon: ({ className }) => (
       <svg
         className={className}
