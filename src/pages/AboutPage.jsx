@@ -1,362 +1,253 @@
-import {
-  Award,
-  Calendar,
-  Clock,
-  Flag,
-  Gauge,
-  Heart,
-  MapPin,
-  Shield,
-  Star,
-  Target,
-  Users,
-  Zap,
-} from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
-import Pill from "../components/common/Pill.jsx";
+import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import StatTile from "../components/common/StatTile.jsx";
 
-const STATS = [
-  { icon: Users, label: "Happy Customers", value: "5,000+", color: "bg-gray-600" },
-  { icon: Award, label: "Years of Experience", value: "5+", color: "bg-gray-700" },
-  { icon: Clock, label: "Hours of Fun Daily", value: "12+", color: "bg-gray-600" },
-  { icon: MapPin, label: "Track Length", value: "1/4 Mile", color: "bg-gray-700" },
-];
-
-const VALUES = [
-  {
-    icon: Heart,
-    title: "Community First",
-    description:
-      "We're proud to be part of the Baytown community and committed to providing a space where families and friends can create lasting memories together.",
-  },
-  {
-    icon: Award,
-    title: "Excellence",
-    description:
-      "From our track design to our customer service, we strive for excellence in everything we do to ensure the best possible experience for every guest.",
-  },
-  {
-    icon: Shield,
-    title: "Safety & Fun",
-    description:
-      "Safety is our top priority, but we never forget that the ultimate goal is to have an amazing, thrilling, and unforgettable racing experience.",
-  },
+const FACTS = [
+  { value: "2019", label: "Opened on TX-146", accent: "race" },
+  { value: '5"', label: "Suggested Min Age", accent: "ignite" },
+  { value: "5:00", label: "Per Heat", accent: "race" },
+  { value: "45", label: "Party Room Cap", accent: "chalk" },
 ];
 
 const TIMELINE = [
   {
     year: "2019",
-    icon: Flag,
-    title: "The Beginning",
+    icon: "flag",
+    title: "Doors open",
     description:
-      "Speedway 146 opened its doors with a vision to bring world-class go-kart racing to Baytown.",
+      "Pad poured, fence up, first heat run on a Saturday afternoon in Baytown.",
   },
   {
-    year: "2020",
-    icon: Gauge,
-    title: "Track Expansion",
+    year: "2021",
+    icon: "wrench",
+    title: "Fleet upgrade",
     description:
-      "We expanded our track and upgraded our fleet with state-of-the-art racing karts.",
+      "Pulled the original karts, replaced with a fresh fleet — geared adult and kiddie classes split.",
   },
   {
-    year: "2022",
-    icon: Star,
-    title: "Award Winner",
+    year: "2023",
+    icon: "bouncy-castle",
+    title: "Bounce houses added",
     description:
-      "Named Baytown's Best Family Entertainment Venue by local community awards.",
+      "Climate-controlled indoor unit added so the under-10 crew has somewhere to be while older siblings race.",
   },
   {
-    year: "2024",
-    icon: Users,
-    title: "Growing Strong",
+    year: "2026",
+    icon: "trophy",
+    title: "Leagues kick off",
     description:
-      "Celebrating over 5,000 happy customers and countless unforgettable racing moments.",
+      "Eight-week racing leagues planned for Q1 2026 — same drivers, same karts, points tally weekly.",
   },
 ];
 
-const FEATURES = [
+const HOUSE_RULES = [
   {
-    icon: Zap,
-    title: "High-Speed Thrills",
-    text: "Professional-grade karts reaching speeds that deliver pure adrenaline",
+    icon: "helmet",
+    title: "Real karts, not arcade rides",
+    text: "Geared karts with real speed and timed transponders. We don't run go-cart-shaped go-carts.",
   },
   {
-    icon: Shield,
-    title: "Safety First",
-    text: "State-of-the-art safety equipment and trained staff ensure peace of mind",
+    icon: "stopwatch",
+    title: "5 minutes, every time",
+    text: "If a kart breaks down mid-heat, you finish your time in the next one. Nobody loses paid laps.",
   },
   {
-    icon: Users,
-    title: "For Everyone",
-    text: "Activities and experiences designed for all ages and skill levels",
+    icon: "users",
+    title: "Kids race kids, adults race adults",
+    text: "Separated by class for safety. Birthday parties on the kid side, after-work crews on the adult side.",
   },
   {
-    icon: Calendar,
-    title: "Flexible Options",
-    text: "Open 7 days a week with special event bookings available",
+    icon: "fuel",
+    title: "Outdoor, year-round",
+    text: "Open every day. Light rain we run. Heavy rain we pause for safety, then resume.",
   },
 ];
 
 const AboutPage = () => (
   <div className="w-full -mt-20">
     <PageHero
-      badge="ABOUT US"
-      title="Where"
-      titleAccent="Speed Meets Family Fun"
-      description="Baytown's premier destination for high-speed go-kart racing, bounce houses, and unforgettable family entertainment since 2019"
+      badge="About"
+      title="The track"
+      titleAccent="on TX-146."
+      description="Six years of running outdoor karts on the same patch of asphalt in Baytown — the long version, in case you want it."
       backgroundImage="/images/16.JPEG"
-      dividerColorClass="bg-white"
+      dividerColorClass="bg-chalk"
     />
-    <section className="py-24 bg-asphalt-900 text-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-      </div>
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {STATS.map((stat, index) => (
+
+    <section className="py-20 bg-asphalt-900 text-chalk">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center mb-12" data-aos="fade-up">
+          <SectionEyebrow tone="dark" className="justify-center">
+            By the numbers
+          </SectionEyebrow>
+          <h2 className="mt-5 text-3xl lg:text-4xl font-bold">
+            What the venue actually looks like.
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
+          {FACTS.map(({ value, label, accent }, index) => (
             <div
-              key={stat.label}
-              className="text-center transform transition-transform duration-300 ease-out hover:scale-110 active:scale-95"
+              key={label}
               data-aos="fade-up"
-              data-aos-delay={index * 100}
+              data-aos-delay={index * 80}
             >
-              <div
-                className={`${stat.color} w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl`}
-              >
-                <stat.icon className="h-10 w-10 text-white" />
-              </div>
-              <div className="font-display text-5xl lg:text-6xl mb-2 tracking-wide">
-                {stat.value}
-              </div>
-              <div className="text-gray-300 text-base lg:text-lg font-display tracking-wide">
-                {stat.label}
-              </div>
+              <StatTile value={value} label={label} accent={accent} />
             </div>
           ))}
         </div>
       </div>
     </section>
-    <section className="py-24 bg-white">
+
+    <section className="py-24 bg-chalk">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div data-aos="fade-right">
-            <Pill variant="light" className="mb-4">OUR STORY</Pill>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight mt-4">
-              Built on <span className="text-red-600">Passion</span> for Racing
+            <SectionEyebrow tone="light">Why we built it</SectionEyebrow>
+            <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900 leading-tight">
+              An outdoor track,
+              <span className="text-race-600"> twenty minutes from Houston.</span>
             </h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Speedway 146 was born from a passion for racing and a vision to
-              bring world-class go-kart racing to the Baytown community. We've
-              created a state-of-the-art facility that combines the thrill of
-              high-speed racing with a safe, family-friendly environment.
+            <p className="mt-6 text-lg text-asphalt-700 leading-relaxed">
+              The closest serious karting used to be a forty-minute drive west.
+              Baytown didn't have a real track — just a few trampoline parks
+              with slow electric karts wedged into a corner. We bought the land
+              on TX-146, poured asphalt, and stocked it with karts that
+              actually go.
             </p>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Our professionally designed track, top-quality karts, and
-              commitment to safety make us the go-to destination for racing
-              enthusiasts, families, and anyone looking for an unforgettable
-              experience.
+            <p className="mt-4 text-lg text-asphalt-700 leading-relaxed">
+              Five-minute heats, real timing, helmets stocked. Easy enough for
+              a seven-year-old's birthday party, fast enough that grown-ups
+              come back to settle scores.
             </p>
-            <Link to="/contact">
-              <Button size="lg" variant="primary">
-                Visit Us Today
-              </Button>
-            </Link>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/pricing">
+                <Button size="lg" variant="primary">
+                  See Pricing
+                </Button>
+              </Link>
+              <Link to="/contact">
+                <Button size="lg" variant="outline">
+                  Visit Us
+                </Button>
+              </Link>
+            </div>
           </div>
           <div data-aos="fade-left" className="relative">
-            <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
+            <div className="image-hover rounded-lg overflow-hidden shadow-lift h-[500px]">
               <img
                 src="/images/19.JPEG"
-                alt="Go-kart racing at Speedway 146"
+                alt="Speedway 146 outdoor track on TX-146"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -left-6 bg-gray-700 text-white p-6 rounded-xl shadow-xl max-w-xs">
-              <div className="font-display text-4xl mb-1 tracking-wide">
-                5+ Years
+            <div className="absolute -bottom-6 -left-6 bg-race-600 text-chalk p-6 rounded-md shadow-lift max-w-xs">
+              <div className="font-display text-2xl mb-1 tracking-speedway uppercase">
+                6750 N TX-146
               </div>
-              <div className="text-gray-300">of thrilling experiences</div>
+              <div className="text-chalk/80 text-sm">
+                Baytown, TX 77523 — exit south of the bridge
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section className="py-24 bg-gray-50">
+
+    <section className="py-24 bg-asphalt-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <Pill variant="navy" className="mb-4">WHY CHOOSE US</Pill>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
-            The Ultimate Racing Experience
+        <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade-up">
+          <SectionEyebrow tone="light" className="justify-center">
+            House rules
+          </SectionEyebrow>
+          <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
+            How we run the track.
           </h2>
-          <p className="text-xl text-gray-600">
-            We deliver unmatched excitement with top-notch facilities and a
-            commitment to excellence
+          <p className="mt-4 text-lg text-asphalt-600">
+            The non-obvious things about how Speedway 146 actually operates.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {FEATURES.map((feature, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {HOUSE_RULES.map(({ icon, title, text }, index) => (
             <div
-              key={feature.title}
-              className="bg-white p-8 rounded-2xl shadow-lg hover-lift text-center"
+              key={title}
+              className="bg-white p-8 rounded-lg border border-asphalt-200 hover:border-race-500 hover:shadow-lift transition-[border-color,box-shadow] duration-base ease-snap"
               data-aos="fade-up"
-              data-aos-delay={index * 100}
+              data-aos-delay={index * 80}
             >
-              <div className="bg-gradient-to-br from-red-500 to-red-600 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <feature.icon className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600">{feature.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    <section className="py-24 bg-gray-800 text-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-cover bg-center bg-[url('/images/15.JPEG')]" />
-      </div>
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <Pill className="mb-4">OUR VALUES</Pill>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 mt-4">
-            What Drives Us Forward
-          </h2>
-          <p className="text-xl text-gray-300">
-            The principles that guide everything we do
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {VALUES.map((value, index) => (
-            <div
-              key={value.title}
-              className="bg-gray-700 bg-opacity-50 backdrop-blur-md p-8 rounded-2xl hover-lift border border-gray-500 border-opacity-30"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              <div className="bg-gray-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
-                <value.icon className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 text-white">
-                {value.title}
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                {value.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <Pill variant="muted" className="mb-4">OUR JOURNEY</Pill>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
-            Racing Through The Years
-          </h2>
-          <p className="text-xl text-gray-600">
-            From our humble beginnings to becoming Baytown's favorite racing
-            destination
-          </p>
-        </div>
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {TIMELINE.map((item, index) => (
-              <div
-                key={item.year}
-                className="relative bg-gray-50 p-8 rounded-2xl hover-lift"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="bg-red-600 text-white w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
-                      <item.icon className="h-7 w-7" />
-                    </div>
-                  </div>
-                  <div className="flex-grow">
-                    <div className="font-display text-red-600 text-2xl mb-2 tracking-wide">
-                      {item.year}
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
+              <div className="flex items-start gap-5">
+                <div className="bg-race-50 p-3 rounded-md shrink-0">
+                  <Icon name={icon} className="h-7 w-7 text-race-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-asphalt-900 mb-2">
+                    {title}
+                  </h3>
+                  <p className="text-asphalt-600 leading-relaxed">{text}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
-    <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+
+    <section className="py-24 bg-chalk">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div data-aos="fade-right" className="relative lg:order-1 order-2">
-            <div className="image-hover rounded-2xl overflow-hidden shadow-2xl h-[500px]">
-              <img
-                src="/images/16.JPEG"
-                alt="Speedway 146 team"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -top-6 -right-6 bg-gray-700 text-white p-6 rounded-xl shadow-xl">
-              <Target className="h-8 w-8 mb-2" />
-              <div className="text-sm">Expert Team</div>
-            </div>
-          </div>
-          <div data-aos="fade-left" className="lg:order-2 order-1">
-            <Pill variant="navy" className="mb-4">OUR TEAM</Pill>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight mt-4">
-              Passionate About{" "}
-              <span className="text-red-600">Your Experience</span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Our experienced team is passionate about racing and dedicated to
-              ensuring every visitor has an incredible experience. From our
-              track marshals to our customer service staff, everyone at
-              Speedway 146 is committed to safety, fun, and excellence.
-            </p>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Whether you're a first-time racer or a seasoned pro, our team is
-              here to help you make the most of your visit and ensure you
-              leave with a smile and memories that last a lifetime.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-3 bg-gray-100 px-6 py-3 rounded-full">
-                <Shield className="h-5 w-5 text-gray-600" />
-                <span className="text-gray-800 font-bold">Safety Certified</span>
-              </div>
-              <div className="flex items-center gap-3 bg-gray-100 px-6 py-3 rounded-full">
-                <Award className="h-5 w-5 text-gray-600" />
-                <span className="text-gray-800 font-bold">Expert Staff</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section className="py-24 text-white bg-asphalt-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            Ready to Experience The Thrill?
+        <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade-up">
+          <SectionEyebrow tone="light" className="justify-center">
+            Six years on TX-146
+          </SectionEyebrow>
+          <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
+            How we got here.
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of happy racers and create unforgettable memories at
-            Speedway 146
+        </div>
+        <ol className="max-w-3xl mx-auto space-y-6">
+          {TIMELINE.map((item, index) => (
+            <li
+              key={item.year}
+              className="relative bg-asphalt-50 p-6 rounded-lg border border-asphalt-200 flex items-start gap-5"
+              data-aos="fade-up"
+              data-aos-delay={index * 80}
+            >
+              <div className="bg-race-600 text-chalk w-14 h-14 rounded-md flex items-center justify-center shadow-race shrink-0">
+                <Icon name={item.icon} className="h-7 w-7" />
+              </div>
+              <div className="flex-1">
+                <div className="font-display text-race-600 text-xl tracking-speedway uppercase tabular-nums">
+                  {item.year}
+                </div>
+                <h3 className="text-xl font-bold text-asphalt-900 mt-1 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-asphalt-600 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section className="py-20 bg-asphalt-900 text-chalk relative overflow-hidden">
+      <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
+      <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center" data-aos="fade-up">
+          <h2 className="font-display text-4xl lg:text-6xl tracking-tight leading-[0.95]">
+            Come run a heat.
+            <span className="block text-race-500">First one's $13.99.</span>
+          </h2>
+          <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
+            Walk-ins every day. Parties booked by phone.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/pricing">
               <Button size="lg" variant="light">
-                View Pricing
+                See Pricing
               </Button>
             </Link>
             <Link to="/contact">
