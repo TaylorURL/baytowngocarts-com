@@ -46,7 +46,6 @@ function calculateFees(rawSubtotal, totalPeople) {
     total,
   };
 }
-/** Creates a Stripe checkout session and returns the redirect URL. */
 async function createCheckoutSession(checkoutItems, user) {
   const session = await supabase.auth.getSession();
   const accessToken = session.data.session?.access_token;
