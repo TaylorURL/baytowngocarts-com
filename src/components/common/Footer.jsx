@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
-import { BUSINESS_HOURS, CONTACT_INFO, SOCIAL_URLS } from "../../lib/content/business.js";
+import {
+  BUSINESS_HOURS,
+  CONTACT_INFO,
+  SOCIAL_URLS,
+} from "../../lib/content/business.js";
+import Wordmark from "./Wordmark.jsx";
 
 const SOCIAL_LINKS = [
   { label: "Facebook", href: SOCIAL_URLS.facebook, icon: Facebook },
@@ -15,137 +20,155 @@ const SOCIAL_LINKS = [
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
       >
         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
       </svg>
     ),
   },
 ];
-const SOCIAL_LINK_CLASS =
-  "text-gray-500 hover:text-red-600 hover:-translate-y-0.5 transition duration-200 ease-out";
+
 const SocialLink = ({ href, label, icon: Icon }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className={SOCIAL_LINK_CLASS}
+    className="inline-flex items-center justify-center h-10 w-10 rounded-md bg-asphalt-800 text-gray-300 hover:bg-race-600 hover:text-chalk hover:-translate-y-0.5 transition-[background-color,color,transform] duration-base ease-snap"
     aria-label={label}
   >
-    <Icon className="h-5 w-5" />
+    <Icon className="h-4 w-4" />
   </a>
 );
+
 const ContactRow = ({ icon: Icon, children, alignTop }) => (
   <div
-    className={`flex space-x-3 ${alignTop ? "items-start" : "items-center"}`}
+    className={`flex gap-3 ${alignTop ? "items-start" : "items-center"} text-gray-300`}
   >
-    <Icon className={`h-4 w-4 text-gray-500 ${alignTop ? "mt-1" : ""}`} />
-    <span className="text-gray-600">{children}</span>
+    <Icon
+      className={`h-4 w-4 text-race-500 flex-shrink-0 ${alignTop ? "mt-1" : ""}`}
+    />
+    <span>{children}</span>
   </div>
 );
-/**
- * Site-wide footer with branding, quick links, contact details,
- * hours of operation, and social media links.
- */
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="border-t border-gray-300 bg-gradient-to-b from-[#dce1e8] to-[#cdd4de]">
+    <footer className="relative bg-asphalt-900 text-chalk">
+      {/* Race ribbon — visually re-anchors the brand */}
+      <div className="h-1.5 race-stripe" aria-hidden="true" />
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Branding & legal */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <img
-                src="/images/logo.png"
-                alt="Speedway 146 Logo"
-                loading="lazy"
-                decoding="async"
-                className="h-9 w-9 rounded-lg"
-              />
-            </div>
-            <p className="text-gray-600">
-              Baytown's go-to spot for family fun! Experience exciting go-kart
-              racing, bounce houses, and more in our welcoming environment.
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand + legal */}
+          <div className="space-y-5">
+            <Wordmark to={null} size="md" tone="dark" />
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Baytown's outdoor speedway. Family-friendly karting, bounce houses,
+              and party packages — every day of the week.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex gap-2">
               {SOCIAL_LINKS.map((link) => (
                 <SocialLink key={link.label} {...link} />
               ))}
             </div>
-            <div className="pt-4 mt-4 border-t border-gray-300 space-y-1.5 text-xs text-gray-500">
+            <div className="pt-4 mt-4 border-t border-asphalt-700 space-y-2 text-xs text-gray-500">
               <p>&copy; {currentYear} Speedway 146. All rights reserved.</p>
               <div className="flex gap-3">
                 <Link
                   to="/privacy"
-                  className="hover:text-gray-700 transition-colors"
+                  className="hover:text-gray-300 transition-colors duration-base"
                 >
-                  Privacy Policy
+                  Privacy
                 </Link>
-                <span className="text-gray-400">|</span>
+                <span className="text-asphalt-600">·</span>
                 <Link
                   to="/terms"
-                  className="hover:text-gray-700 transition-colors"
+                  className="hover:text-gray-300 transition-colors duration-base"
                 >
-                  Terms of Service
+                  Terms
                 </Link>
               </div>
               <p>
-                Website by{" "}
+                Site by{" "}
                 <a
                   href="https://taylorurl.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-gray-800 transition-colors"
+                  className="text-gray-400 hover:text-chalk transition-colors duration-base"
                 >
                   TaylorURL.com
                 </a>
               </p>
             </div>
           </div>
+
           {/* Quick links */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">Quick Links</h3>
-            <ul className="space-y-2">
+          <div className="space-y-5">
+            <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
+              Explore
+            </h3>
+            <ul className="space-y-3">
               {NAV_ITEMS.map(({ label, href }) => (
                 <li key={label}>
                   <Link
                     to={href}
-                    className="text-lg font-display tracking-wide text-gray-600 hover:text-red-600 transition-colors"
+                    className="group inline-flex items-center gap-2 text-base text-gray-300 hover:text-chalk transition-colors duration-base"
                   >
-                    {label}
+                    <span className="block h-px w-3 bg-race-500 transition-all duration-base ease-snap group-hover:w-6" />
+                    <span className="font-semibold tracking-wide">{label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          {/* Contact info */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">Contact Us</h3>
-            <div className="space-y-3">
+
+          {/* Contact */}
+          <div className="space-y-5">
+            <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
+              Contact
+            </h3>
+            <div className="space-y-3 text-sm">
               <ContactRow icon={MapPin} alignTop>
                 {CONTACT_INFO.address}
               </ContactRow>
-              <ContactRow icon={Phone}>{CONTACT_INFO.phone}</ContactRow>
-              <ContactRow icon={Mail}>{CONTACT_INFO.email}</ContactRow>
+              <ContactRow icon={Phone}>
+                <a
+                  href={CONTACT_INFO.phoneTel}
+                  className="hover:text-chalk transition-colors duration-base"
+                >
+                  {CONTACT_INFO.phone}
+                </a>
+              </ContactRow>
+              <ContactRow icon={Mail}>
+                <a
+                  href={CONTACT_INFO.emailMailto}
+                  className="hover:text-chalk transition-colors duration-base break-all"
+                >
+                  {CONTACT_INFO.email}
+                </a>
+              </ContactRow>
             </div>
           </div>
-          {/* Hours of operation */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800">
-              Hours of Operation
+
+          {/* Hours */}
+          <div className="space-y-5">
+            <h3 className="text-xs font-display tracking-speedway uppercase text-race-500">
+              Hours
             </h3>
-            <div className="space-y-2">
-              <div className="flex items-start space-x-3">
-                <Clock className="h-4 w-4 text-gray-500 mt-1" />
-                <div className="text-gray-600 text-sm">
-                  {BUSINESS_HOURS.map(({ day, hours }) => (
-                    <div key={day}>
-                      <span className="font-medium text-gray-700">{day}:</span>{" "}
-                      {hours}
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="flex items-start gap-3">
+              <Clock className="h-4 w-4 text-race-500 mt-1 flex-shrink-0" />
+              <ul className="text-gray-300 text-sm space-y-1.5 tabular-nums">
+                {BUSINESS_HOURS.map(({ day, hours }) => (
+                  <li
+                    key={day}
+                    className="flex items-baseline justify-between gap-3"
+                  >
+                    <span className="font-semibold text-chalk">{day}</span>
+                    <span className="text-gray-400">{hours}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -153,4 +176,5 @@ const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;
