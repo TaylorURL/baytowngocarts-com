@@ -1,9 +1,5 @@
 import Pill from "./Pill.jsx";
 
-/**
- * Reusable section heading with an optional pill badge, title, and subtitle.
- * Supports centered alignment and AOS fade-up animation.
- */
 const SectionHeading = ({
   badge,
   badgeVariant = "race",
