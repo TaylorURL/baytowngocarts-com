@@ -1,101 +1,85 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import Button from "../components/common/Button";
+import Icon from "../components/common/Icon.jsx";
+import PageHero from "../components/common/PageHero.jsx";
 import QuestionSection from "../components/sections/QuestionSection.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
 import { FAQS } from "../lib/content/faqs.js";
-import Button from "../components/common/Button";
-import Pill from "../components/common/Pill.jsx";
-import { Link } from "react-router-dom";
-import PageHero from "../components/common/PageHero.jsx";
-import {
-  Calendar,
-  DollarSign,
-  HelpCircle,
-  MessageSquare,
-  Phone,
-  Search,
-  Users,
-  X,
-  Zap,
-} from "lucide-react";
+
 const ALL_CATEGORIES_ID = "All";
 const STICKY_THRESHOLD_PX = 80;
+
 const FAQ_CATEGORIES = [
-  { id: ALL_CATEGORIES_ID, icon: Search, label: "All Questions" },
-  { id: "Racing", icon: Zap, label: "Racing" },
-  { id: "Pricing", icon: DollarSign, label: "Pricing" },
-  { id: "Events", icon: Users, label: "Events" },
-  { id: "Policies", icon: Calendar, label: "Policies" },
+  { id: ALL_CATEGORIES_ID, icon: "search", label: "All Questions" },
+  { id: "Racing", icon: "kart", label: "Racing" },
+  { id: "Pricing", icon: "dollar-sign", label: "Pricing" },
+  { id: "Events", icon: "trophy", label: "Events" },
+  { id: "Policies", icon: "file-text", label: "Policies" },
 ];
-const CONTACT_METHODS = [
-  {
-    icon: Phone,
-    title: "Call Us Directly",
-    description: "Get immediate answers to your questions",
-  },
-  {
-    icon: MessageSquare,
-    title: "Send a Message",
-    description: "Fill out our contact form anytime",
-  },
-];
-/** Pluralizes "result" based on count */
+
 const formatResultCount = (count) => `${count} Result${count !== 1 ? "s" : ""}`;
-/** Shared content-width wrapper used by every page section */
+
 const ContentWrapper = ({ children, className = "" }) => (
   <div className={`container mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
     <div className="max-w-4xl mx-auto">{children}</div>
   </div>
 );
-/** Returns Tailwind classes for a category filter button based on active/sticky state */
+
 const getCategoryButtonClasses = (isActive, isSticky) => {
-  if (isActive) return "bg-red-600 text-white shadow-lg scale-105";
+  if (isActive) return "bg-race-600 text-chalk shadow-race";
   if (isSticky)
-    return "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105";
-  return "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105";
+    return "bg-asphalt-700 text-gray-300 hover:bg-asphalt-600";
+  return "bg-asphalt-100 text-asphalt-700 hover:bg-asphalt-200";
 };
-/** Returns Tailwind classes for the count badge inside a category button */
+
 const getCategoryBadgeClasses = (isActive, isSticky) => {
-  if (isActive) return "bg-white text-red-600";
-  if (isSticky) return "bg-gray-600 text-gray-400";
-  return "bg-gray-200 text-gray-600";
+  if (isActive) return "bg-chalk text-race-600";
+  if (isSticky) return "bg-asphalt-600 text-gray-400";
+  return "bg-asphalt-200 text-asphalt-600";
 };
+
 const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
   <PageHero
-    badge="HELP CENTER"
-    title="Frequently Asked"
-    titleAccent="Questions"
-    description="Find quick answers to common questions about racing, pricing, events, and our policies"
+    badge="FAQ"
+    title="The"
+    titleAccent="long answers."
+    description="Hours, height requirements, refund policy, group discounts, weather rules. Search or scroll."
     backgroundImage="/images/15.JPEG"
-    dividerColorClass="bg-white"
+    dividerColorClass="bg-chalk"
   >
     <div className="mt-8 max-w-2xl mx-auto">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+        <Icon
+          name="search"
+          className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-asphalt-400"
+        />
         <input
           type="text"
-          placeholder="Search questions and answers..."
+          placeholder="Search by question or answer…"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
+          className="w-full pl-12 pr-12 py-3.5 rounded-md text-base text-asphalt-900 bg-chalk border-2 border-transparent focus:border-race-500 focus:outline-none shadow-lift transition-[border-color] duration-base"
         />
         {searchTerm && (
           <button
             onClick={() => onSearchChange("")}
             aria-label="Clear search"
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-asphalt-400 hover:text-asphalt-600 transition-colors"
           >
-            <X className="h-6 w-6" />
+            <Icon name="close" className="h-5 w-5" />
           </button>
         )}
       </div>
       {searchTerm && (
-        <div className="mt-4 text-white text-sm">
+        <div className="mt-3 text-chalk/80 text-sm">
           Found {formatResultCount(filteredCount)} for "{searchTerm}"
         </div>
       )}
     </div>
   </PageHero>
 );
+
 const CategoryFilterBar = ({
   stickyRef,
   isSticky,
@@ -105,13 +89,13 @@ const CategoryFilterBar = ({
 }) => (
   <section
     ref={stickyRef}
-    className={`py-4 border-b-2 sticky top-[58px] lg:top-[112px] z-40 transition-colors duration-300 ease-out ${
-      isSticky ? "bg-gray-800 border-red-600" : "bg-white border-gray-100"
+    className={`py-4 border-b-2 sticky top-[58px] lg:top-[112px] z-40 transition-colors duration-base ease-snap ${
+      isSticky ? "bg-asphalt-800 border-race-600" : "bg-chalk border-asphalt-100"
     }`}
   >
     <ContentWrapper>
       <div className="flex flex-wrap justify-center gap-2">
-        {FAQ_CATEGORIES.map(({ id, icon: Icon, label }) => {
+        {FAQ_CATEGORIES.map(({ id, icon, label }) => {
           const count = categoryCounts[id] ?? 0;
           const isActive = selectedCategory === id;
           return (
@@ -119,12 +103,12 @@ const CategoryFilterBar = ({
               key={id}
               onClick={() => onCategorySelect(id)}
               aria-pressed={isActive}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold transition duration-200 ease-out active:scale-95 ${getCategoryButtonClasses(isActive, isSticky)}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-display tracking-speedway uppercase text-xs transition duration-base ease-snap active:scale-95 ${getCategoryButtonClasses(isActive, isSticky)}`}
             >
-              <Icon className="h-4 w-4" />
-              <span className="text-sm">{label}</span>
+              <Icon name={icon} className="h-4 w-4" />
+              <span>{label}</span>
               <span
-                className={`ml-1 px-2 py-0.5 rounded-full text-xs font-bold ${getCategoryBadgeClasses(isActive, isSticky)}`}
+                className={`ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold tabular-nums ${getCategoryBadgeClasses(isActive, isSticky)}`}
               >
                 {count}
               </span>
@@ -135,6 +119,7 @@ const CategoryFilterBar = ({
     </ContentWrapper>
   </section>
 );
+
 const FAQResultsList = ({
   filteredFAQs,
   resultsHeading,
@@ -145,16 +130,18 @@ const FAQResultsList = ({
 }) => {
   const isAllSelected = selectedCategory === ALL_CATEGORIES_ID;
   return (
-    <section className="py-16 bg-chalk">
+    <section className="py-16 bg-asphalt-50">
       <ContentWrapper>
         <div
-          className="bg-white rounded-2xl shadow-2xl overflow-hidden"
+          className="bg-white rounded-lg shadow-track overflow-hidden border border-asphalt-200"
           data-aos="fade-up"
         >
           {filteredFAQs.length > 0 ? (
             <>
-              <div className="px-8 py-6 bg-asphalt-900 border-b-2 border-race-600 text-white">
-                <h2 className="text-2xl font-bold">{resultsHeading}</h2>
+              <div className="px-8 py-5 bg-asphalt-900 border-b-2 border-race-600 text-chalk">
+                <h2 className="text-lg font-display tracking-speedway uppercase">
+                  {resultsHeading}
+                </h2>
               </div>
               {filteredFAQs.map((faq, index) => (
                 <QuestionSection
@@ -165,20 +152,23 @@ const FAQResultsList = ({
             </>
           ) : (
             <div className="p-12 text-center">
-              <HelpCircle className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                No results found
+              <Icon
+                name="help-circle"
+                className="h-16 w-16 text-asphalt-300 mx-auto mb-4"
+              />
+              <h3 className="text-xl font-bold text-asphalt-900 mb-2">
+                Nothing matches.
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-asphalt-600 mb-6">
                 {searchTerm
-                  ? `No questions match "${searchTerm}" in the ${isAllSelected ? "selected" : selectedCategory} category`
-                  : "No questions in this category"}
+                  ? `No questions match "${searchTerm}"${isAllSelected ? "" : ` in ${selectedCategory}`}.`
+                  : "No questions in this category."}
               </p>
               <div className="flex gap-3 justify-center">
                 {searchTerm && (
                   <button
                     onClick={onClearSearch}
-                    className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-bold transition-colors duration-200 ease-out active:scale-95"
+                    className="bg-race-600 hover:bg-race-500 text-chalk px-6 py-2.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95"
                   >
                     Clear Search
                   </button>
@@ -186,7 +176,7 @@ const FAQResultsList = ({
                 {!isAllSelected && (
                   <button
                     onClick={onShowAll}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-xl font-bold transition-colors duration-200 ease-out active:scale-95"
+                    className="bg-asphalt-100 hover:bg-asphalt-200 text-asphalt-800 px-6 py-2.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95"
                   >
                     Show All
                   </button>
@@ -199,59 +189,70 @@ const FAQResultsList = ({
     </section>
   );
 };
+
 const ContactCTASection = () => (
-  <section className="py-24 bg-white">
+  <section className="py-20 bg-chalk">
     <ContentWrapper>
-      <div className="bg-asphalt-900 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="bg-asphalt-900 rounded-lg shadow-lift overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          <div className="p-12">
-            <HelpCircle className="h-16 w-16 text-red-500 mb-6" />
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Still Have Questions?
+          <div className="p-10">
+            <Icon name="help-circle" className="h-12 w-12 text-race-500 mb-5" />
+            <h2 className="text-3xl font-bold text-chalk mb-3">
+              Didn't find it?
             </h2>
-            <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-              If you couldn't find the answer you were looking for, our friendly
-              team is here to help. Reach out and we'll get back to you right
-              away!
+            <p className="text-gray-300 mb-6 leading-relaxed">
+              Most things not on this page are venue-specific — call the track
+              and we'll answer in two minutes.
             </p>
-            <div className="space-y-4">
-              {CONTACT_METHODS.map(({ icon: Icon, title, description }) => (
-                <div key={title} className="flex items-start gap-4">
-                  <div className="bg-red-600 p-3 rounded-lg flex-shrink-0">
-                    <Icon className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold mb-1">{title}</h4>
-                    <p className="text-gray-400 text-sm">{description}</p>
-                  </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="bg-race-600 p-2.5 rounded-md flex-shrink-0">
+                  <Icon name="phone" className="h-4 w-4 text-chalk" />
                 </div>
-              ))}
+                <div>
+                  <h4 className="text-chalk font-bold text-sm">By Phone</h4>
+                  <p className="text-gray-400 text-sm">
+                    Fastest path. Open during business hours.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="bg-race-600 p-2.5 rounded-md flex-shrink-0">
+                  <Icon name="send" className="h-4 w-4 text-chalk" />
+                </div>
+                <div>
+                  <h4 className="text-chalk font-bold text-sm">By Form</h4>
+                  <p className="text-gray-400 text-sm">
+                    Same-day reply, not always within the hour.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="p-12 flex flex-col justify-center bg-asphalt-950">
-            <h3 className="text-3xl font-bold text-white mb-6">Get in Touch</h3>
-            <p className="text-gray-300 mb-8 text-lg">
-              Choose the best way to reach us
+          <div className="p-10 flex flex-col justify-center bg-asphalt-950">
+            <h3 className="text-2xl font-bold text-chalk mb-4">Reach the track</h3>
+            <p className="text-gray-300 mb-6 text-sm">
+              Phone is faster than email for time-sensitive bookings.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <a
                 href={CONTACT_INFO.phoneTel}
-                className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
+                className="flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-6 py-3.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 shadow-race tabular-nums"
               >
-                <Phone className="h-5 w-5" />
+                <Icon name="phone" className="h-5 w-5" />
                 {CONTACT_INFO.phone}
               </a>
               <Link
                 to="/contact"
-                className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
+                className="w-full flex items-center justify-center gap-3 bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-6 py-3.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95"
               >
-                <MessageSquare className="h-5 w-5" />
+                <Icon name="send" className="h-5 w-5" />
                 Contact Form
               </Link>
             </div>
-            <div className="mt-8 pt-8 border-t border-white/20">
-              <p className="text-gray-300 text-sm text-center">
-                Available 7 days a week during business hours
+            <div className="mt-6 pt-6 border-t border-chalk/10">
+              <p className="text-gray-400 text-xs text-center">
+                Open 7 days. Friday + weekend hours go later.
               </p>
             </div>
           </div>
@@ -260,28 +261,30 @@ const ContactCTASection = () => (
     </ContentWrapper>
   </section>
 );
+
 const ReadyToRaceCTA = () => (
-  <section className="py-20 text-white bg-asphalt-900">
+  <section className="py-20 text-chalk bg-asphalt-900 relative overflow-hidden">
+    <div className="absolute inset-0 asphalt-grain opacity-50" aria-hidden="true" />
+    <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
     <ContentWrapper>
-      <div className="text-center" data-aos="fade-up">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to Race?</h2>
-        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Now that you have your answers, come experience the thrill of Speedway
-          146!
+      <div className="relative z-10 text-center" data-aos="fade-up">
+        <h2 className="font-display text-4xl lg:text-5xl tracking-tight leading-[0.95] mb-6">
+          That's the answers.
+          <span className="block text-race-500">Now run a heat.</span>
+        </h2>
+        <p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
+          Single race is $13.99. Family deal is $59.99 for four. Wristband is
+          2.5 hours unlimited.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/pricing">
-            <Button size="lg" variant="light" className="text-xl px-10 py-5">
-              View Pricing
+            <Button size="lg" variant="light">
+              See Pricing
             </Button>
           </Link>
           <Link to="/events">
-            <Button
-              size="lg"
-              variant="outlineLight"
-              className="text-xl px-10 py-5"
-            >
-              Book Event
+            <Button size="lg" variant="outlineLight">
+              Book a Party
             </Button>
           </Link>
         </div>
@@ -289,15 +292,14 @@ const ReadyToRaceCTA = () => (
     </ContentWrapper>
   </section>
 );
-/**
- * Renders the FAQ page with searchable, filterable frequently asked questions.
- */
+
 const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES_ID);
   const [isSticky, setIsSticky] = useState(false);
   const stickyRef = useRef(null);
   const anchorRef = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
       if (stickyRef.current) {
@@ -308,13 +310,16 @@ const FAQPage = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const scrollToStickyPosition = () => {
     anchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId);
     scrollToStickyPosition();
   };
+
   const categoryCounts = useMemo(() => {
     const counts = { [ALL_CATEGORIES_ID]: FAQS.length };
     for (const faq of FAQS) {
@@ -322,6 +327,7 @@ const FAQPage = () => {
     }
     return counts;
   }, []);
+
   const filteredFAQs = useMemo(() => {
     const lowerSearch = searchTerm.toLowerCase();
     return FAQS.filter((faq) => {
@@ -335,12 +341,14 @@ const FAQPage = () => {
       return matchesCategory && matchesSearch;
     });
   }, [searchTerm, selectedCategory]);
+
   const isAllSelected = selectedCategory === ALL_CATEGORIES_ID;
   const resultsHeading = searchTerm
     ? formatResultCount(filteredFAQs.length)
     : isAllSelected
       ? `All Questions (${filteredFAQs.length})`
       : `${selectedCategory} (${filteredFAQs.length})`;
+
   return (
     <div className="w-full -mt-20">
       <FAQHeroSection
@@ -369,4 +377,5 @@ const FAQPage = () => {
     </div>
   );
 };
+
 export default FAQPage;
