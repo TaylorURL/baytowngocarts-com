@@ -194,39 +194,39 @@ export default function PurchasesPage() {
   return (
     <div className="w-full -mt-20">
       <PageHero
-        badge="YOUR ACCOUNT"
+        badge="Your Account"
         title="My"
-        titleAccent="Dashboard"
-        description="View your racing bookings, tickets, and order history"
+        titleAccent="Purchases"
+        description="Race tickets, party packages, and bookings — anything you've paid for shows up here."
         backgroundImage="/images/21.JPEG"
         minHeightClass="min-h-[50vh]"
-        dividerColorClass="bg-white"
+        dividerColorClass="bg-asphalt-50"
       >
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <div className="flex items-center gap-2 bg-navy-800 bg-opacity-80 backdrop-blur-sm px-6 py-3 rounded-full border border-red-600 border-opacity-50">
-            <ShoppingBag className="h-5 w-5 text-red-500" />
-            <span className="text-white font-semibold">
-              <span className="font-display text-2xl text-red-500 mr-1 align-baseline">
+          <div className="flex items-center gap-3 bg-asphalt-800/80 px-5 py-2.5 rounded-md border border-race-600/50">
+            <Icon name="shopping-bag" className="h-5 w-5 text-race-400" />
+            <span className="text-chalk font-display tracking-speedway uppercase text-xs">
+              <span className="text-race-400 mr-1 tabular-nums">
                 {purchases.length}
               </span>
-              Orders
+              {purchases.length === 1 ? "Order" : "Orders"}
             </span>
           </div>
         </div>
       </PageHero>
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-20 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {purchases.length === 0 ? (
               <EmptyOrdersState onBrowse={() => navigate("/pricing")} />
             ) : (
               <div>
-                <div className="text-center mb-12" data-aos="fade-up">
-                  <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
-                    Your Order History
+                <div className="text-center mb-10" data-aos="fade-up">
+                  <h2 className="text-3xl font-bold text-asphalt-900 mb-2">
+                    Order History
                   </h2>
-                  <p className="text-xl text-gray-600">
-                    Track all your exciting racing adventures and bookings
+                  <p className="text-asphalt-600">
+                    Newest first. Click any order for the full breakdown.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 gap-6">
