@@ -66,7 +66,7 @@ const HeroSection = () => {
             <Link to="/pricing">
               <Button size="lg" variant="primary" className="group">
                 See Pricing
-                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+                <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link to="/contact">
