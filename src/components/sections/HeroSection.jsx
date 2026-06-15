@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, MapPin, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
+import Icon from "../common/Icon.jsx";
 import StatTile from "../common/StatTile.jsx";
 import Pill from "../common/Pill.jsx";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
