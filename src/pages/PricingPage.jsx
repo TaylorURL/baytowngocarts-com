@@ -82,11 +82,6 @@ const getIcon = (name) => {
   return Sparkles;
 };
 
-/**
- * Renders the Pricing page with tabbed views for party packages, individual racing,
- * and bounce house options. Includes a shopping cart summary bar and quantity
- * selectors for each product.
- */
 const PricingPage = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
