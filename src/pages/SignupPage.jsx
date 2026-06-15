@@ -4,9 +4,9 @@
  */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import Button from "../components/common/Button";
+import Icon from "../components/common/Icon.jsx";
 import AuthShell from "../components/common/AuthShell.jsx";
 
 const INPUT_CLASS =
