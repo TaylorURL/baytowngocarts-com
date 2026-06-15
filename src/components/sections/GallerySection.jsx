@@ -61,7 +61,7 @@ const GallerySection = () => {
                     </div>
                     <figcaption className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-asphalt-950 via-asphalt-950/60 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-base">
                       <div className="flex items-center gap-2">
-                        <Camera className="h-4 w-4 text-race-500" />
+                        <Icon name="flag" className="h-4 w-4 text-race-500" />
                         <span className="text-sm font-bold text-chalk tracking-wide">
                           {image.title}
                         </span>
