@@ -1,272 +1,259 @@
-import {
-  Briefcase,
-  Cake,
-  Check,
-  Clock,
-  Gift,
-  PartyPopper,
-  Phone,
-  Shield,
-  Trophy,
-  Users,
-  Zap,
-} from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
-import Pill from "../components/common/Pill.jsx";
+import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
 const HERO_BADGES = [
-  { icon: PartyPopper, label: "Birthday Parties" },
-  { icon: Briefcase, label: "Corporate Events" },
-  { icon: Trophy, label: "Racing Leagues" },
+  { icon: "cake", label: "Birthday Parties" },
+  { icon: "briefcase", label: "Corporate" },
+  { icon: "trophy", label: "Q1 2026 Leagues" },
 ];
 
 const EVENT_TYPES = [
   {
     title: "Birthday Parties",
     description:
-      "Make your birthday unforgettable with high-speed racing and our private party room.",
+      "3-hour private room rental, 20 racing wristbands included, staff runs the heats. Decorate 30 minutes before guests arrive.",
     image: "/images/17.JPEG",
-    icon: Cake,
+    icon: "cake",
     features: [
-      "Private party room for 45 guests",
-      "Racing packages included",
-      "Food & drinks available",
-      "Party decorations & setup",
+      "Private room — fits 45",
+      "20 racing wristbands",
+      "$699 base package",
+      "Bring your own cake & decor",
     ],
   },
   {
-    title: "Corporate Events",
+    title: "Corporate Outings",
     description:
-      "Team building activities and corporate entertainment that your team will love.",
+      "Bring the team. We can run private heats with timing posted to your screen — bracket-style, ladder-style, or all-comers.",
     image: "/images/18.JPEG",
-    icon: Briefcase,
+    icon: "briefcase",
     features: [
-      "Team building races",
-      "Private track time available",
-      "Catering options",
-      "Meeting space included",
+      "Private track windows",
+      "Timing dashboard on TV",
+      "Catering on request",
+      "Bracket or open format",
     ],
   },
   {
     title: "Racing Leagues",
     description:
-      "Join our competitive racing leagues and compete for championship titles.",
+      "Eight-week leagues launching Q1 2026. Same drivers, same karts, points carry — fastest lap, average finish, championship at the end.",
     image: "/images/19.JPEG",
-    icon: Trophy,
+    icon: "trophy",
     features: [
-      "Weekly competitive races",
-      "Championship points system",
-      "Trophies & prizes",
-      "Professional lap timing",
+      "Weekly Tuesday or Thursday heats",
+      "Points-based standings",
+      "Championship trophy + bragging rights",
+      "Roster cap — call to sign up",
     ],
   },
 ];
 
-const BENEFITS = [
+const HOW_IT_WORKS = [
   {
-    icon: Shield,
-    title: "Stress-Free Planning",
-    description: "We handle all the details so you can focus on having fun",
+    icon: "phone",
+    title: "Call to book",
+    text: "20% deposit holds the date. 7-business-day notice for refund. Reconfirm 24 hours out.",
   },
   {
-    icon: Users,
-    title: "All Ages Welcome",
-    description: "Activities and entertainment for kids and adults alike",
+    icon: "calendar",
+    title: "Pick a slot",
+    text: "Party rooms run in 3-hour blocks. Weekends fill four weeks out — book early for Saturdays.",
   },
   {
-    icon: Zap,
-    title: "Unforgettable Fun",
-    description: "High-speed thrills combined with great hospitality",
+    icon: "users",
+    title: "Tell us your count",
+    text: "Headcount up to 45 inside, more outside on the patio. We staff to size.",
   },
   {
-    icon: Gift,
-    title: "Custom Packages",
-    description: "Tailored solutions for your specific needs and budget",
-  },
-];
-
-const CTA_INFO_CARDS = [
-  {
-    icon: Clock,
-    title: "Quick Info",
-    items: [
-      "Advance booking recommended",
-      "Groups of all sizes welcome",
-      "Flexible scheduling options",
-    ],
-  },
-  {
-    icon: Gift,
-    title: "What's Included",
-    items: [
-      "Custom packages available",
-      "Dedicated event coordinator",
-      "Setup and cleanup included",
-    ],
+    icon: "flag",
+    title: "Show up & race",
+    text: "Arrive 30 minutes early to decorate. We handle the rest — heat lineups, wristband distribution, room reset.",
   },
 ];
 
 const EventsPage = () => (
   <div className="w-full -mt-20">
     <PageHero
-      badge="EVENTS & PARTIES"
-      title="Celebrate in the"
-      titleAccent="Fast Lane"
-      description="Create unforgettable memories with our exciting events, party packages, and racing leagues"
+      badge="Events & Parties"
+      title="Book the"
+      titleAccent="track."
+      description="Birthdays, corporate outings, weekly leagues. Same venue, same karts — your group, your schedule."
       backgroundImage="/images/14.JPEG"
-      dividerColorClass="bg-white"
+      dividerColorClass="bg-chalk"
     >
-      <div className="mt-8 flex flex-wrap justify-center gap-4">
-        {HERO_BADGES.map(({ icon: Icon, label }) => (
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        {HERO_BADGES.map(({ icon, label }) => (
           <div
             key={label}
-            className="flex items-center gap-2 bg-navy-800 bg-opacity-80 backdrop-blur-sm px-6 py-3 rounded-full border border-red-600 border-opacity-50"
+            className="flex items-center gap-2 bg-asphalt-800/80 px-5 py-2.5 rounded-md border border-race-600/50"
           >
-            <Icon className="h-5 w-5 text-red-500" />
-            <span className="text-white font-semibold">{label}</span>
+            <Icon name={icon} className="h-5 w-5 text-race-400" />
+            <span className="text-chalk font-display tracking-speedway uppercase text-xs">
+              {label}
+            </span>
           </div>
         ))}
       </div>
     </PageHero>
-    {/* Event Types */}
-    <section className="py-24 bg-white">
+
+    <section className="py-24 bg-chalk">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <Pill variant="muted" className="mb-4">EVENT TYPES</Pill>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
-            Events for Every Occasion
+        <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade-up">
+          <SectionEyebrow tone="light" className="justify-center">
+            Three Formats
+          </SectionEyebrow>
+          <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
+            Pick the one that fits your group.
           </h2>
-          <p className="text-xl text-gray-600">
-            From birthday celebrations to corporate team building, we have the
-            perfect event solution
-          </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {EVENT_TYPES.map((eventType, index) => (
-            <div
-              key={eventType.title}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden hover-lift border-2 border-gray-100 hover:border-red-500 transition-colors duration-300 ease-out"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              <div className="relative image-hover h-64 overflow-hidden">
-                <img
-                  src={eventType.image}
-                  alt={eventType.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 right-4 bg-red-600 p-3 rounded-xl shadow-lg">
-                  <eventType.icon className="h-6 w-6 text-white" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {EVENT_TYPES.map(
+            ({ title, description, image, icon, features }, index) => (
+              <div
+                key={title}
+                className="bg-white rounded-lg shadow-track overflow-hidden border border-asphalt-200 hover:border-race-500 hover:shadow-lift transition-[border-color,box-shadow] duration-base ease-snap"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+              >
+                <div className="relative image-hover h-64 overflow-hidden">
+                  <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-asphalt-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-4 right-4 bg-race-600 p-3 rounded-md shadow-race">
+                    <Icon name={icon} className="h-6 w-6 text-chalk" />
+                  </div>
+                </div>
+                <div className="p-7">
+                  <h3 className="text-2xl font-bold text-asphalt-900 mb-3">
+                    {title}
+                  </h3>
+                  <p className="text-asphalt-600 mb-5 leading-relaxed text-sm">
+                    {description}
+                  </p>
+                  <ul className="space-y-2 mb-6">
+                    {features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start text-asphalt-700 text-sm"
+                      >
+                        <Icon
+                          name="check"
+                          className="h-4 w-4 text-race-600 mr-2 mt-0.5 shrink-0"
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={CONTACT_INFO.phoneTel}
+                    className="block w-full bg-race-600 hover:bg-race-500 text-chalk py-3 rounded-md font-display tracking-speedway uppercase text-sm text-center transition duration-base ease-snap active:scale-95 shadow-race"
+                  >
+                    Call to Book
+                  </a>
                 </div>
               </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  {eventType.title}
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {eventType.description}
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {eventType.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start text-gray-700"
-                    >
-                      <Check className="h-5 w-5 text-green-600 mr-3 mt-0.5 shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/contact"
-                  className="block w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-bold text-lg transition-transform duration-200 ease-out hover:scale-105 active:scale-95 text-center"
-                >
-                  Book Now
-                </Link>
-              </div>
-            </div>
-          ))}
+            ),
+          )}
         </div>
       </div>
     </section>
-    {/* Benefits */}
-    <section className="py-24 bg-white">
+
+    <section className="py-24 bg-asphalt-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
-            Why Choose Speedway 146?
+        <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade-up">
+          <SectionEyebrow tone="light" className="justify-center">
+            How Booking Works
+          </SectionEyebrow>
+          <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
+            Four steps. No back-and-forth.
           </h2>
-          <p className="text-xl text-gray-600">
-            We make event planning easy and ensure your celebration is
-            unforgettable
-          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {BENEFITS.map((benefit, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {HOW_IT_WORKS.map(({ icon, title, text }, index) => (
             <div
-              key={benefit.title}
-              className="bg-white p-8 rounded-2xl shadow-lg hover-lift text-center"
+              key={title}
+              className="bg-white p-7 rounded-lg border border-asphalt-200 hover:border-race-500 hover:shadow-lift transition-[border-color,box-shadow] duration-base ease-snap"
               data-aos="fade-up"
-              data-aos-delay={index * 100}
+              data-aos-delay={index * 80}
             >
-              <div className="bg-red-50 w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
-                <benefit.icon className="h-8 w-8 text-red-600" />
+              <div className="flex items-center justify-between mb-5">
+                <div className="bg-race-50 w-12 h-12 rounded-md flex items-center justify-center">
+                  <Icon name={icon} className="h-6 w-6 text-race-600" />
+                </div>
+                <span className="font-display text-3xl text-asphalt-200 tracking-tight tabular-nums">
+                  0{index + 1}
+                </span>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">
-                {benefit.title}
+              <h3 className="text-lg font-bold text-asphalt-900 mb-2">
+                {title}
               </h3>
-              <p className="text-gray-600">{benefit.description}</p>
+              <p className="text-asphalt-600 text-sm leading-relaxed">
+                {text}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </section>
-    {/* CTA */}
-    <section className="py-24 text-white bg-asphalt-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+
+    <section className="py-20 bg-asphalt-900 text-chalk relative overflow-hidden">
+      <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
+      <div className="absolute top-0 left-0 right-0 h-2 caution-tape" aria-hidden="true" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <PartyPopper className="h-16 w-16 mx-auto mb-6 text-red-500" />
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-            Ready to Book Your Event?
+          <h2 className="font-display text-4xl lg:text-6xl tracking-tight leading-[0.95]">
+            Ready to book?
+            <span className="block text-race-500">Call the track.</span>
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Contact us today to discuss your event needs. We'll create a custom
-            package perfect for your celebration!
+          <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
+            Parties and league signups happen by phone — it's faster than
+            sending forms back and forth.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href={CONTACT_INFO.phoneTel}
-              className="inline-flex items-center justify-center bg-white text-red-600 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-xl transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
+              className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
             >
-              <Phone className="h-6 w-6 mr-3" />
-              {CONTACT_INFO.phone}
+              <Icon name="phone" className="h-5 w-5" />
+              <span className="tabular-nums">{CONTACT_INFO.phone}</span>
             </a>
             <Link to="/pricing">
-              <Button size="lg" variant="outlineLight" className="text-xl px-10 py-5">
-                View Pricing
+              <Button size="lg" variant="outlineLight">
+                See Pricing
               </Button>
             </Link>
           </div>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-2xl mx-auto">
-            {CTA_INFO_CARDS.map(({ icon: Icon, title, items }) => (
-              <div
-                key={title}
-                className="bg-gray-700 bg-opacity-70 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20"
-              >
-                <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
-                  <Icon className="h-5 w-5" />
-                  {title}
-                </h4>
-                <ul className="space-y-2 text-white">
-                  {items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
+            <div className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700">
+              <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2 text-race-400">
+                <Icon name="clock" className="h-4 w-4" />
+                What to know
+              </h4>
+              <ul className="space-y-1.5 text-sm text-chalk/80">
+                <li>20% deposit holds the date</li>
+                <li>Reconfirm 24 hours before arrival</li>
+                <li>7 business days for refund eligibility</li>
+              </ul>
+            </div>
+            <div className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700">
+              <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2 text-race-400">
+                <Icon name="ticket" className="h-4 w-4" />
+                What's included
+              </h4>
+              <ul className="space-y-1.5 text-sm text-chalk/80">
+                <li>Room set up + reset</li>
+                <li>Heat scheduling + safety briefing</li>
+                <li>Wristbands distributed by staff</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
