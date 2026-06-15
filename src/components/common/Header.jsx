@@ -126,13 +126,13 @@ const Header = () => {
               <div className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold tracking-wide">
-                  (346) 932-1266
+                  {CONTACT_INFO.phone}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold tracking-wide">
-                  6750 N TX-146, Baytown, TX
+                  {CONTACT_INFO.address.replace(", 77523", "")}
                 </span>
               </div>
               <div className="flex items-center gap-2">
