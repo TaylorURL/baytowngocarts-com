@@ -305,29 +305,15 @@ export default function CartPage() {
   const fees = calculateFees(getTotal(), totalItems);
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: `url(${CART_HERO_IMAGE})` }}
-          />
-        </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-              SHOPPING CART
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-              Your <span className="text-red-500">Cart</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Review your items and proceed to checkout
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-      </section>
+      <PageHero
+        badge="SHOPPING CART"
+        title="Your"
+        titleAccent="Cart"
+        description="Review your items and proceed to checkout"
+        backgroundImage={CART_HERO_IMAGE}
+        minHeightClass="min-h-[40vh]"
+        dividerColorClass="bg-white"
+      />
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
