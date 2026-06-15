@@ -32,11 +32,11 @@ const QuestionSection = ({ faq }) => {
             {faq.question}
           </h3>
         </div>
-        <ChevronDown
+        <Icon
+          name="chevron-down"
           className={`h-5 w-5 flex-shrink-0 transition-transform duration-base ease-snap ${
             isOpen ? "text-race-600 rotate-180" : "text-asphalt-400"
           }`}
-          aria-hidden="true"
         />
       </button>
       <div
