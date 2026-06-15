@@ -1,63 +1,57 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Phone, Zap } from "lucide-react";
+import { ArrowRight, Calendar, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
-import { CONTACT_INFO } from "../../lib/constants.js";
+import { CONTACT_INFO } from "../../lib/content/business.js";
+
 /**
- * Bold call-to-action banner with pricing and event links,
- * plus a phone number for direct contact.
+ * Closing call-to-action band. Sits flush above the footer on the home page.
+ * Asphalt with caution-tape ribbon — earned, not overused.
  */
 const ActionSection = () => (
-  <section className="py-24 text-white relative overflow-hidden bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
-    <div className="absolute inset-0 opacity-5">
-      <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-    </div>
-    <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div className="max-w-4xl mx-auto" data-aos="fade-up">
-        <Zap className="h-16 w-16 mx-auto mb-6 text-red-500" />
-        <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-          Ready for an Unforgettable Experience?
+  <section className="relative bg-asphalt-900 text-chalk overflow-hidden">
+    <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
+    <div className="absolute top-0 left-0 right-0 h-2 caution-tape" aria-hidden="true" />
+    <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+        <h2 className="font-display text-5xl lg:text-7xl tracking-tight leading-[0.95]">
+          Come race.
+          <span className="block text-race-500">We're open today.</span>
         </h2>
-        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Bring your family and friends to Speedway 146 for a day filled with
-          racing, bouncing, and creating memories that last a lifetime
+        <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          Walk-ins welcome every day of the week. Booking a party? Call us and
+          we'll take it from there.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/pricing">
-            <Button
-              size="lg"
-              variant="primary"
-              className="text-xl px-10 py-5 flex items-center gap-3"
-            >
-              <span>View Pricing</span>
-              <ArrowRight className="h-6 w-6" />
+            <Button size="xl" variant="primary" className="group">
+              See Pricing
+              <ArrowRight className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1" />
             </Button>
           </Link>
           <Link to="/events">
-            <Button
-              size="lg"
-              variant="outlineLight"
-              className="text-xl px-10 py-5 flex items-center gap-3"
-            >
-              <Calendar className="h-6 w-6" />
-              <span>Plan Your Event</span>
+            <Button size="xl" variant="outlineLight">
+              <Calendar className="h-5 w-5" />
+              Plan an Event
             </Button>
           </Link>
         </div>
-        <div className="mt-12 pt-12 border-t border-white border-opacity-20">
-          <p className="text-gray-400 mb-4">
-            Need help planning? Give us a call!
-          </p>
+        <div className="mt-12 pt-8 border-t border-asphalt-700 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <span className="text-sm text-gray-400 uppercase tracking-widest font-display">
+            Or skip the form
+          </span>
           <a
-            href={`tel:${CONTACT_INFO.phone}`}
-            className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
+            href={CONTACT_INFO.phoneTel}
+            className="inline-flex items-center gap-3 bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-6 py-3 rounded-md font-bold shadow-track transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
           >
-            <Phone className="h-5 w-5" />
-            {CONTACT_INFO.phone}
+            <Phone className="h-4 w-4 text-race-500" />
+            <span className="tabular-nums tracking-wide">
+              {CONTACT_INFO.phone}
+            </span>
           </a>
         </div>
       </div>
     </div>
   </section>
 );
+
 export default ActionSection;
