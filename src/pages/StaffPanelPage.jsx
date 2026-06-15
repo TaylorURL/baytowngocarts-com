@@ -371,7 +371,7 @@ export default function StaffPanelPage() {
                             </td>
                             <td className="py-4 px-4">
                               <span className="text-xs text-gray-500">
-                                {formatDate(order.created_at)}
+                                {formatShortDateTime(order.created_at)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
@@ -427,7 +427,7 @@ export default function StaffPanelPage() {
                             />
                           </div>
                           <p className="text-xs text-gray-400 mt-1">
-                            {formatDate(order.created_at)}
+                            {formatShortDateTime(order.created_at)}
                           </p>
                         </button>
                         {expandedOrder === order.id && (
