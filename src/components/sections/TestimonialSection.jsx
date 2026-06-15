@@ -48,7 +48,8 @@ const TestimonialSection = () => (
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold text-asphalt-900">{name}</span>
-                  <CheckCircle
+                  <Icon
+                    name="check-circle"
                     className="h-3.5 w-3.5 text-race-600"
                     aria-label="Verified visit"
                   />
