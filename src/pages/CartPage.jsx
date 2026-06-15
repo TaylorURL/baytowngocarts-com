@@ -201,7 +201,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         {isProcessing ? (
           <span className="h-6 w-6 rounded-full border-[3px] border-white/40 border-t-white animate-spin" />
         ) : (
-          <CreditCard className="h-6 w-6" />
+          <Icon name="credit-card" className="h-6 w-6" />
         )}
         {isProcessing ? "Processing..." : "Proceed to Checkout"}
       </button>
