@@ -9,7 +9,7 @@ import {
  * Paginated image gallery carousel with slide navigation dots and
  * hover overlays showing each image's title.
  */
-const GallarySection = () => {
+const GallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = Math.ceil(
     GALLERY_IMAGES.length / GALLERY_IMAGES_PER_SLIDE,
