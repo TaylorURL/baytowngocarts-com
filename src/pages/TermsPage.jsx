@@ -256,7 +256,7 @@ const SECTIONS = [
 
 const TermsPage = () => (
   <div className="w-full -mt-20">
-    <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
+    <section className="relative overflow-hidden pt-32 pb-20 min-h-[50vh] flex items-center bg-asphalt-900">
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <div className="inline-flex items-center justify-center h-16 w-16 mx-auto mb-6 rounded-2xl bg-red-600/15 ring-1 ring-red-500/30">
