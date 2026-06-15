@@ -109,43 +109,41 @@ const OrderCard = ({ order, index, onSelect }) => (
 
 const HelpInfoCards = () => (
   <div
-    className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6"
+    className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-5"
     data-aos="fade-up"
   >
-    <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border-2 border-blue-200">
+    <div className="bg-asphalt-50 rounded-lg p-6 border border-asphalt-200">
       <div className="flex items-start gap-4">
-        <div className="bg-blue-600 p-3 rounded-xl flex-shrink-0">
-          <Package className="h-6 w-6 text-white" />
+        <div className="bg-race-600 p-3 rounded-md flex-shrink-0">
+          <Icon name="package" className="h-5 w-5 text-chalk" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">
-            How Orders Work
+          <h3 className="font-display tracking-speedway uppercase text-sm text-asphalt-900 mb-2">
+            How orders work
           </h3>
-          <ul className="text-gray-700 text-sm space-y-2">
-            <li>• Click on any order to view full details</li>
-            <li>• Each order has a unique order number</li>
-            <li>• Bring your order confirmation when you visit</li>
-            <li>• Orders are valid for the package you purchased</li>
-            <li>• Check your email for detailed instructions</li>
+          <ul className="text-asphalt-700 text-sm space-y-1.5">
+            <li>· Click an order to see the full breakdown.</li>
+            <li>· Order number is what staff scans at check-in.</li>
+            <li>· Bring valid ID — waivers are signed in person.</li>
+            <li>· Race tickets roll over 7 days if you ask before leaving.</li>
           </ul>
         </div>
       </div>
     </div>
-    <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border-2 border-green-200">
+    <div className="bg-asphalt-50 rounded-lg p-6 border border-asphalt-200">
       <div className="flex items-start gap-4">
-        <div className="bg-green-600 p-3 rounded-xl flex-shrink-0">
-          <CheckCircle className="h-6 w-6 text-white" />
+        <div className="bg-race-600 p-3 rounded-md flex-shrink-0">
+          <Icon name="flag" className="h-5 w-5 text-chalk" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-gray-800 mb-2">
-            Ready to Race?
+          <h3 className="font-display tracking-speedway uppercase text-sm text-asphalt-900 mb-2">
+            Ready to race
           </h3>
-          <ul className="text-gray-700 text-sm space-y-2">
-            <li>• Visit us during operating hours</li>
-            <li>• Bring valid ID (waivers signed at the front desk)</li>
-            <li>• Each race ticket = one 5-minute race on the track</li>
-            <li>• Show your order number at check-in</li>
-            <li>• Call us: {CONTACT_INFO.phone}</li>
+          <ul className="text-asphalt-700 text-sm space-y-1.5">
+            <li>· Walk-ins welcome any open hour.</li>
+            <li>· 5-minute heats — kids and adults raced separately.</li>
+            <li>· Hair tied back, closed-toe shoes recommended.</li>
+            <li className="tabular-nums">· Call: {CONTACT_INFO.phone}</li>
           </ul>
         </div>
       </div>
