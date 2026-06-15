@@ -269,7 +269,7 @@ const Header = () => {
               >
                 <Icon name="shopping-cart" className="h-6 w-6" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-asphalt-900">
+                  <span className="absolute -top-0.5 -right-0.5 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-black/30">
                     {cartCount}
                   </span>
                 )}
