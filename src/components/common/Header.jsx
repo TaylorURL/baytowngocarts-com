@@ -54,25 +54,15 @@ const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
   </div>
 );
 
-const SCROLL_THRESHOLD = 48;
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [activeLight, setActiveLight] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
   const userMenuRef = useRef(null);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { isStaff } = useAdmin();
   const { getTotalItems } = useCart();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const id = setInterval(() => setActiveLight((p) => (p + 1) % 3), 1000);
