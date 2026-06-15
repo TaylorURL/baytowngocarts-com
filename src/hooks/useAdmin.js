@@ -58,7 +58,6 @@ export function useAdmin() {
     }
   };
   return {
-    isAdmin: isStaff,
     isStaff,
     loading,
     refetch: checkStaffStatus,
