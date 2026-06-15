@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle, Send } from "lucide-react";
 import Button from "../common/Button.jsx";
+import { CONTACT_INFO } from "../../lib/content/business.js";
+
 const INPUT_CLASS =
   "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent";
-const CONTACT_EMAIL = "speedsway146@gmail.com";
 /**
  * Contact/inquiry form with fields for name, email, phone, event date,
  * inquiry type, and a message.
