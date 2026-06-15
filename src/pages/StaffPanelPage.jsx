@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  AlertCircle,
   Calendar,
-  CheckCircle,
   ChevronDown,
   Clock,
   DollarSign,
@@ -13,9 +11,10 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
+import { formatShortDateTime, formatCents } from "../lib/format.js";
+import StatusBadge from "../components/common/StatusBadge.jsx";
 const STAT_CARDS = [
   {
     key: "totalOrders",
