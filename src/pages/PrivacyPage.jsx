@@ -231,26 +231,26 @@ const PrivacyPage = () => (
           </p>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider" />
     </section>
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-chalk">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed space-y-12">
+        <div className="max-w-3xl mx-auto text-asphalt-700 leading-relaxed space-y-12">
           {SECTIONS.map(({ title, body }) => (
             <div key={title}>
-              <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 pl-4 border-l-4 border-red-600">
+              <h2 className="text-2xl lg:text-3xl font-bold text-asphalt-900 mb-4 pl-4 border-l-4 border-race-600">
                 {title}
               </h2>
               {body}
             </div>
           ))}
-          <div className="pt-10 mt-4 border-t border-gray-200 text-center">
+          <div className="pt-10 mt-4 border-t border-asphalt-200 text-center">
             <Link
               to="/terms"
-              className="group inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-bold transition-colors"
+              className="group inline-flex items-center gap-2 text-race-600 hover:text-race-700 font-bold transition-colors"
             >
               View Terms of Service
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+              <Icon name="arrow-right" className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
