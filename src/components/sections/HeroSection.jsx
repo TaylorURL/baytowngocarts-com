@@ -86,14 +86,14 @@ const HeroSection = () => {
               href={CONTACT_INFO.phoneTel}
               className="inline-flex items-center gap-2 hover:text-chalk transition-colors duration-base ease-snap"
             >
-              <Phone className="h-4 w-4 text-race-500" />
-              <span className="font-semibold tracking-wide">
+              <Icon name="phone" className="h-4 w-4 text-race-500" />
+              <span className="font-semibold tracking-wide tabular-nums">
                 {CONTACT_INFO.phone}
               </span>
             </a>
             <span className="hidden sm:block h-4 w-px bg-chalk/20" />
             <span className="inline-flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-race-500" />
+              <Icon name="map-pin" className="h-4 w-4 text-race-500" />
               <span className="font-semibold tracking-wide">
                 6750 N TX-146 · Baytown
               </span>
