@@ -255,7 +255,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="w-full -mt-20">
-        <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-screen flex items-center">
+        <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-20 min-h-screen flex items-center">
           <div className="absolute inset-0 z-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-30"
