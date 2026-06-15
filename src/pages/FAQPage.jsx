@@ -202,7 +202,7 @@ const FAQResultsList = ({
 const ContactCTASection = () => (
   <section className="py-24 bg-white">
     <ContentWrapper>
-      <div className="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="bg-asphalt-900 rounded-2xl shadow-2xl overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="p-12">
             <HelpCircle className="h-16 w-16 text-red-500 mb-6" />
