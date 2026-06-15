@@ -286,7 +286,7 @@ const Header = () => {
                 const isActive = location.pathname === item.href;
                 return (
                   <Link
-                    key={item.name}
+                    key={item.label}
                     to={item.href}
                     onClick={scrollToTop}
                     className="relative group"
@@ -369,7 +369,7 @@ const Header = () => {
               const isActive = location.pathname === item.href;
               return (
                 <Link
-                  key={item.name}
+                  key={item.label}
                   to={item.href}
                   className={`block px-4 py-3.5 rounded-xl text-base font-display tracking-wider uppercase transition duration-200 ${
                     isActive
