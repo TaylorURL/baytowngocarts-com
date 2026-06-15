@@ -102,4 +102,4 @@ const GallerySection = () => {
     </section>
   );
 };
-export default GallarySection;
+export default GallerySection;
