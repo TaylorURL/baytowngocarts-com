@@ -1,6 +1,6 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { BUSINESS_HOURS, CONTACT_INFO } from "../../lib/content/business.js";
-/** Renders an icon, label, and content row used in the contact info list. */
+
 const ContactRow = ({ icon: Icon, label, children }) => (
   <div className="flex items-start space-x-4">
     <div className="bg-gray-100 p-3 rounded-full">
