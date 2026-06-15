@@ -1,12 +1,3 @@
-/**
- * Speedway 146 — brand voice & copy presets.
- *
- * Voice: confident, plain-spoken, a little Texan. Energetic without trying
- * too hard. Headlines short and punchy; subheads earn the click with one
- * concrete promise. We don't say "rev your engines" — we let the asphalt
- * do that work.
- */
-
 export const BRAND = {
   name: "Speedway 146",
   shortName: "Speedway 146",
