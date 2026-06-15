@@ -41,7 +41,7 @@ const SECTIONS = [
   {
     title: "4. Purchases and Payments",
     body: (
-      <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+      <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
         <li>
           All prices are listed in US dollars and are subject to change without
           notice.
@@ -89,7 +89,7 @@ const SECTIONS = [
           collection, storage, and use of your personal data by both Speedway
           146 and TaylorURL (the website developer and operator).
         </p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             Speedway 146 and TaylorURL each have the unrestricted right to use,
             analyze, share, and retain any data collected through this website
@@ -137,7 +137,7 @@ const SECTIONS = [
     body: (
       <>
         <p>You agree not to:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             Use the website for any unlawful purpose or in violation of these
             terms
@@ -244,7 +244,7 @@ const SECTIONS = [
           If you have questions about these Terms of Service, please contact
           us:
         </p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>Email: {CONTACT_INFO.email}</li>
           <li>Phone: {CONTACT_INFO.phone}</li>
           <li>Address: {CONTACT_INFO.address}</li>
