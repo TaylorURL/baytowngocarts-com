@@ -28,32 +28,23 @@ const LoadingState = () => (
 
 const EmptyOrdersState = ({ onBrowse }) => (
   <div className="max-w-2xl mx-auto" data-aos="fade-up">
-    <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-12 text-center">
-      <div className="bg-red-600/10 ring-1 ring-red-500/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-        <Package className="h-10 w-10 text-red-500" />
+    <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-12 text-center">
+      <div className="bg-race-600/10 ring-1 ring-race-500/20 w-20 h-20 rounded-md flex items-center justify-center mx-auto mb-6">
+        <Icon name="package" className="h-10 w-10 text-race-500" />
       </div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-4">No Orders Yet</h3>
-      <p className="text-gray-600 mb-8 text-lg">
-        You haven't made any purchases yet. Browse our racing packages and book
-        your first adventure today!
+      <h3 className="text-2xl font-bold text-asphalt-900 mb-3">
+        No orders yet.
+      </h3>
+      <p className="text-asphalt-600 mb-8">
+        Once you book — race tickets, party packages, or unlimited wristbands —
+        they show up here for easy check-in at the front desk.
       </p>
       <button
         onClick={onBrowse}
-        className="bg-red-600 hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
+        className="bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-sm shadow-race transition duration-base ease-snap active:scale-95"
       >
-        Browse Racing Packages
+        See Pricing
       </button>
-      <div className="mt-8 pt-8 border-t border-gray-200">
-        <h4 className="text-lg font-bold text-gray-800 mb-3">
-          What You'll See Here
-        </h4>
-        <ul className="text-gray-600 text-sm space-y-2 text-left max-w-md mx-auto">
-          <li>✓ All your racing package purchases</li>
-          <li>✓ Order numbers for easy check-in</li>
-          <li>✓ Purchase dates and amounts</li>
-          <li>✓ Order status and details</li>
-        </ul>
-      </div>
     </div>
   </div>
 );
