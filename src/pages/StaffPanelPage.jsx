@@ -304,7 +304,7 @@ export default function StaffPanelPage() {
                   <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b-2 border-gray-200">
+                        <tr className="border-b-2 border-asphalt-200">
                           {[
                             "Order #",
                             "Customer",
@@ -317,7 +317,7 @@ export default function StaffPanelPage() {
                           ].map((header) => (
                             <th
                               key={header}
-                              className="text-left py-4 px-4 text-sm font-semibold text-gray-600"
+                              className="text-left py-3 px-4 text-[10px] font-display tracking-speedway uppercase text-asphalt-500"
                             >
                               {header}
                             </th>
@@ -328,36 +328,36 @@ export default function StaffPanelPage() {
                         {displayOrders.map((order) => (
                           <tr
                             key={order.id}
-                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                            className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors cursor-pointer"
                             onClick={() => toggleOrder(order.id)}
                           >
                             <td className="py-4 px-4">
-                              <span className="font-mono text-sm font-semibold text-gray-800">
+                              <span className="font-mono text-sm font-semibold text-asphalt-900 tabular-nums">
                                 {order.order_number}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm text-gray-700">
+                              <span className="text-sm text-asphalt-700">
                                 {order.customer_email || "N/A"}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm text-gray-700">
-                                {order.items?.length || 0} item(s)
+                              <span className="text-sm text-asphalt-700 tabular-nums">
+                                {order.items?.length || 0}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm font-semibold text-gray-800">
-                                {order.total_quantity} people
+                              <span className="text-sm font-semibold text-asphalt-900 tabular-nums">
+                                {order.total_quantity}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-sm font-bold text-green-600">
+                              <span className="text-sm font-bold text-green-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-asphalt-500 tabular-nums">
                                 {formatShortDateTime(order.created_at)}
                               </span>
                             </td>
@@ -370,9 +370,9 @@ export default function StaffPanelPage() {
                                   e.stopPropagation();
                                   navigate(`/purchase/${order.id}`);
                                 }}
-                                className="text-red-600 hover:text-red-700 font-semibold text-sm flex items-center gap-1 transition-colors duration-200 ease-out"
+                                className="text-race-600 hover:text-race-700 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
                               >
-                                <Eye className="h-4 w-4" />
+                                <Icon name="eye" className="h-4 w-4" />
                                 View
                               </button>
                             </td>
