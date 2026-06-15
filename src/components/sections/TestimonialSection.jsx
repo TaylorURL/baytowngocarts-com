@@ -25,17 +25,18 @@ const TestimonialSection = () => (
             data-aos="fade-up"
             data-aos-delay={index * 80}
           >
-            <Quote
+            <Icon
+              name="quote"
               className="absolute top-5 right-5 h-8 w-8 text-race-100"
-              aria-hidden="true"
             />
             <div
               className="flex items-center gap-1 mb-4"
               aria-label={`${rating} out of 5 stars`}
             >
               {Array.from({ length: rating }).map((_, i) => (
-                <Star
+                <Icon
                   key={i}
+                  name="star"
                   className="h-4 w-4 text-caution-500 fill-caution-500"
                 />
               ))}
