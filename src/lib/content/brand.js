@@ -19,7 +19,6 @@ export const HOME_HERO = {
   secondaryCta: { label: "Book a Party", to: "/contact" },
 };
 
-/** Eyebrow microcopy by surface — keeps the tone consistent. */
 export const EYEBROWS = {
   about: "Our Story",
   pricing: "Pricing",
