@@ -1,36 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ArrowLeft,
-  Calendar,
-  CheckCircle,
-  CreditCard,
-  Download,
-  Mail,
-  MapPin,
-  Package,
-  Phone,
-} from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 import { formatLongDateTime, formatCents } from "../lib/format.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
+import Icon from "../components/common/Icon.jsx";
 import StatusBadge from "../components/common/StatusBadge.jsx";
 
 const VISIT_NOTES = [
-  "Valid government-issued ID",
-  "This order confirmation",
-  "Closed-toe shoes required",
-  "Each race ticket is one 5-minute race on the track",
-  "Waivers signed in person at the front desk",
+  "Government-issued ID for waiver",
+  "Closed-toe shoes — track is outdoor",
+  "Hair tied back (ties at front desk)",
+  "This order number or screenshot",
+  "Each race ticket = one 5-minute heat",
 ];
 
-/**
- * Renders the full details of a single purchase order, including items, totals,
- * visit information, and a printable confirmation. Accessible to the purchasing
- * user or staff.
- */
+const MetaTile = ({ icon, label, value }) => (
+  <div className="flex items-start gap-3">
+    <div className="bg-asphalt-100 p-2 rounded-md text-race-600 shrink-0">
+      <Icon name={icon} className="h-5 w-5" />
+    </div>
+    <div>
+      <p className="text-[10px] font-display tracking-speedway uppercase text-asphalt-500 mb-1">
+        {label}
+      </p>
+      <p className="font-semibold text-asphalt-900">{value}</p>
+    </div>
+  </div>
+);
+
 export default function PurchaseDetailsPage() {
   const { orderId } = useParams();
   const navigate = useNavigate();
@@ -71,10 +70,10 @@ export default function PurchaseDetailsPage() {
 
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-asphalt-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="h-16 w-16 rounded-full border-4 border-gray-200 border-t-red-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 text-lg">Loading order details...</p>
+          <div className="h-16 w-16 rounded-full border-4 border-asphalt-200 border-t-race-600 animate-spin mx-auto mb-4" />
+          <p className="text-asphalt-600 text-lg">Loading order…</p>
         </div>
       </div>
     );
@@ -88,30 +87,31 @@ export default function PurchaseDetailsPage() {
 
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
+      <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
             style={{ backgroundImage: "url(/images/19.JPEG)" }}
           />
         </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
+        <div className="absolute inset-0 asphalt-grain opacity-70" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
               onClick={() => navigate(backHref)}
-              className="flex items-center gap-2 text-white hover:text-red-500 transition-colors mb-6 font-semibold"
+              className="flex items-center gap-2 text-chalk hover:text-race-500 transition-colors mb-6 font-display tracking-speedway uppercase text-xs"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <Icon name="arrow-left" className="h-4 w-4" />
               {backLabel}
             </button>
             <div className="text-center">
-              <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-                ORDER DETAILS
+              <div className="inline-block mb-6 px-4 py-1.5 bg-race-600 text-chalk rounded-full text-xs font-display tracking-speedway uppercase">
+                Order Details
               </div>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-white leading-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-chalk leading-tight tabular-nums">
                 Order{" "}
-                <span className="text-red-500">#{purchase.order_number}</span>
+                <span className="text-race-500">#{purchase.order_number}</span>
               </h1>
               <div className="flex items-center justify-center gap-2">
                 <StatusBadge status={purchase.status} size="lg" />
@@ -119,199 +119,179 @@ export default function PurchaseDetailsPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-asphalt-50 speedway-divider" />
       </section>
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+
+      <section className="py-20 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <Package className="h-6 w-6 text-red-600" />
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-8">
+              <h2 className="text-xl font-display tracking-speedway uppercase text-asphalt-900 mb-6 flex items-center gap-3">
+                <Icon name="package" className="h-5 w-5 text-race-600" />
                 Order Summary
               </h2>
               <div className="space-y-6">
-                <div className="border-b border-gray-200 pb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4">
-                    Order Items
+                <div className="border-b border-asphalt-200 pb-6">
+                  <h3 className="text-xs font-display tracking-speedway uppercase text-asphalt-500 mb-4">
+                    Items
                   </h3>
                   <div className="space-y-3">
                     {purchase.items.map((item, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0"
+                        className="flex justify-between items-center py-2 border-b border-asphalt-100 last:border-0"
                       >
                         <div>
-                          <p className="font-semibold text-gray-800">
+                          <p className="font-semibold text-asphalt-900">
                             {item.product_name}
                           </p>
-                          <p className="text-sm text-gray-600">
-                            Quantity: {item.quantity} × {formatCents(item.price)}
+                          <p className="text-sm text-asphalt-600 tabular-nums">
+                            {item.quantity} × {formatCents(item.price)}
                           </p>
                         </div>
-                        <p className="font-bold text-gray-800">
+                        <p className="font-bold text-asphalt-900 tabular-nums">
                           {formatCents(item.subtotal)}
                         </p>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-4 pt-4 border-t-2 border-gray-300 flex justify-between items-center">
+                  <div className="mt-4 pt-4 border-t-2 border-asphalt-300 flex justify-between items-center">
                     <div>
-                      <p className="text-lg font-bold text-gray-800">
+                      <p className="text-xs font-display tracking-speedway uppercase text-asphalt-500">
                         Order Total
                       </p>
-                      <p className="text-sm text-gray-600">
-                        Total: {purchase.total_quantity}{" "}
+                      <p className="text-sm text-asphalt-600 tabular-nums">
+                        {purchase.total_quantity}{" "}
                         {purchase.total_quantity > 1 ? "people" : "person"}
                       </p>
                     </div>
-                    <div className="text-right">
-                      <div className="font-display text-4xl text-red-600 tracking-wide">
-                        {formatCents(purchase.total_amount)}
-                      </div>
+                    <div className="font-display text-4xl text-race-600 tracking-wide tabular-nums">
+                      {formatCents(purchase.total_amount)}
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 p-2 rounded-lg">
-                      <Calendar className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Order Date</p>
-                      <p className="font-semibold text-gray-800">
-                        {formatLongDateTime(purchase.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="bg-purple-100 p-2 rounded-lg">
-                      <CreditCard className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">
-                        Payment Method
-                      </p>
-                      <p className="font-semibold text-gray-800">
-                        {purchase.stripe_session_id?.startsWith("debug_")
-                          ? "Debug/Test Order"
-                          : "Credit Card (Stripe)"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="bg-green-100 p-2 rounded-lg">
-                      <Package className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Order Number</p>
-                      <p className="font-semibold text-gray-800">
-                        {purchase.order_number}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 p-2 rounded-lg">
-                      <CheckCircle className="h-5 w-5 text-red-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Order Status</p>
-                      <p className="font-semibold text-gray-800 capitalize">
-                        {purchase.status}
-                      </p>
-                    </div>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <MetaTile
+                    icon="calendar"
+                    label="Order Date"
+                    value={formatLongDateTime(purchase.created_at)}
+                  />
+                  <MetaTile
+                    icon="credit-card"
+                    label="Payment"
+                    value={
+                      purchase.stripe_session_id?.startsWith("debug_")
+                        ? "Debug / Test"
+                        : "Stripe (Card)"
+                    }
+                  />
+                  <MetaTile
+                    icon="package"
+                    label="Order Number"
+                    value={purchase.order_number}
+                  />
+                  <MetaTile
+                    icon="check-circle"
+                    label="Status"
+                    value={
+                      <span className="capitalize">{purchase.status}</span>
+                    }
+                  />
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border-2 border-blue-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <MapPin className="h-6 w-6 text-blue-600" />
-                Visit Information
+
+            <div className="bg-asphalt-900 text-chalk rounded-lg p-8 shadow-track">
+              <h2 className="text-xl font-display tracking-speedway uppercase mb-6 flex items-center gap-3">
+                <Icon name="map-pin" className="h-5 w-5 text-race-400" />
+                Visit Info
               </h2>
-              <div className="space-y-4">
-                <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h3 className="font-bold text-gray-800 mb-2">Speedway 146</h3>
-                  <p className="text-gray-700 mb-3">{CONTACT_INFO.address}</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Phone className="h-4 w-4 text-red-600" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-bold mb-2">Speedway 146</h3>
+                  <p className="text-chalk/80 mb-3 text-sm">
+                    {CONTACT_INFO.address}
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-chalk/80">
+                      <Icon name="phone" className="h-4 w-4 text-race-400" />
                       <a
                         href={CONTACT_INFO.phoneTel}
-                        className="hover:text-red-600 transition-colors font-semibold"
+                        className="hover:text-race-400 transition-colors font-semibold tabular-nums"
                       >
                         {CONTACT_INFO.phone}
                       </a>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-700">
-                      <Mail className="h-4 w-4 text-red-600" />
+                    <div className="flex items-center gap-2 text-chalk/80">
+                      <Icon name="mail" className="h-4 w-4 text-race-400" />
                       <a
                         href={CONTACT_INFO.emailMailto}
-                        className="hover:text-red-600 transition-colors"
+                        className="hover:text-race-400 transition-colors"
                       >
                         {CONTACT_INFO.email}
                       </a>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h4 className="font-bold text-gray-800 mb-2">What to Bring</h4>
-                  <ul className="space-y-1 text-gray-700">
+                <div>
+                  <h4 className="font-display tracking-speedway uppercase text-xs text-race-400 mb-2">
+                    What to bring
+                  </h4>
+                  <ul className="space-y-1.5 text-chalk/80 text-sm">
                     {VISIT_NOTES.map((note) => (
-                      <li key={note}>• {note}</li>
+                      <li key={note}>· {note}</li>
                     ))}
                   </ul>
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border-2 border-red-200 p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                <Download className="h-6 w-6 text-red-600" />
-                Print Your Confirmation
-              </h2>
-              <div className="space-y-3">
-                <button
-                  onClick={() => window.print()}
-                  className="w-full flex items-center justify-between p-4 bg-white rounded-lg hover:bg-red-50 transition-colors duration-200 ease-out active:scale-[0.99] border border-red-200 group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-red-600 p-2 rounded-lg group-hover:scale-110 group-active:scale-95 transition-transform duration-200 ease-out">
-                      <Download className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <p className="font-bold text-gray-800">
-                        Print Order Confirmation
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Bring to facility for check-in
-                      </p>
-                    </div>
+
+            <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-6">
+              <button
+                onClick={() => window.print()}
+                className="w-full flex items-center justify-between p-4 bg-asphalt-50 hover:bg-race-50 rounded-md transition-colors duration-base ease-snap active:scale-[0.99] border border-asphalt-200 hover:border-race-300 group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="bg-race-600 p-2.5 rounded-md text-chalk">
+                    <Icon name="download" className="h-5 w-5" />
                   </div>
-                  <span className="text-red-600 font-semibold">Print</span>
-                </button>
-              </div>
+                  <div className="text-left">
+                    <p className="font-bold text-asphalt-900">
+                      Print Confirmation
+                    </p>
+                    <p className="text-sm text-asphalt-600">
+                      Front desk scans this at check-in.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-race-600 font-display tracking-speedway uppercase text-xs">
+                  Print
+                </span>
+              </button>
             </div>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                Need Help?
+
+            <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-8">
+              <h2 className="text-xl font-display tracking-speedway uppercase text-asphalt-900 mb-3">
+                Need to change something?
               </h2>
-              <p className="text-gray-600 mb-6">
-                If you have any questions about your order or need to make
-                changes, please contact us:
+              <p className="text-asphalt-600 mb-6 text-sm">
+                Date changes, group size, allergies, refunds — call the track
+                directly.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href={CONTACT_INFO.phoneTel}
-                  className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 bg-race-600 hover:bg-race-500 text-chalk px-6 py-3 rounded-md font-display tracking-speedway uppercase text-sm shadow-race transition duration-base ease-snap active:scale-95 tabular-nums"
                 >
-                  <Phone className="h-5 w-5" />
-                  Call Us
+                  <Icon name="phone" className="h-5 w-5" />
+                  Call
                 </a>
                 <a
                   href="/contact"
-                  className="flex-1 flex items-center justify-center gap-2 border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 ease-out active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 border-2 border-race-600 text-race-600 hover:bg-race-600 hover:text-chalk px-6 py-3 rounded-md font-display tracking-speedway uppercase text-sm transition-colors duration-base ease-snap active:scale-95"
                 >
-                  <Mail className="h-5 w-5" />
-                  Contact Form
+                  <Icon name="mail" className="h-5 w-5" />
+                  Email
                 </a>
               </div>
             </div>
