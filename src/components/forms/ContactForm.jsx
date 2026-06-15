@@ -195,7 +195,7 @@ const ContactForm = () => {
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600">
             * Required fields. For immediate assistance or to make reservations,
-            please call us at (346) 932-1266.
+            please call us at {CONTACT_INFO.phone}.
           </p>
         </div>
         <Button
