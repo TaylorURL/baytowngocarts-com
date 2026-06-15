@@ -112,7 +112,7 @@ const AboutPage = () => (
       backgroundImage="/images/16.JPEG"
       dividerColorClass="bg-white"
     />
-    <section className="py-24 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+    <section className="py-24 bg-asphalt-900 text-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
@@ -346,7 +346,7 @@ const AboutPage = () => (
         </div>
       </div>
     </section>
-    <section className="py-24 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
+    <section className="py-24 text-white bg-asphalt-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6">
