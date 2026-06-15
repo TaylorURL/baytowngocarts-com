@@ -35,7 +35,7 @@ const NotFoundPage = () => (
             to="/pricing"
             className="group inline-flex items-center justify-center gap-2 border-2 border-chalk/30 hover:border-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg transition-[border-color,transform] duration-base ease-snap active:scale-95"
           >
-            <ArrowLeft className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1" />
+            <Icon name="arrow-left" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1" />
             See pricing instead
           </Link>
         </div>
