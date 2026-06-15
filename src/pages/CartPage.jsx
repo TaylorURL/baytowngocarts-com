@@ -142,7 +142,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
           </div>
           <div className="text-right">
             <div className="font-display text-3xl text-gray-800 tracking-wide">
-              ${lineSubtotal.toFixed(2)}
+              {formatDollars(lineSubtotal)}
             </div>
             <div className="text-xs text-gray-500 uppercase tracking-wider">
               subtotal
