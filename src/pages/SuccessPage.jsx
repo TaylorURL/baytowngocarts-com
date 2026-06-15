@@ -58,14 +58,15 @@ const SuccessPage = () => {
         const purchaseData = {
           user_id: user.id,
           order_number: orderNumber,
-          items: pendingPurchase.items.map((item) => ({
-            product_name: item.name,
-            price: Math.round(parseFloat(item.price.replace("$", "")) * 100),
-            quantity: item.quantity,
-            subtotal:
-              Math.round(parseFloat(item.price.replace("$", "")) * 100) *
-              item.quantity,
-          })),
+          items: pendingPurchase.items.map((item) => {
+            const priceCents = priceStringToCents(item.price);
+            return {
+              product_name: item.name,
+              price: priceCents,
+              quantity: item.quantity,
+              subtotal: priceCents * item.quantity,
+            };
+          }),
           total_amount: Math.round(pendingPurchase.total * 100),
           total_quantity: pendingPurchase.totalQuantity,
           status: "completed",
