@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
@@ -17,18 +17,13 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
+import { NAV_ITEMS } from "../../lib/content/navigation.js";
+import { CONTACT_INFO } from "../../lib/content/business.js";
+
 const LIGHT_COLORS = [
   { on: "#ef4444", glow: "rgba(239,68,68,0.8)", dim: "#3d1111" },
   { on: "#facc15", glow: "rgba(250,204,21,0.8)", dim: "#3d2e05" },
   { on: "#16a34a", glow: "rgba(22,163,74,0.8)", dim: "#0a3d1a" },
-];
-const NAV_ITEMS = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Pricing", path: "/pricing" },
-  { name: "Events", path: "/events" },
-  { name: "Contact", path: "/contact" },
-  { name: "FAQ", path: "/faq" },
 ];
 const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
   <div className="flex items-center" style={{ gap: `${gap * 4}px` }}>
