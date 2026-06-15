@@ -26,7 +26,7 @@ const ActionSection = () => (
           </Link>
           <Link to="/events">
             <Button size="xl" variant="outlineLight">
-              <Calendar className="h-5 w-5" />
+              <Icon name="calendar" className="h-5 w-5" />
               Plan an Event
             </Button>
           </Link>
