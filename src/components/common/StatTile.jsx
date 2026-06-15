@@ -1,14 +1,9 @@
-/**
- * Stat tile — a single oversized number with a tracking-widest label
- * beneath. Designed to be dropped into a 2/3/4-col grid on either a dark
- * (asphalt) or light surface.
- */
 const StatTile = ({
   value,
   label,
   hint,
   tone = "dark",
-  accent = "race", // "race" | "ignite" | "caution" | "chalk"
+  accent = "race",
   className = "",
 }) => {
   const valueColor = {
