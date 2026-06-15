@@ -97,11 +97,7 @@ const Header = () => {
       <div className="h-1 race-stripe" aria-hidden="true" />
 
       {/* Top bar: wordmark, info, cart, auth */}
-      <div className={`transition-[background-color,border-color,backdrop-filter] duration-base ease-snap ${
-        scrolled
-          ? "bg-asphalt-900/75 backdrop-blur-md border-b border-asphalt-700/60"
-          : "bg-transparent border-b border-transparent"
-      }`}>
+      <div className="bg-asphalt-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[72px]">
             <Wordmark
