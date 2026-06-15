@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase";
 /**
  * Checks whether the current authenticated user has staff privileges
  * by querying the `staff` table in Supabase.
- * @returns {{ isAdmin: boolean, isStaff: boolean, loading: boolean, refetch: Function }}
+ * @returns {{ isStaff: boolean, loading: boolean, refetch: Function }}
  */
 export function useAdmin() {
   const [isStaff, setIsStaff] = useState(false);
@@ -58,7 +58,6 @@ export function useAdmin() {
     }
   };
   return {
-    isAdmin: isStaff,
     isStaff,
     loading,
     refetch: checkStaffStatus,

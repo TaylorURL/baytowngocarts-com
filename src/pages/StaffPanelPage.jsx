@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  AlertCircle,
   Calendar,
-  CheckCircle,
   ChevronDown,
   Clock,
   DollarSign,
@@ -13,9 +11,11 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
+import { formatShortDateTime, formatCents } from "../lib/format.js";
+import StatusBadge from "../components/common/StatusBadge.jsx";
+import PageHero from "../components/common/PageHero.jsx";
 const STAT_CARDS = [
   {
     key: "totalOrders",
@@ -72,26 +72,6 @@ const DEFAULT_STATS = {
   todayOrders: 0,
   todayRevenue: 0,
 };
-const STATUS_CONFIG = {
-  completed: { className: "bg-green-100 text-green-700", icon: CheckCircle },
-  pending: { className: "bg-yellow-100 text-yellow-700", icon: Clock },
-};
-const DEFAULT_STATUS = {
-  className: "bg-red-100 text-red-700",
-  icon: AlertCircle,
-};
-function StatusBadge({ status }) {
-  const config = STATUS_CONFIG[status] ?? DEFAULT_STATUS;
-  const Icon = config.icon;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${config.className}`}
-    >
-      <Icon className="h-3 w-3" />
-      {status}
-    </span>
-  );
-}
 function getDateFilterStart(filterKey) {
   if (filterKey === "all") return null;
   const now = new Date();
@@ -113,22 +93,12 @@ function getDateFilterStart(filterKey) {
       return null;
   }
 }
-const formatDate = (dateString) =>
-  new Date(dateString).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-const formatCurrency = (cents) => `$${(cents / 100).toFixed(2)}`;
 /**
  * Renders the staff-only admin panel with order stats, search, filtering, and order details.
  * Redirects non-staff users to the home page.
  */
 export default function StaffPanelPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { isStaff, loading: staffLoading } = useAdmin();
   const [activeTab, setActiveTab] = useState("overview");
   const [dateFilter, setDateFilter] = useState("all");
@@ -223,26 +193,14 @@ export default function StaffPanelPage() {
   if (!isStaff) return null;
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
-        </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-              ADMIN
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-              Staff <span className="text-red-500">Panel</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Track Operations & Order Management
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-      </section>
+      <PageHero
+        badge="ADMIN"
+        title="Staff"
+        titleAccent="Panel"
+        description="Track Operations & Order Management"
+        backgroundImage="/images/22.JPEG"
+        dividerColorClass="bg-white"
+      />
       <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -397,12 +355,12 @@ export default function StaffPanelPage() {
                             </td>
                             <td className="py-4 px-4">
                               <span className="text-sm font-bold text-green-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
                               <span className="text-xs text-gray-500">
-                                {formatDate(order.created_at)}
+                                {formatShortDateTime(order.created_at)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
@@ -445,7 +403,7 @@ export default function StaffPanelPage() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <span className="text-lg font-bold text-green-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                               <span className="text-sm text-gray-500">
                                 {order.total_quantity} people
@@ -458,7 +416,7 @@ export default function StaffPanelPage() {
                             />
                           </div>
                           <p className="text-xs text-gray-400 mt-1">
-                            {formatDate(order.created_at)}
+                            {formatShortDateTime(order.created_at)}
                           </p>
                         </button>
                         {expandedOrder === order.id && (
@@ -483,11 +441,11 @@ export default function StaffPanelPage() {
                                       </p>
                                       <p className="text-xs text-gray-500">
                                         {item.quantity} x{" "}
-                                        {formatCurrency(item.price)}
+                                        {formatCents(item.price)}
                                       </p>
                                     </div>
                                     <span className="font-bold text-gray-800 text-sm">
-                                      {formatCurrency(item.subtotal)}
+                                      {formatCents(item.subtotal)}
                                     </span>
                                   </div>
                                 ))}
@@ -504,7 +462,7 @@ export default function StaffPanelPage() {
                                 </p>
                               </div>
                               <span className="text-xl font-black text-red-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                             </div>
                             <button

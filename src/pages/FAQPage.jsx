@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import QuestionSection from "../components/sections/QuestionSection.jsx";
-import { CONTACT_INFO, FAQS } from "../lib/constants.js";
+import { CONTACT_INFO } from "../lib/content/business.js";
+import { FAQS } from "../lib/content/faqs.js";
 import Button from "../components/common/Button";
+import Pill from "../components/common/Pill.jsx";
 import { Link } from "react-router-dom";
+import PageHero from "../components/common/PageHero.jsx";
 import {
   Calendar,
   DollarSign,
@@ -16,7 +19,6 @@ import {
 } from "lucide-react";
 const ALL_CATEGORIES_ID = "All";
 const STICKY_THRESHOLD_PX = 80;
-const PHONE_TEL_LINK = `tel:${CONTACT_INFO.phone}`;
 const FAQ_CATEGORIES = [
   { id: ALL_CATEGORIES_ID, icon: Search, label: "All Questions" },
   { id: "Racing", icon: Zap, label: "Racing" },
@@ -58,54 +60,41 @@ const getCategoryBadgeClasses = (isActive, isSticky) => {
   return "bg-gray-200 text-gray-600";
 };
 const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
-  <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-    <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/15.JPEG')]" />
-    </div>
-    {/* Crosshatch overlay pattern */}
-    <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-    <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-        <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-          HELP CENTER
-        </div>
-        <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-          Frequently Asked <span className="text-red-500">Questions</span>
-        </h1>
-        <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-          Find quick answers to common questions about racing, pricing, events,
-          and our policies
-        </p>
-        <div className="max-w-2xl mx-auto">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search questions and answers..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => onSearchChange("")}
-                aria-label="Clear search"
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            )}
-          </div>
-          {searchTerm && (
-            <div className="mt-4 text-white text-sm">
-              Found {formatResultCount(filteredCount)} for "{searchTerm}"
-            </div>
-          )}
-        </div>
+  <PageHero
+    badge="HELP CENTER"
+    title="Frequently Asked"
+    titleAccent="Questions"
+    description="Find quick answers to common questions about racing, pricing, events, and our policies"
+    backgroundImage="/images/15.JPEG"
+    dividerColorClass="bg-white"
+  >
+    <div className="mt-8 max-w-2xl mx-auto">
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search questions and answers..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
+        />
+        {searchTerm && (
+          <button
+            onClick={() => onSearchChange("")}
+            aria-label="Clear search"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        )}
       </div>
+      {searchTerm && (
+        <div className="mt-4 text-white text-sm">
+          Found {formatResultCount(filteredCount)} for "{searchTerm}"
+        </div>
+      )}
     </div>
-    <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-  </section>
+  </PageHero>
 );
 const CategoryFilterBar = ({
   stickyRef,
@@ -156,7 +145,7 @@ const FAQResultsList = ({
 }) => {
   const isAllSelected = selectedCategory === ALL_CATEGORIES_ID;
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section className="py-16 bg-chalk">
       <ContentWrapper>
         <div
           className="bg-white rounded-2xl shadow-2xl overflow-hidden"
@@ -164,7 +153,7 @@ const FAQResultsList = ({
         >
           {filteredFAQs.length > 0 ? (
             <>
-              <div className="px-8 py-6 bg-gradient-to-r from-gray-800 to-gray-700 text-white">
+              <div className="px-8 py-6 bg-asphalt-900 border-b-2 border-race-600 text-white">
                 <h2 className="text-2xl font-bold">{resultsHeading}</h2>
               </div>
               {filteredFAQs.map((faq, index) => (
@@ -213,7 +202,7 @@ const FAQResultsList = ({
 const ContactCTASection = () => (
   <section className="py-24 bg-white">
     <ContentWrapper>
-      <div className="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="bg-asphalt-900 rounded-2xl shadow-2xl overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="p-12">
             <HelpCircle className="h-16 w-16 text-red-500 mb-6" />
@@ -239,14 +228,14 @@ const ContactCTASection = () => (
               ))}
             </div>
           </div>
-          <div className="p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
+          <div className="p-12 flex flex-col justify-center bg-asphalt-950">
             <h3 className="text-3xl font-bold text-white mb-6">Get in Touch</h3>
             <p className="text-gray-300 mb-8 text-lg">
               Choose the best way to reach us
             </p>
             <div className="space-y-4">
               <a
-                href={PHONE_TEL_LINK}
+                href={CONTACT_INFO.phoneTel}
                 className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
               >
                 <Phone className="h-5 w-5" />
@@ -272,7 +261,7 @@ const ContactCTASection = () => (
   </section>
 );
 const ReadyToRaceCTA = () => (
-  <section className="py-20 text-white bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
+  <section className="py-20 text-white bg-asphalt-900">
     <ContentWrapper>
       <div className="text-center" data-aos="fade-up">
         <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to Race?</h2>

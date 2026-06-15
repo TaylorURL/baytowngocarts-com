@@ -1,38 +1,42 @@
+import Pill from "./Pill.jsx";
+
 /**
- * Reusable section heading with an optional colored badge, title, and subtitle.
+ * Reusable section heading with an optional pill badge, title, and subtitle.
  * Supports centered alignment and AOS fade-up animation.
  */
 const SectionHeading = ({
   badge,
-  badgeVariant = "red",
+  badgeVariant = "race",
   title,
   subtitle,
   centered = false,
   className = "",
+  tone = "light",
 }) => {
-  const badgeStyles = {
-    red: "bg-red-100 text-red-600",
-    navy: "bg-gray-700 text-white",
-  };
+  const titleColor = tone === "dark" ? "text-chalk" : "text-asphalt-900";
+  const subtitleColor = tone === "dark" ? "text-gray-400" : "text-asphalt-600";
   return (
     <div
-      className={`mb-16 ${centered ? "text-center max-w-3xl mx-auto" : ""} ${className}`}
+      className={`mb-14 ${centered ? "text-center max-w-3xl mx-auto" : ""} ${className}`}
       data-aos="fade-up"
     >
       {badge && (
-        <div
-          className={`inline-block mb-4 px-3.5 py-1 rounded-full text-sm font-display tracking-widest ${badgeStyles[badgeVariant]}`}
-        >
-          {badge}
+        <div className={centered ? "flex justify-center mb-4" : "mb-4"}>
+          <Pill variant={badgeVariant}>{badge}</Pill>
         </div>
       )}
-      <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+      <h2 className={`text-4xl lg:text-5xl font-bold ${titleColor} mb-5`}>
         {title}
       </h2>
       {subtitle && (
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
+        <p
+          className={`text-lg ${subtitleColor} ${centered ? "max-w-2xl mx-auto" : ""}`}
+        >
+          {subtitle}
+        </p>
       )}
     </div>
   );
 };
+
 export default SectionHeading;
