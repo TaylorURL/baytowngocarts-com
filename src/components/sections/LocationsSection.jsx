@@ -12,10 +12,7 @@ const ContactRow = ({ icon: Icon, label, children }) => (
     </div>
   </div>
 );
-/**
- * Displays business contact details (address, phone, email, hours)
- * alongside an embedded Google Maps iframe.
- */
+
 const LocationsSection = () => (
   <div className="space-y-6">
     <div className="space-y-4">
