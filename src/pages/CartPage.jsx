@@ -265,7 +265,7 @@ export default function CartPage() {
           <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-red-600/10 ring-1 ring-red-500/30 mx-auto mb-6">
-              <ShoppingCart className="h-12 w-12 text-red-500" />
+              <Icon name="shopping-cart" className="h-12 w-12 text-race-500" />
             </div>
             <h1 className="text-4xl font-bold text-white mb-4">
               Your Cart is Empty
