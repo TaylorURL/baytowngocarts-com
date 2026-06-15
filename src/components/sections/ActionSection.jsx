@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
+import Icon from "../common/Icon.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
 const ActionSection = () => (
