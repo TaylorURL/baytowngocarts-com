@@ -235,21 +235,24 @@ export default function StaffPanelPage() {
                 ),
               )}
             </div>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-8">
+            <div className="bg-white rounded-lg border border-asphalt-200 shadow-track p-4 sm:p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                <h2 className="font-display tracking-speedway uppercase text-lg text-asphalt-900">
                   Orders
                 </h2>
                 <div className="flex flex-col md:flex-row gap-3 flex-1 md:max-w-2xl">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Icon
+                      name="search"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-asphalt-400"
+                    />
                     <input
                       type="text"
                       aria-label="Search orders by order number"
-                      placeholder="Search by order number..."
+                      placeholder="Search by order number…"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg transition-colors duration-200 ease-out focus:border-red-500"
+                      className="w-full pl-10 pr-4 py-2 border-2 border-asphalt-200 rounded-md transition-colors duration-base ease-snap focus:border-race-500 focus:outline-none"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -257,10 +260,10 @@ export default function StaffPanelPage() {
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`px-4 py-2 rounded-lg font-semibold whitespace-nowrap transition-colors duration-200 ease-out active:scale-95 ${
+                        className={`px-4 py-2 rounded-md font-display tracking-speedway uppercase text-xs whitespace-nowrap transition-colors duration-base ease-snap active:scale-95 ${
                           activeTab === tab
-                            ? "bg-red-600 text-white shadow-red"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            ? "bg-race-600 text-chalk shadow-race"
+                            : "bg-asphalt-100 text-asphalt-600 hover:bg-asphalt-200"
                         }`}
                       >
                         {tab === "overview" ? "Recent" : "All"}
@@ -274,10 +277,10 @@ export default function StaffPanelPage() {
                   <button
                     key={key}
                     onClick={() => setDateFilter(key)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 ease-out active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-md text-xs font-display tracking-speedway uppercase transition-colors duration-base ease-snap active:scale-95 ${
                       dateFilter === key
-                        ? "bg-gray-800 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        ? "bg-asphalt-800 text-chalk"
+                        : "bg-asphalt-100 text-asphalt-600 hover:bg-asphalt-200"
                     }`}
                   >
                     {label}
@@ -285,12 +288,12 @@ export default function StaffPanelPage() {
                 ))}
               </div>
               {searchQuery && (
-                <div className="mb-4 text-sm text-gray-600">
+                <div className="mb-4 text-sm text-asphalt-600">
                   Found {displayOrders.length} order(s) matching "{searchQuery}"
                 </div>
               )}
               {displayOrders.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-asphalt-500">
                   {searchQuery
                     ? `No orders found matching "${searchQuery}"`
                     : "No orders yet"}
