@@ -1,7 +1,7 @@
 {
   "name": "speedway146-website",
   "private": true,
-  "version": "3.3.3",
+  "version": "3.3.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,6 @@
     "@supabase/supabase-js": "^2.55.0",
     "aos": "^2.3.4",
     "framer-motion": "^11.0.8",
-    "lucide-react": "^0.344.0",
     "openai": "^4.28.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

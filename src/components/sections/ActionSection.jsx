@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
+import Icon from "../common/Icon.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
-/**
- * Closing call-to-action band. Sits flush above the footer on the home page.
- * Asphalt with caution-tape ribbon — earned, not overused.
- */
 const ActionSection = () => (
   <section className="relative bg-asphalt-900 text-chalk overflow-hidden">
     <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
@@ -18,19 +14,19 @@ const ActionSection = () => (
           <span className="block text-race-500">We're open today.</span>
         </h2>
         <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Walk-ins welcome every day of the week. Booking a party? Call us and
-          we'll take it from there.
+          Walk-ins every day, weekends until 10:30 PM. Booking a party for 45?
+          Call and we'll lock in your date.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/pricing">
             <Button size="xl" variant="primary" className="group">
               See Pricing
-              <ArrowRight className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+              <Icon name="arrow-right" className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1" />
             </Button>
           </Link>
           <Link to="/events">
             <Button size="xl" variant="outlineLight">
-              <Calendar className="h-5 w-5" />
+              <Icon name="calendar" className="h-5 w-5" />
               Plan an Event
             </Button>
           </Link>
@@ -43,7 +39,7 @@ const ActionSection = () => (
             href={CONTACT_INFO.phoneTel}
             className="inline-flex items-center gap-3 bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-6 py-3 rounded-md font-bold shadow-track transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
           >
-            <Phone className="h-4 w-4 text-race-500" />
+            <Icon name="phone" className="h-4 w-4 text-race-500" />
             <span className="tabular-nums tracking-wide">
               {CONTACT_INFO.phone}
             </span>

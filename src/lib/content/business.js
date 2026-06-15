@@ -1,4 +1,3 @@
-/** Weekly business hours displayed on the Contact and other pages. */
 export const BUSINESS_HOURS = [
   { day: "Monday", hours: "12:00 PM – 8:00 PM" },
   { day: "Tuesday", hours: "12:00 PM – 8:00 PM" },

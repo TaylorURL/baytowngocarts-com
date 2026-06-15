@@ -6,11 +6,6 @@ const SIZES = {
   lg: { logo: "h-14 w-14", primary: "text-2xl", secondary: "text-[11px]" },
 };
 
-/**
- * Speedway 146 wordmark. Pairs the runner logo with the display name and a
- * tracking-widest tagline. Used in the header, mobile drawer, and auth pages
- * to keep the brand presentation identical everywhere.
- */
 const Wordmark = ({
   to = "/",
   onClick,

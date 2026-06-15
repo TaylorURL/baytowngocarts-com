@@ -4,8 +4,8 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, CheckCircle, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
+import Icon from "../components/common/Icon.jsx";
 import AuthShell from "../components/common/AuthShell.jsx";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
@@ -116,7 +116,7 @@ const SuccessPage = () => {
         <div className="p-8 text-center">
           <div className="mb-6">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 ring-1 ring-green-200 mx-auto mb-4">
-              <CheckCircle className="h-12 w-12 text-green-600" />
+              <Icon name="check-circle" className="h-12 w-12 text-green-600" />
             </div>
             <h1 className="font-display text-3xl tracking-tight text-asphalt-900 mb-2">
               You're in.
@@ -140,9 +140,9 @@ const SuccessPage = () => {
           <div className="flex flex-col gap-3">
             <Link to="/dashboard">
               <Button variant="primary" fullWidth size="lg" className="group">
-                <ShoppingBag className="h-5 w-5" />
+                <Icon name="shopping-bag" className="h-5 w-5" />
                 View My Purchases
-                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+                <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link to="/">

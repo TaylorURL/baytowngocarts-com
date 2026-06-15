@@ -1,4 +1,3 @@
-/** Frequently asked questions displayed on the FAQ page, each tagged with a category. */
 export const FAQS = [
   {
     question: "What are your hours of operation?",

@@ -1,13 +1,5 @@
 import Pill from "./Pill.jsx";
 
-/**
- * Standard page hero used across every route. Asphalt-dark panel with a
- * background photo, asphalt-grain texture, race-stripe top bar, eyebrow
- * pill, headline, optional description, optional sloped divider.
- *
- * Use `titleAccent` to render the standard red-accent fragment as the
- * second half of the title.
- */
 const PageHero = ({
   badge,
   badgeVariant = "race",

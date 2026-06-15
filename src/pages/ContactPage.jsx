@@ -1,230 +1,149 @@
-import {
-  Calendar,
-  Clock,
-  Mail,
-  MapPin,
-  MessageSquare,
-  Phone,
-  Send,
-} from "lucide-react";
 import ContactForm from "../components/forms/ContactForm.jsx";
 import LocationsSection from "../components/sections/LocationsSection.jsx";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
-import Pill from "../components/common/Pill.jsx";
-import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/content/business.js";
+import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import { CONTACT_INFO } from "../lib/content/business.js";
 
 const CONTACT_METHODS = [
   {
-    icon: Phone,
-    title: "Call Us",
-    description: "Speak with our team directly",
+    icon: "phone",
+    title: "Call",
+    description: "Fastest for party bookings and league signups.",
     info: CONTACT_INFO.phone,
     action: CONTACT_INFO.phoneTel,
-    color: "red",
+    primary: true,
   },
   {
-    icon: Mail,
-    title: "Email Us",
-    description: "Send us a message anytime",
+    icon: "mail",
+    title: "Email",
+    description: "For everything that's not time-sensitive.",
     info: CONTACT_INFO.email,
     action: CONTACT_INFO.emailMailto,
-    color: "navy",
   },
   {
-    icon: MapPin,
-    title: "Visit Us",
-    description: "Come see us in person",
-    info: CONTACT_INFO.address,
+    icon: "map-pin",
+    title: "Drive Out",
+    description: "Walk-ins welcome — every day we're open.",
+    info: "6750 N TX-146, Baytown",
     action: CONTACT_INFO.mapsUrl,
-    color: "red",
+    external: true,
   },
 ];
 
-/**
- * Renders the Contact page with contact methods, a contact form, location info, and business hours.
- */
-const ContactPage = () => {
-  return (
-    <div className="w-full -mt-20">
-      <PageHero
-        badge="GET IN TOUCH"
-        title="We're Here to"
-        titleAccent="Help"
-        description="Have questions or ready to book? Contact us and we'll make your racing experience unforgettable"
-        backgroundImage="/images/22.JPEG"
-        dividerColorClass="bg-white"
-      />
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="max-w-3xl mx-auto text-center mb-16"
-            data-aos="fade-up"
-          >
-            <Pill variant="light" className="mb-4">CONTACT METHODS</Pill>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
-              Choose How to Connect
-            </h2>
-            <p className="text-xl text-gray-600">
-              Pick the method that works best for you. We're ready to assist!
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
-            {CONTACT_METHODS.map((method, index) => (
-              <a
-                key={index}
-                href={method.action}
-                target={method.icon === MapPin ? "_blank" : undefined}
-                rel={method.icon === MapPin ? "noopener noreferrer" : undefined}
-                aria-label={`${method.title}: ${method.info}`}
-                className={`bg-white p-8 rounded-2xl shadow-xl hover-lift text-center border-2 transition-colors duration-300 ease-out border-gray-200 ${
-                  method.color === "red"
-                    ? "hover:border-red-500"
-                    : "hover:border-gray-600"
+const ContactPage = () => (
+  <div className="w-full -mt-20">
+    <PageHero
+      badge="Contact"
+      title="Talk to"
+      titleAccent="the track."
+      description="The fastest way to book is by phone — leagues, parties, and corporate slots are confirmed live. Form and email work too."
+      backgroundImage="/images/22.JPEG"
+      dividerColorClass="bg-chalk"
+    />
+
+    <section className="py-20 bg-chalk">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-6xl mx-auto mb-20">
+          {CONTACT_METHODS.map((method, index) => (
+            <a
+              key={method.title}
+              href={method.action}
+              target={method.external ? "_blank" : undefined}
+              rel={method.external ? "noopener noreferrer" : undefined}
+              aria-label={`${method.title}: ${method.info}`}
+              className={`group p-7 rounded-lg border-2 transition-[border-color,box-shadow,transform] duration-base ease-snap hover:-translate-y-1 hover:shadow-lift ${
+                method.primary
+                  ? "bg-asphalt-900 text-chalk border-race-500"
+                  : "bg-white border-asphalt-200 hover:border-race-500"
+              }`}
+              data-aos="fade-up"
+              data-aos-delay={index * 80}
+            >
+              <div
+                className={`w-12 h-12 rounded-md flex items-center justify-center mb-5 ${
+                  method.primary
+                    ? "bg-race-600 text-chalk"
+                    : "bg-race-50 text-race-600"
                 }`}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
               >
-                <div
-                  className={`${method.color === "red" ? "bg-red-600" : "bg-gray-700"} w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg`}
-                >
-                  <method.icon className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                  {method.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{method.description}</p>
-                <p
-                  className={`font-semibold ${method.color === "red" ? "text-red-600" : "text-gray-800"}`}
-                >
-                  {method.info}
-                </p>
-              </a>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-            <div data-aos="fade-right">
-              <Pill variant="navy" className="mb-4">SEND MESSAGE</Pill>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6 mt-4">
-                Contact Form
-              </h2>
-              <p className="text-lg text-gray-600 mb-8">
-                Fill out the form below and we'll get back to you as soon as
-                possible. For immediate assistance, please call us directly.
-              </p>
-              <ContactForm />
-            </div>
-            <div data-aos="fade-left">
-              <Pill variant="muted" className="mb-4">VISIT US</Pill>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6 mt-4">Find Us</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                We're conveniently located in Baytown, TX. Come visit us during
-                our business hours for an unforgettable racing experience!
-              </p>
-              <LocationsSection />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                <div className="bg-gray-800 text-white p-12">
-                  <Pill className="mb-6">BUSINESS HOURS</Pill>
-                  <h2 className="text-3xl font-bold mb-8 mt-4">When We're Open</h2>
-                  <div className="space-y-4">
-                    {BUSINESS_HOURS.map((schedule, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between items-center py-3 border-b border-white border-opacity-20"
-                      >
-                        <span className="font-semibold text-lg">
-                          {schedule.day}
-                        </span>
-                        <span
-                          className={`${schedule.hours === "Closed" ? "text-red-400" : "text-gray-300"}`}
-                        >
-                          {schedule.hours}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-8 p-6 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl">
-                    <Clock className="h-8 w-8 mb-3 text-gray-400" />
-                    <p className="text-sm text-gray-300">
-                      Extended hours on weekends! Visit us Saturday and Sunday
-                      from 10:30 AM to 10:30 PM for all-day racing fun.
-                    </p>
-                  </div>
-                </div>
-                <div className="text-white p-12 flex flex-col justify-center bg-gradient-to-br from-slate-700 to-slate-800">
-                  <MessageSquare className="h-16 w-16 mb-6" />
-                  <h3 className="text-3xl font-bold mb-4">
-                    Questions About Booking?
-                  </h3>
-                  <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                    Our team is ready to help you plan the perfect event.
-                    Whether it's a birthday party, corporate event, or racing
-                    league, we've got you covered.
-                  </p>
-                  <div className="space-y-4">
-                    <a
-                      href={CONTACT_INFO.phoneTel}
-                      className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
-                    >
-                      <Phone className="h-5 w-5" />
-                      Call {CONTACT_INFO.phone}
-                    </a>
-                    <a
-                      href={CONTACT_INFO.emailMailto}
-                      className="flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-colors duration-200 ease-out"
-                    >
-                      <Send className="h-5 w-5" />
-                      Send Email
-                    </a>
-                  </div>
-                </div>
+                <Icon name={method.icon} className="h-6 w-6" />
               </div>
-            </div>
-          </div>
+              <h3 className="text-xl font-bold mb-2">{method.title}</h3>
+              <p
+                className={`text-sm mb-4 leading-relaxed ${method.primary ? "text-chalk/70" : "text-asphalt-600"}`}
+              >
+                {method.description}
+              </p>
+              <p
+                className={`font-bold tabular-nums ${method.primary ? "text-chalk" : "text-asphalt-900"}`}
+              >
+                {method.info}
+              </p>
+            </a>
+          ))}
         </div>
-      </section>
-      <section className="py-24 bg-gray-800 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <Calendar className="h-16 w-16 mx-auto mb-6 text-red-500" />
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              Ready to Book Your Visit?
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
+          <div data-aos="fade-right">
+            <SectionEyebrow tone="light">Send a Note</SectionEyebrow>
+            <h2 className="mt-4 text-3xl lg:text-4xl font-bold text-asphalt-900 mb-3">
+              Contact Form
             </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Don't wait! Contact us today to reserve your spot for an
-              unforgettable racing adventure.
+            <p className="text-asphalt-600 mb-8 leading-relaxed">
+              We read these the same day. For party deposits and league
+              signups, call instead.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={CONTACT_INFO.phoneTel}
-                className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-xl font-bold text-xl transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
-              >
-                <Phone className="h-6 w-6 mr-3" />
-                Call Now
-              </a>
-              <a
-                href="#contact-form"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-gray-800 px-10 py-5 rounded-xl font-bold text-xl transition-colors duration-200 ease-out"
-              >
-                <MessageSquare className="h-6 w-6 mr-3" />
-                Send Message
-              </a>
-            </div>
+            <ContactForm />
+          </div>
+          <div data-aos="fade-left">
+            <SectionEyebrow tone="light">Find Us</SectionEyebrow>
+            <h2 className="mt-4 text-3xl lg:text-4xl font-bold text-asphalt-900 mb-3">
+              6750 N TX-146
+            </h2>
+            <p className="text-asphalt-600 mb-8 leading-relaxed">
+              Baytown, TX — 20 minutes east of Houston, 10 minutes south of
+              the Fred Hartman Bridge. Easy parking, free.
+            </p>
+            <LocationsSection />
           </div>
         </div>
-      </section>
-    </div>
-  );
-};
+      </div>
+    </section>
+
+    <section className="py-20 bg-asphalt-900 text-chalk relative overflow-hidden">
+      <div className="absolute inset-0 asphalt-grain opacity-50" aria-hidden="true" />
+      <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
+          <h2 className="font-display text-4xl lg:text-6xl tracking-tight leading-[0.95]">
+            Pick up the phone.
+            <span className="block text-race-500">It's the fastest path.</span>
+          </h2>
+          <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
+            Same number for walk-in questions, party deposits, league rosters,
+            and lost-and-found.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href={CONTACT_INFO.phoneTel}
+              className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
+            >
+              <Icon name="phone" className="h-5 w-5" />
+              <span className="tabular-nums">{CONTACT_INFO.phone}</span>
+            </a>
+            <a
+              href={CONTACT_INFO.emailMailto}
+              className="inline-flex items-center justify-center gap-3 border-2 border-chalk/80 hover:bg-chalk hover:text-asphalt-900 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap"
+            >
+              <Icon name="send" className="h-5 w-5" />
+              Email Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+);
+
 export default ContactPage;

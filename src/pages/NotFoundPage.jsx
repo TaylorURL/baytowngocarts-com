@@ -1,9 +1,5 @@
-/**
- * 404 page displayed for unmatched routes. Themed as a "wrong turn" message
- * with links back home and to pricing.
- */
 import { Link } from "react-router-dom";
-import { ArrowLeft, Home } from "lucide-react";
+import Icon from "../components/common/Icon.jsx";
 import Pill from "../components/common/Pill.jsx";
 
 const NotFoundPage = () => (
@@ -32,14 +28,14 @@ const NotFoundPage = () => (
             to="/"
             className="group inline-flex items-center justify-center gap-2 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg shadow-race transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
           >
-            <Home className="h-5 w-5" />
+            <Icon name="home" className="h-5 w-5" />
             Back to home
           </Link>
           <Link
             to="/pricing"
             className="group inline-flex items-center justify-center gap-2 border-2 border-chalk/30 hover:border-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg transition-[border-color,transform] duration-base ease-snap active:scale-95"
           >
-            <ArrowLeft className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1" />
+            <Icon name="arrow-left" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1" />
             See pricing instead
           </Link>
         </div>

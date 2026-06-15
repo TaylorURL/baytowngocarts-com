@@ -1,33 +1,45 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Baby, Check, PartyPopper, Zap } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
 
 const ATTRACTIONS = [
   {
-    title: "Go-Kart Racing",
+    title: "Outdoor Karting",
     description:
-      "Outdoor track, geared karts, real lap times. The main event.",
+      "Geared karts, real lap timing, and 5-minute heats. Kids race kids, adults race adults — no mixing.",
     image: "/images/22.JPEG",
-    icon: Zap,
-    features: ["Pro-grade karts", "Timed 5-min heats", "Gear provided"],
+    icon: "kart",
+    features: [
+      'Adult karts (53"+)',
+      'Kiddie karts (40"+)',
+      "Helmets provided",
+    ],
     accent: "race",
   },
   {
     title: "Bounce Houses",
     description:
-      "Climate-controlled, supervised, perfect for the under-10 crew.",
+      "Indoor, climate-controlled, supervised. Weekday $10 unlimited; weekends $5 / 30-min or $15 all-day.",
     image: "/images/21.JPEG",
-    icon: Baby,
-    features: ["All-ages safe", "Clean daily", "Weekend wristbands"],
+    icon: "bouncy-castle",
+    features: [
+      "Climate-controlled",
+      "Cleaned daily",
+      "Weekend wristbands",
+    ],
     accent: "ignite",
   },
   {
-    title: "Party Rooms",
+    title: "Party Room",
     description:
-      "Private space for 45. Tables, chairs, staff. You just show up.",
+      "Private room for up to 45 guests, 3-hour rental, 20 racing wristbands included. Tables and chairs set up before you arrive.",
     image: "/images/20.JPEG",
-    icon: PartyPopper,
-    features: ["Up to 45 guests", "Catering options", "Setup included"],
+    icon: "cake",
+    features: [
+      "Up to 45 guests",
+      "$699 base package",
+      "Decor 30 min early",
+    ],
     accent: "race",
   },
 ];
@@ -53,19 +65,16 @@ const AttractionsSection = () => (
           What's On-Site
         </SectionEyebrow>
         <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
-          Three reasons to drive out.
+          One venue. Three reasons to drive out.
         </h2>
         <p className="mt-4 text-lg text-asphalt-600">
-          One ticket, one venue, three completely different ways to spend the
-          afternoon.
+          Twenty minutes from Houston, ten minutes from La Porte. Park once,
+          stay all afternoon.
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {ATTRACTIONS.map(
-          (
-            { title, description, image, icon: Icon, features, accent },
-            index,
-          ) => {
+          ({ title, description, image, icon, features, accent }, index) => {
             const a = ACCENT[accent];
             return (
               <div
@@ -84,7 +93,7 @@ const AttractionsSection = () => (
                   <div
                     className={`absolute top-4 right-4 ${a.badge} p-3 rounded-md shadow-lift`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon name={icon} className="h-6 w-6" />
                   </div>
                 </div>
                 <div className="p-7">
@@ -100,7 +109,10 @@ const AttractionsSection = () => (
                         key={feature}
                         className="flex items-start text-sm text-asphalt-700"
                       >
-                        <Check className="h-4 w-4 text-race-600 mr-2 mt-0.5 shrink-0" />
+                        <Icon
+                          name="check"
+                          className="h-4 w-4 text-race-600 mr-2 mt-0.5 shrink-0"
+                        />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -110,7 +122,10 @@ const AttractionsSection = () => (
                     className={`inline-flex items-center gap-2 font-bold text-sm tracking-wide ${a.link} transition-colors duration-base ease-snap`}
                   >
                     See Pricing
-                    <ArrowRight className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+                    <Icon
+                      name="arrow-right"
+                      className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-1"
+                    />
                   </Link>
                 </div>
               </div>

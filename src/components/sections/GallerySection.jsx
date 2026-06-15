@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ChevronLeft, ChevronRight } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
 import {
   GALLERY_IMAGES,
@@ -61,7 +61,7 @@ const GallerySection = () => {
                     </div>
                     <figcaption className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-asphalt-950 via-asphalt-950/60 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-base">
                       <div className="flex items-center gap-2">
-                        <Camera className="h-4 w-4 text-race-500" />
+                        <Icon name="flag" className="h-4 w-4 text-race-500" />
                         <span className="text-sm font-bold text-chalk tracking-wide">
                           {image.title}
                         </span>
@@ -78,7 +78,7 @@ const GallerySection = () => {
               className="bg-asphalt-800 hover:bg-race-600 text-chalk p-3 rounded-md transition-[background-color,transform] duration-base ease-snap hover:-translate-x-0.5 active:scale-95 shadow-track"
               aria-label="Previous images"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <Icon name="chevron-left" className="h-5 w-5" />
             </button>
             <div
               className="flex items-center gap-2"
@@ -105,7 +105,7 @@ const GallerySection = () => {
               className="bg-asphalt-800 hover:bg-race-600 text-chalk p-3 rounded-md transition-[background-color,transform] duration-base ease-snap hover:translate-x-0.5 active:scale-95 shadow-track"
               aria-label="Next images"
             >
-              <ChevronRight className="h-5 w-5" />
+              <Icon name="chevron-right" className="h-5 w-5" />
             </button>
           </div>
         </div>
