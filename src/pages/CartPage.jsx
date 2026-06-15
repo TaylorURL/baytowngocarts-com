@@ -175,7 +175,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         <div className="flex justify-between text-lg">
           <span className="text-gray-700">Subtotal:</span>
           <span className="font-semibold text-gray-800">
-            ${fees.rawSubtotal.toFixed(2)}
+            {formatDollars(fees.rawSubtotal)}
           </span>
         </div>
         {fees.qualifiesForGroupDiscount && (
