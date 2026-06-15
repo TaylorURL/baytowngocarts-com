@@ -109,7 +109,6 @@ const CTA_INFO_CARDS = [
   },
 ];
 
-/** Renders the Events page showcasing birthday parties, corporate events, and racing leagues. */
 const EventsPage = () => (
   <div className="w-full -mt-20">
     <PageHero
