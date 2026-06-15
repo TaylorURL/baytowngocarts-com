@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText } from "lucide-react";
+import Icon from "../components/common/Icon.jsx";
 import Pill from "../components/common/Pill.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
