@@ -97,7 +97,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
             aria-label={`Remove ${item.product.name} from cart`}
             className="p-2 hover:bg-red-50 rounded-lg transition-colors duration-150 ease-out active:scale-95 ml-2 flex-shrink-0"
           >
-            <Trash2 className="h-5 w-5 text-red-600" />
+            <Icon name="trash" className="h-5 w-5 text-race-600" />
           </button>
         </div>
         <div className="flex items-center justify-between">
