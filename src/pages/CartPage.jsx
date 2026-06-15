@@ -26,10 +26,7 @@ const CART_HERO_IMAGE = "/images/17.JPEG";
 const PENDING_PURCHASE_KEY = "pendingPurchase";
 const GROUP_DISCOUNT_DISPLAY = `${GROUP_DISCOUNT_PERCENT * 100}%`;
 const SALES_TAX_DISPLAY = `${TEXAS_SALES_TAX_PERCENT * 100}%`;
-/**
- * Pure fee calculator. Applies group discount when the total number of
- * people meets the threshold, then layers on sales tax and service fees.
- */
+
 function calculateFees(rawSubtotal, totalPeople) {
   const qualifiesForGroupDiscount = totalPeople >= GROUP_DISCOUNT_THRESHOLD;
   const groupDiscount = qualifiesForGroupDiscount
