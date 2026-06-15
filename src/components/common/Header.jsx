@@ -149,7 +149,7 @@ const Header = () => {
                 aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
                 className="relative p-2.5 rounded-md text-gray-300 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
               >
-                <ShoppingCart className="h-5 w-5" />
+                <Icon name="shopping-cart" className="h-5 w-5" />
                 {cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-asphalt-900">
                     {cartCount}
