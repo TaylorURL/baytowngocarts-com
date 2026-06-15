@@ -1,24 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  BarChart3,
-  ChevronDown,
-  Clock,
-  LogOut,
-  MapPin,
-  Menu,
-  Phone,
-  Shield,
-  ShoppingBag,
-  ShoppingCart,
-  User,
-  X,
-} from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
 import { CONTACT_INFO } from "../../lib/content/business.js";
+import Icon from "./Icon.jsx";
 import Wordmark from "./Wordmark.jsx";
 
 const LIGHT_COLORS = [
