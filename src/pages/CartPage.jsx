@@ -86,7 +86,7 @@ async function createCheckoutSession(checkoutItems, user) {
 }
 /** Single cart line-item with quantity controls and remove button. */
 function CartItemRow({ item, onUpdateQuantity, onRemove }) {
-  const unitPrice = parseFloat(item.product.price.replace("$", ""));
+  const unitPrice = parsePriceString(item.product.price);
   const lineSubtotal = unitPrice * item.quantity;
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-xl hover:border-red-300 transition-[box-shadow,border-color] duration-200 ease-out">
