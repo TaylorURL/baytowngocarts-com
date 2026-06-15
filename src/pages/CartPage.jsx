@@ -184,7 +184,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
               Group Discount ({GROUP_DISCOUNT_DISPLAY}):
             </span>
             <span className="font-semibold text-green-600">
-              -${fees.groupDiscount.toFixed(2)}
+              -{formatDollars(fees.groupDiscount)}
             </span>
           </div>
         )}
