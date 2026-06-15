@@ -9,6 +9,7 @@ import Button from "../components/common/Button";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
 import { useCart } from "../hooks/useCart";
+import { priceStringToCents } from "../lib/pricing.js";
 
 const SuccessPage = () => {
   const [loading, setLoading] = useState(true);
