@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Calendar,
   CheckCircle,
-  Clock,
   CreditCard,
   Download,
   Mail,
@@ -15,9 +14,22 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
+import { formatLongDateTime, formatCents } from "../lib/format.js";
+import { CONTACT_INFO } from "../lib/content/business.js";
+import StatusBadge from "../components/common/StatusBadge.jsx";
+
+const VISIT_NOTES = [
+  "Valid government-issued ID",
+  "This order confirmation",
+  "Closed-toe shoes required",
+  "Each race ticket is one 5-minute race on the track",
+  "Waivers signed in person at the front desk",
+];
+
 /**
  * Renders the full details of a single purchase order, including items, totals,
- * visit information, and a printable confirmation. Accessible to the purchasing user or staff.
+ * visit information, and a printable confirmation. Accessible to the purchasing
+ * user or staff.
  */
 export default function PurchaseDetailsPage() {
   const { orderId } = useParams();
@@ -26,45 +38,37 @@ export default function PurchaseDetailsPage() {
   const { isStaff, loading: staffLoading } = useAdmin();
   const [purchase, setPurchase] = useState(null);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/login");
     }
   }, [user, authLoading, navigate]);
+
   useEffect(() => {
-    if (user && orderId && !staffLoading) {
-      fetchPurchaseDetails();
-    }
-  }, [user, orderId, staffLoading]);
-  const fetchPurchaseDetails = async () => {
-    try {
-      let query = supabase.from("purchases").select("*").eq("id", orderId);
-      if (!isStaff) {
-        query = query.eq("user_id", user.id);
+    if (!user || !orderId || staffLoading) return;
+    let cancelled = false;
+    const fetchPurchaseDetails = async () => {
+      try {
+        let query = supabase.from("purchases").select("*").eq("id", orderId);
+        if (!isStaff) query = query.eq("user_id", user.id);
+        const { data, error } = await query.single();
+        if (error) throw error;
+        if (!cancelled) setPurchase(data);
+      } catch (error) {
+        console.error("Error fetching purchase details:", error);
+        alert("Unable to load order details");
+        navigate(isStaff ? "/staff" : "/dashboard");
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      const { data, error } = await query.single();
-      if (error) throw error;
-      setPurchase(data);
-    } catch (error) {
-      console.error("Error fetching purchase details:", error);
-      alert("Unable to load order details");
-      navigate(isStaff ? "/staff" : "/dashboard");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-  const formatPrice = (cents) => {
-    return `$${(cents / 100).toFixed(2)}`;
-  };
+    };
+    fetchPurchaseDetails();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, orderId, staffLoading, isStaff, navigate]);
+
   if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
@@ -75,9 +79,13 @@ export default function PurchaseDetailsPage() {
       </div>
     );
   }
-  if (!purchase) {
-    return null;
-  }
+
+  if (!purchase) return null;
+
+  const isStaffSession = isStaff;
+  const backHref = isStaffSession ? "/staff" : "/dashboard";
+  const backLabel = isStaffSession ? "Back to Staff Panel" : "Back to Purchases";
+
   return (
     <div className="w-full -mt-20">
       <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
@@ -91,11 +99,11 @@ export default function PurchaseDetailsPage() {
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <button
-              onClick={() => navigate(isStaff ? "/staff" : "/dashboard")}
+              onClick={() => navigate(backHref)}
               className="flex items-center gap-2 text-white hover:text-red-500 transition-colors mb-6 font-semibold"
             >
               <ArrowLeft className="h-5 w-5" />
-              {isStaff ? "Back to Staff Panel" : "Back to Purchases"}
+              {backLabel}
             </button>
             <div className="text-center">
               <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
@@ -106,17 +114,7 @@ export default function PurchaseDetailsPage() {
                 <span className="text-red-500">#{purchase.order_number}</span>
               </h1>
               <div className="flex items-center justify-center gap-2">
-                {purchase.status === "completed" ? (
-                  <span className="px-4 py-2 rounded-full text-sm font-bold bg-green-600 text-white flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    COMPLETED
-                  </span>
-                ) : (
-                  <span className="px-4 py-2 rounded-full text-sm font-bold bg-yellow-500 text-yellow-900 flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    PENDING
-                  </span>
-                )}
+                <StatusBadge status={purchase.status} size="lg" />
               </div>
             </div>
           </div>
@@ -147,12 +145,11 @@ export default function PurchaseDetailsPage() {
                             {item.product_name}
                           </p>
                           <p className="text-sm text-gray-600">
-                            Quantity: {item.quantity} ×{" "}
-                            {formatPrice(item.price)}
+                            Quantity: {item.quantity} × {formatCents(item.price)}
                           </p>
                         </div>
                         <p className="font-bold text-gray-800">
-                          {formatPrice(item.subtotal)}
+                          {formatCents(item.subtotal)}
                         </p>
                       </div>
                     ))}
@@ -169,7 +166,7 @@ export default function PurchaseDetailsPage() {
                     </div>
                     <div className="text-right">
                       <div className="font-display text-4xl text-red-600 tracking-wide">
-                        {formatPrice(purchase.total_amount)}
+                        {formatCents(purchase.total_amount)}
                       </div>
                     </div>
                   </div>
@@ -182,7 +179,7 @@ export default function PurchaseDetailsPage() {
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Order Date</p>
                       <p className="font-semibold text-gray-800">
-                        {formatDate(purchase.created_at)}
+                        {formatLongDateTime(purchase.created_at)}
                       </p>
                     </div>
                   </div>
@@ -234,42 +231,34 @@ export default function PurchaseDetailsPage() {
               <div className="space-y-4">
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
                   <h3 className="font-bold text-gray-800 mb-2">Speedway 146</h3>
-                  <p className="text-gray-700 mb-3">
-                    6750 N TX-146, Baytown, TX 77523
-                  </p>
+                  <p className="text-gray-700 mb-3">{CONTACT_INFO.address}</p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-700">
                       <Phone className="h-4 w-4 text-red-600" />
                       <a
-                        href="tel:(346) 932-1266"
+                        href={CONTACT_INFO.phoneTel}
                         className="hover:text-red-600 transition-colors font-semibold"
                       >
-                        (346) 932-1266
+                        {CONTACT_INFO.phone}
                       </a>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
                       <Mail className="h-4 w-4 text-red-600" />
                       <a
-                        href="mailto:info@speedway146.com"
+                        href={CONTACT_INFO.emailMailto}
                         className="hover:text-red-600 transition-colors"
                       >
-                        info@speedway146.com
+                        {CONTACT_INFO.email}
                       </a>
                     </div>
                   </div>
                 </div>
                 <div className="bg-white bg-opacity-60 rounded-lg p-4">
-                  <h4 className="font-bold text-gray-800 mb-2">
-                    What to Bring
-                  </h4>
+                  <h4 className="font-bold text-gray-800 mb-2">What to Bring</h4>
                   <ul className="space-y-1 text-gray-700">
-                    <li>• Valid government-issued ID</li>
-                    <li>• This order confirmation</li>
-                    <li>• Closed-toe shoes required</li>
-                    <li>
-                      • Each race ticket is one 5-minute race on the track
-                    </li>
-                    <li>• Waivers signed in person at the front desk</li>
+                    {VISIT_NOTES.map((note) => (
+                      <li key={note}>• {note}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -311,7 +300,7 @@ export default function PurchaseDetailsPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="tel:(346) 932-1266"
+                  href={CONTACT_INFO.phoneTel}
                   className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95"
                 >
                   <Phone className="h-5 w-5" />

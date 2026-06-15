@@ -1,48 +1,59 @@
-import React, { useState } from "react";
-import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { ChevronDown, Plus } from "lucide-react";
+
 /**
- * Accordion-style FAQ item that expands/collapses to reveal the answer.
- * Accepts a `faq` prop with `question` and `answer` fields.
+ * Accordion-style FAQ item. Click toggles the answer. The chevron rotates,
+ * and the question color shifts to race-red so the open item is unmistakable.
  */
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border-b border-gray-200 last:border-b-0">
+    <div className="border-b border-asphalt-100 last:border-b-0">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className={`w-full px-8 py-6 text-left flex items-center justify-between transition-colors duration-300 ${
-          isOpen ? "bg-red-50" : "hover:bg-gray-50"
+        className={`w-full px-6 sm:px-8 py-5 text-left flex items-center justify-between gap-4 transition-colors duration-base ease-snap ${
+          isOpen ? "bg-race-50" : "hover:bg-asphalt-50"
         }`}
       >
-        <div className="flex items-start gap-4 flex-1">
-          <div
-            className={`flex-shrink-0 mt-1 transition-colors duration-300 ${isOpen ? "text-red-600" : "text-gray-400"}`}
+        <div className="flex items-start gap-4 flex-1 min-w-0">
+          <span
+            className={`flex-shrink-0 mt-0.5 h-7 w-7 rounded-md flex items-center justify-center font-display text-sm tracking-speedway transition-colors duration-base ease-snap ${
+              isOpen
+                ? "bg-race-600 text-chalk"
+                : "bg-asphalt-100 text-asphalt-600"
+            }`}
+            aria-hidden="true"
           >
-            <CheckCircle className="h-6 w-6" />
-          </div>
+            Q
+          </span>
           <h3
-            className={`text-lg font-bold pr-4 transition-colors duration-300 ${
-              isOpen ? "text-red-600" : "text-gray-800"
+            className={`text-base sm:text-lg font-bold pr-2 transition-colors duration-base ease-snap ${
+              isOpen ? "text-race-700" : "text-asphalt-900"
             }`}
           >
             {faq.question}
           </h3>
         </div>
-        <div className="flex-shrink-0">
-          {isOpen ? (
-            <ChevronUp className="h-6 w-6 text-red-600 transition-transform duration-300" />
-          ) : (
-            <ChevronDown className="h-6 w-6 text-gray-400 transition-transform duration-300" />
-          )}
-        </div>
+        <ChevronDown
+          className={`h-5 w-5 flex-shrink-0 transition-transform duration-base ease-snap ${
+            isOpen ? "text-race-600 rotate-180" : "text-asphalt-400"
+          }`}
+          aria-hidden="true"
+        />
       </button>
-      {isOpen && (
-        <div className="px-8 pb-6 pl-[4.5rem] animate-slide-up">
-          <p className="text-gray-700 leading-relaxed text-lg">{faq.answer}</p>
+      <div
+        className={`overflow-hidden transition-[max-height,opacity] duration-slow ease-snap ${
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-6 sm:px-8 pb-6 pl-[3.75rem] sm:pl-[4.5rem]">
+          <p className="text-asphalt-700 leading-relaxed">{faq.answer}</p>
         </div>
-      )}
+      </div>
     </div>
   );
 };
+
 export default QuestionSection;

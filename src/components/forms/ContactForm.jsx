@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CheckCircle, Send } from "lucide-react";
 import Button from "../common/Button.jsx";
+import { CONTACT_INFO } from "../../lib/content/business.js";
+
 const INPUT_CLASS =
   "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:border-transparent";
-const CONTACT_EMAIL = "speedsway146@gmail.com";
 /**
  * Contact/inquiry form with fields for name, email, phone, event date,
  * inquiry type, and a message.
@@ -42,7 +43,7 @@ const ContactForm = () => {
         .filter(Boolean)
         .join("\n"),
     );
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${CONTACT_INFO.email}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
   if (submitted) {
@@ -53,8 +54,8 @@ const ContactForm = () => {
         <p className="text-green-700 text-sm">
           Your email client should have opened with your inquiry pre-filled. If
           it didn't open automatically, please email us directly at{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">
-            {CONTACT_EMAIL}
+          <a href={`mailto:${CONTACT_INFO.email}`} className="underline font-medium">
+            {CONTACT_INFO.email}
           </a>
           .
         </p>
@@ -70,7 +71,7 @@ const ContactForm = () => {
         <p className="text-red-700 text-sm">
           Use the form below to contact us about events, parties, general
           questions, or any other inquiries. For immediate assistance, please
-          call us directly at (346) 932-1266.
+          call us directly at {CONTACT_INFO.phone}.
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -194,7 +195,7 @@ const ContactForm = () => {
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-600">
             * Required fields. For immediate assistance or to make reservations,
-            please call us at (346) 932-1266.
+            please call us at {CONTACT_INFO.phone}.
           </p>
         </div>
         <Button

@@ -15,6 +15,9 @@ import {
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
+import { parsePriceString } from "../lib/pricing.js";
+import { formatDollars } from "../lib/format.js";
+import PageHero from "../components/common/PageHero.jsx";
 const TRANSACTION_FEE_PERCENT = 0.04;
 const PLATFORM_FEE_PERCENT = 0.01;
 const COMBINED_FEE_PERCENT = TRANSACTION_FEE_PERCENT + PLATFORM_FEE_PERCENT;
@@ -83,7 +86,7 @@ async function createCheckoutSession(checkoutItems, user) {
 }
 /** Single cart line-item with quantity controls and remove button. */
 function CartItemRow({ item, onUpdateQuantity, onRemove }) {
-  const unitPrice = parseFloat(item.product.price.replace("$", ""));
+  const unitPrice = parsePriceString(item.product.price);
   const lineSubtotal = unitPrice * item.quantity;
   return (
     <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-xl hover:border-red-300 transition-[box-shadow,border-color] duration-200 ease-out">
@@ -98,7 +101,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
             </p>
             <p className="text-lg font-bold text-gray-800">
               <span className="font-display text-2xl tracking-wide">
-                ${unitPrice.toFixed(2)}
+                {formatDollars(unitPrice)}
               </span>{" "}
               <span className="text-sm font-normal text-gray-600">
                 per person
@@ -139,7 +142,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
           </div>
           <div className="text-right">
             <div className="font-display text-3xl text-gray-800 tracking-wide">
-              ${lineSubtotal.toFixed(2)}
+              {formatDollars(lineSubtotal)}
             </div>
             <div className="text-xs text-gray-500 uppercase tracking-wider">
               subtotal
@@ -172,7 +175,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         <div className="flex justify-between text-lg">
           <span className="text-gray-700">Subtotal:</span>
           <span className="font-semibold text-gray-800">
-            ${fees.rawSubtotal.toFixed(2)}
+            {formatDollars(fees.rawSubtotal)}
           </span>
         </div>
         {fees.qualifiesForGroupDiscount && (
@@ -181,7 +184,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
               Group Discount ({GROUP_DISCOUNT_DISPLAY}):
             </span>
             <span className="font-semibold text-green-600">
-              -${fees.groupDiscount.toFixed(2)}
+              -{formatDollars(fees.groupDiscount)}
             </span>
           </div>
         )}
@@ -190,20 +193,20 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
             Sales Tax ({SALES_TAX_DISPLAY}):
           </span>
           <span className="font-semibold text-gray-700">
-            ${fees.salesTax.toFixed(2)}
+            {formatDollars(fees.salesTax)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Transaction Fee:</span>
           <span className="font-semibold text-gray-700">
-            ${fees.serviceFee.toFixed(2)}
+            {formatDollars(fees.serviceFee)}
           </span>
         </div>
         <div className="border-t-2 border-gray-300 pt-4" />
         <div className="flex justify-between items-baseline">
           <span className="text-2xl font-bold text-gray-800">Total:</span>
           <span className="font-display text-4xl text-gray-900 tracking-wide">
-            ${fees.total.toFixed(2)}
+            {formatDollars(fees.total)}
           </span>
         </div>
       </div>
@@ -302,29 +305,15 @@ export default function CartPage() {
   const fees = calculateFees(getTotal(), totalItems);
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[40vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: `url(${CART_HERO_IMAGE})` }}
-          />
-        </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-              SHOPPING CART
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-              Your <span className="text-red-500">Cart</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Review your items and proceed to checkout
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-      </section>
+      <PageHero
+        badge="SHOPPING CART"
+        title="Your"
+        titleAccent="Cart"
+        description="Review your items and proceed to checkout"
+        backgroundImage={CART_HERO_IMAGE}
+        minHeightClass="min-h-[40vh]"
+        dividerColorClass="bg-white"
+      />
       <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">

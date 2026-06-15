@@ -13,12 +13,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
-import { CONTACT_INFO } from "../lib/constants.js";
+import PageHero from "../components/common/PageHero.jsx";
+import Pill from "../components/common/Pill.jsx";
+import { CONTACT_INFO } from "../lib/content/business.js";
+
 const HERO_BADGES = [
   { icon: PartyPopper, label: "Birthday Parties" },
   { icon: Briefcase, label: "Corporate Events" },
   { icon: Trophy, label: "Racing Leagues" },
 ];
+
 const EVENT_TYPES = [
   {
     title: "Birthday Parties",
@@ -60,6 +64,7 @@ const EVENT_TYPES = [
     ],
   },
 ];
+
 const BENEFITS = [
   {
     icon: Shield,
@@ -82,6 +87,7 @@ const BENEFITS = [
     description: "Tailored solutions for your specific needs and budget",
   },
 ];
+
 const CTA_INFO_CARDS = [
   {
     icon: Clock,
@@ -102,51 +108,36 @@ const CTA_INFO_CARDS = [
     ],
   },
 ];
+
 /** Renders the Events page showcasing birthday parties, corporate events, and racing leagues. */
 const EventsPage = () => (
   <div className="w-full -mt-20">
-    {/* Hero */}
-    <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/14.JPEG')]" />
-      </div>
-      {/* Decorative checkerboard overlay */}
-      <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-            EVENTS & PARTIES
+    <PageHero
+      badge="EVENTS & PARTIES"
+      title="Celebrate in the"
+      titleAccent="Fast Lane"
+      description="Create unforgettable memories with our exciting events, party packages, and racing leagues"
+      backgroundImage="/images/14.JPEG"
+      dividerColorClass="bg-white"
+    >
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        {HERO_BADGES.map(({ icon: Icon, label }) => (
+          <div
+            key={label}
+            className="flex items-center gap-2 bg-navy-800 bg-opacity-80 backdrop-blur-sm px-6 py-3 rounded-full border border-red-600 border-opacity-50"
+          >
+            <Icon className="h-5 w-5 text-red-500" />
+            <span className="text-white font-semibold">{label}</span>
           </div>
-          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-            Celebrate in the <span className="text-red-500">Fast Lane</span>
-          </h1>
-          <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Create unforgettable memories with our exciting events, party
-            packages, and racing leagues
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            {HERO_BADGES.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 bg-navy-800 bg-opacity-80 backdrop-blur-sm px-6 py-3 rounded-full border border-red-600 border-opacity-50"
-              >
-                <Icon className="h-5 w-5 text-red-500" />
-                <span className="text-white font-semibold">{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-    </section>
+    </PageHero>
     {/* Event Types */}
     <section className="py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-          <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-display tracking-widest">
-            EVENT TYPES
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+          <Pill variant="muted" className="mb-4">EVENT TYPES</Pill>
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
             Events for Every Occasion
           </h2>
           <p className="text-xl text-gray-600">
@@ -235,7 +226,7 @@ const EventsPage = () => (
       </div>
     </section>
     {/* CTA */}
-    <section className="py-24 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
+    <section className="py-24 text-white bg-asphalt-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
           <PartyPopper className="h-16 w-16 mx-auto mb-6 text-red-500" />
@@ -248,18 +239,14 @@ const EventsPage = () => (
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href={`tel:${CONTACT_INFO.phone}`}
+              href={CONTACT_INFO.phoneTel}
               className="inline-flex items-center justify-center bg-white text-red-600 hover:bg-gray-100 px-10 py-5 rounded-xl font-bold text-xl transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
             >
               <Phone className="h-6 w-6 mr-3" />
               {CONTACT_INFO.phone}
             </a>
             <Link to="/pricing">
-              <Button
-                size="lg"
-                variant="outlineLight"
-                className="text-xl px-10 py-5"
-              >
+              <Button size="lg" variant="outlineLight" className="text-xl px-10 py-5">
                 View Pricing
               </Button>
             </Link>
@@ -287,4 +274,5 @@ const EventsPage = () => (
     </section>
   </div>
 );
+
 export default EventsPage;

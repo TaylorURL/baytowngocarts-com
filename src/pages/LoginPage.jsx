@@ -4,9 +4,14 @@
  */
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 import Button from "../components/common/Button";
+import AuthShell from "../components/common/AuthShell.jsx";
+
+const INPUT_CLASS =
+  "w-full px-4 py-3 rounded-md bg-asphalt-50 text-asphalt-900 placeholder:text-asphalt-400 border-2 border-asphalt-200 transition-colors duration-base ease-snap focus:outline-none focus:border-race-500 focus:bg-white";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -25,56 +31,43 @@ const LoginPage = () => {
     if (error) {
       setMessage({ type: "error", text: error.message });
     } else {
-      setMessage({ type: "success", text: "Successfully signed in!" });
-      setTimeout(() => navigate(from, { replace: true }), 1000);
+      setMessage({ type: "success", text: "Successfully signed in." });
+      setTimeout(() => navigate(from, { replace: true }), 800);
     }
     setLoading(false);
   };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <Link to="/" className="inline-block mb-8">
-            <img
-              src="/images/logo.png"
-              alt="Speedway 146"
-              loading="eager"
-              className="h-20 mx-auto"
-            />
-          </Link>
-          <h2 className="text-4xl font-bold text-white tracking-wide">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-gray-300">
-            Or{" "}
-            <Link
-              to="/signup"
-              className="text-red-400 hover:text-red-300 font-medium transition-colors duration-200 ease-out"
-            >
-              create a new account
-            </Link>
+    <AuthShell>
+      <div className="bg-chalk rounded-lg shadow-lift border border-asphalt-200 overflow-hidden">
+        <div className="px-8 pt-8 pb-2 text-center">
+          <h1 className="font-display text-3xl tracking-tight text-asphalt-900">
+            Welcome back
+          </h1>
+          <p className="mt-2 text-sm text-asphalt-600">
+            Sign in to view orders & event bookings.
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow-xl p-8">
+        <div className="p-8 pt-6">
           {message && (
             <div
               role="alert"
-              className={`mb-4 p-4 rounded-lg border-l-4 text-sm font-medium ${
+              className={`mb-5 p-4 rounded-md border-l-4 text-sm font-medium ${
                 message.type === "error"
-                  ? "bg-red-50 border-red-500 text-red-700"
+                  ? "bg-race-50 border-race-500 text-race-800"
                   : "bg-green-50 border-green-600 text-green-700"
               }`}
             >
               {message.text}
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-xs uppercase tracking-widest font-display text-asphalt-700 mb-2"
               >
-                Email address
+                Email
               </label>
               <input
                 id="email"
@@ -84,14 +77,14 @@ const LoginPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 ease-out focus:ring-2 focus:ring-red-600 focus:border-transparent"
-                placeholder="Enter your email"
+                className={INPUT_CLASS}
+                placeholder="you@example.com"
               />
             </div>
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-xs uppercase tracking-widest font-display text-asphalt-700 mb-2"
               >
                 Password
               </label>
@@ -104,15 +97,15 @@ const LoginPage = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg transition-colors duration-200 ease-out focus:ring-2 focus:ring-red-600 focus:border-transparent pr-12"
-                  placeholder="Enter your password"
+                  className={`${INPUT_CLASS} pr-12`}
+                  placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   aria-pressed={showPassword}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 transition-colors duration-200 ease-out hover:text-red-600"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-asphalt-400 hover:text-race-600 transition-colors duration-base ease-snap"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -126,25 +119,25 @@ const LoginPage = () => {
               type="submit"
               variant="primary"
               fullWidth
+              size="lg"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Signing in…" : "Sign in"}
             </Button>
           </form>
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                className="text-red-600 hover:text-red-500 font-semibold transition-colors duration-200 ease-out"
-              >
-                Sign up here
-              </Link>
-            </p>
-          </div>
+          <p className="mt-6 text-center text-sm text-asphalt-600">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-race-600 hover:text-race-700 font-semibold transition-colors duration-base ease-snap"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
-    </div>
+    </AuthShell>
   );
 };
+
 export default LoginPage;

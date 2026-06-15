@@ -1,49 +1,51 @@
 /**
- * 404 page displayed for unmatched routes. Shows a themed error message
- * with links back to the home and pricing pages.
+ * 404 page displayed for unmatched routes. Themed as a "wrong turn" message
+ * with links back home and to pricing.
  */
 import { Link } from "react-router-dom";
-import { Home, ArrowLeft } from "lucide-react";
-export default function NotFoundPage() {
-  return (
-    <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden min-h-screen flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-cover bg-center opacity-20 bg-[url('/images/18.JPEG')]" />
+import { ArrowLeft, Home } from "lucide-react";
+import Pill from "../components/common/Pill.jsx";
+
+const NotFoundPage = () => (
+  <div className="w-full -mt-20">
+    <section className="relative bg-asphalt-950 overflow-hidden min-h-screen flex items-center">
+      <div className="absolute inset-0 asphalt-grain opacity-70" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-15 bg-cover bg-center bg-[url('/images/18.JPEG')]" aria-hidden="true" />
+      <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
+      <div className="absolute top-0 left-0 right-0 h-1.5 race-stripe" aria-hidden="true" />
+      <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-race-600/20 blur-3xl" aria-hidden="true" />
+
+      <div className="relative z-10 container mx-auto px-4 text-center" data-aos="fade-up">
+        <Pill variant="race">Wrong Turn</Pill>
+        <h1 className="mt-6 font-display text-[8rem] md:text-[12rem] leading-none text-race-500 tracking-tight [text-shadow:0_8px_30px_rgba(225,29,42,0.45)]">
+          404
+        </h1>
+        <h2 className="mt-2 text-3xl md:text-4xl font-bold text-chalk">
+          That page isn't on our track.
+        </h2>
+        <p className="mt-4 text-lg text-gray-400 max-w-md mx-auto">
+          You took a wrong turn somewhere. No worries — pit lane is right
+          this way.
+        </p>
+        <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+          <Link
+            to="/"
+            className="group inline-flex items-center justify-center gap-2 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg shadow-race transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
+          >
+            <Home className="h-5 w-5" />
+            Back to home
+          </Link>
+          <Link
+            to="/pricing"
+            className="group inline-flex items-center justify-center gap-2 border-2 border-chalk/30 hover:border-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg transition-[border-color,transform] duration-base ease-snap active:scale-95"
+          >
+            <ArrowLeft className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1" />
+            See pricing instead
+          </Link>
         </div>
-        {/* Diagonal crosshatch racing-flag texture */}
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 text-center" data-aos="fade-up">
-          <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-            WRONG TURN
-          </div>
-          <h1 className="text-8xl md:text-9xl font-black text-red-600 mb-4 leading-none [text-shadow:0_8px_30px_rgba(224,36,36,0.35)]">
-            404
-          </h1>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Page Not Found
-          </h2>
-          <p className="text-xl text-gray-300 mb-10 max-w-md mx-auto">
-            Looks like you took a wrong turn on the track. Let's get you back.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/"
-              className="group inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-red transition duration-200 ease-out hover:-translate-y-0.5 active:scale-95"
-            >
-              <Home className="h-5 w-5" />
-              Go Home
-            </Link>
-            <Link
-              to="/pricing"
-              className="group inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-red-500 text-white px-8 py-4 rounded-xl font-bold text-lg transition duration-200 ease-out active:scale-95"
-            >
-              <ArrowLeft className="h-5 w-5 transition-transform duration-200 ease-out group-hover:-translate-x-1" />
-              View Pricing
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
+      </div>
+    </section>
+  </div>
+);
+
+export default NotFoundPage;
