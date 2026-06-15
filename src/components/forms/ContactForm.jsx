@@ -71,7 +71,7 @@ const ContactForm = () => {
         <p className="text-red-700 text-sm">
           Use the form below to contact us about events, parties, general
           questions, or any other inquiries. For immediate assistance, please
-          call us directly at (346) 932-1266.
+          call us directly at {CONTACT_INFO.phone}.
         </p>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
