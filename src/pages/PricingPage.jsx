@@ -1,22 +1,4 @@
 import { useState } from "react";
-import {
-  Baby,
-  Castle,
-  Check,
-  Clock,
-  Crown,
-  Flag,
-  HelpCircle,
-  Phone,
-  Plus,
-  Shield,
-  ShoppingCart,
-  Sparkles,
-  Star,
-  Timer,
-  Users,
-  Zap,
-} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { BOUNCE_PRICING } from "../lib/content/bounce.js";
 import {
@@ -28,58 +10,50 @@ import { CONTACT_INFO } from "../lib/content/business.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import TabButton from "../components/pricing/TabButton.jsx";
 import QuantityStepper from "../components/pricing/QuantityStepper.jsx";
 import RacingProductCard from "../components/pricing/RacingProductCard.jsx";
 
 const PARTY_FEATURES = [
-  "Includes 20 Racing Bracelets",
+  "20 racing wristbands included",
   "2 hours of organized racing",
-  "Bracelets can be shared or rotated",
-  "Everyone gets multiple chances to race",
-  "Staff manages racing for safety",
+  "Wristbands can rotate among guests",
+  "Staff runs the heats — no parental refereeing",
   "Shared track with public riders",
-  "3 hours in a private party room",
-  "Room accommodates up to 45 guests",
-  "Outdoor seating at no extra cost",
-  "Tables & chairs fully set up",
-  "Wristbands included",
-];
-
-const FAMILY_FAVORITES = [
-  "Simple pricing",
-  "Flexible for all ages",
-  "No guest count stress",
-  "Safe & organized",
-  "Staff handles everything",
+  "3 hours in the private party room",
+  "Room fits up to 45 guests",
+  "Outdoor seating overflow at no charge",
+  "Tables + chairs already set up",
+  "Public-side bounce wristbands available à la carte",
 ];
 
 const HEIGHT_REQUIREMENTS = [
-  { label: "Kiddie Karts:", value: 'Minimum 40" tall' },
-  { label: "Adult Karts:", value: 'Minimum 53" tall' },
-  { label: "Double Seater:", value: 'Driver 53"+, Passenger 33"+' },
+  { label: "Kiddie karts", value: 'Minimum 40" tall' },
+  { label: "Adult karts", value: 'Minimum 53" tall' },
+  { label: "Double seater", value: 'Driver 53"+, passenger 33"+' },
 ];
 
 const POLICY_LINES = [
-  "Each race ticket = one 5-minute race",
+  "Each race ticket = one 5-minute heat",
   "All packages must be used same day",
-  "Long hair must be tied back",
-  "Waivers signed in person at the front desk",
+  "Long hair tied back (ties at front desk)",
+  "Waivers signed in person before riding",
 ];
 
-const getIcon = (name) => {
-  if (name.includes("Kid")) return Baby;
-  if (name.includes("Adult")) return Zap;
-  if (name.includes("Family")) return Users;
-  if (name.includes("2.5") || name.includes("Hour")) return Timer;
+const getIconName = (productName) => {
+  if (productName.includes("Kid")) return "helmet";
+  if (productName.includes("Adult")) return "kart";
+  if (productName.includes("Family")) return "users";
+  if (productName.includes("2.5") || productName.includes("Hour")) return "stopwatch";
   if (
-    name.includes("Double") ||
-    name.includes("Ride Along") ||
-    name.includes("Track Titan")
+    productName.includes("Double") ||
+    productName.includes("Ride Along") ||
+    productName.includes("Track Titan")
   )
-    return Users;
-  return Sparkles;
+    return "users";
+  return "flag";
 };
 
 const PricingPage = () => {
@@ -115,7 +89,8 @@ const PricingPage = () => {
   ];
 
   const totalPrice = allProducts.reduce(
-    (sum, product) => sum + getQuantity(product.id) * parsePriceString(product.price),
+    (sum, product) =>
+      sum + getQuantity(product.id) * parsePriceString(product.price),
     0,
   );
 
@@ -141,57 +116,61 @@ const PricingPage = () => {
   return (
     <div className="w-full -mt-20">
       <PageHero
-        badge="PRICING"
-        title="Pricing &"
-        titleAccent="Packages"
-        description="Choose the perfect experience for your visit"
+        badge="Pricing"
+        title="Pick your"
+        titleAccent="package."
+        description="Every price is before 8.25% Texas sales tax. Cash pays 4% less than card. Groups of 15+ get 10% off racing automatically."
         backgroundImage="/images/17.JPEG"
-        dividerColorClass="bg-gray-50"
+        dividerColorClass="bg-asphalt-50"
       >
         <div
           role="tablist"
           aria-label="Pricing categories"
-          className="mt-10 inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10"
+          className="mt-10 inline-flex bg-asphalt-800/60 rounded-md p-1.5 border border-chalk/10"
         >
           <TabButton
-            icon={Flag}
+            iconName="flag"
             label="Party Packages"
             isActive={activeTab === "parties"}
             onClick={() => setActiveTab("parties")}
           />
           <TabButton
-            icon={Users}
+            iconName="kart"
             label="Individual Racing"
             isActive={activeTab === "individual"}
             onClick={() => setActiveTab("individual")}
           />
           <TabButton
-            icon={Baby}
+            iconName="bouncy-castle"
             label="Bounce House"
             isActive={activeTab === "bounce"}
             onClick={() => setActiveTab("bounce")}
           />
         </div>
       </PageHero>
+
       {showCartNotification && (
-        <div className="fixed top-24 right-4 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
-          <Check className="h-6 w-6" />
-          <span className="font-bold">Items added to cart!</span>
+        <div className="fixed top-24 right-4 z-50 bg-green-600 text-chalk px-6 py-4 rounded-md shadow-lift flex items-center gap-3">
+          <Icon name="check" className="h-5 w-5" />
+          <span className="font-bold">Added to cart</span>
         </div>
       )}
+
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-red-600 shadow-2xl p-4 transition-transform duration-300 ${totalItems > 0 ? "translate-y-0" : "translate-y-full"}`}
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-chalk border-t-4 border-race-600 shadow-lift p-4 transition-transform duration-base ${totalItems > 0 ? "translate-y-0" : "translate-y-full"}`}
       >
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="bg-red-600 p-3 rounded-xl">
-              <ShoppingCart className="h-6 w-6 text-white" />
+            <div className="bg-race-600 p-3 rounded-md">
+              <Icon name="shopping-cart" className="h-6 w-6 text-chalk" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Your Selection</p>
-              <p className="text-xl font-bold text-gray-800">
-                {totalItems} {totalItems === 1 ? "item" : "items"} -{" "}
-                <span className="font-display tracking-wide">
+              <p className="text-xs font-display tracking-speedway uppercase text-asphalt-500">
+                Your Selection
+              </p>
+              <p className="text-xl font-bold text-asphalt-900 tabular-nums">
+                {totalItems} {totalItems === 1 ? "item" : "items"} ·{" "}
+                <span className="font-display tracking-wide text-race-600">
                   {formatDollars(totalPrice)}
                 </span>
               </p>
@@ -200,33 +179,36 @@ const PricingPage = () => {
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={handleAddAllToCart}
-              className="flex-1 sm:flex-none bg-gray-800 hover:bg-gray-700 text-white px-5 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-5 py-3 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
             >
-              <Plus className="h-5 w-5" />
+              <Icon name="plus" className="h-4 w-4" />
               Add to Cart
             </button>
             <button
               onClick={handleGoToCart}
-              className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-race-600 hover:bg-race-500 text-chalk px-6 py-3 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 flex items-center justify-center gap-2 shadow-race"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <Icon name="shopping-cart" className="h-4 w-4" />
               Checkout
             </button>
           </div>
         </div>
       </div>
+
       {activeTab === "parties" && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-asphalt-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                <h2 className="text-3xl font-bold text-asphalt-900 mb-2">
                   Party Packages
                 </h2>
-                <p className="text-gray-600">
-                  Select your package and add-ons, then checkout
+                <p className="text-asphalt-600">
+                  Private room, racing wristbands, staff-run heats. Call to lock
+                  in a date.
                 </p>
               </div>
+
               <div className="grid lg:grid-cols-2 gap-8 items-start">
                 {STRIPE_PARTY_PACKAGES.filter((p) => !p.isUpgrade).map(
                   (product) => {
@@ -235,36 +217,39 @@ const PricingPage = () => {
                     return (
                       <div
                         key={product.id}
-                        className={`bg-white rounded-3xl shadow-xl overflow-hidden border-2 transition duration-200 ease-out ${isSelected ? "border-red-500 ring-2 ring-red-200" : "border-red-500"}`}
+                        className={`bg-white rounded-lg shadow-lift overflow-hidden border-2 transition duration-base ease-snap ${isSelected ? "border-race-500 ring-2 ring-race-200" : "border-race-500"}`}
                       >
-                        <div className="bg-gradient-to-r from-red-600 to-red-700 p-4 text-center">
-                          <div className="flex items-center justify-center gap-2">
-                            <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                            <span className="text-white font-bold tracking-wider">
-                              MOST POPULAR
+                        <div className="bg-race-700 p-4 text-center">
+                          <div className="flex items-center justify-center gap-2 text-chalk">
+                            <Icon name="trophy" className="h-5 w-5 text-caution-400" />
+                            <span className="font-display tracking-speedway uppercase text-sm">
+                              Most Popular
                             </span>
-                            <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                            <Icon name="trophy" className="h-5 w-5 text-caution-400" />
                           </div>
                         </div>
                         <div className="p-6 md:p-8">
-                          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                          <h2 className="text-2xl md:text-3xl font-bold text-asphalt-900 mb-2">
                             {product.name}
                           </h2>
-                          <p className="text-gray-600 mb-4">
+                          <p className="text-asphalt-600 mb-4">
                             {product.description}
                           </p>
                           <div className="flex items-baseline gap-2 mb-6">
-                            <span className="font-display text-5xl text-red-600 tracking-wide">
+                            <span className="font-display text-5xl text-race-600 tracking-wide tabular-nums">
                               {product.price}
                             </span>
-                            <span className="text-gray-500">+ tax</span>
+                            <span className="text-asphalt-500">+ tax</span>
                           </div>
                           <div className="space-y-3 mb-6">
                             {PARTY_FEATURES.map((feature, idx) => (
                               <div key={idx} className="flex items-start gap-3">
-                                <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                <Icon
+                                  name="check"
+                                  className="h-5 w-5 text-race-600 flex-shrink-0 mt-0.5"
+                                />
                                 <span
-                                  className={`${idx < 2 || idx === 6 ? "font-semibold text-gray-800" : "text-gray-700"}`}
+                                  className={`${idx < 2 || idx === 5 ? "font-semibold text-asphalt-900" : "text-asphalt-700"}`}
                                 >
                                   {feature}
                                 </span>
@@ -284,17 +269,19 @@ const PricingPage = () => {
                             />
                           </div>
                           {isSelected && (
-                            <div className="bg-red-50 rounded-xl py-3 text-center mb-4">
-                              <span className="font-display text-red-600 text-2xl tracking-wide">
-                                {formatDollars(parsePriceString(product.price) * qty)}
+                            <div className="bg-race-50 rounded-md py-3 text-center mb-4">
+                              <span className="font-display text-race-600 text-2xl tracking-wide tabular-nums">
+                                {formatDollars(
+                                  parsePriceString(product.price) * qty,
+                                )}
                               </span>
                             </div>
                           )}
-                          <p className="text-center text-sm text-gray-500">
+                          <p className="text-center text-sm text-asphalt-500">
                             Or call to book:{" "}
                             <a
                               href={CONTACT_INFO.phoneTel}
-                              className="text-red-600 font-semibold hover:text-red-700 transition-colors duration-150 ease-out"
+                              className="text-race-600 font-bold tabular-nums hover:text-race-700"
                             >
                               {CONTACT_INFO.phone}
                             </a>
@@ -304,10 +291,11 @@ const PricingPage = () => {
                     );
                   },
                 )}
+
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-orange-500" />
+                    <h3 className="text-xs font-display tracking-speedway uppercase text-asphalt-700 mb-4 flex items-center gap-2">
+                      <Icon name="bolt" className="h-4 w-4 text-ignite-500" />
                       Party Upgrades
                     </h3>
                     <div className="space-y-3">
@@ -315,43 +303,44 @@ const PricingPage = () => {
                         (product) => {
                           const qty = getQuantity(product.id);
                           const isSelected = qty > 0;
-                          const IconComponent = product.name.includes("Bounce")
-                            ? Castle
+                          const upgradeIcon = product.name.includes("Bounce")
+                            ? "bouncy-castle"
                             : product.name.includes("Race Together")
-                              ? Users
-                              : Crown;
+                              ? "users"
+                              : "trophy";
                           const isPopular = product.name.includes("Bounce");
                           return (
                             <div
                               key={product.id}
-                              className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${isPopular ? "border-orange-400" : isSelected ? "border-red-400" : "border-gray-100"} ${isSelected ? "ring-2 ring-red-200" : ""} relative`}
+                              className={`bg-white rounded-md p-4 shadow-track border-2 transition duration-base ease-snap relative ${isPopular ? "border-ignite-400" : isSelected ? "border-race-400" : "border-asphalt-100"} ${isSelected ? "ring-2 ring-race-200" : ""}`}
                             >
                               {isPopular && (
-                                <div className="absolute -top-2 right-4 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full tracking-wider">
-                                  POPULAR
+                                <div className="absolute -top-2 right-4 bg-ignite-500 text-asphalt-950 text-[10px] font-display tracking-speedway uppercase px-2 py-0.5 rounded-full">
+                                  Popular
                                 </div>
                               )}
                               <div className="flex items-center gap-4">
                                 <div
-                                  className={`p-3 rounded-xl ${isPopular ? "bg-orange-100" : "bg-gray-100"}`}
+                                  className={`p-3 rounded-md ${isPopular ? "bg-ignite-100" : "bg-asphalt-100"}`}
                                 >
-                                  <IconComponent
-                                    className={`h-6 w-6 ${isPopular ? "text-orange-600" : "text-gray-600"}`}
+                                  <Icon
+                                    name={upgradeIcon}
+                                    className={`h-6 w-6 ${isPopular ? "text-ignite-600" : "text-asphalt-600"}`}
                                   />
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="font-bold text-gray-800">
+                                  <h4 className="font-bold text-asphalt-900">
                                     {product.name}
                                   </h4>
-                                  <p className="text-sm text-gray-500">
+                                  <p className="text-sm text-asphalt-500">
                                     {product.description}
                                   </p>
                                 </div>
-                                <div className="font-display text-xl text-gray-800 tracking-wide">
+                                <div className="font-display text-xl text-asphalt-900 tracking-wide tabular-nums">
                                   {product.price}
                                 </div>
                               </div>
-                              <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-gray-100">
+                              <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-asphalt-100">
                                 <QuantityStepper
                                   quantity={qty}
                                   productName={product.name}
@@ -370,9 +359,11 @@ const PricingPage = () => {
                                 />
                               </div>
                               {isSelected && (
-                                <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                                  <span className="font-display text-red-600 text-lg tracking-wide">
-                                    {formatDollars(parsePriceString(product.price) * qty)}
+                                <div className="mt-2 bg-race-50 rounded-md py-1 text-center">
+                                  <span className="font-display text-race-600 text-lg tracking-wide tabular-nums">
+                                    {formatDollars(
+                                      parsePriceString(product.price) * qty,
+                                    )}
                                   </span>
                                 </div>
                               )}
@@ -381,37 +372,26 @@ const PricingPage = () => {
                         },
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 mt-3 flex items-center gap-2">
-                      <Plus className="h-4 w-4" />
-                      Additional racing bracelets available - ask for details
+                    <p className="text-sm text-asphalt-500 mt-3 flex items-center gap-2">
+                      <Icon name="plus" className="h-4 w-4" />
+                      Extra racing wristbands $13.99 each — added at the
+                      front desk.
                     </p>
                   </div>
-                  <div className="bg-green-50 rounded-xl p-5 border border-green-200">
-                    <h4 className="font-bold text-green-800 mb-3">
-                      Why Families Love Our Parties
+
+                  <div className="bg-asphalt-900 rounded-lg p-6 text-chalk text-center shadow-track">
+                    <h4 className="font-display tracking-speedway uppercase text-sm mb-2">
+                      Need to customize?
                     </h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {FAMILY_FAVORITES.map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-2 text-sm text-green-700"
-                        >
-                          <Check className="h-4 w-4" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="bg-gray-800 rounded-xl p-6 text-white text-center">
-                    <h4 className="font-bold text-lg mb-2">Questions?</h4>
                     <p className="text-gray-300 text-sm mb-4">
-                      Call us to customize your party
+                      Call us. We work with allergies, time slots, and group
+                      sizes 45+.
                     </p>
                     <a
                       href={CONTACT_INFO.phoneTel}
-                      className="inline-flex items-center gap-2 bg-white text-gray-800 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition duration-200 ease-out active:scale-95"
+                      className="inline-flex items-center gap-2 bg-chalk text-asphalt-900 px-6 py-3 rounded-md font-bold hover:bg-white transition duration-base ease-snap active:scale-95 tabular-nums"
                     >
-                      <Phone className="h-5 w-5" />
+                      <Icon name="phone" className="h-5 w-5" />
                       {CONTACT_INFO.phone}
                     </a>
                   </div>
@@ -421,16 +401,18 @@ const PricingPage = () => {
           </div>
         </section>
       )}
+
       {activeTab === "individual" && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-asphalt-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Go-Kart Racing Packages
+                <h2 className="text-3xl font-bold text-asphalt-900 mb-2">
+                  Go-Kart Racing
                 </h2>
-                <p className="text-gray-600">
-                  Select quantities and add to cart
+                <p className="text-asphalt-600">
+                  Single heats, combos, family bundles, 2.5-hour unlimited
+                  wristbands.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
@@ -439,9 +421,13 @@ const PricingPage = () => {
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    icon={getIcon(product.name)}
-                    iconWrapperClass={product.isPopular ? "bg-red-100" : "bg-gray-100"}
-                    iconClass={product.isPopular ? "text-red-600" : "text-gray-600"}
+                    iconName={getIconName(product.name)}
+                    iconWrapperClass={
+                      product.isPopular ? "bg-race-100" : "bg-asphalt-100"
+                    }
+                    iconClass={
+                      product.isPopular ? "text-race-600" : "text-asphalt-600"
+                    }
                     features={product.features.slice(0, 2)}
                     onUpdateQuantity={updateQuantity}
                     onSetQuantity={setQuantityDirect}
@@ -449,11 +435,11 @@ const PricingPage = () => {
                 ))}
               </div>
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                  Double Seater Racing
+                <h3 className="text-2xl font-bold text-asphalt-900 mb-2">
+                  Double-Seater
                 </h3>
-                <p className="text-gray-600 text-sm">
-                  Driver must be 53"+ and passenger 33"+
+                <p className="text-asphalt-600 text-sm">
+                  One driver, one passenger. Driver 53"+, passenger 33"+.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
@@ -462,29 +448,32 @@ const PricingPage = () => {
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    icon={getIcon(product.name)}
-                    iconWrapperClass="bg-gray-700"
-                    iconClass="text-white"
+                    iconName={getIconName(product.name)}
+                    iconWrapperClass="bg-asphalt-800"
+                    iconClass="text-chalk"
                     perUnitLabel="per kart"
                     onUpdateQuantity={updateQuantity}
                     onSetQuantity={setQuantityDirect}
                   />
                 ))}
               </div>
-              <div className="bg-gray-800 rounded-2xl p-6 text-white max-w-4xl mx-auto">
+              <div className="bg-asphalt-900 rounded-lg p-6 text-chalk max-w-4xl mx-auto shadow-track">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
-                      <Users className="h-5 w-5 text-red-400" />
+                    <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2">
+                      <Icon name="helmet" className="h-5 w-5 text-race-400" />
                       Height Requirements
                     </h4>
                     <ul className="space-y-2 text-sm">
                       {HEIGHT_REQUIREMENTS.map(({ label, value }) => (
-                        <li key={label} className="flex items-center gap-2">
-                          <Check className="h-4 w-4 text-red-400" />
+                        <li
+                          key={label}
+                          className="flex items-center gap-2 tabular-nums"
+                        >
+                          <Icon name="check" className="h-4 w-4 text-race-400" />
                           <span>
-                            <span className="text-red-400 font-semibold">
-                              {label}
+                            <span className="text-race-400 font-semibold">
+                              {label}:
                             </span>{" "}
                             {value}
                           </span>
@@ -493,14 +482,14 @@ const PricingPage = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
-                      <Clock className="h-5 w-5 text-red-400" />
+                    <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2">
+                      <Icon name="stopwatch" className="h-5 w-5 text-race-400" />
                       Policies
                     </h4>
                     <ul className="space-y-2 text-sm">
                       {POLICY_LINES.map((line) => (
                         <li key={line} className="flex items-center gap-2">
-                          <Check className="h-4 w-4 text-red-400" />
+                          <Icon name="check" className="h-4 w-4 text-race-400" />
                           {line}
                         </li>
                       ))}
@@ -512,49 +501,54 @@ const PricingPage = () => {
           </div>
         </section>
       )}
+
       {activeTab === "bounce" && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-asphalt-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Bounce House Fun
+                <h2 className="text-3xl font-bold text-asphalt-900 mb-2">
+                  Bounce House Pass
                 </h2>
-                <p className="text-gray-600">
-                  Safe jumping fun for kids of all ages - climate controlled!
+                <p className="text-asphalt-600">
+                  Indoor, climate-controlled, supervised. Pair with a race
+                  wristband for the full Saturday.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 {BOUNCE_PRICING.map((plan, idx) => (
                   <div
                     key={idx}
-                    className={`bg-white rounded-xl p-6 shadow-md border-2 transition duration-200 ease-out ${plan.isPopular ? "border-red-500" : "border-gray-100 hover:border-gray-200 hover:shadow-lg"} relative`}
+                    className={`bg-white rounded-md p-6 shadow-track border-2 transition duration-base ease-snap relative ${plan.isPopular ? "border-race-500" : "border-asphalt-100 hover:border-asphalt-200 hover:shadow-lift"}`}
                   >
                     {plan.isPopular && (
                       <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full tracking-wider">
-                          MOST POPULAR
+                        <span className="bg-race-600 text-chalk text-[10px] font-display tracking-speedway uppercase px-3 py-1 rounded-full">
+                          Most Popular
                         </span>
                       </div>
                     )}
                     <div className="text-center mb-4">
-                      <div className="inline-flex bg-gray-100 p-3 rounded-xl mb-3">
-                        <Baby className="h-6 w-6 text-gray-600" />
+                      <div className="inline-flex bg-asphalt-100 p-3 rounded-md mb-3">
+                        <Icon
+                          name="bouncy-castle"
+                          className="h-6 w-6 text-asphalt-600"
+                        />
                       </div>
-                      <h3 className="text-xl font-bold text-gray-800">
+                      <h3 className="text-xl font-bold text-asphalt-900">
                         {plan.title}
                       </h3>
                       {plan.description && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-asphalt-500">
                           {plan.description}
                         </p>
                       )}
                     </div>
                     <div className="text-center mb-4">
-                      <span className="font-display text-4xl text-gray-800 tracking-wide">
+                      <span className="font-display text-4xl text-asphalt-900 tracking-wide tabular-nums">
                         {plan.price}
                       </span>
-                      <span className="text-gray-500 text-sm ml-1">
+                      <span className="text-asphalt-500 text-sm ml-1">
                         per person
                       </span>
                     </div>
@@ -564,57 +558,60 @@ const PricingPage = () => {
                           key={featureIdx}
                           className="flex items-start text-sm"
                         >
-                          <Check className="h-4 w-4 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-700">{feature}</span>
+                          <Icon
+                            name="check"
+                            className="h-4 w-4 text-race-600 mr-2 mt-0.5 flex-shrink-0"
+                          />
+                          <span className="text-asphalt-700">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <button
                       onClick={() => navigate("/contact")}
-                      className={`w-full py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 ${
+                      className={`w-full py-3 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 ${
                         plan.isPopular
-                          ? "bg-red-600 hover:bg-red-700 text-white"
-                          : "bg-gray-800 hover:bg-gray-700 text-white"
+                          ? "bg-race-600 hover:bg-race-500 text-chalk shadow-race"
+                          : "bg-asphalt-800 hover:bg-asphalt-700 text-chalk"
                       }`}
                     >
-                      Reserve Now
+                      Ask About It
                     </button>
                   </div>
                 ))}
               </div>
-              <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+              <div className="bg-white rounded-md p-6 shadow-track border border-asphalt-200">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Shield className="h-6 w-6 text-gray-600" />
+                    <div className="bg-asphalt-100 w-12 h-12 rounded-md flex items-center justify-center mx-auto mb-3">
+                      <Icon name="shield" className="h-6 w-6 text-asphalt-600" />
                     </div>
-                    <h4 className="font-bold text-gray-800 mb-1">
-                      Safe & Clean
+                    <h4 className="font-bold text-asphalt-900 mb-1">
+                      Supervised
                     </h4>
-                    <p className="text-gray-600 text-sm">
-                      Supervised and sanitized daily
+                    <p className="text-asphalt-600 text-sm">
+                      Staff at every entry, every shift.
                     </p>
                   </div>
                   <div>
-                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Zap className="h-6 w-6 text-gray-600" />
+                    <div className="bg-asphalt-100 w-12 h-12 rounded-md flex items-center justify-center mx-auto mb-3">
+                      <Icon name="bolt" className="h-6 w-6 text-asphalt-600" />
                     </div>
-                    <h4 className="font-bold text-gray-800 mb-1">
-                      Climate Controlled
+                    <h4 className="font-bold text-asphalt-900 mb-1">
+                      Climate-Controlled
                     </h4>
-                    <p className="text-gray-600 text-sm">
-                      Comfortable indoor environment
+                    <p className="text-asphalt-600 text-sm">
+                      Indoor — runs through Baytown summer heat.
                     </p>
                   </div>
                   <div>
-                    <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
-                      <Users className="h-6 w-6 text-gray-600" />
+                    <div className="bg-asphalt-100 w-12 h-12 rounded-md flex items-center justify-center mx-auto mb-3">
+                      <Icon name="users" className="h-6 w-6 text-asphalt-600" />
                     </div>
-                    <h4 className="font-bold text-gray-800 mb-1">
-                      All Ages Welcome
+                    <h4 className="font-bold text-asphalt-900 mb-1">
+                      All Ages
                     </h4>
-                    <p className="text-gray-600 text-sm">
-                      Fun for the whole family
+                    <p className="text-asphalt-600 text-sm">
+                      Toddlers through pre-teens have their own units.
                     </p>
                   </div>
                 </div>
@@ -623,26 +620,27 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-      <section className="py-12 text-white bg-asphalt-900">
+
+      <section className="py-12 text-chalk bg-asphalt-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-3">Questions?</h2>
             <p className="text-gray-300 mb-6">
-              Check our FAQ or give us a call
+              The FAQ covers most of them — call if it doesn't.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/faq"
-                className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+                className="bg-chalk text-asphalt-900 hover:bg-white px-6 py-3 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
               >
-                <HelpCircle className="h-5 w-5" />
+                <Icon name="help-circle" className="h-5 w-5" />
                 View FAQ
               </Link>
               <a
                 href={CONTACT_INFO.phoneTel}
-                className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+                className="bg-chalk/15 hover:bg-chalk/25 text-chalk px-6 py-3 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 flex items-center justify-center gap-2 tabular-nums"
               >
-                <Phone className="h-5 w-5" />
+                <Icon name="phone" className="h-5 w-5" />
                 {CONTACT_INFO.phone}
               </a>
             </div>
