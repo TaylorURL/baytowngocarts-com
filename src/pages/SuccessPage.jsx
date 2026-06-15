@@ -140,9 +140,9 @@ const SuccessPage = () => {
           <div className="flex flex-col gap-3">
             <Link to="/dashboard">
               <Button variant="primary" fullWidth size="lg" className="group">
-                <ShoppingBag className="h-5 w-5" />
+                <Icon name="shopping-bag" className="h-5 w-5" />
                 View My Purchases
-                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+                <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link to="/">
