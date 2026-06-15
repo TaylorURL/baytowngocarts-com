@@ -1,57 +1,164 @@
+/* ------------------------------------------------------------------
+ * SPEEDWAY 146 — design tokens
+ * Brand: energetic Texan outdoor go-kart venue on TX-146. Asphalt &
+ * race red, caution-yellow accents, no cheesy checkered flags or
+ * pickup-truck cliches. Friendly enough for a 7-year-old's birthday,
+ * confident enough to feel fast.
+ *
+ * Palette anchors:
+ *   asphalt   — the track itself. The trust-dark for hero surfaces.
+ *   race      — racing red. Primary brand colour. CTAs, accents.
+ *   ignite    — pit-lane orange. Secondary accent, warmth, momentum.
+ *   caution   — highway caution yellow. Earned, never default.
+ *   chalk     — warm white. Body surface in light mode.
+ *   silver    — chrome / gunmetal for trim and dividers.
+ *
+ * Three-tier tokens: primitive (hex) → semantic (--color-bg, etc.)
+ * → component. Components use semantic; pages use semantic.
+ * ------------------------------------------------------------------ */
 :root {
-  /* Navy — reserved for hero sections only */
-  --color-navy-900: #0b1a2e;
-  --color-navy-800: #112240;
-  --color-navy-700: #1a3358;
-  --color-navy-600: #234170;
-  --color-navy-500: #2c5088;
+  /* ──────────── Primitives ──────────── */
 
-  /* Racing red — primary CTAs and accents */
-  --color-red-900: #7f1d1d;
-  --color-red-800: #9b1c1c;
-  --color-red-700: #c41e1e;
-  --color-red-600: #e02424;
-  --color-red-500: #f03e3e;
-  --color-red-400: #f76c6c;
-  --color-red-300: #fba5a5;
-  --color-red-200: #fccfcf;
-  --color-red-100: #fee2e2;
-  --color-red-50: #fef2f2;
+  /* Asphalt — deep neutrals (replaces "navy" as the dark foundation) */
+  --color-asphalt-950: #07080a;
+  --color-asphalt-900: #0e0f12;
+  --color-asphalt-800: #17191e;
+  --color-asphalt-700: #22252c;
+  --color-asphalt-600: #2d3038;
+  --color-asphalt-500: #3a3e48;
 
-  /* Silver/Gray — site chrome, text, panels */
-  --color-gray-900: #0f172a;
-  --color-gray-800: #1e293b;
-  --color-gray-700: #334155;
-  --color-gray-600: #475569;
-  --color-gray-500: #64748b;
-  --color-gray-400: #94a3b8;
-  --color-gray-300: #cbd5e1;
-  --color-gray-200: #e2e8f0;
-  --color-gray-100: #f1f5f9;
-  --color-gray-50: #f8fafc;
+  /* Race red — primary brand color */
+  --color-race-950: #4a0d10;
+  --color-race-900: #6f1116;
+  --color-race-800: #95171d;
+  --color-race-700: #b91c1c;
+  --color-race-600: #dc1f28;
+  --color-race-500: #e11d2a;
+  --color-race-400: #ef4651;
+  --color-race-300: #f97982;
+  --color-race-200: #fdb4ba;
+  --color-race-100: #fde2e4;
+  --color-race-50:  #fef4f5;
 
-  /* Silver accents */
-  --color-silver-light: #c0c7d0;
-  --color-silver: #8b95a5;
-  --color-silver-dark: #5a6577;
+  /* Pit-lane orange — secondary accent */
+  --color-ignite-700: #b04200;
+  --color-ignite-600: #d75500;
+  --color-ignite-500: #f26800;
+  --color-ignite-400: #ff8a36;
+  --color-ignite-300: #ffb27a;
+  --color-ignite-100: #ffe3cf;
 
-  --color-white: #ffffff;
-  --color-black: #000000;
+  /* Caution yellow — used sparingly */
+  --color-caution-700: #8a6a00;
+  --color-caution-500: #f2c100;
+  --color-caution-400: #ffd633;
+  --color-caution-300: #ffe066;
+  --color-caution-100: #fff4cc;
 
-  /* Accent gold for highlights and badges */
-  --color-yellow-400: #f59e0b;
-  --color-yellow-300: #fbbf24;
+  /* Chrome / silver — trims, dividers, mid surfaces */
+  --color-silver-light: #cbd0d7;
+  --color-silver:       #8b95a5;
+  --color-silver-dark:  #5a6577;
 
+  /* Greens — for success / discount notices only */
   --color-green-700: #15803d;
   --color-green-600: #16a34a;
   --color-green-200: #bbf7d0;
-  --color-green-50: #f0fdf4;
+  --color-green-50:  #f0fdf4;
 
-  /* Shadows */
-  --shadow-red:
-    0 10px 25px -5px rgba(224, 36, 36, 0.35),
-    0 4px 8px -2px rgba(224, 36, 36, 0.2);
-  --shadow-racing:
-    0 10px 25px -5px rgba(15, 23, 42, 0.25),
-    0 4px 8px -2px rgba(15, 23, 42, 0.15);
+  /* Neutrals — slightly warm to play nicely with race red */
+  --color-gray-950: #08090b;
+  --color-gray-900: #0f1115;
+  --color-gray-800: #1c1f25;
+  --color-gray-700: #2f333c;
+  --color-gray-600: #4d5260;
+  --color-gray-500: #71768a;
+  --color-gray-400: #99a0b3;
+  --color-gray-300: #c6cbd6;
+  --color-gray-200: #e3e6ec;
+  --color-gray-100: #f1f3f7;
+  --color-gray-50:  #f7f9fc;
+
+  --color-white: #ffffff;
+  --color-chalk: #fbfbf8; /* warm off-white for body backgrounds */
+  --color-black: #000000;
+
+  /* Legacy navy aliases — point at asphalt so old usages keep working
+     through the revamp transition. */
+  --color-navy-900: var(--color-asphalt-900);
+  --color-navy-800: var(--color-asphalt-800);
+  --color-navy-700: var(--color-asphalt-700);
+  --color-navy-600: var(--color-asphalt-600);
+  --color-navy-500: var(--color-asphalt-500);
+
+  /* Legacy red aliases — kept until every page migrates. */
+  --color-red-900: var(--color-race-900);
+  --color-red-800: var(--color-race-800);
+  --color-red-700: var(--color-race-700);
+  --color-red-600: var(--color-race-600);
+  --color-red-500: var(--color-race-500);
+  --color-red-400: var(--color-race-400);
+  --color-red-300: var(--color-race-300);
+  --color-red-200: var(--color-race-200);
+  --color-red-100: var(--color-race-100);
+  --color-red-50:  var(--color-race-50);
+
+  /* Legacy yellow aliases */
+  --color-yellow-400: var(--color-caution-500);
+  --color-yellow-300: var(--color-caution-400);
+
+  /* ──────────── Semantic surface tokens ──────────── */
+  --bg-default:       var(--color-chalk);
+  --bg-elevated:      var(--color-white);
+  --bg-sunken:        var(--color-gray-100);
+  --bg-dark:          var(--color-asphalt-900);
+  --bg-darker:        var(--color-asphalt-950);
+
+  --fg-default:       var(--color-gray-900);
+  --fg-muted:         var(--color-gray-600);
+  --fg-subtle:        var(--color-gray-500);
+  --fg-on-dark:       var(--color-chalk);
+  --fg-on-dark-muted: var(--color-gray-400);
+
+  --border-default:   var(--color-gray-200);
+  --border-strong:    var(--color-gray-300);
+  --border-on-dark:   color-mix(in srgb, var(--color-white) 12%, transparent);
+
+  --accent-primary:   var(--color-race-600);
+  --accent-primary-h: var(--color-race-700);
+  --accent-secondary: var(--color-ignite-500);
+
+  /* ──────────── Shadows ──────────── */
+  --shadow-race:
+    0 14px 30px -10px color-mix(in srgb, var(--color-race-600) 40%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--color-race-700) 22%, transparent);
+  --shadow-track:
+    0 10px 25px -5px color-mix(in srgb, var(--color-asphalt-900) 30%, transparent),
+    0 4px 8px -2px color-mix(in srgb, var(--color-asphalt-900) 18%, transparent);
+  --shadow-lift:
+    0 18px 40px -16px color-mix(in srgb, var(--color-asphalt-950) 35%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--color-asphalt-950) 15%, transparent);
+
+  /* Legacy shadow aliases */
+  --shadow-red: var(--shadow-race);
+  --shadow-racing: var(--shadow-track);
+
+  /* ──────────── Motion ──────────── */
+  --ease-snap:     cubic-bezier(0.22, 1, 0.36, 1);   /* race-out, default */
+  --ease-decel:    cubic-bezier(0.83, 0, 0.17, 1);   /* heavy decel */
+  --ease-drawer:   cubic-bezier(0.32, 0.72, 0, 1);   /* drawers / sheets */
+  --ease-out:      var(--ease-snap);                  /* legacy alias */
+  --ease-in-out:   var(--ease-decel);                 /* legacy alias */
+
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   320ms;
+  --dur-hero:   700ms;
+
+  /* ──────────── Radii ──────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 9999px;
 }
