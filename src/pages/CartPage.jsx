@@ -304,7 +304,7 @@ export default function CartPage() {
               onClick={() => navigate("/pricing")}
               className="flex items-center gap-2 text-gray-800 hover:text-gray-600 transition-colors mb-8 font-semibold"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <Icon name="arrow-left" className="h-5 w-5" />
               Continue Shopping
             </button>
             <div className="space-y-6">
