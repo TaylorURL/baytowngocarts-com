@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Calendar,
   Clock,
@@ -10,60 +9,51 @@ import {
 } from "lucide-react";
 import ContactForm from "../components/forms/ContactForm.jsx";
 import LocationsSection from "../components/sections/LocationsSection.jsx";
-import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/constants.js";
+import PageHero from "../components/common/PageHero.jsx";
+import Pill from "../components/common/Pill.jsx";
+import { BUSINESS_HOURS, CONTACT_INFO } from "../lib/content/business.js";
+
+const CONTACT_METHODS = [
+  {
+    icon: Phone,
+    title: "Call Us",
+    description: "Speak with our team directly",
+    info: CONTACT_INFO.phone,
+    action: CONTACT_INFO.phoneTel,
+    color: "red",
+  },
+  {
+    icon: Mail,
+    title: "Email Us",
+    description: "Send us a message anytime",
+    info: CONTACT_INFO.email,
+    action: CONTACT_INFO.emailMailto,
+    color: "navy",
+  },
+  {
+    icon: MapPin,
+    title: "Visit Us",
+    description: "Come see us in person",
+    info: CONTACT_INFO.address,
+    action: CONTACT_INFO.mapsUrl,
+    color: "red",
+  },
+];
+
 /**
  * Renders the Contact page with contact methods, a contact form, location info, and business hours.
  */
 const ContactPage = () => {
-  const contactMethods = [
-    {
-      icon: Phone,
-      title: "Call Us",
-      description: "Speak with our team directly",
-      info: CONTACT_INFO.phone,
-      action: `tel:${CONTACT_INFO.phone}`,
-      color: "red",
-    },
-    {
-      icon: Mail,
-      title: "Email Us",
-      description: "Send us a message anytime",
-      info: CONTACT_INFO.email,
-      action: `mailto:${CONTACT_INFO.email}`,
-      color: "navy",
-    },
-    {
-      icon: MapPin,
-      title: "Visit Us",
-      description: "Come see us in person",
-      info: CONTACT_INFO.address,
-      action: "https://maps.google.com/?q=6750+N+Tx-146+Baytown+TX+77523",
-      color: "red",
-    },
-  ];
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/22.JPEG')]" />
-        </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-              GET IN TOUCH
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-              We're Here to <span className="text-red-500">Help</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Have questions or ready to book? Contact us and we'll make your
-              racing experience unforgettable
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-      </section>
+      <PageHero
+        badge="GET IN TOUCH"
+        title="We're Here to"
+        titleAccent="Help"
+        description="Have questions or ready to book? Contact us and we'll make your racing experience unforgettable"
+        backgroundImage="/images/22.JPEG"
+        dividerColorClass="bg-white"
+      />
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
