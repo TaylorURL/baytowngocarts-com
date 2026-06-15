@@ -1,4 +1,3 @@
-import React from "react";
 /**
  * Reusable button component with primary, secondary, and outline variants,
  * three size options, and optional full-width layout.
