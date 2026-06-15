@@ -170,14 +170,14 @@ const ContactPage = () => {
                   </p>
                   <div className="space-y-4">
                     <a
-                      href="tel:(346) 932-1266"
+                      href={CONTACT_INFO.phoneTel}
                       className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
                     >
                       <Phone className="h-5 w-5" />
-                      Call (346) 932-1266
+                      Call {CONTACT_INFO.phone}
                     </a>
                     <a
-                      href={`mailto:${CONTACT_INFO.email}`}
+                      href={CONTACT_INFO.emailMailto}
                       className="flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold transition-colors duration-200 ease-out"
                     >
                       <Send className="h-5 w-5" />
