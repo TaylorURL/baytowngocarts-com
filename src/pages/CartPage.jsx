@@ -1,7 +1,3 @@
-/**
- * Shopping cart page. Displays cart items with quantity controls, calculates
- * fees/taxes/discounts, and initiates Stripe checkout.
- */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
