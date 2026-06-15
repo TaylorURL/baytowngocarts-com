@@ -202,31 +202,33 @@ export default function StaffPanelPage() {
                 ({
                   key,
                   label,
-                  icon: Icon,
+                  icon,
                   iconBg,
                   iconColor,
-                  trailingIcon: TrailingIcon,
+                  trailingIcon,
                   trailingColor,
                   format,
                 }) => (
                   <div
                     key={key}
-                    className="bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-4 sm:p-6"
+                    className="bg-white rounded-lg border border-asphalt-200 shadow-track p-4 sm:p-6"
                   >
                     <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <div className={`p-2 sm:p-3 ${iconBg} rounded-lg`}>
+                      <div className={`p-2 sm:p-3 ${iconBg} rounded-md`}>
                         <Icon
+                          name={icon}
                           className={`h-5 w-5 sm:h-6 sm:w-6 ${iconColor}`}
                         />
                       </div>
-                      <TrailingIcon
+                      <Icon
+                        name={trailingIcon}
                         className={`h-4 w-4 sm:h-5 sm:w-5 ${trailingColor}`}
                       />
                     </div>
-                    <h3 className="text-gray-600 text-xs sm:text-sm font-medium mb-1">
+                    <h3 className="text-asphalt-500 text-[10px] sm:text-xs font-display tracking-speedway uppercase mb-1">
                       {label}
                     </h3>
-                    <p className="font-display text-3xl sm:text-4xl tracking-wide text-gray-900 leading-none">
+                    <p className="font-display text-3xl sm:text-4xl tracking-wide text-asphalt-900 leading-none tabular-nums">
                       {format(stats[key])}
                     </p>
                   </div>
