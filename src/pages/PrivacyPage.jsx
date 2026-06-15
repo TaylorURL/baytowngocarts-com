@@ -27,7 +27,7 @@ const SECTIONS = [
     body: (
       <>
         <p>We may collect the following types of information:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             <strong>Personal Information:</strong> Name, email address, phone
             number, mailing address, and payment information when you make a
@@ -67,7 +67,7 @@ const SECTIONS = [
           Speedway 146 and TaylorURL may use your information for any lawful
           purpose, including but not limited to:
         </p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>Processing transactions and managing your account</li>
           <li>Providing, maintaining, and improving our services</li>
           <li>
@@ -90,7 +90,7 @@ const SECTIONS = [
     body: (
       <>
         <p>We may share your information with:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>
             <strong>Speedway 146:</strong> As the business operator, Speedway
             146 has full access to and rights over all data collected through
@@ -202,7 +202,7 @@ const SECTIONS = [
     body: (
       <>
         <p>If you have questions about this Privacy Policy, please contact us:</p>
-        <ul className="list-disc pl-6 space-y-2 marker:text-red-500">
+        <ul className="list-disc pl-6 space-y-2 marker:text-race-500">
           <li>Email: {CONTACT_INFO.email}</li>
           <li>Phone: {CONTACT_INFO.phone}</li>
           <li>Address: {CONTACT_INFO.address}</li>
