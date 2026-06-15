@@ -193,7 +193,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
             Sales Tax ({SALES_TAX_DISPLAY}):
           </span>
           <span className="font-semibold text-gray-700">
-            ${fees.salesTax.toFixed(2)}
+            {formatDollars(fees.salesTax)}
           </span>
         </div>
         <div className="flex justify-between text-sm">
