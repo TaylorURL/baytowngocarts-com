@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  CreditCard,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Trash2,
-} from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 const TRANSACTION_FEE_PERCENT = 0.04;
 const PLATFORM_FEE_PERCENT = 0.01;
