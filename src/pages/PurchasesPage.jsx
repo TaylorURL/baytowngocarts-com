@@ -54,34 +54,34 @@ const OrderCard = ({ order, index, onSelect }) => (
     data-aos="fade-up"
     data-aos-delay={index * 50}
     onClick={onSelect}
-    className="group bg-white rounded-2xl border-2 border-gray-200 shadow-lg p-6 hover:shadow-2xl hover:border-red-300 hover:-translate-y-0.5 transition-[box-shadow,border-color,transform] duration-200 ease-out active:scale-[0.99] cursor-pointer"
+    className="group bg-white rounded-lg border border-asphalt-200 shadow-track p-6 hover:shadow-lift hover:border-race-300 hover:-translate-y-0.5 transition-[box-shadow,border-color,transform] duration-base ease-snap active:scale-[0.99] cursor-pointer"
   >
     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
       <div className="flex-1">
         <div className="flex items-start gap-4 mb-4">
-          <div className="bg-red-100 p-3 rounded-xl flex-shrink-0">
-            <ShoppingBag className="h-6 w-6 text-red-600" />
+          <div className="bg-race-50 p-3 rounded-md flex-shrink-0">
+            <Icon name="shopping-bag" className="h-6 w-6 text-race-600" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2 flex-wrap">
-              <h3 className="text-2xl font-bold text-gray-800">
+              <h3 className="text-xl font-bold text-asphalt-900 tabular-nums">
                 Order #{order.order_number}
               </h3>
             </div>
             <div className="mb-3 space-y-1">
               {order.items.map((item, idx) => (
-                <div key={idx} className="text-gray-700 text-sm">
-                  • {item.product_name} × {item.quantity}
+                <div key={idx} className="text-asphalt-700 text-sm">
+                  · {item.product_name} × {item.quantity}
                 </div>
               ))}
-              <div className="text-gray-600 text-sm font-semibold mt-2">
-                Total: {order.total_quantity} items
+              <div className="text-asphalt-600 text-sm font-semibold mt-2 tabular-nums">
+                {order.total_quantity} items
               </div>
             </div>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar className="h-4 w-4" />
-                <span className="text-sm">
+            <div className="flex flex-wrap gap-4 items-center">
+              <div className="flex items-center gap-2 text-asphalt-600">
+                <Icon name="calendar" className="h-4 w-4" />
+                <span className="text-sm tabular-nums">
                   {formatCompactDateTime(order.created_at)}
                 </span>
               </div>
@@ -92,12 +92,15 @@ const OrderCard = ({ order, index, onSelect }) => (
       </div>
       <div className="flex items-center justify-between lg:justify-end gap-4">
         <div className="text-right">
-          <div className="font-display text-4xl text-red-600 tracking-wide">
+          <div className="font-display text-4xl text-race-600 tracking-wide tabular-nums">
             {formatCents(order.total_amount)}
           </div>
         </div>
-        <div className="bg-red-100 p-2 rounded-lg group-hover:bg-red-600 transition-colors duration-200 ease-out">
-          <ChevronRight className="h-6 w-6 text-red-600 group-hover:text-white group-hover:translate-x-0.5 transition-[color,transform] duration-200 ease-out" />
+        <div className="bg-race-50 p-2 rounded-md group-hover:bg-race-600 transition-colors duration-base ease-snap">
+          <Icon
+            name="chevron-right"
+            className="h-6 w-6 text-race-600 group-hover:text-chalk group-hover:translate-x-0.5 transition-[color,transform] duration-base ease-snap"
+          />
         </div>
       </div>
     </div>
