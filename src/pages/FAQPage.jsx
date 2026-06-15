@@ -235,7 +235,7 @@ const ContactCTASection = () => (
             </p>
             <div className="space-y-4">
               <a
-                href={PHONE_TEL_LINK}
+                href={CONTACT_INFO.phoneTel}
                 className="flex items-center justify-center gap-3 bg-white text-red-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold transition duration-200 ease-out hover:scale-105 active:scale-95"
               >
                 <Phone className="h-5 w-5" />
