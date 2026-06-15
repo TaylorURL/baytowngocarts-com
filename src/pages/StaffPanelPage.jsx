@@ -15,6 +15,7 @@ import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 import { formatShortDateTime, formatCents } from "../lib/format.js";
 import StatusBadge from "../components/common/StatusBadge.jsx";
+import PageHero from "../components/common/PageHero.jsx";
 const STAT_CARDS = [
   {
     key: "totalOrders",
