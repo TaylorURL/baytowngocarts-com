@@ -21,7 +21,7 @@ const ActionSection = () => (
           <Link to="/pricing">
             <Button size="xl" variant="primary" className="group">
               See Pricing
-              <ArrowRight className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+              <Icon name="arrow-right" className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1" />
             </Button>
           </Link>
           <Link to="/events">
