@@ -192,7 +192,7 @@ const Header = () => {
                           onClick={() => setIsUserMenuOpen(false)}
                           className="flex items-center gap-3 px-5 py-2.5 text-sm text-asphalt-700 hover:text-asphalt-900 hover:bg-asphalt-50 transition-colors duration-base"
                         >
-                          <ShoppingBag className="h-4 w-4 text-race-600" />
+                          <Icon name="shopping-bag" className="h-4 w-4 text-race-600" />
                           My Purchases
                         </Link>
                         {isStaff && (
