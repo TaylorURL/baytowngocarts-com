@@ -43,7 +43,7 @@ const ContactForm = () => {
         .filter(Boolean)
         .join("\n"),
     );
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${CONTACT_INFO.email}?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
   if (submitted) {
@@ -54,8 +54,8 @@ const ContactForm = () => {
         <p className="text-green-700 text-sm">
           Your email client should have opened with your inquiry pre-filled. If
           it didn't open automatically, please email us directly at{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="underline font-medium">
-            {CONTACT_EMAIL}
+          <a href={`mailto:${CONTACT_INFO.email}`} className="underline font-medium">
+            {CONTACT_INFO.email}
           </a>
           .
         </p>
