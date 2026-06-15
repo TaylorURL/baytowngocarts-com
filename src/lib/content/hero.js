@@ -1,4 +1,3 @@
-/** Background images for the home page hero slideshow. */
 export const HERO_BACKGROUND_IMAGES = [
   "/images/14.JPEG",
   "/images/15.JPEG",
