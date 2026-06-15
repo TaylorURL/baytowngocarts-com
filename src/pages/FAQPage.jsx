@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 const ALL_CATEGORIES_ID = "All";
 const STICKY_THRESHOLD_PX = 80;
-const PHONE_TEL_LINK = `tel:${CONTACT_INFO.phone}`;
 const FAQ_CATEGORIES = [
   { id: ALL_CATEGORIES_ID, icon: Search, label: "All Questions" },
   { id: "Racing", icon: Zap, label: "Racing" },
