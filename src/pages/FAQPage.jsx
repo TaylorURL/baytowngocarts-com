@@ -59,54 +59,41 @@ const getCategoryBadgeClasses = (isActive, isSticky) => {
   return "bg-gray-200 text-gray-600";
 };
 const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
-  <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-    <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-cover bg-center opacity-30 bg-[url('/images/15.JPEG')]" />
-    </div>
-    {/* Crosshatch overlay pattern */}
-    <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-    <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-        <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-          HELP CENTER
-        </div>
-        <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-          Frequently Asked <span className="text-red-500">Questions</span>
-        </h1>
-        <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-          Find quick answers to common questions about racing, pricing, events,
-          and our policies
-        </p>
-        <div className="max-w-2xl mx-auto">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search questions and answers..."
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => onSearchChange("")}
-                aria-label="Clear search"
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            )}
-          </div>
-          {searchTerm && (
-            <div className="mt-4 text-white text-sm">
-              Found {formatResultCount(filteredCount)} for "{searchTerm}"
-            </div>
-          )}
-        </div>
+  <PageHero
+    badge="HELP CENTER"
+    title="Frequently Asked"
+    titleAccent="Questions"
+    description="Find quick answers to common questions about racing, pricing, events, and our policies"
+    backgroundImage="/images/15.JPEG"
+    dividerColorClass="bg-white"
+  >
+    <div className="mt-8 max-w-2xl mx-auto">
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search questions and answers..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full pl-14 pr-14 py-4 rounded-xl text-lg text-gray-800 border-2 border-transparent focus:border-red-500 shadow-lg transition-colors duration-200 ease-out"
+        />
+        {searchTerm && (
+          <button
+            onClick={() => onSearchChange("")}
+            aria-label="Clear search"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        )}
       </div>
+      {searchTerm && (
+        <div className="mt-4 text-white text-sm">
+          Found {formatResultCount(filteredCount)} for "{searchTerm}"
+        </div>
+      )}
     </div>
-    <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-white [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-  </section>
+  </PageHero>
 );
 const CategoryFilterBar = ({
   stickyRef,
