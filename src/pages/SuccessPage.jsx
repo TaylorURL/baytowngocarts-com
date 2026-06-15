@@ -4,8 +4,8 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, CheckCircle, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
+import Icon from "../components/common/Icon.jsx";
 import AuthShell from "../components/common/AuthShell.jsx";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
