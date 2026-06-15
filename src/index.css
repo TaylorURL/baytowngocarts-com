@@ -1,14 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-}
 
 html {
   scroll-behavior: smooth;
@@ -16,28 +10,26 @@ html {
 
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color: var(--color-gray-800);
+  background-color: var(--bg-default);
+  color: var(--fg-default);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings and display elements carry the Bebas Neue racing identity;
-   Inter is reserved for body/reading text and form inputs. */
 @layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: "Bebas Neue", system-ui, sans-serif;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
   }
-
   :focus-visible {
-    outline: 2px solid var(--color-red-500);
+    outline: 2px solid var(--color-race-500);
     outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-race-600);
+    color: var(--color-white);
   }
 }
 
@@ -45,131 +37,128 @@ main {
   padding-top: 5rem;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s var(--ease-out);
-}
+@layer utilities {
+  /* Marketing animations */
+  .animate-fade-in     { animation: fadeIn  var(--dur-hero) var(--ease-snap) both; }
+  .animate-slide-up    { animation: slideUp var(--dur-slow) var(--ease-snap) both; }
+  .animate-slide-up.delay-100 { animation-delay: 100ms; }
 
-.animate-slide-up {
-  animation: slideUp 0.6s var(--ease-out);
-}
+  /* Hover lift — only on devices that actually hover */
+  .hover-lift {
+    transition: transform var(--dur-slow) var(--ease-snap),
+                box-shadow var(--dur-slow) var(--ease-snap);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lift);
+    }
+  }
 
-.animate-slide-up.delay-100 {
-  animation-delay: 100ms;
-}
+  .button-hover {
+    transition: transform var(--dur-fast) var(--ease-snap),
+                background-color var(--dur-base) ease,
+                box-shadow var(--dur-base) ease;
+  }
+  .button-hover:active { transform: scale(0.97); }
 
-.hover-lift {
-  transition:
-    transform 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
-}
+  .touch-target { min-height: 44px; min-width: 44px; }
 
-@media (hover: hover) and (pointer: fine) {
-  .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  .image-hover { overflow: hidden; }
+  .image-hover img {
+    transition: transform 0.4s var(--ease-snap);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .image-hover:hover img { transform: scale(1.08); }
+  }
+
+  /* Hero text shadow — keeps headlines readable over busy photos */
+  .hero-text-shadow {
+    text-shadow:
+      2px 2px 12px rgba(0, 0, 0, 0.85),
+      0 0 24px rgba(0, 0, 0, 0.65),
+      4px 4px 18px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Track / asphalt textures used behind dark sections */
+  .asphalt-grain {
+    background-image:
+      radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--color-asphalt-700) 60%, transparent) 0, transparent 38%),
+      radial-gradient(circle at 78% 65%, color-mix(in srgb, var(--color-asphalt-700) 55%, transparent) 0, transparent 42%),
+      linear-gradient(180deg, var(--color-asphalt-900), var(--color-asphalt-950));
+  }
+
+  /* Diagonal racing flag pattern, intentionally low-contrast — never the
+     primary decoration, just a textural element. */
+  .checker-overlay {
+    background-image:
+      linear-gradient(45deg,  var(--color-black) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--color-black) 25%, transparent 25%),
+      linear-gradient(45deg,  transparent 75%, var(--color-black) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--color-black) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  }
+
+  /* Caution-tape edge — used to mark CTA stripes or limited-time bars */
+  .caution-tape {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--color-caution-500) 0 14px,
+      var(--color-asphalt-900) 14px 28px
+    );
+  }
+
+  /* Race-stripe accent — bold red diagonal block, used as a section
+     ribbon or pull-quote bar */
+  .race-stripe {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--color-race-600) 0 12px,
+      var(--color-race-700) 12px 24px
+    );
+  }
+
+  /* Tabular numerals for prices/stats so columns line up cleanly */
+  .tabular-nums { font-variant-numeric: tabular-nums; }
+
+  /* Hard race-flag bottom edge — replaces the soft clip-path divider */
+  .speedway-divider {
+    clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
   }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.button-hover {
-  transition:
-    transform 0.16s var(--ease-out),
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
+@keyframes pulseRace {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-race-500) 55%, transparent); }
+  50%      { box-shadow: 0 0 0 12px color-mix(in srgb, var(--color-race-500) 0%, transparent); }
 }
 
-.button-hover:active {
-  transform: scale(0.97);
-}
-
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
+.animate-pulse-race {
+  animation: pulseRace 1.8s var(--ease-snap) infinite;
 }
 
 @media (max-width: 640px) {
-  h1 {
-    letter-spacing: -0.5px;
-  }
-}
-
-.image-hover {
-  overflow: hidden;
-}
-
-.image-hover img {
-  transition: transform 0.4s var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .image-hover:hover img {
-    transform: scale(1.1);
-  }
-}
-
-/* Enhanced text shadow for hero content */
-.hero-text-shadow {
-  text-shadow:
-    2px 2px 8px rgba(0, 0, 0, 0.9),
-    0 0 20px rgba(0, 0, 0, 0.7),
-    4px 4px 16px rgba(0, 0, 0, 0.5);
-}
-
-/* Checkered racing-flag texture used behind the hero content. */
-.checker-overlay {
-  background-image:
-    linear-gradient(45deg, var(--color-black) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--color-black) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--color-black) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--color-black) 75%);
-  background-size: 20px 20px;
-  background-position:
-    0 0,
-    0 10px,
-    10px -10px,
-    -10px 0px;
+  h1 { letter-spacing: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-
-  .hover-lift:hover {
-    transform: none;
-  }
-
-  .image-hover:hover img {
-    transform: none;
-  }
+  .hover-lift:hover { transform: none; }
+  .image-hover:hover img { transform: none; }
 }
