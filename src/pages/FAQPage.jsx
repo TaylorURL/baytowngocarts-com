@@ -153,7 +153,7 @@ const FAQResultsList = ({
         >
           {filteredFAQs.length > 0 ? (
             <>
-              <div className="px-8 py-6 bg-gradient-to-r from-gray-800 to-gray-700 text-white">
+              <div className="px-8 py-6 bg-asphalt-900 border-b-2 border-race-600 text-white">
                 <h2 className="text-2xl font-bold">{resultsHeading}</h2>
               </div>
               {filteredFAQs.map((faq, index) => (
