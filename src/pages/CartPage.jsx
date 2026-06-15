@@ -109,7 +109,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
               aria-label={`Decrease ${item.product.name} quantity`}
               className="w-10 h-10 rounded-lg bg-white hover:bg-red-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
-              <Minus className="h-4 w-4 text-gray-800" />
+              <Icon name="minus" className="h-4 w-4 text-asphalt-800" />
             </button>
             <span className="w-10 text-center font-display text-2xl text-gray-800">
               {item.quantity}
