@@ -166,12 +166,13 @@ const Header = () => {
                     className="flex items-center gap-2.5 px-3 py-2 rounded-md text-gray-300 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
                   >
                     <div className="w-8 h-8 rounded-full bg-asphalt-700 flex items-center justify-center">
-                      <User className="h-4 w-4 text-gray-300" />
+                      <Icon name="user" className="h-4 w-4 text-gray-300" />
                     </div>
                     <span className="text-sm font-semibold max-w-[120px] truncate hidden xl:block">
                       {user.email?.split("@")[0]}
                     </span>
-                    <ChevronDown
+                    <Icon
+                      name="chevron-down"
                       className={`h-3.5 w-3.5 transition-transform duration-base ease-snap ${isUserMenuOpen ? "rotate-180" : ""}`}
                     />
                   </button>
