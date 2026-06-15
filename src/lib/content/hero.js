@@ -7,11 +7,11 @@ export const HERO_BACKGROUND_IMAGES = [
 ];
 
 export const HERO_STATS = [
-  { value: "12+", label: "MPH Top Speed" },
-  { value: "1200+", label: "Race Hours" },
+  { value: '40"', label: "Kiddie Kart Min" },
+  { value: "5:00", label: "Heat Length" },
   {
-    value: "5000+",
-    label: "Happy Racers",
+    value: "$13.99",
+    label: "Single Race",
     className: "md:col-span-1 col-span-2",
   },
 ];
