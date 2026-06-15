@@ -71,26 +71,6 @@ const DEFAULT_STATS = {
   todayOrders: 0,
   todayRevenue: 0,
 };
-const STATUS_CONFIG = {
-  completed: { className: "bg-green-100 text-green-700", icon: CheckCircle },
-  pending: { className: "bg-yellow-100 text-yellow-700", icon: Clock },
-};
-const DEFAULT_STATUS = {
-  className: "bg-red-100 text-red-700",
-  icon: AlertCircle,
-};
-function StatusBadge({ status }) {
-  const config = STATUS_CONFIG[status] ?? DEFAULT_STATUS;
-  const Icon = config.icon;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${config.className}`}
-    >
-      <Icon className="h-3 w-3" />
-      {status}
-    </span>
-  );
-}
 function getDateFilterStart(filterKey) {
   if (filterKey === "all") return null;
   const now = new Date();
