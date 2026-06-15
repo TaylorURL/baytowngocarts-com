@@ -131,10 +131,8 @@ const ContactPage = () => {
             <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="bg-gray-800 text-white p-12">
-                  <div className="inline-block mb-6 px-3 py-1 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-                    BUSINESS HOURS
-                  </div>
-                  <h2 className="text-3xl font-bold mb-8">When We're Open</h2>
+                  <Pill className="mb-6">BUSINESS HOURS</Pill>
+                  <h2 className="text-3xl font-bold mb-8 mt-4">When We're Open</h2>
                   <div className="space-y-4">
                     {BUSINESS_HOURS.map((schedule, index) => (
                       <div
