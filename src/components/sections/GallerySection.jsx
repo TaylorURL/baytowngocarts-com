@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ChevronLeft, ChevronRight } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
 import {
   GALLERY_IMAGES,
