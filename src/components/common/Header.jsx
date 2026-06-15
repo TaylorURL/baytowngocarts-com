@@ -410,7 +410,7 @@ const Header = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold text-gray-300 hover:text-chalk hover:bg-asphalt-800 transition-colors duration-base"
                   >
-                    <BarChart3 className="h-4 w-4 text-race-500" />
+                    <Icon name="bar-chart" className="h-4 w-4 text-race-500" />
                     Site Traffic
                   </Link>
                 )}
