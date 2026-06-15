@@ -19,10 +19,6 @@ const FALLBACK_CONFIG = {
   icon: AlertCircle,
 };
 
-/**
- * Pill-shaped order status indicator. Used in staff order tables, the user
- * dashboard, and the purchase details page.
- */
 const StatusBadge = ({ status, size = "sm" }) => {
   const config = STATUS_CONFIG[status] ?? FALLBACK_CONFIG;
   const Icon = config.icon;
