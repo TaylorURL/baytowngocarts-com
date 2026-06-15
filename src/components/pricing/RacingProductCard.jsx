@@ -1,12 +1,12 @@
-import { Check } from "lucide-react";
 import { parsePriceString } from "../../lib/pricing.js";
 import { formatDollars } from "../../lib/format.js";
+import Icon from "../common/Icon.jsx";
 import QuantityStepper from "./QuantityStepper.jsx";
 
 const RacingProductCard = ({
   product,
   quantity,
-  icon: Icon,
+  iconName,
   iconWrapperClass,
   iconClass,
   perUnitLabel = "per person",
@@ -18,48 +18,48 @@ const RacingProductCard = ({
   const isSelected = quantity > 0;
   return (
     <div
-      className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${
+      className={`bg-white rounded-lg p-4 shadow-track border-2 transition duration-base ease-snap ${
         product.isPopular
-          ? "border-red-500"
+          ? "border-race-500"
           : isSelected
-            ? "border-red-400"
-            : "border-gray-100 hover:border-gray-200 hover:shadow-lg"
-      } ${isSelected ? "ring-2 ring-red-200" : ""}`}
+            ? "border-race-400"
+            : "border-asphalt-100 hover:border-asphalt-200 hover:shadow-lift"
+      } ${isSelected ? "ring-2 ring-race-200" : ""}`}
     >
       {product.isPopular && (
         <div className="text-center mb-2">
-          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full tracking-wider">
+          <span className="bg-race-600 text-chalk text-xs font-display tracking-speedway uppercase px-3 py-1 rounded-full">
             {popularLabel}
           </span>
         </div>
       )}
       <div className="text-center mb-3">
-        <div className={`inline-flex p-2 rounded-lg mb-2 ${iconWrapperClass}`}>
-          <Icon className={`h-5 w-5 ${iconClass}`} />
+        <div className={`inline-flex p-2 rounded-md mb-2 ${iconWrapperClass}`}>
+          <Icon name={iconName} className={`h-5 w-5 ${iconClass}`} />
         </div>
-        <h3 className="font-bold text-gray-800 text-sm leading-tight">
+        <h3 className="font-bold text-asphalt-900 text-sm leading-tight">
           {product.name}
         </h3>
-        <div className="font-display text-3xl text-gray-800 mt-1 tracking-wide">
+        <div className="font-display text-3xl text-asphalt-900 mt-1 tracking-wide tabular-nums">
           {product.price}
         </div>
-        <p className="text-xs text-gray-500">{perUnitLabel}</p>
+        <p className="text-xs text-asphalt-500">{perUnitLabel}</p>
       </div>
       <ul className="space-y-1 mb-3">
         {features.map((feature, idx) => (
           <li
             key={idx}
-            className="flex items-start text-xs text-gray-600"
+            className="flex items-start text-xs text-asphalt-600"
           >
-            <Check
-              size={12}
-              className="text-green-600 mr-1 mt-0.5 flex-shrink-0"
+            <Icon
+              name="check"
+              className="h-3 w-3 text-race-600 mr-1 mt-0.5 flex-shrink-0"
             />
             {feature}
           </li>
         ))}
       </ul>
-      <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-center gap-2 pt-3 border-t border-asphalt-100">
         <QuantityStepper
           quantity={quantity}
           productName={product.name}
@@ -69,8 +69,8 @@ const RacingProductCard = ({
         />
       </div>
       {isSelected && (
-        <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-          <span className="font-display text-red-600 text-lg tracking-wide">
+        <div className="mt-2 bg-race-50 rounded-md py-1 text-center">
+          <span className="font-display text-race-600 text-lg tracking-wide tabular-nums">
             {formatDollars(parsePriceString(product.price) * quantity)}
           </span>
         </div>
