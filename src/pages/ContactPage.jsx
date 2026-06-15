@@ -71,7 +71,7 @@ const ContactPage = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
-            {contactMethods.map((method, index) => (
+            {CONTACT_METHODS.map((method, index) => (
               <a
                 key={index}
                 href={method.action}
