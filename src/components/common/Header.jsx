@@ -283,11 +283,11 @@ const Header = () => {
             {/* Nav links */}
             <nav className="flex items-center">
               {NAV_ITEMS.map((item) => {
-                const isActive = location.pathname === item.path;
+                const isActive = location.pathname === item.href;
                 return (
                   <Link
                     key={item.name}
-                    to={item.path}
+                    to={item.href}
                     onClick={scrollToTop}
                     className="relative group"
                   >
@@ -366,11 +366,11 @@ const Header = () => {
           {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-0.5">
             {NAV_ITEMS.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = location.pathname === item.href;
               return (
                 <Link
                   key={item.name}
-                  to={item.path}
+                  to={item.href}
                   className={`block px-4 py-3.5 rounded-xl text-base font-display tracking-wider uppercase transition duration-200 ${
                     isActive
                       ? "text-white bg-gray-800 shadow-sm"
