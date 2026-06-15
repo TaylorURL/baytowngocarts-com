@@ -114,10 +114,8 @@ const ContactPage = () => {
               <ContactForm />
             </div>
             <div data-aos="fade-left">
-              <div className="inline-block mb-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-display tracking-widest">
-                VISIT US
-              </div>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">Find Us</h2>
+              <Pill variant="muted" className="mb-4">VISIT US</Pill>
+              <h2 className="text-4xl font-bold text-gray-800 mb-6 mt-4">Find Us</h2>
               <p className="text-lg text-gray-600 mb-8">
                 We're conveniently located in Baytown, TX. Come visit us during
                 our business hours for an unforgettable racing experience!
