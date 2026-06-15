@@ -187,14 +187,14 @@ export default function StaffPanelPage() {
   return (
     <div className="w-full -mt-20">
       <PageHero
-        badge="ADMIN"
+        badge="Operations"
         title="Staff"
         titleAccent="Panel"
-        description="Track Operations & Order Management"
+        description="Live order ledger. Search by order number, filter by date window, expand for line items."
         backgroundImage="/images/22.JPEG"
-        dividerColorClass="bg-white"
+        dividerColorClass="bg-asphalt-50"
       />
-      <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-12 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
