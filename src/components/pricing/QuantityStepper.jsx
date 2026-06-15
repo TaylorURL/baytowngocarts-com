@@ -1,4 +1,4 @@
-import { Minus, Plus } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 
 const STEPPER_SIZES = {
   sm: { button: "w-8 h-8", icon: "h-4 w-4", input: "w-12 py-1 text-sm" },
@@ -22,13 +22,13 @@ const QuantityStepper = ({
         onClick={onDecrement}
         disabled={isEmpty}
         aria-label={`Decrease ${productName} quantity`}
-        className={`${button} rounded-lg flex items-center justify-center transition duration-150 ease-out ${
+        className={`${button} rounded-md flex items-center justify-center transition duration-150 ease-snap ${
           isEmpty
-            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "bg-gray-200 hover:bg-gray-300 text-gray-700 active:scale-95"
+            ? "bg-asphalt-100 text-asphalt-300 cursor-not-allowed"
+            : "bg-asphalt-100 hover:bg-asphalt-200 text-asphalt-700 active:scale-95"
         }`}
       >
-        <Minus className={icon} />
+        <Icon name="minus" className={icon} />
       </button>
       <input
         type="number"
@@ -36,15 +36,15 @@ const QuantityStepper = ({
         value={quantity}
         onChange={onChange}
         aria-label={`${productName} quantity`}
-        className={`${input} text-center font-bold text-gray-800 border-2 border-gray-200 rounded-lg transition-colors duration-150 ease-out focus:border-red-500`}
+        className={`${input} text-center font-bold text-asphalt-900 border-2 border-asphalt-200 rounded-md transition-colors duration-150 ease-snap focus:border-race-500 focus:outline-none tabular-nums`}
       />
       <button
         type="button"
         onClick={onIncrement}
         aria-label={`Increase ${productName} quantity`}
-        className={`${button} rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition duration-150 ease-out active:scale-95`}
+        className={`${button} rounded-md bg-race-600 hover:bg-race-500 text-chalk flex items-center justify-center transition duration-150 ease-snap active:scale-95`}
       >
-        <Plus className={icon} />
+        <Icon name="plus" className={icon} />
       </button>
     </>
   );
