@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);
