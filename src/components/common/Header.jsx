@@ -123,19 +123,19 @@ const Header = () => {
                 href={CONTACT_INFO.phoneTel}
                 className="flex items-center gap-2 hover:text-chalk transition-colors duration-base ease-snap"
               >
-                <Phone className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="phone" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   {CONTACT_INFO.phone}
                 </span>
               </a>
               <div className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="map-pin" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   6750 N TX-146, Baytown
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5 text-race-500" />
+                <Icon name="clock" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
                   Open Daily
                 </span>
