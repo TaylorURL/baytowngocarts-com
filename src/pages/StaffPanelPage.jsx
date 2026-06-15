@@ -366,7 +366,7 @@ export default function StaffPanelPage() {
                             </td>
                             <td className="py-4 px-4">
                               <span className="text-sm font-bold text-green-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                             </td>
                             <td className="py-4 px-4">
@@ -414,7 +414,7 @@ export default function StaffPanelPage() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <span className="text-lg font-bold text-green-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                               <span className="text-sm text-gray-500">
                                 {order.total_quantity} people
@@ -452,11 +452,11 @@ export default function StaffPanelPage() {
                                       </p>
                                       <p className="text-xs text-gray-500">
                                         {item.quantity} x{" "}
-                                        {formatCurrency(item.price)}
+                                        {formatCents(item.price)}
                                       </p>
                                     </div>
                                     <span className="font-bold text-gray-800 text-sm">
-                                      {formatCurrency(item.subtotal)}
+                                      {formatCents(item.subtotal)}
                                     </span>
                                   </div>
                                 ))}
@@ -473,7 +473,7 @@ export default function StaffPanelPage() {
                                 </p>
                               </div>
                               <span className="text-xl font-black text-red-600">
-                                {formatCurrency(order.total_amount)}
+                                {formatCents(order.total_amount)}
                               </span>
                             </div>
                             <button
