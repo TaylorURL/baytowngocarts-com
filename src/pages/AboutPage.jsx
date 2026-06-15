@@ -99,9 +99,6 @@ const FEATURES = [
   },
 ];
 
-/**
- * Renders the About page with company story, stats, values, timeline, and team sections.
- */
 const AboutPage = () => (
   <div className="w-full -mt-20">
     <PageHero
