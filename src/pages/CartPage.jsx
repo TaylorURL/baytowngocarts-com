@@ -121,7 +121,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
               aria-label={`Increase ${item.product.name} quantity`}
               className="w-10 h-10 rounded-lg bg-white hover:bg-green-100 transition-colors duration-150 ease-out active:scale-95 flex items-center justify-center"
             >
-              <Plus className="h-4 w-4 text-gray-800" />
+              <Icon name="plus" className="h-4 w-4 text-asphalt-800" />
             </button>
           </div>
           <div className="text-right">
