@@ -160,11 +160,10 @@ const SignupPage = () => {
                   aria-pressed={showConfirmPassword}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-asphalt-400 hover:text-race-600 transition-colors duration-base ease-snap"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
+                  <Icon
+                    name={showConfirmPassword ? "eye-off" : "eye"}
+                    className="h-5 w-5"
+                  />
                 </button>
               </div>
             </div>
