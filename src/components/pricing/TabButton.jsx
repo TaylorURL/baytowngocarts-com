@@ -1,4 +1,3 @@
-/** Single navigation tab in the pricing hero. */
 const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
   <button
     type="button"
