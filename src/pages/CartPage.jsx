@@ -76,7 +76,6 @@ async function createCheckoutSession(checkoutItems, user) {
   }
   return data.url;
 }
-/** Single cart line-item with quantity controls and remove button. */
 function CartItemRow({ item, onUpdateQuantity, onRemove }) {
   const unitPrice = parsePriceString(item.product.price);
   const lineSubtotal = unitPrice * item.quantity;
