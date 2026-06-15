@@ -6,10 +6,19 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, CheckCircle, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
+import AuthShell from "../components/common/AuthShell.jsx";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
 import { useCart } from "../hooks/useCart";
 import { priceStringToCents } from "../lib/pricing.js";
+
+const NEXT_STEPS = [
+  "Check your email for order confirmation",
+  "View your order details in My Purchases",
+  "Visit us during business hours",
+  "Bring a valid ID (waivers signed at the front desk)",
+  "Each race ticket = one 5-minute race on the track",
+];
 
 const SuccessPage = () => {
   const [loading, setLoading] = useState(true);
@@ -21,15 +30,11 @@ const SuccessPage = () => {
   useEffect(() => {
     const createPurchase = async () => {
       const sessionId = searchParams.get("session_id");
-
       if (!sessionId || !user) {
         setLoading(false);
         return;
       }
-
-      if (purchaseAttempted.current) {
-        return;
-      }
+      if (purchaseAttempted.current) return;
       purchaseAttempted.current = true;
 
       try {
@@ -75,7 +80,6 @@ const SuccessPage = () => {
         };
 
         const { error } = await supabase.from("purchases").insert(purchaseData);
-
         if (error && error.code !== "23505") {
           console.error("Error creating purchase:", error);
         }
@@ -94,64 +98,62 @@ const SuccessPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="h-16 w-16 rounded-full border-4 border-white/25 border-t-white animate-spin mx-auto mb-4" />
-          <p className="text-white text-lg">Processing your payment...</p>
+      <AuthShell>
+        <div className="bg-chalk rounded-lg shadow-lift border border-asphalt-200 p-10 text-center">
+          <div className="h-14 w-14 rounded-full border-4 border-asphalt-200 border-t-race-600 animate-spin mx-auto mb-4" />
+          <p className="text-asphalt-700 text-base font-semibold">
+            Processing your payment…
+          </p>
         </div>
-      </div>
+      </AuthShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center">
+    <AuthShell>
+      <div className="bg-chalk rounded-lg shadow-lift border border-asphalt-200 overflow-hidden">
+        <div className="caution-tape h-2" aria-hidden="true" />
+        <div className="p-8 text-center">
           <div className="mb-6">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 ring-1 ring-green-200 mx-auto mb-4">
               <CheckCircle className="h-12 w-12 text-green-600" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              Payment Successful!
+            <h1 className="font-display text-3xl tracking-tight text-asphalt-900 mb-2">
+              You're in.
             </h1>
-            <p className="text-gray-600">
-              Thank you for your purchase! Your order has been confirmed.
+            <p className="text-asphalt-600">
+              Payment confirmed. We'll see you trackside.
             </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-green-900 mb-2">
-                What's Next?
-              </h3>
-              <ul className="text-green-700 text-sm space-y-1 text-left">
-                <li>• Check your email for order confirmation</li>
-                <li>• View your order details in My Purchases</li>
-                <li>• Visit us during business hours</li>
-                <li>• Bring a valid ID (waivers signed at the front desk)</li>
-                <li>• Each race ticket = one 5-minute race on the track</li>
-              </ul>
-            </div>
+          <div className="text-left bg-green-50 border border-green-200 rounded-md p-5 mb-6">
+            <h3 className="font-display tracking-speedway text-sm text-green-800 mb-3 uppercase">
+              What's Next
+            </h3>
+            <ul className="text-green-800/90 text-sm space-y-1.5">
+              {NEXT_STEPS.map((step) => (
+                <li key={step}>• {step}</li>
+              ))}
+            </ul>
+          </div>
 
-            <div className="flex flex-col space-y-3">
-              <Link to="/dashboard">
-                <button className="group w-full inline-flex items-center justify-center bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold shadow-red hover:shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95">
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  View My Purchases
-                  <ArrowRight className="h-5 w-5 ml-2 transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
-                </button>
-              </Link>
-
-              <Link to="/">
-                <Button variant="outline" fullWidth>
-                  Return to Home
-                </Button>
-              </Link>
-            </div>
+          <div className="flex flex-col gap-3">
+            <Link to="/dashboard">
+              <Button variant="primary" fullWidth size="lg" className="group">
+                <ShoppingBag className="h-5 w-5" />
+                View My Purchases
+                <ArrowRight className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button variant="outline" fullWidth>
+                Return to home
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </AuthShell>
   );
 };
 
