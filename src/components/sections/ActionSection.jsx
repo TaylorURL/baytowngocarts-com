@@ -14,8 +14,8 @@ const ActionSection = () => (
           <span className="block text-race-500">We're open today.</span>
         </h2>
         <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Walk-ins welcome every day of the week. Booking a party? Call us and
-          we'll take it from there.
+          Walk-ins every day, weekends until 10:30 PM. Booking a party for 45?
+          Call and we'll lock in your date.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/pricing">
