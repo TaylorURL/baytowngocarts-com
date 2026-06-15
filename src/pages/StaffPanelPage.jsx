@@ -1,60 +1,51 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Calendar,
-  ChevronDown,
-  Clock,
-  DollarSign,
-  Eye,
-  Mail,
-  Search,
-  ShoppingBag,
-  TrendingUp,
-} from "lucide-react";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabase } from "../lib/supabase";
 import { formatShortDateTime, formatCents } from "../lib/format.js";
-import StatusBadge from "../components/common/StatusBadge.jsx";
+import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
+import StatusBadge from "../components/common/StatusBadge.jsx";
+
 const STAT_CARDS = [
   {
     key: "totalOrders",
-    label: "Total Orders",
-    icon: ShoppingBag,
-    iconBg: "bg-red-100",
-    iconColor: "text-red-600",
-    trailingIcon: TrendingUp,
-    trailingColor: "text-green-500",
+    label: "Orders",
+    icon: "shopping-bag",
+    iconBg: "bg-race-50",
+    iconColor: "text-race-600",
+    trailingIcon: "trending-up",
+    trailingColor: "text-green-600",
     format: (v) => v,
   },
   {
     key: "totalRevenue",
-    label: "Total Revenue",
-    icon: DollarSign,
-    iconBg: "bg-green-100",
-    iconColor: "text-green-600",
-    trailingIcon: TrendingUp,
-    trailingColor: "text-green-500",
+    label: "Revenue",
+    icon: "dollar-sign",
+    iconBg: "bg-green-50",
+    iconColor: "text-green-700",
+    trailingIcon: "trending-up",
+    trailingColor: "text-green-600",
     format: (v) => `$${v.toFixed(2)}`,
   },
   {
     key: "todayOrders",
-    label: "Today's Orders",
-    icon: Calendar,
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-    trailingIcon: Clock,
-    trailingColor: "text-blue-500",
+    label: "Today",
+    icon: "calendar",
+    iconBg: "bg-asphalt-100",
+    iconColor: "text-asphalt-700",
+    trailingIcon: "clock",
+    trailingColor: "text-asphalt-500",
     format: (v) => v,
   },
   {
     key: "todayRevenue",
     label: "Today's Revenue",
-    icon: DollarSign,
-    iconBg: "bg-yellow-100",
-    iconColor: "text-yellow-600",
-    trailingIcon: Clock,
-    trailingColor: "text-blue-500",
+    icon: "dollar-sign",
+    iconBg: "bg-caution-100",
+    iconColor: "text-caution-700",
+    trailingIcon: "clock",
+    trailingColor: "text-asphalt-500",
     format: (v) => `$${v.toFixed(2)}`,
   },
 ];
