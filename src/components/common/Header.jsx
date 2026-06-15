@@ -346,7 +346,7 @@ const Header = () => {
               className="p-2 rounded-md text-gray-400 hover:text-chalk hover:bg-asphalt-700/60 transition-colors duration-base"
               aria-label="Close menu"
             >
-              <X className="h-5 w-5" />
+              <Icon name="close" className="h-5 w-5" />
             </button>
           </div>
           {/* Race ribbon under the drawer header */}
