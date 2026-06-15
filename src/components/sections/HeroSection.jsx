@@ -11,11 +11,6 @@ import {
 } from "../../lib/content/hero.js";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
-/**
- * Full-screen home hero. Asphalt foundation, crossfading track photography,
- * race-stripe top edge, big display headline, stat tiles. Designed to read
- * "real outdoor speedway in Baytown" in one glance.
- */
 const HeroSection = () => {
   const [currentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,
