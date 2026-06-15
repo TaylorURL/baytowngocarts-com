@@ -298,7 +298,7 @@ const Header = () => {
                           : "text-gray-400 group-hover:text-gray-200"
                       }`}
                     >
-                      {item.name}
+                      {item.label}
                     </span>
                     <span
                       className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-3/5 rounded-full bg-red-500 origin-center transition-transform duration-300 ease-out ${
@@ -385,7 +385,7 @@ const Header = () => {
                     {isActive && (
                       <span className="w-1 h-4 rounded-full bg-red-500" />
                     )}
-                    {item.name}
+                    {item.label}
                   </span>
                 </Link>
               );
