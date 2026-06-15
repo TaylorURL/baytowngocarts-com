@@ -7,7 +7,6 @@ import {
   Crown,
   Flag,
   HelpCircle,
-  Minus,
   Phone,
   Plus,
   Shield,
@@ -18,89 +17,75 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { BOUNCE_PRICING } from "../lib/constants.js";
+import { Link, useNavigate } from "react-router-dom";
+import { BOUNCE_PRICING } from "../lib/content/bounce.js";
 import {
   STRIPE_PRODUCTS,
   STRIPE_DOUBLE_SEATER_PRODUCTS,
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
-import { Link, useNavigate } from "react-router-dom";
+import { CONTACT_INFO } from "../lib/content/business.js";
+import { parsePriceString } from "../lib/pricing.js";
+import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
-/**
- * Single navigation tab in the pricing hero. Highlights the active view in
- * racing red and gives tactile press feedback.
- */
-const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
-  <button
-    type="button"
-    role="tab"
-    aria-selected={isActive}
-    onClick={onClick}
-    className={`px-6 py-3 rounded-xl font-bold text-sm md:text-base transition duration-200 ease-out active:scale-95 ${
-      isActive
-        ? "bg-red-600 text-white shadow-red"
-        : "text-gray-300 hover:text-white hover:bg-white/5"
-    }`}
-  >
-    <Icon className="h-4 w-4 inline mr-2" />
-    {label}
-  </button>
-);
-const STEPPER_SIZES = {
-  sm: { button: "w-8 h-8", icon: "h-4 w-4", input: "w-12 py-1 text-sm" },
-  lg: { button: "w-10 h-10", icon: "h-5 w-5", input: "w-16 py-2 text-lg" },
+import PageHero from "../components/common/PageHero.jsx";
+import TabButton from "../components/pricing/TabButton.jsx";
+import QuantityStepper from "../components/pricing/QuantityStepper.jsx";
+import RacingProductCard from "../components/pricing/RacingProductCard.jsx";
+
+const PARTY_FEATURES = [
+  "Includes 20 Racing Bracelets",
+  "2 hours of organized racing",
+  "Bracelets can be shared or rotated",
+  "Everyone gets multiple chances to race",
+  "Staff manages racing for safety",
+  "Shared track with public riders",
+  "3 hours in a private party room",
+  "Room accommodates up to 45 guests",
+  "Outdoor seating at no extra cost",
+  "Tables & chairs fully set up",
+  "Wristbands included",
+];
+
+const FAMILY_FAVORITES = [
+  "Simple pricing",
+  "Flexible for all ages",
+  "No guest count stress",
+  "Safe & organized",
+  "Staff handles everything",
+];
+
+const HEIGHT_REQUIREMENTS = [
+  { label: "Kiddie Karts:", value: 'Minimum 40" tall' },
+  { label: "Adult Karts:", value: 'Minimum 53" tall' },
+  { label: "Double Seater:", value: 'Driver 53"+, Passenger 33"+' },
+];
+
+const POLICY_LINES = [
+  "Each race ticket = one 5-minute race",
+  "All packages must be used same day",
+  "Long hair must be tied back",
+  "Waivers signed in person at the front desk",
+];
+
+const getIcon = (name) => {
+  if (name.includes("Kid")) return Baby;
+  if (name.includes("Adult")) return Zap;
+  if (name.includes("Family")) return Users;
+  if (name.includes("2.5") || name.includes("Hour")) return Timer;
+  if (
+    name.includes("Double") ||
+    name.includes("Ride Along") ||
+    name.includes("Track Titan")
+  )
+    return Users;
+  return Sparkles;
 };
+
 /**
- * Quantity selector with accessible decrement/increment steppers and a direct
- * number input. Disables the decrement control at zero and gives press feedback.
- */
-const QuantityStepper = ({
-  quantity,
-  productName,
-  onDecrement,
-  onIncrement,
-  onChange,
-  size = "sm",
-}) => {
-  const { button, icon, input } = STEPPER_SIZES[size];
-  const isEmpty = quantity === 0;
-  return (
-    <>
-      <button
-        type="button"
-        onClick={onDecrement}
-        disabled={isEmpty}
-        aria-label={`Decrease ${productName} quantity`}
-        className={`${button} rounded-lg flex items-center justify-center transition duration-150 ease-out ${
-          isEmpty
-            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "bg-gray-200 hover:bg-gray-300 text-gray-700 active:scale-95"
-        }`}
-      >
-        <Minus className={icon} />
-      </button>
-      <input
-        type="number"
-        min="0"
-        value={quantity}
-        onChange={onChange}
-        aria-label={`${productName} quantity`}
-        className={`${input} text-center font-bold text-gray-800 border-2 border-gray-200 rounded-lg transition-colors duration-150 ease-out focus:border-red-500`}
-      />
-      <button
-        type="button"
-        onClick={onIncrement}
-        aria-label={`Increase ${productName} quantity`}
-        className={`${button} rounded-lg bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition duration-150 ease-out active:scale-95`}
-      >
-        <Plus className={icon} />
-      </button>
-    </>
-  );
-};
-/**
- * Renders the Pricing page with tabbed views for party packages, individual racing, and bounce house options.
- * Includes a shopping cart summary bar and quantity selectors for each product.
+ * Renders the Pricing page with tabbed views for party packages, individual racing,
+ * and bounce house options. Includes a shopping cart summary bar and quantity
+ * selectors for each product.
  */
 const PricingPage = () => {
   const navigate = useNavigate();
@@ -108,134 +93,91 @@ const PricingPage = () => {
   const [quantities, setQuantities] = useState({});
   const [showCartNotification, setShowCartNotification] = useState(false);
   const [activeTab, setActiveTab] = useState("individual");
+
   const getQuantity = (productId) => quantities[productId] || 0;
-  const updateQuantity = (productId, delta) => {
+
+  const updateQuantity = (productId, delta) =>
     setQuantities((prev) => ({
       ...prev,
       [productId]: Math.max(0, (prev[productId] || 0) + delta),
     }));
-  };
-  const setQuantityDirect = (productId, value) => {
-    const num = parseInt(value) || 0;
+
+  const setQuantityDirect = (productId, value) =>
     setQuantities((prev) => ({
       ...prev,
-      [productId]: Math.max(0, num),
+      [productId]: Math.max(0, parseInt(value) || 0),
     }));
-  };
-  const getTotalItems = () => {
-    return Object.values(quantities).reduce((sum, qty) => sum + qty, 0);
-  };
-  const getTotalPrice = () => {
-    const allProducts = [
-      ...STRIPE_PRODUCTS,
-      ...STRIPE_DOUBLE_SEATER_PRODUCTS,
-      ...STRIPE_PARTY_PACKAGES,
-    ];
-    return allProducts.reduce((sum, product) => {
-      const qty = getQuantity(product.id);
-      const price = parseFloat(product.price.replace("$", ""));
-      return sum + qty * price;
-    }, 0);
-  };
-  /** Adds all selected products to the cart. */
+
+  const totalItems = Object.values(quantities).reduce(
+    (sum, qty) => sum + qty,
+    0,
+  );
+
+  const allProducts = [
+    ...STRIPE_PRODUCTS,
+    ...STRIPE_DOUBLE_SEATER_PRODUCTS,
+    ...STRIPE_PARTY_PACKAGES,
+  ];
+
+  const totalPrice = allProducts.reduce(
+    (sum, product) => sum + getQuantity(product.id) * parsePriceString(product.price),
+    0,
+  );
+
   const addSelectedToCart = () => {
-    const allProducts = [
-      ...STRIPE_PRODUCTS,
-      ...STRIPE_DOUBLE_SEATER_PRODUCTS,
-      ...STRIPE_PARTY_PACKAGES,
-    ];
     allProducts.forEach((product) => {
       const qty = getQuantity(product.id);
-      if (qty > 0) {
-        addItem(product, qty);
-      }
+      if (qty > 0) addItem(product, qty);
     });
   };
+
   const handleAddAllToCart = () => {
     addSelectedToCart();
     setQuantities({});
     setShowCartNotification(true);
     setTimeout(() => setShowCartNotification(false), 3000);
   };
+
   const handleGoToCart = () => {
     addSelectedToCart();
     navigate("/cart");
   };
-  const getIcon = (name) => {
-    if (name.includes("Kid")) return Baby;
-    if (name.includes("Adult")) return Zap;
-    if (name.includes("Family")) return Users;
-    if (name.includes("2.5") || name.includes("Hour")) return Timer;
-    if (
-      name.includes("Double") ||
-      name.includes("Ride Along") ||
-      name.includes("Track Titan")
-    )
-      return Users;
-    return Sparkles;
-  };
-  const partyFeatures = [
-    "Includes 20 Racing Bracelets",
-    "2 hours of organized racing",
-    "Bracelets can be shared or rotated",
-    "Everyone gets multiple chances to race",
-    "Staff manages racing for safety",
-    "Shared track with public riders",
-    "3 hours in a private party room",
-    "Room accommodates up to 45 guests",
-    "Outdoor seating at no extra cost",
-    "Tables & chairs fully set up",
-    "Wristbands included",
-  ];
+
   return (
     <div className="w-full -mt-20">
-      <section className="relative bg-navy-900 overflow-hidden pt-32 pb-20 min-h-[70vh] flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{ backgroundImage: "url(/images/17.JPEG)" }}
+      <PageHero
+        badge="PRICING"
+        title="Pricing &"
+        titleAccent="Packages"
+        description="Choose the perfect experience for your visit"
+        backgroundImage="/images/17.JPEG"
+        dividerColorClass="bg-gray-50"
+      >
+        <div
+          role="tablist"
+          aria-label="Pricing categories"
+          className="mt-10 inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10"
+        >
+          <TabButton
+            icon={Flag}
+            label="Party Packages"
+            isActive={activeTab === "parties"}
+            onClick={() => setActiveTab("parties")}
+          />
+          <TabButton
+            icon={Users}
+            label="Individual Racing"
+            isActive={activeTab === "individual"}
+            onClick={() => setActiveTab("individual")}
+          />
+          <TabButton
+            icon={Baby}
+            label="Bounce House"
+            isActive={activeTab === "bounce"}
+            onClick={() => setActiveTab("bounce")}
           />
         </div>
-        <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <div className="inline-block mb-6 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-display tracking-widest">
-              PRICING
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
-              Pricing & <span className="text-red-500">Packages</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-10">
-              Choose the perfect experience for your visit
-            </p>
-            <div
-              role="tablist"
-              aria-label="Pricing categories"
-              className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 border border-white/10"
-            >
-              <TabButton
-                icon={Flag}
-                label="Party Packages"
-                isActive={activeTab === "parties"}
-                onClick={() => setActiveTab("parties")}
-              />
-              <TabButton
-                icon={Users}
-                label="Individual Racing"
-                isActive={activeTab === "individual"}
-                onClick={() => setActiveTab("individual")}
-              />
-              <TabButton
-                icon={Baby}
-                label="Bounce House"
-                isActive={activeTab === "bounce"}
-                onClick={() => setActiveTab("bounce")}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-gray-50 [clip-path:polygon(0_100%,100%_0,100%_100%,0%_100%)]" />
-      </section>
+      </PageHero>
       {showCartNotification && (
         <div className="fixed top-24 right-4 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
           <Check className="h-6 w-6" />
@@ -243,7 +185,7 @@ const PricingPage = () => {
         </div>
       )}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-red-600 shadow-2xl p-4 transition-transform duration-300 ${getTotalItems() > 0 ? "translate-y-0" : "translate-y-full"}`}
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-red-600 shadow-2xl p-4 transition-transform duration-300 ${totalItems > 0 ? "translate-y-0" : "translate-y-full"}`}
       >
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -253,9 +195,9 @@ const PricingPage = () => {
             <div>
               <p className="text-sm text-gray-600">Your Selection</p>
               <p className="text-xl font-bold text-gray-800">
-                {getTotalItems()} {getTotalItems() === 1 ? "item" : "items"} -{" "}
+                {totalItems} {totalItems === 1 ? "item" : "items"} -{" "}
                 <span className="font-display tracking-wide">
-                  ${getTotalPrice().toFixed(2)}
+                  {formatDollars(totalPrice)}
                 </span>
               </p>
             </div>
@@ -323,7 +265,7 @@ const PricingPage = () => {
                             <span className="text-gray-500">+ tax</span>
                           </div>
                           <div className="space-y-3 mb-6">
-                            {partyFeatures.map((feature, idx) => (
+                            {PARTY_FEATURES.map((feature, idx) => (
                               <div key={idx} className="flex items-start gap-3">
                                 <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                                 <span
@@ -339,9 +281,7 @@ const PricingPage = () => {
                               size="lg"
                               quantity={qty}
                               productName={product.name}
-                              onDecrement={() =>
-                                updateQuantity(product.id, -1)
-                              }
+                              onDecrement={() => updateQuantity(product.id, -1)}
                               onIncrement={() => updateQuantity(product.id, 1)}
                               onChange={(e) =>
                                 setQuantityDirect(product.id, e.target.value)
@@ -351,21 +291,17 @@ const PricingPage = () => {
                           {isSelected && (
                             <div className="bg-red-50 rounded-xl py-3 text-center mb-4">
                               <span className="font-display text-red-600 text-2xl tracking-wide">
-                                $
-                                {(
-                                  parseFloat(product.price.replace("$", "")) *
-                                  qty
-                                ).toFixed(2)}
+                                {formatDollars(parsePriceString(product.price) * qty)}
                               </span>
                             </div>
                           )}
                           <p className="text-center text-sm text-gray-500">
                             Or call to book:{" "}
                             <a
-                              href="tel:(346) 932-1266"
+                              href={CONTACT_INFO.phoneTel}
                               className="text-red-600 font-semibold hover:text-red-700 transition-colors duration-150 ease-out"
                             >
-                              (346) 932-1266
+                              {CONTACT_INFO.phone}
                             </a>
                           </p>
                         </div>
@@ -441,12 +377,7 @@ const PricingPage = () => {
                               {isSelected && (
                                 <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
                                   <span className="font-display text-red-600 text-lg tracking-wide">
-                                    $
-                                    {(
-                                      parseFloat(
-                                        product.price.replace("$", ""),
-                                      ) * qty
-                                    ).toFixed(2)}
+                                    {formatDollars(parsePriceString(product.price) * qty)}
                                   </span>
                                 </div>
                               )}
@@ -465,15 +396,9 @@ const PricingPage = () => {
                       Why Families Love Our Parties
                     </h4>
                     <div className="grid grid-cols-2 gap-2">
-                      {[
-                        "Simple pricing",
-                        "Flexible for all ages",
-                        "No guest count stress",
-                        "Safe & organized",
-                        "Staff handles everything",
-                      ].map((item, idx) => (
+                      {FAMILY_FAVORITES.map((item) => (
                         <div
-                          key={idx}
+                          key={item}
                           className="flex items-center gap-2 text-sm text-green-700"
                         >
                           <Check className="h-4 w-4" />
@@ -488,11 +413,11 @@ const PricingPage = () => {
                       Call us to customize your party
                     </p>
                     <a
-                      href="tel:(346) 932-1266"
+                      href={CONTACT_INFO.phoneTel}
                       className="inline-flex items-center gap-2 bg-white text-gray-800 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition duration-200 ease-out active:scale-95"
                     >
                       <Phone className="h-5 w-5" />
-                      (346) 932-1266
+                      {CONTACT_INFO.phone}
                     </a>
                   </div>
                 </div>
@@ -514,82 +439,19 @@ const PricingPage = () => {
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
-                {STRIPE_PRODUCTS.map((product) => {
-                  const Icon = getIcon(product.name);
-                  const qty = getQuantity(product.id);
-                  const isSelected = qty > 0;
-                  return (
-                    <div
-                      key={product.id}
-                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${
-                        product.isPopular
-                          ? "border-red-500"
-                          : isSelected
-                            ? "border-red-400"
-                            : "border-gray-100 hover:border-gray-200 hover:shadow-lg"
-                      } ${isSelected ? "ring-2 ring-red-200" : ""}`}
-                    >
-                      {product.isPopular && (
-                        <div className="text-center mb-2">
-                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full tracking-wider">
-                            BEST VALUE
-                          </span>
-                        </div>
-                      )}
-                      <div className="text-center mb-3">
-                        <div
-                          className={`inline-flex p-2 rounded-lg mb-2 ${product.isPopular ? "bg-red-100" : "bg-gray-100"}`}
-                        >
-                          <Icon
-                            className={`h-5 w-5 ${product.isPopular ? "text-red-600" : "text-gray-600"}`}
-                          />
-                        </div>
-                        <h3 className="font-bold text-gray-800 text-sm leading-tight">
-                          {product.name}
-                        </h3>
-                        <div className="font-display text-3xl text-gray-800 mt-1 tracking-wide">
-                          {product.price}
-                        </div>
-                        <p className="text-xs text-gray-500">per person</p>
-                      </div>
-                      <ul className="space-y-1 mb-3">
-                        {product.features.slice(0, 2).map((feature, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start text-xs text-gray-600"
-                          >
-                            <Check
-                              size={12}
-                              className="text-green-600 mr-1 mt-0.5 flex-shrink-0"
-                            />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
-                        <QuantityStepper
-                          quantity={qty}
-                          productName={product.name}
-                          onDecrement={() => updateQuantity(product.id, -1)}
-                          onIncrement={() => updateQuantity(product.id, 1)}
-                          onChange={(e) =>
-                            setQuantityDirect(product.id, e.target.value)
-                          }
-                        />
-                      </div>
-                      {isSelected && (
-                        <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                          <span className="font-display text-red-600 text-lg tracking-wide">
-                            $
-                            {(
-                              parseFloat(product.price.replace("$", "")) * qty
-                            ).toFixed(2)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {STRIPE_PRODUCTS.map((product) => (
+                  <RacingProductCard
+                    key={product.id}
+                    product={product}
+                    quantity={getQuantity(product.id)}
+                    icon={getIcon(product.name)}
+                    iconWrapperClass={product.isPopular ? "bg-red-100" : "bg-gray-100"}
+                    iconClass={product.isPopular ? "text-red-600" : "text-gray-600"}
+                    features={product.features.slice(0, 2)}
+                    onUpdateQuantity={updateQuantity}
+                    onSetQuantity={setQuantityDirect}
+                  />
+                ))}
               </div>
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">
@@ -600,78 +462,19 @@ const PricingPage = () => {
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
-                {STRIPE_DOUBLE_SEATER_PRODUCTS.map((product) => {
-                  const Icon = getIcon(product.name);
-                  const qty = getQuantity(product.id);
-                  const isSelected = qty > 0;
-                  return (
-                    <div
-                      key={product.id}
-                      className={`bg-white rounded-xl p-4 shadow-md border-2 transition duration-200 ease-out ${
-                        product.isPopular
-                          ? "border-red-500"
-                          : isSelected
-                            ? "border-red-400"
-                            : "border-gray-100 hover:border-gray-200 hover:shadow-lg"
-                      } ${isSelected ? "ring-2 ring-red-200" : ""}`}
-                    >
-                      {product.isPopular && (
-                        <div className="text-center mb-2">
-                          <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full tracking-wider">
-                            BEST VALUE
-                          </span>
-                        </div>
-                      )}
-                      <div className="text-center mb-3">
-                        <div className="inline-flex p-2 rounded-lg mb-2 bg-gray-700">
-                          <Icon className="h-5 w-5 text-white" />
-                        </div>
-                        <h3 className="font-bold text-gray-800 text-sm leading-tight">
-                          {product.name}
-                        </h3>
-                        <div className="font-display text-3xl text-gray-800 mt-1 tracking-wide">
-                          {product.price}
-                        </div>
-                        <p className="text-xs text-gray-500">per kart</p>
-                      </div>
-                      <ul className="space-y-1 mb-3">
-                        {product.features.map((feature, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start text-xs text-gray-600"
-                          >
-                            <Check
-                              size={12}
-                              className="text-green-600 mr-1 mt-0.5 flex-shrink-0"
-                            />
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
-                        <QuantityStepper
-                          quantity={qty}
-                          productName={product.name}
-                          onDecrement={() => updateQuantity(product.id, -1)}
-                          onIncrement={() => updateQuantity(product.id, 1)}
-                          onChange={(e) =>
-                            setQuantityDirect(product.id, e.target.value)
-                          }
-                        />
-                      </div>
-                      {isSelected && (
-                        <div className="mt-2 bg-red-50 rounded-lg py-1 text-center">
-                          <span className="font-display text-red-600 text-lg tracking-wide">
-                            $
-                            {(
-                              parseFloat(product.price.replace("$", "")) * qty
-                            ).toFixed(2)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {STRIPE_DOUBLE_SEATER_PRODUCTS.map((product) => (
+                  <RacingProductCard
+                    key={product.id}
+                    product={product}
+                    quantity={getQuantity(product.id)}
+                    icon={getIcon(product.name)}
+                    iconWrapperClass="bg-gray-700"
+                    iconClass="text-white"
+                    perUnitLabel="per kart"
+                    onUpdateQuantity={updateQuantity}
+                    onSetQuantity={setQuantityDirect}
+                  />
+                ))}
               </div>
               <div className="bg-gray-800 rounded-2xl p-6 text-white max-w-4xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -681,33 +484,17 @@ const PricingPage = () => {
                       Height Requirements
                     </h4>
                     <ul className="space-y-2 text-sm">
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        <span>
-                          <span className="text-red-400 font-semibold">
-                            Kiddie Karts:
-                          </span>{" "}
-                          Minimum 40" tall
-                        </span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        <span>
-                          <span className="text-red-400 font-semibold">
-                            Adult Karts:
-                          </span>{" "}
-                          Minimum 53" tall
-                        </span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        <span>
-                          <span className="text-red-400 font-semibold">
-                            Double Seater:
-                          </span>{" "}
-                          Driver 53"+, Passenger 33"+
-                        </span>
-                      </li>
+                      {HEIGHT_REQUIREMENTS.map(({ label, value }) => (
+                        <li key={label} className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-red-400" />
+                          <span>
+                            <span className="text-red-400 font-semibold">
+                              {label}
+                            </span>{" "}
+                            {value}
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <div>
@@ -716,22 +503,12 @@ const PricingPage = () => {
                       Policies
                     </h4>
                     <ul className="space-y-2 text-sm">
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        Each race ticket = one 5-minute race
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        All packages must be used same day
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        Long hair must be tied back
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-red-400" />
-                        Waivers signed in person at the front desk
-                      </li>
+                      {POLICY_LINES.map((line) => (
+                        <li key={line} className="flex items-center gap-2">
+                          <Check className="h-4 w-4 text-red-400" />
+                          {line}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -798,7 +575,7 @@ const PricingPage = () => {
                       ))}
                     </ul>
                     <button
-                      onClick={() => (window.location.href = "/contact")}
+                      onClick={() => navigate("/contact")}
                       className={`w-full py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 ${
                         plan.isPopular
                           ? "bg-red-600 hover:bg-red-700 text-white"
@@ -867,11 +644,11 @@ const PricingPage = () => {
                 View FAQ
               </Link>
               <a
-                href="tel:(346) 932-1266"
+                href={CONTACT_INFO.phoneTel}
                 className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-bold transition duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
               >
                 <Phone className="h-5 w-5" />
-                (346) 932-1266
+                {CONTACT_INFO.phone}
               </a>
             </div>
           </div>
@@ -880,4 +657,5 @@ const PricingPage = () => {
     </div>
   );
 };
+
 export default PricingPage;
