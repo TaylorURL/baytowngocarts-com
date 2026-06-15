@@ -253,7 +253,7 @@ const Header = () => {
                 aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ""}`}
                 className="relative p-2.5 rounded-md text-gray-300 hover:text-chalk"
               >
-                <ShoppingCart className="h-6 w-6" />
+                <Icon name="shopping-cart" className="h-6 w-6" />
                 {cartCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-race-600 text-chalk text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center ring-2 ring-asphalt-900">
                     {cartCount}
@@ -265,11 +265,7 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                <Icon name={isMenuOpen ? "close" : "menu"} className="h-6 w-6" />
               </button>
             </div>
           </div>
