@@ -92,22 +92,12 @@ function getDateFilterStart(filterKey) {
       return null;
   }
 }
-const formatDate = (dateString) =>
-  new Date(dateString).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-const formatCurrency = (cents) => `$${(cents / 100).toFixed(2)}`;
 /**
  * Renders the staff-only admin panel with order stats, search, filtering, and order details.
  * Redirects non-staff users to the home page.
  */
 export default function StaffPanelPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { isStaff, loading: staffLoading } = useAdmin();
   const [activeTab, setActiveTab] = useState("overview");
   const [dateFilter, setDateFilter] = useState("all");
