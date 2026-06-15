@@ -386,89 +386,89 @@ export default function StaffPanelPage() {
                     {displayOrders.map((order) => (
                       <div
                         key={order.id}
-                        className="border border-gray-200 rounded-xl overflow-hidden"
+                        className="border border-asphalt-200 rounded-md overflow-hidden"
                       >
                         <button
                           onClick={() => toggleOrder(order.id)}
-                          className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
+                          className="w-full text-left p-4 hover:bg-asphalt-50 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-mono text-sm font-bold text-gray-800">
+                            <span className="font-mono text-sm font-bold text-asphalt-900 tabular-nums">
                               {order.order_number}
                             </span>
                             <StatusBadge status={order.status} />
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-lg font-bold text-green-600">
+                              <span className="text-lg font-bold text-green-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
-                              <span className="text-sm text-gray-500">
-                                {order.total_quantity} people
+                              <span className="text-sm text-asphalt-500 tabular-nums">
+                                {order.total_quantity} ppl
                               </span>
                             </div>
-                            <ChevronDown
-                              className={`h-5 w-5 text-gray-400 transition-transform duration-200 ease-out ${
+                            <Icon
+                              name="chevron-down"
+                              className={`h-5 w-5 text-asphalt-400 transition-transform duration-base ease-snap ${
                                 expandedOrder === order.id ? "rotate-180" : ""
                               }`}
                             />
                           </div>
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-asphalt-400 mt-1 tabular-nums">
                             {formatShortDateTime(order.created_at)}
                           </p>
                         </button>
                         {expandedOrder === order.id && (
-                          <div className="border-t border-gray-200 bg-gray-50 p-4 space-y-4">
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <Mail className="h-4 w-4 text-gray-400" />
+                          <div className="border-t border-asphalt-200 bg-asphalt-50 p-4 space-y-4">
+                            <div className="flex items-center gap-2 text-sm text-asphalt-600">
+                              <Icon name="mail" className="h-4 w-4 text-asphalt-400" />
                               <span>{order.customer_email || "N/A"}</span>
                             </div>
                             <div>
-                              <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                              <h4 className="text-xs font-display tracking-speedway uppercase text-asphalt-500 mb-2">
                                 Items
                               </h4>
                               <div className="space-y-2">
                                 {order.items?.map((item, idx) => (
                                   <div
                                     key={idx}
-                                    className="flex justify-between items-center bg-white rounded-lg p-3 border border-gray-100"
+                                    className="flex justify-between items-center bg-white rounded-md p-3 border border-asphalt-100"
                                   >
                                     <div>
-                                      <p className="font-medium text-gray-800 text-sm">
+                                      <p className="font-medium text-asphalt-900 text-sm">
                                         {item.product_name}
                                       </p>
-                                      <p className="text-xs text-gray-500">
-                                        {item.quantity} x{" "}
-                                        {formatCents(item.price)}
+                                      <p className="text-xs text-asphalt-500 tabular-nums">
+                                        {item.quantity} × {formatCents(item.price)}
                                       </p>
                                     </div>
-                                    <span className="font-bold text-gray-800 text-sm">
+                                    <span className="font-bold text-asphalt-900 text-sm tabular-nums">
                                       {formatCents(item.subtotal)}
                                     </span>
                                   </div>
                                 ))}
                               </div>
                             </div>
-                            <div className="flex justify-between items-center bg-white rounded-lg p-3 border-2 border-gray-200">
+                            <div className="flex justify-between items-center bg-white rounded-md p-3 border-2 border-asphalt-200">
                               <div>
-                                <p className="font-bold text-gray-800">Total</p>
-                                <p className="text-xs text-gray-500">
+                                <p className="font-display tracking-speedway uppercase text-xs text-asphalt-700">
+                                  Total
+                                </p>
+                                <p className="text-xs text-asphalt-500 tabular-nums">
                                   {order.total_quantity}{" "}
-                                  {order.total_quantity > 1
-                                    ? "people"
-                                    : "person"}
+                                  {order.total_quantity > 1 ? "people" : "person"}
                                 </p>
                               </div>
-                              <span className="text-xl font-black text-red-600">
+                              <span className="text-xl font-black text-race-600 tabular-nums">
                                 {formatCents(order.total_amount)}
                               </span>
                             </div>
                             <button
                               onClick={() => navigate(`/purchase/${order.id}`)}
-                              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors duration-200 ease-out active:scale-95 flex items-center justify-center gap-2"
+                              className="w-full bg-race-600 hover:bg-race-500 text-chalk font-display tracking-speedway uppercase text-sm py-3 rounded-md transition-colors duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
                             >
-                              <Eye className="h-4 w-4" />
-                              Full Order Details
+                              <Icon name="eye" className="h-4 w-4" />
+                              Full Order
                             </button>
                           </div>
                         )}
