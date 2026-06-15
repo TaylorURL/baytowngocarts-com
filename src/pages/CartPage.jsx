@@ -206,7 +206,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
         <div className="flex justify-between items-baseline">
           <span className="text-2xl font-bold text-gray-800">Total:</span>
           <span className="font-display text-4xl text-gray-900 tracking-wide">
-            ${fees.total.toFixed(2)}
+            {formatDollars(fees.total)}
           </span>
         </div>
       </div>
