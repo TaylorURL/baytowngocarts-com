@@ -1,8 +1,3 @@
-/**
- * Section eyebrow — short uppercase label that sits above a section title.
- * Two leading red bars give it a "starting-grid" feel without being
- * cliche-checkered.
- */
 const SectionEyebrow = ({ children, tone = "dark", className = "" }) => {
   const color = tone === "dark" ? "text-chalk" : "text-asphalt-700";
   return (
