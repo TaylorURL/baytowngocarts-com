@@ -173,10 +173,12 @@ export default function StaffPanelPage() {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   if (staffLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-navy-900 via-red-900 to-navy-900 flex items-center justify-center">
+      <div className="min-h-screen bg-asphalt-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading Staff Panel...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-asphalt-700 border-t-race-500 mx-auto mb-4" />
+          <p className="text-chalk text-lg font-display tracking-speedway uppercase text-sm">
+            Loading Staff Panel
+          </p>
         </div>
       </div>
     );
