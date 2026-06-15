@@ -5,6 +5,7 @@ import { FAQS } from "../lib/content/faqs.js";
 import Button from "../components/common/Button";
 import Pill from "../components/common/Pill.jsx";
 import { Link } from "react-router-dom";
+import PageHero from "../components/common/PageHero.jsx";
 import {
   Calendar,
   DollarSign,
