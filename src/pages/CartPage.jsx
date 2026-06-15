@@ -101,7 +101,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }) {
             </p>
             <p className="text-lg font-bold text-gray-800">
               <span className="font-display text-2xl tracking-wide">
-                ${unitPrice.toFixed(2)}
+                {formatDollars(unitPrice)}
               </span>{" "}
               <span className="text-sm font-normal text-gray-600">
                 per person
