@@ -15,6 +15,9 @@ import {
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabase } from "../lib/supabase";
+import { parsePriceString } from "../lib/pricing.js";
+import { formatDollars } from "../lib/format.js";
+import PageHero from "../components/common/PageHero.jsx";
 const TRANSACTION_FEE_PERCENT = 0.04;
 const PLATFORM_FEE_PERCENT = 0.01;
 const COMBINED_FEE_PERCENT = TRANSACTION_FEE_PERCENT + PLATFORM_FEE_PERCENT;
