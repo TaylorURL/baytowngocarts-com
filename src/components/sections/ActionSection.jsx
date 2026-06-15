@@ -39,7 +39,7 @@ const ActionSection = () => (
             href={CONTACT_INFO.phoneTel}
             className="inline-flex items-center gap-3 bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-6 py-3 rounded-md font-bold shadow-track transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
           >
-            <Phone className="h-4 w-4 text-race-500" />
+            <Icon name="phone" className="h-4 w-4 text-race-500" />
             <span className="tabular-nums tracking-wide">
               {CONTACT_INFO.phone}
             </span>
