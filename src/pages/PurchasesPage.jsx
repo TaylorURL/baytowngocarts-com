@@ -19,8 +19,8 @@ const LoadingState = () => (
       </div>
       <div className="absolute inset-0 z-[5] opacity-10 checker-overlay" />
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <div className="h-16 w-16 rounded-full border-4 border-red-200/40 border-t-red-500 animate-spin mx-auto mb-4" />
-        <p className="text-white text-lg">Loading your dashboard...</p>
+        <div className="h-16 w-16 rounded-full border-4 border-race-200/40 border-t-race-500 animate-spin mx-auto mb-4" />
+        <p className="text-chalk text-lg">Loading your orders…</p>
       </div>
     </section>
   </div>
