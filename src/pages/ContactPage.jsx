@@ -60,10 +60,8 @@ const ContactPage = () => {
             className="max-w-3xl mx-auto text-center mb-16"
             data-aos="fade-up"
           >
-            <div className="inline-block mb-4 px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-display tracking-widest">
-              CONTACT METHODS
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+            <Pill variant="light" className="mb-4">CONTACT METHODS</Pill>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6 mt-4">
               Choose How to Connect
             </h2>
             <p className="text-xl text-gray-600">
