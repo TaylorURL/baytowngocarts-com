@@ -3,10 +3,6 @@ import { ArrowRight, Calendar, Phone } from "lucide-react";
 import Button from "../common/Button.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
-/**
- * Closing call-to-action band. Sits flush above the footer on the home page.
- * Asphalt with caution-tape ribbon — earned, not overused.
- */
 const ActionSection = () => (
   <section className="relative bg-asphalt-900 text-chalk overflow-hidden">
     <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
