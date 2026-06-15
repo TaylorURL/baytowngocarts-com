@@ -317,7 +317,7 @@ const Header = () => {
       {/* Mobile overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-asphalt-950/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-asphalt-950/80 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
