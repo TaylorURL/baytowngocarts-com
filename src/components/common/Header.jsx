@@ -324,7 +324,7 @@ const Header = () => {
 
       {/* Mobile drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden bg-asphalt-900/80 backdrop-blur-xl border-l border-asphalt-700/50 shadow-[-12px_0_40px_rgba(0,0,0,0.4)] transform transition-transform duration-slow ease-drawer ${
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden bg-asphalt-900 border-l border-white/10 shadow-[-12px_0_40px_rgba(0,0,0,0.4)] transform transition-transform duration-slow ease-drawer ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
