@@ -1,9 +1,5 @@
-/**
- * 404 page displayed for unmatched routes. Themed as a "wrong turn" message
- * with links back home and to pricing.
- */
 import { Link } from "react-router-dom";
-import { ArrowLeft, Home } from "lucide-react";
+import Icon from "../components/common/Icon.jsx";
 import Pill from "../components/common/Pill.jsx";
 
 const NotFoundPage = () => (
