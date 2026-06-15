@@ -330,7 +330,7 @@ const Header = () => {
       >
         <div className="flex flex-col h-full">
           {/* Drawer header */}
-          <div className="flex items-center justify-between px-5 py-4 bg-asphalt-950/60 border-b border-asphalt-700/50">
+          <div className="flex items-center justify-between px-5 py-4 bg-asphalt-950 border-b border-white/10">
             <Wordmark
               to="/"
               onClick={() => {
