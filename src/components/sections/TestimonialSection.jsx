@@ -1,4 +1,4 @@
-import { CheckCircle, Quote, Star } from "lucide-react";
+import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
 import { TESTIMONIALS } from "../../lib/content/testimonials.js";
 
