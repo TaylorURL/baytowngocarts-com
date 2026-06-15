@@ -261,7 +261,7 @@ const ContactCTASection = () => (
   </section>
 );
 const ReadyToRaceCTA = () => (
-  <section className="py-20 text-white bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900">
+  <section className="py-20 text-white bg-asphalt-900">
     <ContentWrapper>
       <div className="text-center" data-aos="fade-up">
         <h2 className="text-4xl lg:text-5xl font-bold mb-6">Ready to Race?</h2>
