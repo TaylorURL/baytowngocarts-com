@@ -5,10 +5,6 @@ const STEPPER_SIZES = {
   lg: { button: "w-10 h-10", icon: "h-5 w-5", input: "w-16 py-2 text-lg" },
 };
 
-/**
- * Quantity selector with accessible decrement/increment steppers and a direct
- * number input. Disables the decrement control at zero and gives press feedback.
- */
 const QuantityStepper = ({
   quantity,
   productName,
