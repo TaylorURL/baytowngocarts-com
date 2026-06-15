@@ -628,7 +628,7 @@ const PricingPage = () => {
           </div>
         </section>
       )}
-      <section className="py-12 text-white bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900">
+      <section className="py-12 text-white bg-asphalt-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-3">Questions?</h2>
