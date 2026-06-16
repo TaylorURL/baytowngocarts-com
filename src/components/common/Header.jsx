@@ -54,25 +54,15 @@ const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
   </div>
 );
 
-const SCROLL_THRESHOLD = 48;
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [activeLight, setActiveLight] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
   const userMenuRef = useRef(null);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { isStaff } = useAdmin();
   const { getTotalItems } = useCart();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const id = setInterval(() => setActiveLight((p) => (p + 1) % 3), 1000);
@@ -107,11 +97,7 @@ const Header = () => {
       <div className="h-1 race-stripe" aria-hidden="true" />
 
       {/* Top bar: wordmark, info, cart, auth */}
-      <div className={`transition-[background-color,border-color,backdrop-filter] duration-base ease-snap ${
-        scrolled
-          ? "bg-asphalt-900/75 backdrop-blur-md border-b border-asphalt-700/60"
-          : "bg-transparent border-b border-transparent"
-      }`}>
+      <div className="bg-asphalt-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[72px]">
             <Wordmark
@@ -287,11 +273,7 @@ const Header = () => {
       </div>
 
       {/* Bottom nav strip with traffic lights */}
-      <div className={`hidden lg:block transition-[background-color,box-shadow,backdrop-filter] duration-base ease-snap ${
-        scrolled
-          ? "bg-asphalt-950/70 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.06)]"
-          : "bg-transparent"
-      }`}>
+      <div className="hidden lg:block bg-asphalt-950 border-b border-white/10 shadow-lg shadow-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <TrafficLights activeLight={activeLight} size={10} gap={1.5} />
@@ -335,20 +317,20 @@ const Header = () => {
       {/* Mobile overlay */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-asphalt-950/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-asphalt-950/80 z-40 lg:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden bg-asphalt-900/80 backdrop-blur-xl border-l border-asphalt-700/50 shadow-[-12px_0_40px_rgba(0,0,0,0.4)] transform transition-transform duration-slow ease-drawer ${
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden bg-asphalt-900 border-l border-white/10 shadow-[-12px_0_40px_rgba(0,0,0,0.4)] transform transition-transform duration-slow ease-drawer ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Drawer header */}
-          <div className="flex items-center justify-between px-5 py-4 bg-asphalt-950/60 border-b border-asphalt-700/50">
+          <div className="flex items-center justify-between px-5 py-4 bg-asphalt-950 border-b border-white/10">
             <Wordmark
               to="/"
               onClick={() => {
