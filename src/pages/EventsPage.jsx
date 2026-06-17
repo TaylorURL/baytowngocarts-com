@@ -15,40 +15,40 @@ const EVENT_TYPES = [
   {
     title: "Birthday Parties",
     description:
-      "3-hour private room rental, 20 racing wristbands included, staff runs the heats. Decorate 30 minutes before guests arrive.",
+      "Private room rental with 20 racing wristbands included. Staff runs the heats. Decorate 30 minutes before guests arrive. Extra wristbands available day-of upon request.",
     image: "/images/17.JPEG",
     icon: "cake",
     features: [
-      "Private room — fits 45",
-      "20 racing wristbands",
-      "$699 base package",
+      "Private room — fits up to 60",
+      "20 racing wristbands included",
+      "Extra wristbands day-of on request",
       "Bring your own cake & decor",
     ],
   },
   {
     title: "Corporate Outings",
     description:
-      "Bring the team. We can run private heats with timing posted to your screen — bracket-style, ladder-style, or all-comers.",
+      "Bring the team. Private heats, bracket or open format — staff handles the lineups so you can focus on giving your coworkers a hard time.",
     image: "/images/18.JPEG",
     icon: "briefcase",
     features: [
       "Private track windows",
-      "Timing dashboard on TV",
-      "Catering on request",
       "Bracket or open format",
+      "Catering on request",
+      "Staff-run heats",
     ],
   },
   {
-    title: "Racing Leagues",
+    title: "Thursday Unlimited Special",
     description:
-      "Eight-week leagues launching Q1 2026. Same drivers, same karts, points carry — fastest lap, average finish, championship at the end.",
+      "Every Thursday — 2.5 hours of unlimited racing for one flat price. $49.99 plus tax per person. Wristband on the clock from the moment it's issued.",
     image: "/images/19.JPEG",
-    icon: "trophy",
+    icon: "stopwatch",
     features: [
-      "Weekly Tuesday or Thursday heats",
-      "Points-based standings",
-      "Championship trophy + bragging rights",
-      "Roster cap — call to sign up",
+      "Thursdays only",
+      "$49.99 + tax per person",
+      "2.5 hours of unlimited racing",
+      "Adult or Kid karts",
     ],
   },
 ];
