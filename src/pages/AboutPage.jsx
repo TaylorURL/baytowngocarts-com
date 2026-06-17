@@ -243,7 +243,7 @@ const AboutPage = () => (
             <span className="block text-race-500">First one's $13.99.</span>
           </h2>
           <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-            Walk-ins every day. Parties booked by phone.
+            Walk-ins Thursday through Sunday. Parties booked by phone.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/pricing">
