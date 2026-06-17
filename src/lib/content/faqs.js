@@ -2,7 +2,7 @@ export const FAQS = [
   {
     question: "What are your hours of operation?",
     answer:
-      "We are open 7 days a week. Monday through Thursday 12:00 PM – 8:00 PM (Leagues begin at 7:30 PM — launching Q1 2026), Friday 12:00 PM – 10:30 PM, and Saturday & Sunday 10:30 AM – 10:30 PM.",
+      "We are open Thursday through Sunday. Thursday and Friday 5:00 PM – 10:30 PM; Saturday and Sunday 10:30 AM – 10:30 PM. We are closed Monday, Tuesday, and Wednesday. Holiday hours vary — please check our Google page for the latest schedule and any changes.",
     category: "Racing",
   },
   {
