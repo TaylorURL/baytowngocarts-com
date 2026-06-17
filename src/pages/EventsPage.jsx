@@ -67,7 +67,7 @@ const HOW_IT_WORKS = [
   {
     icon: "users",
     title: "Tell us your count",
-    text: "Headcount up to 45 inside, more outside on the patio. We staff to size.",
+    text: "Headcount up to 60 inside, more outside on the patio. We staff to size.",
   },
   {
     icon: "flag",
