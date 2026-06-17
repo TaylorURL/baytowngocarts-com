@@ -27,18 +27,24 @@ const CONNECTED_ACCOUNT_ID = Deno.env.get("STRIPE_CONNECTED_ACCOUNT_ID") || "";
 
 /** Server-side canonical product price map — source of truth for checkout pricing (in dollars). */
 const PRODUCT_PRICES: Record<string, number> = {
-  prod_SuF7rI45RLsQlo: 13.99, // Adult Race
-  prod_SuF7XrzxLfJWw6: 13.99, // Kid Race
-  prod_SuF8q9mSRcmCcU: 34.99, // 3-Race Combo
-  prod_family_deal: 59.99, // Family Deal
-  prod_SuF9rhy87orqYS: 44.99, // 2.5 Hour Racing
-  prod_double_ride_along: 19.99, // Ride Along Rush
-  prod_double_drift: 37.99, // Double Drift
-  prod_track_titan: 39.99, // Track Titan
-  prod_party_all_access: 699.0, // All-Access Family Race Party
-  prod_party_bounce_upgrade: 150.0, // Bounce House + Game Tables
-  prod_party_race_together: 150.0, // Race Together Upgrade
-  prod_party_private_track: 700.0, // Private Track (2 Hours)
+  // Single-kart ticket tiers
+  prod_single_kart_1: 13.99,
+  prod_single_kart_4: 51.99,
+  prod_single_kart_8: 87.99,
+  prod_single_kart_15: 149.99,
+  prod_single_kart_25: 224.99,
+  prod_single_kart_35: 297.99,
+  prod_single_kart_50: 399.99,
+  // Double-seater ticket tiers
+  prod_double_seater_1: 19.99,
+  prod_double_seater_2: 37.99,
+  prod_double_seater_4: 67.99,
+  prod_double_seater_6: 89.99,
+  // Party packages and upgrades
+  prod_party_all_access: 699.0,
+  prod_party_bounce_upgrade: 150.0,
+  prod_party_race_together: 150.0,
+  prod_party_private_track: 700.0,
 };
 
 /** Convert a dollar price to cents with proper rounding (avoids floating-point errors). */
