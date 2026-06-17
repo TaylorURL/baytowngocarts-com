@@ -40,7 +40,7 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32 md:pt-44 md:pb-44">
         <div className="md:max-w-3xl">
           <Pill variant="race" size="sm" className="mb-6" data-aos="fade-up">
-            Outdoor Speedway · Open Daily
+            Outdoor Speedway · Open Thu – Sun
           </Pill>
           <h1
             className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight animate-fade-in"
