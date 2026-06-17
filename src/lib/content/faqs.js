@@ -8,7 +8,7 @@ export const FAQS = [
   {
     question: "How long is each race?",
     answer:
-      "Each race is 5 minutes long, and one race ticket gets you one race. Wristbands provide unlimited racing for 2.5 hours from the time the wristband is issued.",
+      "Each race is a full 5 minutes long, and one race ticket gets you one race. If a kart breaks down or there's a caution, the timer stops — so every racer always gets their full 5 minutes of track time. Wristbands provide unlimited racing for 2.5 hours from the time the wristband is issued.",
     category: "Racing",
   },
   {
