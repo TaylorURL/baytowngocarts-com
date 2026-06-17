@@ -446,7 +446,7 @@ const PricingPage = () => {
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    iconName={getIconName(product.name)}
+                    iconName={getIconName(product)}
                     iconWrapperClass={
                       product.isPopular ? "bg-race-100" : "bg-asphalt-100"
                     }
@@ -473,7 +473,7 @@ const PricingPage = () => {
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    iconName={getIconName(product.name)}
+                    iconName={getIconName(product)}
                     iconWrapperClass="bg-asphalt-800"
                     iconClass="text-chalk"
                     perUnitLabel="per kart"
