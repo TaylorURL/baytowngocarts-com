@@ -37,7 +37,9 @@ const HEIGHT_REQUIREMENTS = [
 ];
 
 const POLICY_LINES = [
-  "Each race ticket = one 5-minute heat",
+  "Each race ticket = one full 5-minute heat",
+  "Timer stops for breakdowns or cautions",
+  "Safety glasses provided — helmets always recommended",
   "All packages must be used same day",
   "Long hair tied back (ties at front desk)",
   "Waivers signed in person before riding",
