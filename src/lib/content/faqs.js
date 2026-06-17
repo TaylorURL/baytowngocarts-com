@@ -190,7 +190,7 @@ export const FAQS = [
   {
     question: "What happens if a kart breaks down during a race?",
     answer:
-      "We will safely bring you into the pit, assign you a new kart immediately (if available), and guarantee you receive your full 5 minutes of track time. If no replacement kart is available, you will be placed into the next race to complete your time.",
+      "If a kart breaks down or there's a caution, the timer stops — so you always get your full 5 minutes of track time. We'll safely bring you into the pit, assign you a new kart immediately (if available), or place you into the next race to complete your time.",
     category: "Racing",
   },
   {
