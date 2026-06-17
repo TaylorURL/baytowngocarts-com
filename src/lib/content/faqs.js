@@ -13,7 +13,7 @@ export const FAQS = [
   },
   {
     question: "Where are you located?",
-    answer: "Speedway 146 is located at 6750 N TX-146, Baytown, TX 77523.",
+    answer: "Speedway 146 is located at 6750 TX-146, Baytown, TX 77523.",
     category: "Racing",
   },
   {
