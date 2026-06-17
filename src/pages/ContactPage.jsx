@@ -37,7 +37,7 @@ const ContactPage = () => (
       badge="Contact"
       title="Talk to"
       titleAccent="the track."
-      description="The fastest way to book is by phone — leagues, parties, and corporate slots are confirmed live. Form and email work too."
+      description="The fastest way to book is by phone — parties, corporate slots, and group bookings are confirmed live. Form and email work too."
       backgroundImage="/images/22.JPEG"
       dividerColorClass="bg-chalk"
     />
