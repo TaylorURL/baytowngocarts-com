@@ -99,11 +99,11 @@ const ContactPage = () => (
           <div data-aos="fade-left">
             <SectionEyebrow tone="light">Find Us</SectionEyebrow>
             <h2 className="mt-4 text-3xl lg:text-4xl font-bold text-asphalt-900 mb-3">
-              6750 N TX-146
+              {CONTACT_INFO.addressLine1}
             </h2>
             <p className="text-asphalt-600 mb-8 leading-relaxed">
-              Baytown, TX — 20 minutes east of Houston, 10 minutes south of
-              the Fred Hartman Bridge. Easy parking, free.
+              {CONTACT_INFO.addressCityState} — 20 minutes east of Houston, 10
+              minutes south of the Fred Hartman Bridge. Easy parking, free.
             </p>
             <LocationsSection />
           </div>
