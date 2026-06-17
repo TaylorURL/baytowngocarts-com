@@ -118,9 +118,10 @@ const AboutPage = () => (
               actually go.
             </p>
             <p className="mt-4 text-lg text-asphalt-700 leading-relaxed">
-              Five-minute heats, real timing, helmets stocked. Easy enough for
-              a seven-year-old's birthday party, fast enough that grown-ups
-              come back to settle scores.
+              Full five-minute heats — timer stops on breakdowns and cautions
+              so nobody loses time. Safety glasses provided; helmets always
+              recommended (bring your own). Easy enough for a seven-year-old's
+              birthday, fast enough that grown-ups come back to settle scores.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/pricing">
