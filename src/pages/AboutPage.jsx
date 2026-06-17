@@ -4,6 +4,7 @@ import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import StatTile from "../components/common/StatTile.jsx";
+import { CONTACT_INFO } from "../lib/content/business.js";
 
 const FACTS = [
   { value: "2019", label: "Opened on TX-146", accent: "race" },
