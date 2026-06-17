@@ -9,7 +9,7 @@ const FACTS = [
   { value: "2019", label: "Opened on TX-146", accent: "race" },
   { value: '5"', label: "Suggested Min Age", accent: "ignite" },
   { value: "5:00", label: "Per Heat", accent: "race" },
-  { value: "45", label: "Party Room Cap", accent: "chalk" },
+  { value: "60", label: "Party Room Cap", accent: "chalk" },
 ];
 
 const TIMELINE = [
