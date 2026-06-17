@@ -7,6 +7,7 @@ import {
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
+import { THURSDAY_UNLIMITED_SPECIAL } from "../lib/content/specials.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
