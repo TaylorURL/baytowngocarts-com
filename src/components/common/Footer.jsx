@@ -142,17 +142,25 @@ const Footer = () => {
             </h3>
             <div className="flex items-start gap-3">
               <Icon name="clock" className="h-4 w-4 text-race-500 mt-1 flex-shrink-0" />
-              <ul className="text-gray-300 text-sm space-y-1.5 tabular-nums">
-                {BUSINESS_HOURS.map(({ day, hours }) => (
-                  <li
-                    key={day}
-                    className="flex items-baseline justify-between gap-3"
-                  >
-                    <span className="font-semibold text-chalk">{day}</span>
-                    <span className="text-gray-400">{hours}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="text-gray-300 text-sm space-y-3 w-full">
+                <ul className="space-y-1.5 tabular-nums">
+                  {BUSINESS_HOURS.map(({ day, hours }) => (
+                    <li
+                      key={day}
+                      className="flex items-baseline justify-between gap-3"
+                    >
+                      <span className="font-semibold text-chalk">{day}</span>
+                      <span className="text-gray-400">{hours}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-gray-500 italic">
+                  {CLOSED_DAYS_NOTE}
+                </p>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  {HOLIDAY_HOURS_NOTE}
+                </p>
+              </div>
             </div>
           </div>
         </div>
