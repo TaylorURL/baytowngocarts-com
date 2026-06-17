@@ -111,6 +111,18 @@ export const FAQS = [
     category: "Events",
   },
   {
+    question: "How big is the party room and what's included?",
+    answer:
+      "Our private party room fits up to 60 people and includes 20 wristbands for racing. Additional wristbands can be purchased upon request the day of your event.",
+    category: "Events",
+  },
+  {
+    question: "What is the Thursday Unlimited Racing Special?",
+    answer:
+      "Every Thursday we run a 2.5 Hour Unlimited Racing Special — $49.99 plus tax per person. You get 2.5 hours of unlimited racing from the moment your wristband is issued. Thursdays only.",
+    category: "Pricing",
+  },
+  {
     question: "Is a deposit required for events?",
     answer:
       "Yes. A 20% deposit of the total balance is required to reserve your date and time.",
