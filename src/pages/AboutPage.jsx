@@ -36,10 +36,10 @@ const TIMELINE = [
   },
   {
     year: "2026",
-    icon: "trophy",
-    title: "Leagues kick off",
+    icon: "cake",
+    title: "Party room expanded",
     description:
-      "Eight-week racing leagues planned for Q1 2026 — same drivers, same karts, points tally weekly.",
+      "Party room reworked to fit up to 60 guests, still with 20 racing wristbands included — extra wristbands available day-of upon request.",
   },
 ];
 
