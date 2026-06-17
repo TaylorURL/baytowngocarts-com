@@ -46,18 +46,10 @@ const POLICY_LINES = [
   "Waivers signed in person before riding",
 ];
 
-const getIconName = (productName) => {
-  if (productName.includes("Kid")) return "helmet";
-  if (productName.includes("Adult")) return "kart";
-  if (productName.includes("Family")) return "users";
-  if (productName.includes("2.5") || productName.includes("Hour")) return "stopwatch";
-  if (
-    productName.includes("Double") ||
-    productName.includes("Ride Along") ||
-    productName.includes("Track Titan")
-  )
-    return "users";
-  return "flag";
+const getIconName = (product) => {
+  if (product.isDoubleSeater) return "users";
+  if (product.isPartyPackage) return "flag";
+  return "kart";
 };
 
 const PricingPage = () => {
