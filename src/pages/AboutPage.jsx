@@ -47,12 +47,12 @@ const HOUSE_RULES = [
   {
     icon: "helmet",
     title: "Real karts, not arcade rides",
-    text: "Geared karts with real speed and timed transponders. We don't run go-cart-shaped go-carts.",
+    text: "Geared karts with real speed on an outdoor circuit. We don't run go-cart-shaped go-carts.",
   },
   {
     icon: "stopwatch",
-    title: "5 minutes, every time",
-    text: "If a kart breaks down mid-heat, you finish your time in the next one. Nobody loses paid laps.",
+    title: "Full 5 minutes — always",
+    text: "If a kart breaks down or there's a caution, the timer stops. Every racer gets their full 5 minutes of track time.",
   },
   {
     icon: "users",
@@ -61,8 +61,8 @@ const HOUSE_RULES = [
   },
   {
     icon: "fuel",
-    title: "Outdoor, year-round",
-    text: "Open every day. Light rain we run. Heavy rain we pause for safety, then resume.",
+    title: "Outdoor, Thursday – Sunday",
+    text: "Open Thursday through Sunday — light rain we run, heavy rain we pause for safety, then resume.",
   },
 ];
 
