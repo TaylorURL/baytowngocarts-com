@@ -25,8 +25,8 @@ const CONTACT_METHODS = [
     icon: "map-pin",
     title: "Drive Out",
     description: "Walk-ins welcome — every day we're open.",
-    info: "6750 N TX-146, Baytown",
-    action: CONTACT_INFO.mapsUrl,
+    info: `${CONTACT_INFO.addressLine1}, Baytown`,
+    action: CONTACT_INFO.directionsUrl,
     external: true,
   },
 ];
