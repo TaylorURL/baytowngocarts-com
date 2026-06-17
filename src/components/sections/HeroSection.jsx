@@ -95,7 +95,7 @@ const HeroSection = () => {
             <span className="inline-flex items-center gap-2">
               <Icon name="map-pin" className="h-4 w-4 text-race-500" />
               <span className="font-semibold tracking-wide">
-                6750 N TX-146 · Baytown
+                {CONTACT_INFO.addressLine1} · Baytown
               </span>
             </span>
           </div>
