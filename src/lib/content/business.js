@@ -1,12 +1,14 @@
 export const BUSINESS_HOURS = [
-  { day: "Monday", hours: "12:00 PM – 8:00 PM" },
-  { day: "Tuesday", hours: "12:00 PM – 8:00 PM" },
-  { day: "Wednesday", hours: "12:00 PM – 8:00 PM" },
-  { day: "Thursday", hours: "12:00 PM – 8:00 PM" },
-  { day: "Friday", hours: "12:00 PM – 10:30 PM" },
+  { day: "Thursday", hours: "5:00 PM – 10:30 PM" },
+  { day: "Friday", hours: "5:00 PM – 10:30 PM" },
   { day: "Saturday", hours: "10:30 AM – 10:30 PM" },
   { day: "Sunday", hours: "10:30 AM – 10:30 PM" },
 ];
+
+export const CLOSED_DAYS_NOTE = "Closed Monday – Wednesday";
+
+export const HOLIDAY_HOURS_NOTE =
+  "Holiday hours vary — check our Google page for the latest schedule and any changes.";
 
 export const CONTACT_INFO = {
   phone: "(346) 932-1266",
