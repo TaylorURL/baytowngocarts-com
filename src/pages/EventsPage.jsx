@@ -8,7 +8,7 @@ import { CONTACT_INFO } from "../lib/content/business.js";
 const HERO_BADGES = [
   { icon: "cake", label: "Birthday Parties" },
   { icon: "briefcase", label: "Corporate" },
-  { icon: "trophy", label: "Q1 2026 Leagues" },
+  { icon: "stopwatch", label: "Thursday Special" },
 ];
 
 const EVENT_TYPES = [
