@@ -70,7 +70,7 @@ const ContactForm = () => {
     <div className="space-y-6">
       <div className="rounded-md border border-asphalt-200 bg-asphalt-50 p-6">
         <h3 className="text-xs font-display tracking-speedway uppercase text-race-600 mb-2">
-          Booking a party room or league?
+          Booking a party room?
         </h3>
         <p className="text-asphalt-700 text-sm leading-relaxed">
           The fastest path is a phone call —{" "}
