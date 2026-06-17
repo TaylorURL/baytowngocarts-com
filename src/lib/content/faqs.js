@@ -49,7 +49,13 @@ export const FAQS = [
   {
     question: "Are helmets required?",
     answer:
-      "Helmets are optional, but available for use. You are welcome to bring your own helmet.",
+      "Helmets are not required, but we always recommend wearing one. We do not provide helmets — please bring your own if you'd like to wear one. We do provide safety glasses for every rider.",
+    category: "Racing",
+  },
+  {
+    question: "What safety gear do you provide?",
+    answer:
+      "We provide safety glasses for every rider. Helmets are not provided but are always recommended — please bring your own helmet if you'd like to wear one. Closed-toe shoes are highly recommended; long hair must be tied back.",
     category: "Racing",
   },
   {
