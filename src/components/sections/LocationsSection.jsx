@@ -59,6 +59,12 @@ const LocationsSection = () => (
             </li>
           ))}
         </ul>
+        <p className="mt-2 text-xs text-asphalt-500 italic">
+          {CLOSED_DAYS_NOTE}
+        </p>
+        <p className="mt-1 text-xs text-asphalt-500 leading-relaxed">
+          {HOLIDAY_HOURS_NOTE}
+        </p>
       </ContactRow>
     </div>
     <div className="rounded-md overflow-hidden border border-asphalt-200 h-64">
