@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
 import {
   BUSINESS_HOURS,
+  CLOSED_DAYS_NOTE,
   CONTACT_INFO,
+  HOLIDAY_HOURS_NOTE,
   SOCIAL_URLS,
 } from "../../lib/content/business.js";
 import Icon from "./Icon.jsx";
