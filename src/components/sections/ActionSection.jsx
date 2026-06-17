@@ -11,11 +11,11 @@ const ActionSection = () => (
       <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
         <h2 className="font-display text-5xl lg:text-7xl tracking-tight leading-[0.95]">
           Come race.
-          <span className="block text-race-500">We're open today.</span>
+          <span className="block text-race-500">Thursday – Sunday.</span>
         </h2>
         <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Walk-ins every day, weekends until 10:30 PM. Booking a party for 45?
-          Call and we'll lock in your date.
+          Walk-ins Thursday through Sunday, weekends until 10:30 PM. Booking a
+          party for up to 60? Call and we'll lock in your date.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/pricing">
