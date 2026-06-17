@@ -10,11 +10,11 @@ export const BRAND = {
 };
 
 export const HOME_HERO = {
-  eyebrow: "Open Daily · Walk-Ins Welcome",
+  eyebrow: "Open Thursday – Sunday · Walk-Ins Welcome",
   title: "Real Karts.",
   titleAccent: "Real Speed.",
   description:
-    "Baytown's outdoor speedway. 5-minute heats, family-friendly track, leagues kicking off Q1 2026.",
+    "Baytown's outdoor speedway. 5-minute heats, family-friendly track, Thursday through Sunday.",
   primaryCta: { label: "See Pricing", to: "/pricing" },
   secondaryCta: { label: "Book a Party", to: "/contact" },
 };

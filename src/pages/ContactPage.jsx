@@ -9,7 +9,7 @@ const CONTACT_METHODS = [
   {
     icon: "phone",
     title: "Call",
-    description: "Fastest for party bookings and league signups.",
+    description: "Fastest for party bookings and group inquiries.",
     info: CONTACT_INFO.phone,
     action: CONTACT_INFO.phoneTel,
     primary: true,
@@ -37,7 +37,7 @@ const ContactPage = () => (
       badge="Contact"
       title="Talk to"
       titleAccent="the track."
-      description="The fastest way to book is by phone — leagues, parties, and corporate slots are confirmed live. Form and email work too."
+      description="The fastest way to book is by phone — parties, corporate slots, and group bookings are confirmed live. Form and email work too."
       backgroundImage="/images/22.JPEG"
       dividerColorClass="bg-chalk"
     />
@@ -91,8 +91,8 @@ const ContactPage = () => (
               Contact Form
             </h2>
             <p className="text-asphalt-600 mb-8 leading-relaxed">
-              We read these the same day. For party deposits and league
-              signups, call instead.
+              We read these the same day. For party deposits and group
+              bookings, call instead.
             </p>
             <ContactForm />
           </div>
@@ -121,7 +121,7 @@ const ContactPage = () => (
             <span className="block text-race-500">It's the fastest path.</span>
           </h2>
           <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-            Same number for walk-in questions, party deposits, league rosters,
+            Same number for walk-in questions, party deposits, group bookings,
             and lost-and-found.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">

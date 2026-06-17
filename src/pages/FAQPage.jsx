@@ -252,7 +252,7 @@ const ContactCTASection = () => (
             </div>
             <div className="mt-6 pt-6 border-t border-chalk/10">
               <p className="text-gray-400 text-xs text-center">
-                Open 7 days. Friday + weekend hours go later.
+                Open Thursday – Sunday. Check our Google page for holiday hours.
               </p>
             </div>
           </div>

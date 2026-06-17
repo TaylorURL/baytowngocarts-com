@@ -7,6 +7,7 @@ import {
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
+import { THURSDAY_UNLIMITED_SPECIAL } from "../lib/content/specials.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
@@ -20,10 +21,11 @@ const PARTY_FEATURES = [
   "20 racing wristbands included",
   "2 hours of organized racing",
   "Wristbands can rotate among guests",
+  "Extra wristbands available day-of upon request",
   "Staff runs the heats — no parental refereeing",
   "Shared track with public riders",
   "3 hours in the private party room",
-  "Room fits up to 45 guests",
+  "Room fits up to 60 guests",
   "Outdoor seating overflow at no charge",
   "Tables + chairs already set up",
   "Public-side bounce wristbands available à la carte",
@@ -36,7 +38,9 @@ const HEIGHT_REQUIREMENTS = [
 ];
 
 const POLICY_LINES = [
-  "Each race ticket = one 5-minute heat",
+  "Each race ticket = one full 5-minute heat",
+  "Timer stops for breakdowns or cautions",
+  "Safety glasses provided — helmets always recommended",
   "All packages must be used same day",
   "Long hair tied back (ties at front desk)",
   "Waivers signed in person before riding",
@@ -148,6 +152,35 @@ const PricingPage = () => {
           />
         </div>
       </PageHero>
+
+      <section className="py-10 bg-asphalt-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto rounded-lg border-2 border-race-500 bg-gradient-to-br from-race-700 via-race-600 to-race-700 text-chalk shadow-lift overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 p-6 md:p-8">
+              <div className="md:col-span-2">
+                <div className="inline-flex items-center gap-2 bg-caution-400 text-asphalt-950 px-3 py-1 rounded-full text-[10px] font-display tracking-speedway uppercase mb-3">
+                  <Icon name="stopwatch" className="h-3.5 w-3.5" />
+                  {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
+                </div>
+                <h2 className="font-display text-3xl md:text-4xl tracking-tight leading-tight">
+                  {THURSDAY_UNLIMITED_SPECIAL.title}
+                </h2>
+                <p className="mt-2 text-chalk/85 text-sm md:text-base leading-relaxed">
+                  {THURSDAY_UNLIMITED_SPECIAL.description}
+                </p>
+              </div>
+              <div className="text-center md:text-right">
+                <div className="font-display text-5xl md:text-6xl tracking-wide tabular-nums leading-none">
+                  {THURSDAY_UNLIMITED_SPECIAL.price}
+                </div>
+                <div className="mt-2 text-xs text-chalk/80">
+                  {THURSDAY_UNLIMITED_SPECIAL.perPerson}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {showCartNotification && (
         <div className="fixed top-24 right-4 z-50 bg-green-600 text-chalk px-6 py-4 rounded-md shadow-lift flex items-center gap-3">

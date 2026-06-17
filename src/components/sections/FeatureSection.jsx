@@ -4,27 +4,27 @@ import SectionEyebrow from "../common/SectionEyebrow.jsx";
 const FEATURES = [
   {
     icon: "stopwatch",
-    title: "5-Minute Heats",
+    title: "Full 5 Minutes — Always",
     description:
-      "Every race is a clean 5 minutes on the timer. If a kart fails mid-heat, you get the rest of your time on the next race.",
+      "If a kart breaks down or there's a caution, the timer stops. Every racer gets their full 5 minutes of track time, no exceptions.",
   },
   {
     icon: "flag",
-    title: "Lap Timing",
+    title: "Outdoor Track",
     description:
-      "Outdoor track, transponder timing, posted leaderboard. Bring your friends — we'll tell you who's fastest.",
-  },
-  {
-    icon: "trophy",
-    title: "Leagues Q1 2026",
-    description:
-      "Eight-week racing leagues launching Q1 2026. Same drivers, same karts, points carry over week to week.",
+      "Real outdoor speedway on TX-146 — geared karts, family-friendly layout, kids race kids and adults race adults.",
   },
   {
     icon: "helmet",
-    title: "Gear Provided",
+    title: "Safety Glasses Provided",
     description:
-      "Helmets stocked in every size from kids to XL. Bring your own if you'd rather — that's allowed too.",
+      "We provide safety glasses for every rider. Helmets aren't included but are always recommended — bring your own and wear it.",
+  },
+  {
+    icon: "cake",
+    title: "Party Room for 60",
+    description:
+      "Private party room fits up to 60 guests with 20 racing wristbands included. Extra wristbands available day-of upon request.",
   },
 ];
 
