@@ -56,7 +56,7 @@ const HeroSection = () => {
             data-aos-delay="200"
           >
             Baytown's outdoor speedway on TX-146. 5-minute heats, family-friendly
-            track, leagues kicking off Q1 2026.
+            track, open Thursday through Sunday.
           </p>
           <div
             className="mt-10 flex flex-col sm:flex-row gap-3"
