@@ -51,8 +51,8 @@ const Footer = () => {
           <div className="space-y-5">
             <Wordmark to={null} size="md" tone="dark" />
             <p className="text-gray-400 text-sm leading-relaxed">
-              Baytown's outdoor speedway on TX-146. Real karts, real lap times,
-              and a private party room for 45 — all on the same property.
+              Baytown's outdoor speedway on TX-146. Real karts, real racing,
+              and a private party room for 60 — all on the same property.
             </p>
             <div className="flex gap-2">
               {SOCIAL_LINKS.map((link) => (
