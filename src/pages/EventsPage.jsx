@@ -214,7 +214,7 @@ const EventsPage = () => (
             <span className="block text-race-500">Call the track.</span>
           </h2>
           <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-            Parties and league signups happen by phone — it's faster than
+            Parties and group bookings happen by phone — it's faster than
             sending forms back and forth.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
