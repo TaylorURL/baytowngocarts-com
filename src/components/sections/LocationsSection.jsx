@@ -26,12 +26,12 @@ const LocationsSection = () => (
       <ContactRow icon="map-pin" label="Address">
         <p>{CONTACT_INFO.address}</p>
         <a
-          href={CONTACT_INFO.mapsUrl}
+          href={CONTACT_INFO.directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-race-600 hover:text-race-700 transition-colors duration-base font-semibold"
         >
-          Open in Google Maps →
+          Get Directions →
         </a>
       </ContactRow>
       <ContactRow icon="phone" label="Phone">
