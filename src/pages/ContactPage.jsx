@@ -91,8 +91,8 @@ const ContactPage = () => (
               Contact Form
             </h2>
             <p className="text-asphalt-600 mb-8 leading-relaxed">
-              We read these the same day. For party deposits and league
-              signups, call instead.
+              We read these the same day. For party deposits and group
+              bookings, call instead.
             </p>
             <ContactForm />
           </div>
