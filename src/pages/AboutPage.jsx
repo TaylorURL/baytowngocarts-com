@@ -4,6 +4,7 @@ import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import StatTile from "../components/common/StatTile.jsx";
+import { CONTACT_INFO } from "../lib/content/business.js";
 
 const FACTS = [
   { value: "2019", label: "Opened on TX-146", accent: "race" },
@@ -146,10 +147,10 @@ const AboutPage = () => (
             </div>
             <div className="absolute -bottom-6 -left-6 bg-race-600 text-chalk p-6 rounded-md shadow-lift max-w-xs">
               <div className="font-display text-2xl mb-1 tracking-speedway uppercase">
-                6750 N TX-146
+                {CONTACT_INFO.addressLine1}
               </div>
               <div className="text-chalk/80 text-sm">
-                Baytown, TX 77523 — exit south of the bridge
+                {CONTACT_INFO.addressCityState} — exit south of the bridge
               </div>
             </div>
           </div>

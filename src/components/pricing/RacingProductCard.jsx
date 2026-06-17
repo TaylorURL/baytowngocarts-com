@@ -43,7 +43,16 @@ const RacingProductCard = ({
         <div className="font-display text-3xl text-asphalt-900 mt-1 tracking-wide tabular-nums">
           {product.price}
         </div>
-        <p className="text-xs text-asphalt-500">{perUnitLabel}</p>
+        {product.perRace ? (
+          <p className="text-xs text-asphalt-500 tabular-nums">
+            <span className="font-semibold text-asphalt-700">
+              {product.perRace}
+            </span>{" "}
+            per race
+          </p>
+        ) : (
+          <p className="text-xs text-asphalt-500">{perUnitLabel}</p>
+        )}
       </div>
       <ul className="space-y-1 mb-3">
         {features.map((feature, idx) => (

@@ -46,18 +46,10 @@ const POLICY_LINES = [
   "Waivers signed in person before riding",
 ];
 
-const getIconName = (productName) => {
-  if (productName.includes("Kid")) return "helmet";
-  if (productName.includes("Adult")) return "kart";
-  if (productName.includes("Family")) return "users";
-  if (productName.includes("2.5") || productName.includes("Hour")) return "stopwatch";
-  if (
-    productName.includes("Double") ||
-    productName.includes("Ride Along") ||
-    productName.includes("Track Titan")
-  )
-    return "users";
-  return "flag";
+const getIconName = (product) => {
+  if (product.isDoubleSeater) return "users";
+  if (product.isPartyPackage) return "flag";
+  return "kart";
 };
 
 const PricingPage = () => {
@@ -441,20 +433,20 @@ const PricingPage = () => {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
                 <h2 className="text-3xl font-bold text-asphalt-900 mb-2">
-                  Go-Kart Racing
+                  Single Kart Tickets
                 </h2>
                 <p className="text-asphalt-600">
-                  Single heats, combos, family bundles, 2.5-hour unlimited
-                  wristbands.
+                  Bundle up — the more tickets you grab, the less you pay per
+                  race. Adult or Kid karts, same-day use.
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12">
                 {STRIPE_PRODUCTS.map((product) => (
                   <RacingProductCard
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    iconName={getIconName(product.name)}
+                    iconName={getIconName(product)}
                     iconWrapperClass={
                       product.isPopular ? "bg-race-100" : "bg-asphalt-100"
                     }
@@ -469,7 +461,7 @@ const PricingPage = () => {
               </div>
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-asphalt-900 mb-2">
-                  Double-Seater
+                  Double Seater Tickets
                 </h3>
                 <p className="text-asphalt-600 text-sm">
                   One driver, one passenger. Driver 53"+, passenger 33"+.
@@ -481,7 +473,7 @@ const PricingPage = () => {
                     key={product.id}
                     product={product}
                     quantity={getQuantity(product.id)}
-                    iconName={getIconName(product.name)}
+                    iconName={getIconName(product)}
                     iconWrapperClass="bg-asphalt-800"
                     iconClass="text-chalk"
                     perUnitLabel="per kart"

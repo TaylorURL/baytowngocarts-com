@@ -131,7 +131,7 @@ const Header = () => {
               <div className="flex items-center gap-2">
                 <Icon name="map-pin" className="h-3.5 w-3.5 text-race-500" />
                 <span className="text-xs font-semibold tracking-wide">
-                  6750 N TX-146, Baytown
+                  {CONTACT_INFO.addressLine1}, Baytown
                 </span>
               </div>
               <div className="flex items-center gap-2">
