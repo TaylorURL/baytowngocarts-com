@@ -82,7 +82,7 @@ const EventsPage = () => (
       badge="Events & Parties"
       title="Book the"
       titleAccent="track."
-      description="Birthdays, corporate outings, weekly leagues. Same venue, same karts — your group, your schedule."
+      description="Birthdays, corporate outings, Thursday specials. Same venue, same karts — your group, your schedule."
       backgroundImage="/images/14.JPEG"
       dividerColorClass="bg-chalk"
     >
