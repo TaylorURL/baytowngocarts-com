@@ -2,18 +2,18 @@ export const FAQS = [
   {
     question: "What are your hours of operation?",
     answer:
-      "We are open 7 days a week. Monday through Thursday 12:00 PM – 8:00 PM (Leagues begin at 7:30 PM — launching Q1 2026), Friday 12:00 PM – 10:30 PM, and Saturday & Sunday 10:30 AM – 10:30 PM.",
+      "We are open Thursday through Sunday. Thursday and Friday 5:00 PM – 10:30 PM; Saturday and Sunday 10:30 AM – 10:30 PM. We are closed Monday, Tuesday, and Wednesday. Holiday hours vary — please check our Google page for the latest schedule and any changes.",
     category: "Racing",
   },
   {
     question: "How long is each race?",
     answer:
-      "Each race is 5 minutes long, and one race ticket gets you one race. Wristbands provide unlimited racing for 2.5 hours from the time the wristband is issued.",
+      "Each race is a full 5 minutes long, and one race ticket gets you one race. If a kart breaks down or there's a caution, the timer stops — so every racer always gets their full 5 minutes of track time. Wristbands provide unlimited racing for 2.5 hours from the time the wristband is issued.",
     category: "Racing",
   },
   {
     question: "Where are you located?",
-    answer: "Speedway 146 is located at 6750 N TX-146, Baytown, TX 77523.",
+    answer: "Speedway 146 is located at 6750 TX-146, Baytown, TX 77523.",
     category: "Racing",
   },
   {
@@ -49,7 +49,13 @@ export const FAQS = [
   {
     question: "Are helmets required?",
     answer:
-      "Helmets are optional, but available for use. You are welcome to bring your own helmet.",
+      "Helmets are not required, but we always recommend wearing one. We do not provide helmets — please bring your own if you'd like to wear one. We do provide safety glasses for every rider.",
+    category: "Racing",
+  },
+  {
+    question: "What safety gear do you provide?",
+    answer:
+      "We provide safety glasses for every rider. Helmets are not provided but are always recommended — please bring your own helmet if you'd like to wear one. Closed-toe shoes are highly recommended; long hair must be tied back.",
     category: "Racing",
   },
   {
@@ -103,6 +109,18 @@ export const FAQS = [
     answer:
       "To book any private event—including birthdays, family outings, corporate events, or team-building—please call (346) 932-1266.",
     category: "Events",
+  },
+  {
+    question: "How big is the party room and what's included?",
+    answer:
+      "Our private party room fits up to 60 people and includes 20 wristbands for racing. Additional wristbands can be purchased upon request the day of your event.",
+    category: "Events",
+  },
+  {
+    question: "What is the Thursday Unlimited Racing Special?",
+    answer:
+      "Every Thursday we run a 2.5 Hour Unlimited Racing Special — $49.99 plus tax per person. You get 2.5 hours of unlimited racing from the moment your wristband is issued. Thursdays only.",
+    category: "Pricing",
   },
   {
     question: "Is a deposit required for events?",
@@ -184,7 +202,7 @@ export const FAQS = [
   {
     question: "What happens if a kart breaks down during a race?",
     answer:
-      "We will safely bring you into the pit, assign you a new kart immediately (if available), and guarantee you receive your full 5 minutes of track time. If no replacement kart is available, you will be placed into the next race to complete your time.",
+      "If a kart breaks down or there's a caution, the timer stops — so you always get your full 5 minutes of track time. We'll safely bring you into the pit, assign you a new kart immediately (if available), or place you into the next race to complete your time.",
     category: "Racing",
   },
   {

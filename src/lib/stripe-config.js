@@ -1,5 +1,6 @@
 /** When true, prepends test Stripe products to the product list for payment testing. */
 export const ENABLE_TEST_PRODUCTS = false;
+
 const TEST_PRODUCTS = [
   {
     id: "test_payment",
@@ -16,134 +17,88 @@ const TEST_PRODUCTS = [
     isTest: true,
   },
 ];
-const LIVE_PRODUCTS = [
-  {
-    id: "prod_SuF7rI45RLsQlo",
-    priceId: "price_1RyQdACMNAD5XWq4mCpKzdh1",
-    name: "Adult Race",
-    description: "5 minutes of racing",
-    price: "$13.99",
-    mode: "payment",
-    features: [
-      'For taller racers (53"+)',
-      "High-performance go-karts",
-      "Safety equipment included",
-    ],
-  },
-  {
-    id: "prod_SuF7XrzxLfJWw6",
-    priceId: "price_1RyQddCMNAD5XWq4kJANI6Ix",
-    name: "Kid Race",
-    description: "5 minutes of racing",
-    price: "$13.99",
-    mode: "payment",
-    features: [
-      'For younger racers (40"+)',
-      "Safe and fun for kids",
-      "Same great experience",
-    ],
-  },
-  {
-    id: "prod_SuF8q9mSRcmCcU",
-    priceId: "price_1RyQeHCMNAD5XWq4kSQyNRBm",
-    name: "3-Race Combo",
-    description: "3 races x 5 min each — save $6.98",
-    price: "$34.99",
-    mode: "payment",
-    features: [
-      "3 Races (Adult or Kid) — 5 min each",
-      "Same-day use only",
-      "No refunds or credits",
-    ],
-    isPopular: false,
-  },
-  {
-    id: "prod_family_deal",
-    priceId: "price_family_deal",
-    name: "Family Deal",
-    description: "5 races x 5 min each — mix & match",
-    price: "$59.99",
-    mode: "payment",
-    features: [
-      "5 Total Races — 5 min each",
-      "Mix Adult & Kid Races",
-      "Perfect for families",
-      "Great value savings",
-    ],
-    isPopular: true,
-  },
-  {
-    id: "prod_SuF9rhy87orqYS",
-    priceId: "price_1RyQemCMNAD5XWq4A8DpcSm9",
-    name: "2.5 Hour Racing",
-    description: "Unlimited races for 2.5 hours",
-    price: "$44.99",
-    mode: "payment",
-    features: [
-      "Unlimited races for 2.5 hours",
-      "Adult or Kid karts",
-      "Best value for racing enthusiasts",
-    ],
-  },
+
+/**
+ * Single-kart ticket bundles. Each tier is one Stripe product.
+ * Add a new row to extend — `buildKartTier` derives id/priceId/labels/per-race.
+ */
+const SINGLE_KART_TIERS = [
+  { tickets: 1, price: "$13.99", perRace: "$13.99" },
+  { tickets: 4, price: "$51.99", perRace: "$13.00" },
+  { tickets: 8, price: "$87.99", perRace: "$11.00" },
+  { tickets: 15, price: "$149.99", perRace: "$10.00", isPopular: true },
+  { tickets: 25, price: "$224.99", perRace: "$9.00" },
+  { tickets: 35, price: "$297.99", perRace: "$8.51" },
+  { tickets: 50, price: "$399.99", perRace: "$8.00" },
 ];
-const DOUBLE_SEATER_PRODUCTS = [
-  {
-    id: "prod_double_ride_along",
-    priceId: "price_double_ride_along",
-    name: "Ride Along Rush",
-    description: "1 Race - Double Seater (5 min)",
-    price: "$19.99",
-    mode: "payment",
-    features: [
-      "1 Double Seater Race — 5 min",
-      'Driver 53"+ / Passenger 33"+',
-      "Perfect for parent & child",
-    ],
-    isDoubleSeater: true,
-  },
-  {
-    id: "prod_double_drift",
-    priceId: "price_double_drift",
-    name: "Double Drift",
-    description: "2 Races - Double Seater (5 min each)",
-    price: "$37.99",
-    mode: "payment",
-    features: [
-      "2 Double Seater Races — 5 min each",
-      'Driver 53"+ / Passenger 33"+',
-      "Great for multiple laps",
-    ],
-    isDoubleSeater: true,
-  },
-  {
-    id: "prod_track_titan",
-    priceId: "price_track_titan",
-    name: "Track Titan",
-    description: "3 Races - Double Seater (5 min each)",
-    price: "$39.99",
-    mode: "payment",
-    features: [
-      "3 Double Seater Races — 5 min each",
-      'Driver 53"+ / Passenger 33"+',
-      "Best double seater value",
-    ],
-    isDoubleSeater: true,
-    isPopular: true,
-  },
+
+/**
+ * Double-seater ticket bundles. Driver 53"+ / passenger 33"+.
+ * Tiers above 6 tickets were not confirmed by the source — add rows here as needed.
+ */
+const DOUBLE_SEATER_TIERS = [
+  { tickets: 1, price: "$19.99", perRace: "$19.99" },
+  { tickets: 2, price: "$37.99", perRace: "$19.00" },
+  { tickets: 4, price: "$67.99", perRace: "$17.00", isPopular: true },
+  { tickets: 6, price: "$89.99", perRace: "$15.00" },
 ];
+
+const buildKartTier = ({ tickets, price, perRace, isPopular }, slugPrefix) => {
+  const ticketLabel = tickets === 1 ? "Ticket" : "Tickets";
+  const slug = `${slugPrefix}_${tickets}`;
+  return {
+    id: `prod_${slug}`,
+    priceId: `price_${slug}`,
+    name: `${tickets} ${ticketLabel}`,
+    description:
+      tickets === 1
+        ? "Single 5-min race"
+        : `${tickets} races · 5 min each`,
+    price,
+    perRace,
+    tickets,
+    mode: "payment",
+    isPopular: Boolean(isPopular),
+  };
+};
+
+const SINGLE_KART_FEATURES = [
+  "Adult or Kid karts",
+  "Same-day use",
+  "Full 5-min heats — timer pauses on cautions",
+];
+
+const DOUBLE_SEATER_FEATURES = [
+  'Driver 53"+ / Passenger 33"+',
+  "One driver, one passenger",
+  "Same-day use",
+];
+
+const LIVE_PRODUCTS = SINGLE_KART_TIERS.map((tier) => ({
+  ...buildKartTier(tier, "single_kart"),
+  features: SINGLE_KART_FEATURES,
+}));
+
+const DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_TIERS.map((tier) => ({
+  ...buildKartTier(tier, "double_seater"),
+  features: DOUBLE_SEATER_FEATURES,
+  isDoubleSeater: true,
+}));
+
 const PARTY_PACKAGES = [
   {
     id: "prod_party_all_access",
     priceId: "price_party_all_access",
     name: "All-Access Family Race Party",
-    description: "20 bracelets, 2hr racing, 3hr party room",
+    description: "20 wristbands, 2hr racing, 3hr party room (fits 60)",
     price: "$699.00",
     mode: "payment",
     features: [
-      "20 Racing Bracelets included",
+      "20 Racing Wristbands included",
+      "Extra wristbands available day-of",
       "2 hours of organized racing",
       "3 hours in private party room",
-      "Room fits up to 45 guests",
+      "Room fits up to 60 guests",
       "Tables & chairs set up",
       "Staff manages everything",
     ],
@@ -196,11 +151,12 @@ const PARTY_PACKAGES = [
     isUpgrade: true,
   },
 ];
+
 /** Party package products (base packages and upgrade add-ons). */
 export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
-/** Double-seater go-kart products (1, 2, and 3 race options). */
+/** Double-seater go-kart ticket tiers. */
 export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
-/** Individual racing products; includes test products when ENABLE_TEST_PRODUCTS is true. */
+/** Single-kart ticket tiers; includes test products when ENABLE_TEST_PRODUCTS is true. */
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS
   ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS]
   : LIVE_PRODUCTS;

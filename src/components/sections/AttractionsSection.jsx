@@ -6,13 +6,13 @@ const ATTRACTIONS = [
   {
     title: "Outdoor Karting",
     description:
-      "Geared karts, real lap timing, and 5-minute heats. Kids race kids, adults race adults — no mixing.",
+      "Geared karts and full 5-minute heats — if a kart breaks down or there's a caution, the timer stops so you get every second. Kids race kids, adults race adults.",
     image: "/images/22.JPEG",
     icon: "kart",
     features: [
       'Adult karts (53"+)',
       'Kiddie karts (40"+)',
-      "Helmets provided",
+      "Safety glasses provided",
     ],
     accent: "race",
   },
@@ -32,12 +32,12 @@ const ATTRACTIONS = [
   {
     title: "Party Room",
     description:
-      "Private room for up to 45 guests, 3-hour rental, 20 racing wristbands included. Tables and chairs set up before you arrive.",
+      "Private room for up to 60 guests with 20 racing wristbands included. Extra wristbands can be purchased the day of upon request. Tables and chairs set up before you arrive.",
     image: "/images/20.JPEG",
     icon: "cake",
     features: [
-      "Up to 45 guests",
-      "$699 base package",
+      "Up to 60 guests",
+      "20 racing wristbands included",
       "Decor 30 min early",
     ],
     accent: "race",

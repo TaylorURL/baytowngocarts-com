@@ -40,7 +40,7 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32 md:pt-44 md:pb-44">
         <div className="md:max-w-3xl">
           <Pill variant="race" size="sm" className="mb-6" data-aos="fade-up">
-            Outdoor Speedway · Open Daily
+            Outdoor Speedway · Open Thu – Sun
           </Pill>
           <h1
             className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight animate-fade-in"
@@ -56,7 +56,7 @@ const HeroSection = () => {
             data-aos-delay="200"
           >
             Baytown's outdoor speedway on TX-146. 5-minute heats, family-friendly
-            track, leagues kicking off Q1 2026.
+            track, open Thursday through Sunday.
           </p>
           <div
             className="mt-10 flex flex-col sm:flex-row gap-3"
@@ -95,7 +95,7 @@ const HeroSection = () => {
             <span className="inline-flex items-center gap-2">
               <Icon name="map-pin" className="h-4 w-4 text-race-500" />
               <span className="font-semibold tracking-wide">
-                6750 N TX-146 · Baytown
+                {CONTACT_INFO.addressLine1} · Baytown
               </span>
             </span>
           </div>

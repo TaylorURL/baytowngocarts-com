@@ -1,4 +1,9 @@
-import { BUSINESS_HOURS, CONTACT_INFO } from "../../lib/content/business.js";
+import {
+  BUSINESS_HOURS,
+  CLOSED_DAYS_NOTE,
+  CONTACT_INFO,
+  HOLIDAY_HOURS_NOTE,
+} from "../../lib/content/business.js";
 import Icon from "../common/Icon.jsx";
 
 const ContactRow = ({ icon, label, children }) => (
@@ -21,12 +26,12 @@ const LocationsSection = () => (
       <ContactRow icon="map-pin" label="Address">
         <p>{CONTACT_INFO.address}</p>
         <a
-          href={CONTACT_INFO.mapsUrl}
+          href={CONTACT_INFO.directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-race-600 hover:text-race-700 transition-colors duration-base font-semibold"
         >
-          Open in Google Maps →
+          Get Directions →
         </a>
       </ContactRow>
       <ContactRow icon="phone" label="Phone">
@@ -54,18 +59,24 @@ const LocationsSection = () => (
             </li>
           ))}
         </ul>
+        <p className="mt-2 text-xs text-asphalt-500 italic">
+          {CLOSED_DAYS_NOTE}
+        </p>
+        <p className="mt-1 text-xs text-asphalt-500 leading-relaxed">
+          {HOLIDAY_HOURS_NOTE}
+        </p>
       </ContactRow>
     </div>
     <div className="rounded-md overflow-hidden border border-asphalt-200 h-64">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3464.8234567890123!2d-94.9876543210987!3d29.7654321098765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640c0123456789a%3A0x1234567890abcdef!2s6750%20N%20Tx-146%2C%20Baytown%2C%20TX%2077523!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
+        src={`https://www.google.com/maps?q=${encodeURIComponent(CONTACT_INFO.address)}&output=embed`}
         width="100%"
         height="100%"
         className="border-0"
         allowFullScreen
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
-        title="Speedway 146 — 6750 N TX-146, Baytown TX"
+        title={`Speedway 146 — ${CONTACT_INFO.address}`}
       />
     </div>
   </div>

@@ -4,12 +4,13 @@ import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import StatTile from "../components/common/StatTile.jsx";
+import { CONTACT_INFO } from "../lib/content/business.js";
 
 const FACTS = [
   { value: "2019", label: "Opened on TX-146", accent: "race" },
   { value: '5"', label: "Suggested Min Age", accent: "ignite" },
   { value: "5:00", label: "Per Heat", accent: "race" },
-  { value: "45", label: "Party Room Cap", accent: "chalk" },
+  { value: "60", label: "Party Room Cap", accent: "chalk" },
 ];
 
 const TIMELINE = [
@@ -36,10 +37,10 @@ const TIMELINE = [
   },
   {
     year: "2026",
-    icon: "trophy",
-    title: "Leagues kick off",
+    icon: "cake",
+    title: "Party room expanded",
     description:
-      "Eight-week racing leagues planned for Q1 2026 — same drivers, same karts, points tally weekly.",
+      "Party room reworked to fit up to 60 guests, still with 20 racing wristbands included — extra wristbands available day-of upon request.",
   },
 ];
 
@@ -47,12 +48,12 @@ const HOUSE_RULES = [
   {
     icon: "helmet",
     title: "Real karts, not arcade rides",
-    text: "Geared karts with real speed and timed transponders. We don't run go-cart-shaped go-carts.",
+    text: "Geared karts with real speed on an outdoor circuit. We don't run go-cart-shaped go-carts.",
   },
   {
     icon: "stopwatch",
-    title: "5 minutes, every time",
-    text: "If a kart breaks down mid-heat, you finish your time in the next one. Nobody loses paid laps.",
+    title: "Full 5 minutes — always",
+    text: "If a kart breaks down or there's a caution, the timer stops. Every racer gets their full 5 minutes of track time.",
   },
   {
     icon: "users",
@@ -61,8 +62,8 @@ const HOUSE_RULES = [
   },
   {
     icon: "fuel",
-    title: "Outdoor, year-round",
-    text: "Open every day. Light rain we run. Heavy rain we pause for safety, then resume.",
+    title: "Outdoor, Thursday – Sunday",
+    text: "Open Thursday through Sunday — light rain we run, heavy rain we pause for safety, then resume.",
   },
 ];
 
@@ -118,9 +119,10 @@ const AboutPage = () => (
               actually go.
             </p>
             <p className="mt-4 text-lg text-asphalt-700 leading-relaxed">
-              Five-minute heats, real timing, helmets stocked. Easy enough for
-              a seven-year-old's birthday party, fast enough that grown-ups
-              come back to settle scores.
+              Full five-minute heats — timer stops on breakdowns and cautions
+              so nobody loses time. Safety glasses provided; helmets always
+              recommended (bring your own). Easy enough for a seven-year-old's
+              birthday, fast enough that grown-ups come back to settle scores.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/pricing">
@@ -145,10 +147,10 @@ const AboutPage = () => (
             </div>
             <div className="absolute -bottom-6 -left-6 bg-race-600 text-chalk p-6 rounded-md shadow-lift max-w-xs">
               <div className="font-display text-2xl mb-1 tracking-speedway uppercase">
-                6750 N TX-146
+                {CONTACT_INFO.addressLine1}
               </div>
               <div className="text-chalk/80 text-sm">
-                Baytown, TX 77523 — exit south of the bridge
+                {CONTACT_INFO.addressCityState} — exit south of the bridge
               </div>
             </div>
           </div>
@@ -242,7 +244,7 @@ const AboutPage = () => (
             <span className="block text-race-500">First one's $13.99.</span>
           </h2>
           <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-            Walk-ins every day. Parties booked by phone.
+            Walk-ins Thursday through Sunday. Parties booked by phone.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/pricing">
