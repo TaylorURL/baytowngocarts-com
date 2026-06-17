@@ -9,7 +9,7 @@ const CONTACT_METHODS = [
   {
     icon: "phone",
     title: "Call",
-    description: "Fastest for party bookings and league signups.",
+    description: "Fastest for party bookings and group inquiries.",
     info: CONTACT_INFO.phone,
     action: CONTACT_INFO.phoneTel,
     primary: true,
