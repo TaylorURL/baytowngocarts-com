@@ -1,4 +1,4 @@
-<p align="center"><img src="public/logo.svg" alt="Speedway 146 Logo" width="140" /></p>
+<p align="center"><img src="public/images/logo.png" alt="Speedway 146 Logo" width="140" /></p>
 
 <h1 align="center">Speedway 146</h1>
 
