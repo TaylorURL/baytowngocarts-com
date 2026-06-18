@@ -12,7 +12,7 @@ const SECTIONS = [
           This Privacy Policy explains how Speedway 146 ("we," "us," or "our")
           and TaylorURL ("website operator," "developer") collect, use,
           disclose, and protect your personal information when you visit our
-          website at baytowngocarts.com, use our services, or interact with us
+          website at baytowngokarts.com, use our services, or interact with us
           in any way.
         </p>
         <p>

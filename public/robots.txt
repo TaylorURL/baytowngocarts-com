@@ -8,4 +8,4 @@ Disallow: /success
 Disallow: /login
 Disallow: /signup
 
-Sitemap: https://baytowngocarts.com/sitemap.xml
+Sitemap: https://baytowngokarts.com/sitemap.xml
