@@ -48,7 +48,7 @@ const HOUSE_RULES = [
   {
     icon: "helmet",
     title: "Real karts, not arcade rides",
-    text: "Geared karts with real speed on an outdoor circuit. We don't run go-cart-shaped go-carts.",
+    text: "Geared karts with real speed on an outdoor circuit. We don't run go-kart-shaped go-karts.",
   },
   {
     icon: "stopwatch",
