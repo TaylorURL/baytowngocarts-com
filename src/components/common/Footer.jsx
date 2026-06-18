@@ -76,17 +76,6 @@ const Footer = () => {
                   Terms
                 </Link>
               </div>
-              <p>
-                Site by{" "}
-                <a
-                  href="https://taylorurl.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-chalk transition-colors duration-base"
-                >
-                  TaylorURL.com
-                </a>
-              </p>
             </div>
           </div>
 
@@ -164,6 +153,18 @@ const Footer = () => {
             </div>
           </div>
         </div>
+
+        <p className="mt-10 text-center text-xs text-gray-500">
+          Site made by{" "}
+          <a
+            href="https://taylorurl.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-chalk transition-colors duration-base"
+          >
+            TaylorURL.com
+          </a>
+        </p>
       </div>
     </footer>
   );
