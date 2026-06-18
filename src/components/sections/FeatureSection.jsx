@@ -41,17 +41,15 @@ const FeatureSection = () => (
         className="max-w-3xl mx-auto text-center mb-16"
         data-aos="fade-up"
       >
-        {/* Pit-board accent rule above the eyebrow */}
-        <div className="flex justify-center mb-5">
-          <span
-            aria-hidden="true"
-            className="block h-[3px] w-10 race-stripe rounded-full"
-          />
+        {/* Chrome rule anchoring the eyebrow — matches the rhythm of the
+            other light bands (Attractions, Testimonial). */}
+        <div className="flex justify-center mb-6" aria-hidden="true">
+          <span className="block h-[3px] w-10 bg-asphalt-300 rounded-full" />
         </div>
         <SectionEyebrow tone="light" className="justify-center">
           Why Speedway 146
         </SectionEyebrow>
-        <h2 className="mt-5 font-display tracking-speedway text-5xl lg:text-6xl text-asphalt-900">
+        <h2 className="mt-5 font-display text-5xl lg:text-6xl tracking-tight leading-[0.95] text-asphalt-900">
           Real karting. No arcade fluff.
         </h2>
         <p className="mt-4 text-lg text-asphalt-600">
