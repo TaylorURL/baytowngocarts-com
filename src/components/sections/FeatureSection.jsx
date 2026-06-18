@@ -89,7 +89,7 @@ const FeatureSection = () => (
                 />
               </div>
 
-              <h3 className="font-display tracking-speedway text-2xl text-asphalt-900 leading-none">
+              <h3 className="font-display tracking-tight text-2xl text-asphalt-900 leading-none">
                 {title}
               </h3>
 
