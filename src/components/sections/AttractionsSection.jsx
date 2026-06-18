@@ -46,28 +46,44 @@ const ATTRACTIONS = [
 
 const ACCENT = {
   race: {
-    badge: "bg-race-600 text-chalk",
+    badge: "bg-race-600 text-chalk ring-race-300/60",
+    seam: "bg-race-600",
+    check: "text-race-600",
     link: "text-race-600 group-hover:text-race-700",
+    linkRule: "bg-race-600",
     border: "hover:border-race-500",
   },
   ignite: {
-    badge: "bg-ignite-500 text-asphalt-950",
+    badge: "bg-ignite-500 text-asphalt-950 ring-ignite-300/60",
+    seam: "bg-ignite-500",
+    check: "text-ignite-600",
     link: "text-ignite-600 group-hover:text-ignite-700",
+    linkRule: "bg-ignite-500",
     border: "hover:border-ignite-500",
   },
 };
 
 const AttractionsSection = () => (
-  <section className="py-24 bg-asphalt-50">
+  <section className="relative py-24 bg-asphalt-50">
+    {/* Faint chrome ribbon across the top, anchoring the section against
+        the dark Gallery above it. */}
+    <div
+      aria-hidden="true"
+      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-asphalt-300 to-transparent"
+    />
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
+        {/* Chrome rule anchoring the eyebrow — reads as a pit-lane marker. */}
+        <div className="flex justify-center mb-6" aria-hidden="true">
+          <span className="block h-[3px] w-10 bg-asphalt-300 rounded-full" />
+        </div>
         <SectionEyebrow tone="light" className="justify-center">
           What's On-Site
         </SectionEyebrow>
-        <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
+        <h2 className="mt-5 text-4xl lg:text-5xl font-display tracking-tight leading-[0.95] text-asphalt-900">
           One venue. Three reasons to drive out.
         </h2>
-        <p className="mt-4 text-lg text-asphalt-600">
+        <p className="mt-4 text-lg text-asphalt-600 leading-relaxed">
           Twenty minutes from Houston, ten minutes from La Porte. Park once,
           stay all afternoon.
         </p>
@@ -77,9 +93,9 @@ const AttractionsSection = () => (
           ({ title, description, image, icon, features, accent }, index) => {
             const a = ACCENT[accent];
             return (
-              <div
+              <article
                 key={title}
-                className={`group bg-white rounded-lg overflow-hidden border border-asphalt-200 ${a.border} shadow-track hover:shadow-lift hover:-translate-y-1 transition-[border-color,box-shadow,transform] duration-base ease-snap`}
+                className={`group relative bg-white rounded-lg overflow-hidden border border-asphalt-200 ${a.border} shadow-track hover:shadow-lift hover:-translate-y-1 transition-[border-color,box-shadow,transform] duration-base ease-snap`}
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
@@ -90,28 +106,36 @@ const AttractionsSection = () => (
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-asphalt-950/60 via-transparent to-transparent" />
+                  {/* Pit-pass badge — thinner padding, chrome ring, square
+                      stamp feel rather than a generic floating sticker. */}
                   <div
-                    className={`absolute top-4 right-4 ${a.badge} p-3 rounded-md shadow-lift`}
+                    className={`absolute top-4 right-4 ${a.badge} px-2.5 py-2 rounded-md shadow-lift ring-1 ring-inset`}
                   >
-                    <Icon name={icon} className="h-6 w-6" />
+                    <Icon name={icon} className="h-5 w-5" />
                   </div>
                 </div>
+                {/* Panel seam — a thin accent bar between hero photo and
+                    body content, like a body-panel join on a race car. */}
+                <div
+                  aria-hidden="true"
+                  className={`h-1 ${a.seam}`}
+                />
                 <div className="p-7">
-                  <h3 className="text-2xl font-bold text-asphalt-900 mb-2">
+                  <h3 className="text-3xl font-display tracking-tight leading-none text-asphalt-900 mb-3">
                     {title}
                   </h3>
                   <p className="text-asphalt-600 mb-5 leading-relaxed">
                     {description}
                   </p>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-1.5 mb-6 border-t border-asphalt-100 pt-4">
                     {features.map((feature) => (
                       <li
                         key={feature}
-                        className="flex items-start text-sm text-asphalt-700"
+                        className="flex items-start text-sm text-asphalt-700 tracking-wide"
                       >
                         <Icon
                           name="check"
-                          className="h-4 w-4 text-race-600 mr-2 mt-0.5 shrink-0"
+                          className={`h-4 w-4 ${a.check} mr-2 mt-0.5 shrink-0`}
                         />
                         <span>{feature}</span>
                       </li>
@@ -119,16 +143,22 @@ const AttractionsSection = () => (
                   </ul>
                   <Link
                     to="/pricing"
-                    className={`inline-flex items-center gap-2 font-bold text-sm tracking-wide ${a.link} transition-colors duration-base ease-snap`}
+                    className={`inline-flex items-center gap-2 font-display tracking-speedway text-sm ${a.link} transition-colors duration-base ease-snap`}
                   >
-                    See Pricing
+                    <span className="relative">
+                      See Pricing
+                      <span
+                        aria-hidden="true"
+                        className={`absolute left-0 -bottom-0.5 h-[2px] w-6 ${a.linkRule} transition-all duration-base ease-snap group-hover:w-full`}
+                      />
+                    </span>
                     <Icon
                       name="arrow-right"
                       className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-1"
                     />
                   </Link>
                 </div>
-              </div>
+              </article>
             );
           },
         )}
