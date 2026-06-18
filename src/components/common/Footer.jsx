@@ -76,17 +76,6 @@ const Footer = () => {
                   Terms
                 </Link>
               </div>
-              <p>
-                Site by{" "}
-                <a
-                  href="https://taylorurl.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-chalk transition-colors duration-base"
-                >
-                  TaylorURL.com
-                </a>
-              </p>
             </div>
           </div>
 
