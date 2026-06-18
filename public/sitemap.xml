@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://baytowngocarts.com/</loc>
+    <loc>https://baytowngokarts.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/about</loc>
+    <loc>https://baytowngokarts.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/pricing</loc>
+    <loc>https://baytowngokarts.com/pricing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/events</loc>
+    <loc>https://baytowngokarts.com/events</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/contact</loc>
+    <loc>https://baytowngokarts.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/faq</loc>
+    <loc>https://baytowngokarts.com/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://baytowngocarts.com/cart</loc>
+    <loc>https://baytowngokarts.com/cart</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
