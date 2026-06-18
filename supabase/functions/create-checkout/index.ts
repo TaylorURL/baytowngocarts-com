@@ -9,7 +9,7 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
   httpClient: Stripe.createFetchHttpClient(),
 });
 
-const ALLOWED_ORIGIN = "https://baytowngocarts.com";
+const ALLOWED_ORIGIN = "https://baytowngokarts.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
