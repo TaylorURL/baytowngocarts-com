@@ -8,7 +8,7 @@ const SECTIONS = [
     title: "1. Acceptance of Terms",
     body: (
       <p>
-        By accessing and using the Speedway 146 website (baytowngocarts.com),
+        By accessing and using the Speedway 146 website (baytowngokarts.com),
         purchasing tickets, booking events, or using any of our services, you
         agree to be bound by these Terms of Service. If you do not agree to
         these terms, please do not use our website or services.
