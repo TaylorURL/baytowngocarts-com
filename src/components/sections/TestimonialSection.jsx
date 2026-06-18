@@ -4,15 +4,17 @@ import { TESTIMONIALS } from "../../lib/content/testimonials.js";
 
 const TestimonialSection = () => (
   <section className="relative py-24 bg-chalk">
-    {/* Top edge detail — mirrors the section rhythm of sibling beats */}
+    {/* Faint chrome ribbon along the top — matches the quiet opening rhythm
+        of the sibling Attractions section above it. */}
     <div
       aria-hidden="true"
-      className="absolute inset-x-0 top-0 h-[3px] race-stripe opacity-80"
+      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-asphalt-300 to-transparent"
     />
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-        <div className="flex justify-center mb-5" aria-hidden="true">
-          <span className="block h-[2px] w-16 bg-asphalt-300 rounded-full" />
+        {/* Chrome rule anchoring the eyebrow — pit-lane marker. */}
+        <div className="flex justify-center mb-6" aria-hidden="true">
+          <span className="block h-[3px] w-10 bg-asphalt-300 rounded-full" />
         </div>
         <SectionEyebrow tone="light" className="justify-center">
           What Regulars Say
