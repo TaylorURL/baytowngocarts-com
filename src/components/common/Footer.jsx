@@ -154,17 +154,17 @@ const Footer = () => {
           </div>
         </div>
 
-        <p className="mt-10 text-center text-xs text-gray-500">
-          Site made by{" "}
-          <a
-            href="https://taylorurl.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-chalk transition-colors duration-base"
-          >
-            TaylorURL.com
-          </a>
-        </p>
+      </div>
+
+      <div className="py-3 text-center">
+        <a
+          href="https://www.taylorurl.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block rounded-sm text-xs tracking-wider text-gray-500 hover:text-race-500 focus-visible:text-race-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race-500 transition-colors duration-base"
+        >
+          Built by <span className="font-semibold">TaylorURL</span>
+        </a>
       </div>
     </footer>
   );
