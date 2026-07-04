@@ -1,24 +1,22 @@
-<p align="center">
-  <img src="public/images/logo.png" alt="Speedway 146" width="200">
-</p>
+<p align="center"><img src="public/images/logo.png" width="200" alt="Speedway 146" /></p>
 
 <h1 align="center">Speedway 146</h1>
 
-<p align="center">
-  Website for <a href="https://speedway146.com">speedway146.com</a> — a go-kart racing and family
-  entertainment venue in Baytown, TX. Book races, packages, and parties online.
-</p>
+<p align="center"><b>Go-kart racing and family entertainment in Baytown, TX.</b></p>
+
+<p align="center">Book races, packages, and parties online<br />at <a href="https://speedway146.com">speedway146.com</a>.</p>
 
 <p align="center">
-  <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black&style=flat-square">
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white&style=flat-square">
-  <img alt="React Router" src="https://img.shields.io/badge/React_Router-6-CA4245?logo=reactrouter&logoColor=white&style=flat-square">
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-38BDF8?logo=tailwindcss&logoColor=white&style=flat-square">
-  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-3ECF8E?logo=supabase&logoColor=white&style=flat-square">
-  <img alt="Stripe" src="https://img.shields.io/badge/Stripe-635BFF?logo=stripe&logoColor=white&style=flat-square">
-  <img alt="Zustand" src="https://img.shields.io/badge/Zustand-5-E11D2A?style=flat-square">
-  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-000000?logo=vercel&logoColor=white&style=flat-square">
+  <img alt="React" src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-e11d2a?style=for-the-badge&logo=vite&logoColor=white" />
+  <img alt="React Router" src="https://img.shields.io/badge/React_Router-6-e11d2a?style=for-the-badge&logo=reactrouter&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-e11d2a?style=for-the-badge&logo=supabase&logoColor=white" />
+  <img alt="Stripe" src="https://img.shields.io/badge/Stripe-e11d2a?style=for-the-badge&logo=stripe&logoColor=white" />
+  <img alt="Zustand" src="https://img.shields.io/badge/Zustand-5-e11d2a?style=for-the-badge" />
+  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-e11d2a?style=for-the-badge&logo=vercel&logoColor=white" />
 </p>
+<br />
 
 - **Book & pay online** — browse single-kart ticket bundles, double-seater packages, and party rentals, add them to a cart, and check out through Stripe.
 - **Server-authoritative pricing** — a Supabase edge function re-prices every cart against a canonical price map, applies Texas tax and a group discount, and builds the Stripe session, so totals can't be tampered with client-side.
