@@ -137,7 +137,6 @@ src/
   styles/       Theme.css — design tokens (CSS custom properties)
 supabase/
   functions/    create-checkout, stripe-webhook (Deno edge functions)
-  site-traffic-schema.sql
 public/images/  venue photos, logo, waivers
 ```
 
