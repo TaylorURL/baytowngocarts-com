@@ -1,10 +1,16 @@
-<p align="center"><img src="public/images/logo.png" width="200" alt="Speedway 146" /></p>
+<p align="center">
+  <img src="public/images/logo.png" width="200" alt="Speedway 146" />
+</p>
 
 <h1 align="center">Speedway 146</h1>
 
-<p align="center"><b>Go-kart racing and family entertainment in Baytown, TX.</b></p>
-
-<p align="center">Book races, packages, and parties online<br />at <a href="https://speedway146.com">speedway146.com</a>.</p>
+<p align="center">
+  <b>Go-kart racing and family entertainment in Baytown, TX — booked online.</b>
+</p>
+<p align="center">
+  A React storefront where guests build a cart of races, packages, and parties<br />
+  and check out through Stripe, with pricing enforced server-side on Supabase.
+</p>
 
 <p align="center">
   <img alt="React" src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" />
@@ -13,101 +19,118 @@
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" />
   <img alt="Supabase" src="https://img.shields.io/badge/Supabase-e11d2a?style=for-the-badge&logo=supabase&logoColor=white" />
   <img alt="Stripe" src="https://img.shields.io/badge/Stripe-e11d2a?style=for-the-badge&logo=stripe&logoColor=white" />
-  <img alt="Zustand" src="https://img.shields.io/badge/Zustand-5-e11d2a?style=for-the-badge" />
   <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-e11d2a?style=for-the-badge&logo=vercel&logoColor=white" />
 </p>
+
 <br />
 
-- **Book & pay online** — browse single-kart ticket bundles, double-seater packages, and party rentals, add them to a cart, and check out through Stripe.
-- **Server-authoritative pricing** — a Supabase edge function re-prices every cart against a canonical price map, applies Texas tax and a group discount, and builds the Stripe session, so totals can't be tampered with client-side.
-- **Staff operations built in** — an authenticated panel for orders and revenue plus a live traffic dashboard, both reading straight from Supabase behind row-level security.
+## Why Speedway 146
 
-> The repository is named `baytowngocarts-com` for historical reasons — the live product is **Speedway 146**.
+A go-kart venue needs guests to browse tickets, buy them, and show up — without the front desk fielding every booking by phone. Speedway 146 is the single-page storefront that handles it: an animated marketing site funnels visitors into a cart of races, packages, and parties, checkout runs through Stripe with prices re-verified on the server, and staff get an authenticated panel for orders and live traffic. The repository is named `baytowngocarts-com` for historical reasons — the live product is **Speedway 146**.
+
+<table width="100%">
+  <tr>
+    <td width="33%" valign="top">
+      <h3 align="center">Book &amp; pay online</h3>
+      <p align="center">Browse single-kart bundles, double-seater packages, and party rentals, add them to a Zustand cart, and check out through hosted Stripe Checkout.</p>
+    </td>
+    <td width="33%" valign="top">
+      <h3 align="center">Server-authoritative pricing</h3>
+      <p align="center">A Supabase edge function re-prices every cart against a canonical map, applies Texas tax and the group discount, and builds the Stripe session — totals can't be tampered with client-side.</p>
+    </td>
+    <td width="33%" valign="top">
+      <h3 align="center">Staff operations built in</h3>
+      <p align="center">Authenticated panels for orders, revenue, and a live traffic dashboard, all reading straight from Supabase behind row-level security.</p>
+    </td>
+  </tr>
+</table>
+
+<br />
 
 ## Stack
 
-| Layer | Choice |
-|-------|--------|
-| Framework | React 18 + React Router 6 |
-| Build | Vite 5 |
-| Styling | Tailwind CSS 3 + CSS custom properties (`Theme.css` tokens) |
-| Cart state | Zustand (in-memory store) |
-| Motion | Framer Motion · AOS · react-intersection-observer |
-| Backend | Supabase — Postgres + RLS, Deno edge functions |
-| Payments | Stripe Checkout via Stripe Connect |
-| Analytics | Supabase traffic log (ipapi.co geo) + embedded Sunday Analyzer beacon |
-| Hosting | Vercel (SPA rewrites + security headers in `vercel.json`) |
+| Layer     | Choice                                                          |
+| :-------- | :------------------------------------------------------------- |
+| Framework | React 18 + React Router 6                                      |
+| Build     | Vite 5                                                         |
+| Styling   | Tailwind CSS 3 + CSS custom properties (`styles/Theme.css`)    |
+| Cart      | Zustand in-memory store (`useCart`)                            |
+| Motion    | Framer Motion · AOS · react-intersection-observer             |
+| Backend   | Supabase — Postgres + RLS, Deno edge functions                |
+| Payments  | Stripe Checkout via Stripe Connect                            |
+| Analytics | Supabase `site_traffic` log + embedded Sunday Analyzer beacon |
+| Hosting   | Vercel (SPA rewrites + security headers in `vercel.json`)     |
 
 ## Getting started
 
 ```bash
 npm install
 npm run dev        # Vite dev server
-npm run build      # production build
-npm run lint       # eslint
+npm run build      # production build to dist/
 npm run preview    # preview the production build
+npm run lint       # eslint
 ```
 
-Two environment variables are required for the Supabase client: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+The Supabase client needs two environment variables:
+
+| Variable                 | Purpose                                |
+| :----------------------- | :------------------------------------- |
+| `VITE_SUPABASE_URL`      | Supabase project URL                   |
+| `VITE_SUPABASE_ANON_KEY` | Public anon key for the browser client |
 
 ## Tickets, packages & checkout
 
-Products live in `src/lib/stripe-config.js`, generated from a few small tier tables:
+Products are defined in `src/lib/stripe-config.js`, generated from a few small tier tables:
 
 - **Single-kart bundles** — 1 / 4 / 8 / 15 / 25 / 35 / 50 tickets, `$13.99` up to `$399.99`, with the per-race rate dropping as the bundle grows.
 - **Double-seater bundles** — 1 / 2 / 4 / 6 tickets, `$19.99` to `$89.99` (driver 53"+, passenger 33"+).
 - **Party packages** — the `$699` All-Access Family Race Party plus private-track and add-on upgrades.
 
-The cart is a Zustand store (`useCart`) that any component can read reactively; it survives client-side navigation. Checkout hands the cart to the `create-checkout` edge function, which validates each item against a server-side price map, computes fees, builds the hosted Stripe session, and returns its URL — secret keys and pricing logic never reach the browser.
+The cart is a Zustand store (`useCart`) any component can read reactively; it survives client-side navigation. Checkout hands the cart to the `create-checkout` edge function, which validates each item against the server-side price map, computes fees, builds the hosted Stripe session, and returns its URL — secret keys and pricing logic never reach the browser.
 
-| Fee component | Rate |
-|---------------|------|
-| Transaction fee | 4% + $0.30 |
-| Platform fee | 1% |
-| Texas sales tax | 8.25% |
-| Group discount | −10% at 15 or more tickets |
+| Fee component   | Rate                       |
+| :-------------- | :------------------------- |
+| Transaction fee | 4% + $0.30                 |
+| Platform fee    | 1%                         |
+| Texas sales tax | 8.25%                      |
+| Group discount  | −10% at 15 or more tickets |
 
-On successful payment, Stripe calls the `stripe-webhook` edge function, which writes the order (number `SPW146-YYYY-NNNNNN`) into the Supabase `purchases` table with the service-role key.
+On a completed payment, Stripe calls the `stripe-webhook` edge function, which writes the order (numbered `SPW146-YYYY-NNNNNN`) into the Supabase `purchases` table with the service-role key.
 
-## Staff panel & analytics
+## Routes
 
-`/staff` is an authenticated operations panel — staff status is checked against a `staff` table via `useAdmin`. It surfaces order and revenue tiles (all-time and today), a searchable and date-filterable order list, expandable line-item / customer detail, and inline payment-status updates.
+| Path                | Page              | Notes                                    |
+| :------------------ | :---------------- | :--------------------------------------- |
+| `/`                 | Home              | Animated marketing storefront            |
+| `/pricing`          | Pricing           | Ticket, package, and party tiers         |
+| `/cart`             | Cart              | Review, then hand off to Stripe Checkout |
+| `/success`          | Success           | Post-payment confirmation                |
+| `/dashboard`        | Purchases         | A customer's own order history           |
+| `/staff`            | Staff panel       | Orders & revenue — staff only            |
+| `/traffic`          | Traffic dashboard | Site analytics — staff only              |
+| `/login`, `/signup` | Auth              | Supabase email auth                      |
 
-`/traffic` is a staff-only dashboard over the `site_traffic` table: page views by path, device breakdown, referrer sources, hourly activity, and IP-based geolocation, all filterable by time range. Rows are written by the `useTrafficLogger` hook on every customer-facing page mount (staff routes are excluded so internal navigation never pollutes the data). A second, independent layer — the `sunday-analyzer` provider — fires a cookieless pageview beacon to an external analytics endpoint.
+Also `/about`, `/events`, `/contact`, `/faq`, `/privacy`, `/terms`, and a catch-all 404.
 
-## Marketing site
+## How it works
 
-The home page is an animated storefront built with Framer Motion and AOS: a five-image hero slideshow, feature and attraction sections, an eight-image gallery, six customer testimonials, a categorized FAQ, and a pricing overview. The visual system is driven entirely by CSS custom properties in `src/styles/Theme.css`, so palette changes are a single-file edit.
-
-## Data flow
-
-```mermaid
-flowchart TD
-    SPA["Browser SPA - React, Zustand cart"]
-    Checkout["create-checkout edge function"]
-    Stripe["Stripe Checkout"]
-    Webhook["stripe-webhook edge function"]
-    DB[("Supabase Postgres")]
-    Staff["Staff panel and traffic dashboard"]
-
-    SPA -->|"validated cart"| Checkout
-    Checkout -->|"hosted session"| Stripe
-    Stripe -->|"payment completed"| Webhook
-    Webhook -->|"write purchase"| DB
-    SPA -->|"log page views"| DB
-    Staff -->|"read orders and traffic"| DB
-```
+- **Pricing is never trusted from the client.** The `create-checkout` edge function holds the canonical price map, rejects mismatched line items, and is the only place fees, tax, and the group discount are computed.
+- **Orders arrive via webhook.** `stripe-webhook` is the source of truth for a completed purchase — it mints the `SPW146-…` order number and writes the row server-side, so a closed browser never loses a sale.
+- **Staff access is gated in the data layer.** `useAdmin` checks the caller against a `staff` table, and Supabase row-level security backs the order and traffic reads behind `/staff` and `/traffic`.
+- **Two analytics layers run in parallel.** The traffic-logging hook writes page views to `site_traffic` on every customer-facing mount (staff routes excluded), while the independent `sunday-analyzer` provider fires a cookieless pageview beacon to an external ingest endpoint.
+- **Theming is a single-file edit.** The whole palette is driven by CSS custom properties in `src/styles/Theme.css`, so a rebrand is one file, not a component sweep.
 
 ## Project structure
 
 ```
 src/
-  components/   common UI, section blocks, pricing cards, forms
+  components/   common UI, section blocks, forms
   pages/        routes — Home, Pricing, Cart, Success, StaffPanel, Traffic, …
   hooks/        useCart (Zustand), useAuth, useAdmin, useTraffic
   layouts/      MainLayout — header, footer, page-view logging
   lib/
     stripe-config.js   product tiers, packages, price ids
+    pricing.js         price-string / cents helpers
     supabase.js        shared Supabase client
     content/           hero, gallery, faqs, testimonials, business info
     sunday-analyzer/   cookieless pageview beacon provider
@@ -118,6 +141,16 @@ supabase/
 public/images/  venue photos, logo, waivers
 ```
 
+## Deploy
+
+Vercel builds with `npm run build` and serves `dist/` as an SPA — every path rewrites to `index.html`, hashed assets get a one-year immutable cache, and `vercel.json` sets the CSP, HSTS, and other security headers.
+
 ## License
 
-Private project — all rights reserved. Made by [TaylorURL](https://taylorurl.com).
+Private project — all rights reserved. See [`LICENSE.md`](LICENSE.md). Made by [TaylorURL](https://taylorurl.com).
+
+<br />
+
+<p align="center">
+  <sub>Baytown's karting storefront — book a race, price it on the server, hand off to Stripe.</sub>
+</p>
