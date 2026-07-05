@@ -13,13 +13,13 @@
 </p>
 
 <p align="center">
-  <img alt="React" src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" />
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-e11d2a?style=for-the-badge&logo=vite&logoColor=white" />
-  <img alt="React Router" src="https://img.shields.io/badge/React_Router-6-e11d2a?style=for-the-badge&logo=reactrouter&logoColor=white" />
-  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-e11d2a?style=for-the-badge&logo=supabase&logoColor=white" />
-  <img alt="Stripe" src="https://img.shields.io/badge/Stripe-e11d2a?style=for-the-badge&logo=stripe&logoColor=white" />
-  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-e11d2a?style=for-the-badge&logo=vercel&logoColor=white" />
+  <img alt="React" src="https://img.shields.io/badge/React-18-2563eb?style=for-the-badge&logo=react&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-3b82f6?style=for-the-badge&logo=vite&logoColor=white" />
+  <img alt="React Router" src="https://img.shields.io/badge/React_Router-6-2563eb?style=for-the-badge&logo=reactrouter&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-3b82f6?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-2563eb?style=for-the-badge&logo=supabase&logoColor=white" />
+  <img alt="Stripe" src="https://img.shields.io/badge/Stripe-3b82f6?style=for-the-badge&logo=stripe&logoColor=white" />
+  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-1f56cf?style=for-the-badge&logo=vercel&logoColor=white" />
 </p>
 
 <br />
@@ -106,6 +106,7 @@ On a completed payment, Stripe calls the `stripe-webhook` edge function, which w
 | `/cart`             | Cart              | Review, then hand off to Stripe Checkout |
 | `/success`          | Success           | Post-payment confirmation                |
 | `/dashboard`        | Purchases         | A customer's own order history           |
+| `/purchase/:orderId`| Purchase details  | A single order's line items and status   |
 | `/staff`            | Staff panel       | Orders & revenue — staff only            |
 | `/traffic`          | Traffic dashboard | Site analytics — staff only              |
 | `/login`, `/signup` | Auth              | Supabase email auth                      |
