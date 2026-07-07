@@ -20,6 +20,7 @@
   <img alt="Supabase" src="https://img.shields.io/badge/Supabase-2563eb?style=for-the-badge&logo=supabase&logoColor=white" />
   <img alt="Stripe" src="https://img.shields.io/badge/Stripe-3b82f6?style=for-the-badge&logo=stripe&logoColor=white" />
   <img alt="Vercel" src="https://img.shields.io/badge/Vercel-deployed-1f56cf?style=for-the-badge&logo=vercel&logoColor=white" />
+  <img alt="License" src="https://img.shields.io/badge/license-Proprietary-1f56cf?style=for-the-badge" />
 </p>
 
 <br />
