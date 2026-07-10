@@ -5,8 +5,8 @@ import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
   { ignores: ["dist"] },
+  js.configs.recommended,
   {
-    extends: [js.configs.recommended],
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
@@ -26,6 +26,17 @@ export default [
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
+      ],
+      // Core no-unused-vars can't see identifiers referenced only in JSX
+      // (no eslint-plugin-react installed), so exempt capitalized component
+      // names and underscore-prefixed throwaways.
+      "no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^[A-Z_]",
+          argsIgnorePattern: "^[A-Z_]",
+          ignoreRestSiblings: true,
+        },
       ],
     },
   },
