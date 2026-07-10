@@ -181,7 +181,7 @@ const PATHS = {
 const Icon = ({ name, className = "", strokeWidth, ...rest }) => {
   const d = PATHS[name];
   if (!d) {
-    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+    if (import.meta.env.DEV) {
       console.warn(`Icon: unknown name "${name}"`);
     }
     return null;
