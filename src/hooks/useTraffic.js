@@ -75,10 +75,11 @@ export const getTrafficStats = async (timeRange = "today") => {
       case "month":
         startDate = new Date(now.getFullYear(), now.getMonth(), 1);
         break;
-      case "quarter":
+      case "quarter": {
         const quarterMonth = Math.floor(now.getMonth() / 3) * 3;
         startDate = new Date(now.getFullYear(), quarterMonth, 1);
         break;
+      }
       case "year":
         startDate = new Date(now.getFullYear(), 0, 1);
         break;
