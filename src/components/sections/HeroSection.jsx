@@ -3,6 +3,12 @@ import Button from "../common/Button.jsx";
 import Icon from "../common/Icon.jsx";
 import StatTile from "../common/StatTile.jsx";
 import Pill from "../common/Pill.jsx";
+import {
+  Particles,
+  RotatingText,
+  BlurText,
+  Magnet,
+} from "../reactbits";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
 import {
   HERO_BACKGROUND_IMAGES,
@@ -33,6 +39,21 @@ const HeroSection = () => {
       {/* Asphalt grain + checker + vignette layers */}
       <div className="absolute inset-0 z-[1] asphalt-grain opacity-70" aria-hidden="true" />
       <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
+      {/* Drifting embers over the track */}
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none opacity-70"
+        aria-hidden="true"
+      >
+        <Particles
+          particleColors={["#e11d2a", "#f26800", "#fbfbf8"]}
+          particleCount={180}
+          particleSpread={14}
+          speed={0.07}
+          particleBaseSize={80}
+          alphaParticles
+          disableRotation
+        />
+      </div>
       <div className="absolute inset-0 z-[3] bg-gradient-to-b from-asphalt-950/55 via-transparent to-asphalt-950/85" aria-hidden="true" />
       {/* Corner-only vignette so the photo center stays bright but headlines have contrast */}
       <div
@@ -63,7 +84,13 @@ const HeroSection = () => {
             data-aos-delay="100"
           >
             Real Karts.
-            <span className="block text-race-500 tracking-[-0.01em]">Real Speed.</span>
+            <RotatingText
+              texts={["Real Speed.", "Real Racing.", "Full Throttle."]}
+              rotationInterval={2600}
+              staggerDuration={0.02}
+              splitLevelClassName="overflow-hidden"
+              mainClassName="block text-race-500 tracking-[-0.01em]"
+            />
           </h1>
           {/* Starting-line accent — chrome hairline + race-stripe tick */}
           <div
@@ -76,25 +103,25 @@ const HeroSection = () => {
             <span className="block h-2 w-8 race-stripe rounded-sm" />
             <span className="block h-px flex-1 max-w-[140px] bg-chalk/15" />
           </div>
-          <p
+          <BlurText
+            text="Baytown's outdoor speedway on TX-146. 5-minute heats, family-friendly track, open Thursday through Sunday."
+            animateBy="words"
+            delay={30}
             className="mt-6 text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            Baytown's outdoor speedway on TX-146. 5-minute heats, family-friendly
-            track, open Thursday through Sunday.
-          </p>
+          />
           <div
             className="mt-10 flex flex-col sm:flex-row gap-3"
             data-aos="fade-up"
             data-aos-delay="300"
           >
-            <Link to="/pricing">
-              <Button size="lg" variant="primary" className="group">
-                See Pricing
-                <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1.5" />
-              </Button>
-            </Link>
+            <Magnet padding={70} magnetStrength={4} innerClassName="w-full sm:w-auto">
+              <Link to="/pricing">
+                <Button size="lg" variant="primary" className="group">
+                  See Pricing
+                  <Icon name="arrow-right" className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1.5" />
+                </Button>
+              </Link>
+            </Magnet>
             <Link to="/contact">
               <Button size="lg" variant="outlineLight">
                 Book a Party
