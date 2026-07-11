@@ -13,6 +13,7 @@ import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
 import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
+import { GradientText, SpotlightCard } from "../components/reactbits";
 import TabButton from "../components/pricing/TabButton.jsx";
 import QuantityStepper from "../components/pricing/QuantityStepper.jsx";
 import RacingProductCard from "../components/pricing/RacingProductCard.jsx";
@@ -162,9 +163,13 @@ const PricingPage = () => {
                 </p>
               </div>
               <div className="text-center md:text-right">
-                <div className="font-display text-5xl md:text-6xl tracking-wide tabular-nums leading-none">
+                <GradientText
+                  colors={["#ffe066", "#ffffff", "#ffe066"]}
+                  animationSpeed={6}
+                  className="font-display text-5xl md:text-6xl tracking-wide tabular-nums leading-none md:!mx-0 md:ml-auto"
+                >
                   {THURSDAY_UNLIMITED_SPECIAL.price}
-                </div>
+                </GradientText>
                 <div className="mt-2 text-xs text-chalk/80">
                   {THURSDAY_UNLIMITED_SPECIAL.perPerson}
                 </div>
@@ -482,7 +487,10 @@ const PricingPage = () => {
                   />
                 ))}
               </div>
-              <div className="bg-asphalt-900 rounded-lg p-6 text-chalk max-w-4xl mx-auto shadow-track">
+              <SpotlightCard
+                className="bg-asphalt-900 rounded-lg p-6 text-chalk max-w-4xl mx-auto shadow-track"
+                spotlightColor="rgba(225,29,42,0.16)"
+              >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2">
@@ -521,7 +529,7 @@ const PricingPage = () => {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </SpotlightCard>
             </div>
           </div>
         </section>

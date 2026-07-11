@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../common/Button.jsx";
 import Pill from "../common/Pill.jsx";
 import Icon from "../common/Icon.jsx";
+import { Particles, Magnet } from "../reactbits";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
 const ActionSection = () => (
@@ -17,6 +18,21 @@ const ActionSection = () => (
           "radial-gradient(ellipse at 50% 45%, rgba(225,29,42,0.10) 0%, rgba(225,29,42,0.04) 30%, transparent 65%)",
       }}
     />
+    {/* Drifting embers behind the closing CTA */}
+    <div
+      className="absolute inset-0 pointer-events-none opacity-50"
+      aria-hidden="true"
+    >
+      <Particles
+        particleColors={["#e11d2a", "#f26800", "#fbfbf8"]}
+        particleCount={130}
+        particleSpread={12}
+        speed={0.06}
+        particleBaseSize={70}
+        alphaParticles
+        disableRotation
+      />
+    </div>
     {/* Caution-tape top edge */}
     <div className="absolute top-0 left-0 right-0 h-2 caution-tape" aria-hidden="true" />
     {/* Finish-line race-stripe — closing weight, sits above the footer */}
@@ -52,15 +68,22 @@ const ActionSection = () => (
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <Link to="/pricing" className="w-full sm:w-auto">
-            <Button size="xl" variant="primary" fullWidth className="group sm:w-auto">
-              See Pricing
-              <Icon
-                name="arrow-right"
-                className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1"
-              />
-            </Button>
-          </Link>
+          <Magnet
+            padding={80}
+            magnetStrength={4}
+            wrapperClassName="w-full sm:w-auto"
+            innerClassName="w-full sm:w-auto"
+          >
+            <Link to="/pricing" className="w-full sm:w-auto">
+              <Button size="xl" variant="primary" fullWidth className="group sm:w-auto">
+                See Pricing
+                <Icon
+                  name="arrow-right"
+                  className="h-6 w-6 transition-transform duration-base ease-snap group-hover:translate-x-1"
+                />
+              </Button>
+            </Link>
+          </Magnet>
           <Link to="/events" className="w-full sm:w-auto">
             <Button size="xl" variant="outlineLight" fullWidth className="sm:w-auto">
               <Icon name="calendar" className="h-5 w-5" />

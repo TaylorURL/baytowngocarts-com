@@ -3,6 +3,7 @@ import Button from "../components/common/Button.jsx";
 import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import { SpotlightCard, Magnet } from "../components/reactbits";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
 const HERO_BADGES = [
@@ -218,13 +219,15 @@ const EventsPage = () => (
             sending forms back and forth.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href={CONTACT_INFO.phoneTel}
-              className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
-            >
-              <Icon name="phone" className="h-5 w-5" />
-              <span className="tabular-nums">{CONTACT_INFO.phone}</span>
-            </a>
+            <Magnet padding={70} magnetStrength={4}>
+              <a
+                href={CONTACT_INFO.phoneTel}
+                className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
+              >
+                <Icon name="phone" className="h-5 w-5" />
+                <span className="tabular-nums">{CONTACT_INFO.phone}</span>
+              </a>
+            </Magnet>
             <Link to="/pricing">
               <Button size="lg" variant="outlineLight">
                 See Pricing
@@ -232,7 +235,10 @@ const EventsPage = () => (
             </Link>
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
-            <div className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700">
+            <SpotlightCard
+              className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700"
+              spotlightColor="rgba(225,29,42,0.16)"
+            >
               <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2 text-race-400">
                 <Icon name="clock" className="h-4 w-4" />
                 What to know
@@ -242,8 +248,11 @@ const EventsPage = () => (
                 <li>Reconfirm 24 hours before arrival</li>
                 <li>7 business days for refund eligibility</li>
               </ul>
-            </div>
-            <div className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700">
+            </SpotlightCard>
+            <SpotlightCard
+              className="bg-asphalt-800/70 rounded-md p-5 border border-asphalt-700"
+              spotlightColor="rgba(242,104,0,0.16)"
+            >
               <h4 className="font-display tracking-speedway uppercase text-sm mb-3 flex items-center gap-2 text-race-400">
                 <Icon name="ticket" className="h-4 w-4" />
                 What's included
@@ -253,7 +262,7 @@ const EventsPage = () => (
                 <li>Heat scheduling + safety briefing</li>
                 <li>Wristbands distributed by staff</li>
               </ul>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </div>

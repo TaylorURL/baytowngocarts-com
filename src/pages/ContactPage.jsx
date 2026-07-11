@@ -3,6 +3,7 @@ import LocationsSection from "../components/sections/LocationsSection.jsx";
 import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import { Magnet } from "../components/reactbits";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
 const CONTACT_METHODS = [
@@ -125,13 +126,15 @@ const ContactPage = () => (
             and lost-and-found.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              href={CONTACT_INFO.phoneTel}
-              className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
-            >
-              <Icon name="phone" className="h-5 w-5" />
-              <span className="tabular-nums">{CONTACT_INFO.phone}</span>
-            </a>
+            <Magnet padding={70} magnetStrength={4}>
+              <a
+                href={CONTACT_INFO.phoneTel}
+                className="inline-flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap shadow-race active:scale-95"
+              >
+                <Icon name="phone" className="h-5 w-5" />
+                <span className="tabular-nums">{CONTACT_INFO.phone}</span>
+              </a>
+            </Magnet>
             <a
               href={CONTACT_INFO.emailMailto}
               className="inline-flex items-center justify-center gap-3 border-2 border-chalk/80 hover:bg-chalk hover:text-asphalt-900 text-chalk px-8 py-4 rounded-md font-display tracking-speedway uppercase text-lg transition duration-base ease-snap"

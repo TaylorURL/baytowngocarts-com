@@ -33,6 +33,21 @@ export default {
         base: "200ms",
         slow: "320ms",
       },
+      keyframes: {
+        "star-movement-bottom": {
+          "0%": { transform: "translate(0%, 0%)", opacity: "1" },
+          "100%": { transform: "translate(-100%, 0%)", opacity: "0" },
+        },
+        "star-movement-top": {
+          "0%": { transform: "translate(0%, 0%)", opacity: "1" },
+          "100%": { transform: "translate(100%, 0%)", opacity: "0" },
+        },
+      },
+      animation: {
+        "star-movement-bottom":
+          "star-movement-bottom linear infinite alternate",
+        "star-movement-top": "star-movement-top linear infinite alternate",
+      },
       colors: {
         asphalt: ramp("asphalt", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
         race: ramp("race", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),

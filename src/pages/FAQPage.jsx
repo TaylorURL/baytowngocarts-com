@@ -4,6 +4,7 @@ import Button from "../components/common/Button";
 import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import QuestionSection from "../components/sections/QuestionSection.jsx";
+import { SpotlightCard, Magnet } from "../components/reactbits";
 import { CONTACT_INFO } from "../lib/content/business.js";
 import { FAQS } from "../lib/content/faqs.js";
 
@@ -193,7 +194,10 @@ const FAQResultsList = ({
 const ContactCTASection = () => (
   <section className="py-20 bg-chalk">
     <ContentWrapper>
-      <div className="bg-asphalt-900 rounded-lg shadow-lift overflow-hidden">
+      <SpotlightCard
+        className="bg-asphalt-900 rounded-lg shadow-lift"
+        spotlightColor="rgba(225,29,42,0.16)"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="p-10">
             <Icon name="help-circle" className="h-12 w-12 text-race-500 mb-5" />
@@ -235,13 +239,15 @@ const ContactCTASection = () => (
               Phone is faster than email for time-sensitive bookings.
             </p>
             <div className="space-y-3">
-              <a
-                href={CONTACT_INFO.phoneTel}
-                className="flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-6 py-3.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 shadow-race tabular-nums"
-              >
-                <Icon name="phone" className="h-5 w-5" />
-                {CONTACT_INFO.phone}
-              </a>
+              <Magnet padding={60} magnetStrength={5} innerClassName="block">
+                <a
+                  href={CONTACT_INFO.phoneTel}
+                  className="flex items-center justify-center gap-3 bg-race-600 hover:bg-race-500 text-chalk px-6 py-3.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95 shadow-race tabular-nums"
+                >
+                  <Icon name="phone" className="h-5 w-5" />
+                  {CONTACT_INFO.phone}
+                </a>
+              </Magnet>
               <Link
                 to="/contact"
                 className="w-full flex items-center justify-center gap-3 bg-asphalt-800 hover:bg-asphalt-700 text-chalk px-6 py-3.5 rounded-md font-display tracking-speedway uppercase text-sm transition duration-base ease-snap active:scale-95"
@@ -257,7 +263,7 @@ const ContactCTASection = () => (
             </div>
           </div>
         </div>
-      </div>
+      </SpotlightCard>
     </ContentWrapper>
   </section>
 );
@@ -277,11 +283,13 @@ const ReadyToRaceCTA = () => (
           2.5 hours unlimited.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link to="/pricing">
-            <Button size="lg" variant="light">
-              See Pricing
-            </Button>
-          </Link>
+          <Magnet padding={70} magnetStrength={4}>
+            <Link to="/pricing">
+              <Button size="lg" variant="light">
+                See Pricing
+              </Button>
+            </Link>
+          </Magnet>
           <Link to="/events">
             <Button size="lg" variant="outlineLight">
               Book a Party
