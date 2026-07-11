@@ -4,6 +4,7 @@ import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
 import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import StatTile from "../components/common/StatTile.jsx";
+import { SpotlightCard, TiltedCard, Magnet } from "../components/reactbits";
 import { CONTACT_INFO } from "../lib/content/business.js";
 
 const FACTS = [
@@ -90,12 +91,13 @@ const AboutPage = () => (
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
           {FACTS.map(({ value, label, accent }, index) => (
-            <div
-              key={label}
-              data-aos="fade-up"
-              data-aos-delay={index * 80}
-            >
-              <StatTile value={value} label={label} accent={accent} />
+            <div key={label} data-aos="fade-up" data-aos-delay={index * 80}>
+              <SpotlightCard
+                className="h-full rounded-lg border border-asphalt-700/60 bg-asphalt-950/40 px-4 py-7"
+                spotlightColor="rgba(225,29,42,0.18)"
+              >
+                <StatTile value={value} label={label} accent={accent} />
+              </SpotlightCard>
             </div>
           ))}
         </div>
@@ -138,14 +140,19 @@ const AboutPage = () => (
             </div>
           </div>
           <div data-aos="fade-left" className="relative">
-            <div className="image-hover rounded-lg overflow-hidden shadow-lift h-[500px]">
-              <img
-                src="/images/19.JPEG"
-                alt="Speedway 146 outdoor track on TX-146"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-race-600 text-chalk p-6 rounded-md shadow-lift max-w-xs">
+            <TiltedCard
+              imageSrc="/images/19.JPEG"
+              altText="Speedway 146 outdoor track on TX-146"
+              containerHeight="500px"
+              containerWidth="100%"
+              imageHeight="100%"
+              imageWidth="100%"
+              scaleOnHover={1.05}
+              rotateAmplitude={9}
+              showMobileWarning={false}
+              showTooltip={false}
+            />
+            <div className="absolute -bottom-6 -left-6 z-10 bg-race-600 text-chalk p-6 rounded-md shadow-lift max-w-xs">
               <div className="font-display text-2xl mb-1 tracking-speedway uppercase">
                 {CONTACT_INFO.addressLine1}
               </div>
@@ -247,11 +254,13 @@ const AboutPage = () => (
             Walk-ins Thursday through Sunday. Parties booked by phone.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/pricing">
-              <Button size="lg" variant="light">
-                See Pricing
-              </Button>
-            </Link>
+            <Magnet padding={70} magnetStrength={4}>
+              <Link to="/pricing">
+                <Button size="lg" variant="light">
+                  See Pricing
+                </Button>
+              </Link>
+            </Magnet>
             <Link to="/contact">
               <Button size="lg" variant="outlineLight">
                 Contact Us

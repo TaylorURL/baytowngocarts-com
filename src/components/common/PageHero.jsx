@@ -1,4 +1,6 @@
 import Pill from "./Pill.jsx";
+import Particles from "../reactbits/Particles.jsx";
+import ShinyText from "../reactbits/ShinyText.jsx";
 
 const PageHero = ({
   badge,
@@ -34,6 +36,21 @@ const PageHero = ({
       <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
       {/* Vignette darkens the edges so the headline always pops */}
       <div className="absolute inset-0 z-[3] bg-hero-vignette" aria-hidden="true" />
+      {/* Drifting embers — race red / pit-lane orange dust */}
+      <div
+        className="absolute inset-0 z-[4] pointer-events-none opacity-60"
+        aria-hidden="true"
+      >
+        <Particles
+          particleColors={["#e11d2a", "#f26800", "#fbfbf8"]}
+          particleCount={140}
+          particleSpread={12}
+          speed={0.06}
+          particleBaseSize={70}
+          alphaParticles
+          disableRotation
+        />
+      </div>
       {/* Top race stripe — the "starting line" */}
       {showStripe && (
         <div className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe" aria-hidden="true" />
@@ -54,7 +71,14 @@ const PageHero = ({
               {titleAccent && (
                 <>
                   {" "}
-                  <span className="text-race-500">{titleAccent}</span>
+                  <ShinyText
+                    text={titleAccent}
+                    speed={4}
+                    spread={90}
+                    color="#e11d2a"
+                    shineColor="#ffe3e4"
+                    className="align-baseline"
+                  />
                 </>
               )}
             </h1>

@@ -1,6 +1,7 @@
 import { parsePriceString } from "../../lib/pricing.js";
 import { formatDollars } from "../../lib/format.js";
 import Icon from "../common/Icon.jsx";
+import { StarBorder } from "../reactbits";
 import QuantityStepper from "./QuantityStepper.jsx";
 
 const RacingProductCard = ({
@@ -28,9 +29,15 @@ const RacingProductCard = ({
     >
       {product.isPopular && (
         <div className="text-center mb-2">
-          <span className="bg-race-600 text-chalk text-xs font-display tracking-speedway uppercase px-3 py-1 rounded-full">
+          <StarBorder
+            as="span"
+            color="#ffd1d4"
+            speed="4s"
+            rounded="rounded-full"
+            innerClassName="bg-race-600 text-chalk text-xs font-display tracking-speedway uppercase px-3 py-1"
+          >
             {popularLabel}
-          </span>
+          </StarBorder>
         </div>
       )}
       <div className="text-center mb-3">

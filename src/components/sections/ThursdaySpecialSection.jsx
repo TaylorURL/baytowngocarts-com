@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../common/Button.jsx";
 import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import { GradientText } from "../reactbits";
 import { THURSDAY_UNLIMITED_SPECIAL } from "../../lib/content/specials.js";
 
 const ThursdaySpecialSection = () => (
@@ -143,9 +144,13 @@ const ThursdaySpecialSection = () => (
                       className="hidden sm:block h-8 w-px bg-chalk/25"
                       aria-hidden="true"
                     />
-                    <div className="font-display text-7xl text-chalk tracking-wide tabular-nums leading-none">
+                    <GradientText
+                      colors={["#ffe066", "#ff8a36", "#ffe066"]}
+                      animationSpeed={6}
+                      className="font-display text-7xl tracking-wide tabular-nums leading-none"
+                    >
                       {THURSDAY_UNLIMITED_SPECIAL.price}
-                    </div>
+                    </GradientText>
                     <span
                       className="hidden sm:block h-8 w-px bg-chalk/25"
                       aria-hidden="true"
