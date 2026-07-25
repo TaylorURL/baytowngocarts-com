@@ -85,11 +85,7 @@ pids
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-.pnp.*.idea/
-.vscode/
-*.iml
-*.sql
-
+.pnp.*
 # Secrets and local tooling state — never commit
 .env.*
 !.env.example
