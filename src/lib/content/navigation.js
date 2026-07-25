@@ -1,4 +1,3 @@
-/** Primary navigation links used in the header and footer. */
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },

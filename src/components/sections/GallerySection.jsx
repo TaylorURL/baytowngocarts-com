@@ -69,7 +69,6 @@ const GallerySection = () => {
                         />
                       </div>
 
-                      {/* Chrome corner marks — a "race card" frame, top-left + top-right */}
                       <span
                         className="pointer-events-none absolute top-2 left-2 h-3 w-3 border-l border-t border-silver/70"
                         aria-hidden="true"
@@ -79,7 +78,6 @@ const GallerySection = () => {
                         aria-hidden="true"
                       />
 
-                      {/* Lap-counter badge */}
                       <span className="absolute top-3 right-5 inline-flex items-center gap-1 rounded-sm bg-asphalt-950/80 px-2 py-0.5 font-display tracking-speedway text-[10px] text-chalk ring-1 ring-asphalt-700">
                         <span className="h-1 w-1 rounded-full bg-race-500" aria-hidden="true" />
                         <span className="tabular-nums">Lap {pad(lapNumber)}</span>
@@ -138,7 +136,6 @@ const GallerySection = () => {
               </button>
             </div>
 
-            {/* Pit-lane counter under the controls */}
             <div
               className="flex items-center gap-3 font-display tracking-speedway text-xs text-gray-400"
               aria-live="polite"

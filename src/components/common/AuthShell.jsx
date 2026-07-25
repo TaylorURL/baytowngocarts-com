@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 
-/**
- * Standard wrapper for the auth flows (Login, Signup, post-checkout Success).
- * Asphalt full-bleed background with a race-stripe top edge and a centered
- * card. Single source of truth so all three pages match.
- */
+// Shared by Login, Signup and post-checkout Success so the three stay visually
+// identical — change the chrome here, not in the pages.
 const AuthShell = ({ children }) => (
   <div className="min-h-screen flex flex-col bg-asphalt-950 relative overflow-hidden">
     <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
