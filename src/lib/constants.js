@@ -1,9 +1,5 @@
-/**
- * Aggregator for content data. Content lives in domain-specific files
- * under `lib/content/` — this barrel re-exports them so older imports
- * keep working. Prefer importing directly from `lib/content/<domain>`
- * in new code.
- */
+// Compatibility barrel. New code should import straight from
+// `lib/content/<domain>`; this only exists so older import paths keep resolving.
 export {
   HERO_BACKGROUND_IMAGES,
   HERO_STATS,

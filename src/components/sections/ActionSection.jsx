@@ -7,9 +7,8 @@ import { CONTACT_INFO } from "../../lib/content/business.js";
 
 const ActionSection = () => (
   <section className="relative bg-asphalt-900 text-chalk overflow-hidden">
-    {/* Track texture */}
     <div className="absolute inset-0 asphalt-grain opacity-60" aria-hidden="true" />
-    {/* Subtle radial vignette — pulls focus to the centered CTA stack */}
+    {/* Vignette pulls the eye to the centred CTA stack. */}
     <div
       className="absolute inset-0 pointer-events-none"
       aria-hidden="true"
@@ -18,7 +17,6 @@ const ActionSection = () => (
           "radial-gradient(ellipse at 50% 45%, rgba(225,29,42,0.10) 0%, rgba(225,29,42,0.04) 30%, transparent 65%)",
       }}
     />
-    {/* Drifting embers behind the closing CTA */}
     <div
       className="absolute inset-0 pointer-events-none opacity-50"
       aria-hidden="true"
@@ -33,14 +31,11 @@ const ActionSection = () => (
         disableRotation
       />
     </div>
-    {/* Caution-tape top edge */}
     <div className="absolute top-0 left-0 right-0 h-2 caution-tape" aria-hidden="true" />
-    {/* Finish-line race-stripe — closing weight, sits above the footer */}
     <div className="absolute bottom-0 left-0 right-0 h-1 race-stripe opacity-90" aria-hidden="true" />
 
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <div className="max-w-4xl mx-auto text-center" data-aos="fade-up">
-        {/* Final Lap eyebrow */}
         <div className="flex justify-center" data-aos="fade-up" data-aos-delay="50">
           <Pill variant="race" size="sm" className="shadow-race">
             <span className="block h-1.5 w-1.5 rounded-full bg-chalk animate-pulse-race" />
@@ -48,7 +43,6 @@ const ActionSection = () => (
           </Pill>
         </div>
 
-        {/* Thin race-stripe accent ribbon above the headline */}
         <div className="mt-6 flex justify-center" aria-hidden="true">
           <span className="block h-[3px] w-24 race-stripe rounded-full" />
         </div>
@@ -105,12 +99,10 @@ const ActionSection = () => (
             href={CONTACT_INFO.phoneTel}
             className="group relative inline-flex items-center gap-3 overflow-hidden bg-asphalt-800 hover:bg-asphalt-700 text-chalk pl-6 pr-6 py-3 rounded-md font-bold shadow-track ring-1 ring-asphalt-700 hover:ring-asphalt-600 transition-[background-color,transform,box-shadow] duration-base ease-snap hover:-translate-y-0.5 hover:shadow-lift active:scale-95"
           >
-            {/* Left race-red vertical rule — chrome-edged pit-radio plate */}
             <span
               className="absolute left-0 top-0 bottom-0 w-1 bg-race-600"
               aria-hidden="true"
             />
-            {/* Live indicator dot */}
             <span
               className="ml-1 inline-flex h-2 w-2 rounded-full bg-race-500 animate-pulse-race"
               aria-hidden="true"

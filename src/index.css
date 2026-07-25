@@ -38,12 +38,11 @@ main {
 }
 
 @layer utilities {
-  /* Marketing animations */
   .animate-fade-in     { animation: fadeIn  var(--dur-hero) var(--ease-snap) both; }
   .animate-slide-up    { animation: slideUp var(--dur-slow) var(--ease-snap) both; }
   .animate-slide-up.delay-100 { animation-delay: 100ms; }
 
-  /* Hover lift — only on devices that actually hover */
+  /* Gated behind (hover: hover) so touch devices never stick in the lifted state. */
   .hover-lift {
     transition: transform var(--dur-slow) var(--ease-snap),
                 box-shadow var(--dur-slow) var(--ease-snap);
@@ -72,7 +71,7 @@ main {
     .image-hover:hover img { transform: scale(1.08); }
   }
 
-  /* Hero text shadow — keeps headlines readable over busy photos */
+  /* Three stacked shadows — one is not enough over busy photography. */
   .hero-text-shadow {
     text-shadow:
       2px 2px 12px rgba(0, 0, 0, 0.85),
@@ -80,7 +79,6 @@ main {
       4px 4px 18px rgba(0, 0, 0, 0.5);
   }
 
-  /* Track / asphalt textures used behind dark sections */
   .asphalt-grain {
     background-image:
       radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--color-asphalt-700) 60%, transparent) 0, transparent 38%),
@@ -88,8 +86,7 @@ main {
       linear-gradient(180deg, var(--color-asphalt-900), var(--color-asphalt-950));
   }
 
-  /* Diagonal racing flag pattern, intentionally low-contrast — never the
-     primary decoration, just a textural element. */
+  /* Keep the contrast low. As a foreground pattern it overwhelms everything. */
   .checker-overlay {
     background-image:
       linear-gradient(45deg,  var(--color-black) 25%, transparent 25%),
@@ -100,7 +97,6 @@ main {
     background-position: 0 0, 0 10px, 10px -10px, -10px 0;
   }
 
-  /* Caution-tape edge — used to mark CTA stripes or limited-time bars */
   .caution-tape {
     background-image: repeating-linear-gradient(
       135deg,
@@ -109,8 +105,6 @@ main {
     );
   }
 
-  /* Race-stripe accent — bold red diagonal block, used as a section
-     ribbon or pull-quote bar */
   .race-stripe {
     background-image: repeating-linear-gradient(
       135deg,
@@ -119,10 +113,9 @@ main {
     );
   }
 
-  /* Tabular numerals for prices/stats so columns line up cleanly */
+  /* Tabular figures so price and stat columns line up. */
   .tabular-nums { font-variant-numeric: tabular-nums; }
 
-  /* Hard race-flag bottom edge — replaces the soft clip-path divider */
   .speedway-divider {
     clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
   }

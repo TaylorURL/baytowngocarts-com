@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-/**
- * Checks whether the current authenticated user has staff privileges
- * by querying the `staff` table in Supabase.
- * @returns {{ isStaff: boolean, loading: boolean, refetch: Function }}
- */
+/** @returns {{ isStaff: boolean, loading: boolean, refetch: Function }} */
 export function useAdmin() {
   const [isStaff, setIsStaff] = useState(false);
   const [loading, setLoading] = useState(true);

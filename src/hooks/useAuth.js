@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-/**
- * Provides authentication state and actions (signIn, signUp, signOut) via Supabase Auth.
- * Automatically tracks the current session and user on mount.
- * @returns {{ user: object|null, loading: boolean, signIn: Function, signUp: Function, signOut: Function }}
- */
+/** @returns {{ user: object|null, loading: boolean, signIn: Function, signUp: Function, signOut: Function }} */
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

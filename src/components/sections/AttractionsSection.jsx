@@ -65,15 +65,13 @@ const ACCENT = {
 
 const AttractionsSection = () => (
   <section className="relative py-24 bg-asphalt-50">
-    {/* Faint chrome ribbon across the top, anchoring the section against
-        the dark Gallery above it. */}
+    {/* Separates this light band from the dark Gallery above it. */}
     <div
       aria-hidden="true"
       className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-asphalt-300 to-transparent"
     />
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center mb-16" data-aos="fade-up">
-        {/* Chrome rule anchoring the eyebrow — reads as a pit-lane marker. */}
         <div className="flex justify-center mb-6" aria-hidden="true">
           <span className="block h-[3px] w-10 bg-asphalt-300 rounded-full" />
         </div>
@@ -106,16 +104,12 @@ const AttractionsSection = () => (
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-asphalt-950/60 via-transparent to-transparent" />
-                  {/* Pit-pass badge — thinner padding, chrome ring, square
-                      stamp feel rather than a generic floating sticker. */}
                   <div
                     className={`absolute top-4 right-4 ${a.badge} px-2.5 py-2 rounded-md shadow-lift ring-1 ring-inset`}
                   >
                     <Icon name={icon} className="h-5 w-5" />
                   </div>
                 </div>
-                {/* Panel seam — a thin accent bar between hero photo and
-                    body content, like a body-panel join on a race car. */}
                 <div
                   aria-hidden="true"
                   className={`h-1 ${a.seam}`}

@@ -1,4 +1,4 @@
-/** When true, prepends test Stripe products to the product list for payment testing. */
+// Flip on to expose the Stripe test products in the live product list.
 export const ENABLE_TEST_PRODUCTS = false;
 
 const TEST_PRODUCTS = [
@@ -18,10 +18,8 @@ const TEST_PRODUCTS = [
   },
 ];
 
-/**
- * Single-kart ticket bundles. Each tier is one Stripe product.
- * Add a new row to extend — `buildKartTier` derives id/priceId/labels/per-race.
- */
+// One Stripe product per tier. `buildKartTier` derives id, priceId and labels,
+// so adding a bundle is a single row here.
 const SINGLE_KART_TIERS = [
   { tickets: 1, price: "$13.99", perRace: "$13.99" },
   { tickets: 4, price: "$51.99", perRace: "$13.00" },
@@ -32,10 +30,8 @@ const SINGLE_KART_TIERS = [
   { tickets: 50, price: "$399.99", perRace: "$8.00" },
 ];
 
-/**
- * Double-seater ticket bundles. Driver 53"+ / passenger 33"+.
- * Tiers above 6 tickets were not confirmed by the source — add rows here as needed.
- */
+// Double-seater bundles: driver 53"+, passenger 33"+. Only tiers up to 6
+// tickets are confirmed against the price list.
 const DOUBLE_SEATER_TIERS = [
   { tickets: 1, price: "$19.99", perRace: "$19.99" },
   { tickets: 2, price: "$37.99", perRace: "$19.00" },
@@ -152,11 +148,8 @@ const PARTY_PACKAGES = [
   },
 ];
 
-/** Party package products (base packages and upgrade add-ons). */
 export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
-/** Double-seater go-kart ticket tiers. */
 export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
-/** Single-kart ticket tiers; includes test products when ENABLE_TEST_PRODUCTS is true. */
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS
   ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS]
   : LIVE_PRODUCTS;

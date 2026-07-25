@@ -10,7 +10,7 @@ const Wordmark = ({
   to = "/",
   onClick,
   size = "md",
-  tone = "dark", // "dark" for dark surfaces, "light" for chrome/silver chrome
+  tone = "dark", // "dark" | "light" — pick the one matching the surface behind it
   showTagline = true,
   className = "",
 }) => {

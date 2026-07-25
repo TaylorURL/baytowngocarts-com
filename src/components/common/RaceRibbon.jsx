@@ -1,8 +1,4 @@
-/**
- * Race-stripe ribbon used to break sections or punctuate the page. Pure
- * decoration — does nothing functional. Has variants for thickness and an
- * optional "146" stencil for hero corners.
- */
+// Purely decorative — safe to drop anywhere without affecting layout flow.
 const RaceRibbon = ({
   thickness = "md", // "sm" | "md" | "lg"
   variant = "race", // "race" | "caution"

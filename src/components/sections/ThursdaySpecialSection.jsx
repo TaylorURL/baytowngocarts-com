@@ -7,7 +7,6 @@ import { THURSDAY_UNLIMITED_SPECIAL } from "../../lib/content/specials.js";
 
 const ThursdaySpecialSection = () => (
   <section className="relative py-24 bg-gradient-to-br from-race-700 via-race-600 to-race-700 text-chalk overflow-hidden">
-    {/* Tactile depth: asphalt grain + a single faint diagonal race-stripe */}
     <div
       className="absolute inset-0 asphalt-grain opacity-25"
       aria-hidden="true"
@@ -17,8 +16,7 @@ const ThursdaySpecialSection = () => (
       aria-hidden="true"
     />
 
-    {/* Race-weekend wrapper: caution tape framed with a chrome inner rule
-        so the two edges read as one intentional band, not two stickers. */}
+    {/* Tape plus inner rule, so the two edges read as one band. */}
     <div className="absolute top-0 left-0 right-0" aria-hidden="true">
       <div className="h-2 caution-tape" />
       <div className="h-px bg-chalk/20" />
@@ -31,13 +29,12 @@ const ThursdaySpecialSection = () => (
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto" data-aos="fade-up">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-12 items-center">
-          {/* ── Left column: copy + highlights + CTAs ─────────────── */}
+          {/* Left column: copy, highlights, CTAs */}
           <div className="lg:col-span-3">
             <SectionEyebrow tone="dark" className="text-chalk/90">
               {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
             </SectionEyebrow>
 
-            {/* Chrome accent line under the eyebrow / above headline */}
             <h2
               className="mt-4 font-display text-4xl lg:text-6xl tracking-tight leading-[0.92]"
               data-aos="fade-up"
@@ -64,7 +61,6 @@ const ThursdaySpecialSection = () => (
               {THURSDAY_UNLIMITED_SPECIAL.description}
             </p>
 
-            {/* Highlights — thin asphalt rules + ringed checkmarks */}
             <ul
               className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-t border-chalk/15"
               data-aos="fade-up"
@@ -107,17 +103,15 @@ const ThursdaySpecialSection = () => (
             </div>
           </div>
 
-          {/* ── Right column: pit-board price card ─────────────────── */}
+          {/* Right column: price card */}
           <div className="lg:col-span-2" data-aos="fade-left" data-aos-delay="120">
             <div className="relative">
-              {/* Subtle chrome halo behind the card */}
               <div
                 className="absolute -inset-1 rounded-lg bg-gradient-to-b from-chalk/20 via-transparent to-asphalt-950/40 blur-md"
                 aria-hidden="true"
               />
 
               <div className="relative bg-asphalt-950/80 border-2 border-chalk/25 rounded-lg shadow-lift backdrop-blur-sm overflow-hidden">
-                {/* Pit-board top chrome strip with caution dots */}
                 <div
                   className="flex items-center justify-between px-5 py-2 border-b border-chalk/15 bg-asphalt-900/80"
                   aria-hidden="true"
@@ -138,7 +132,6 @@ const ThursdaySpecialSection = () => (
                     Featured Special
                   </div>
 
-                  {/* Price with tick-mark flanks — feels like a dash readout */}
                   <div className="flex items-center justify-center gap-3">
                     <span
                       className="hidden sm:block h-8 w-px bg-chalk/25"
@@ -161,7 +154,6 @@ const ThursdaySpecialSection = () => (
                     {THURSDAY_UNLIMITED_SPECIAL.perPerson}
                   </div>
 
-                  {/* Confident footer rule with caution accents */}
                   <div className="mt-6 pt-5 border-t-2 border-chalk/15 flex items-center justify-center gap-3">
                     <span
                       className="block h-[3px] w-4 bg-caution-400 rounded-full"

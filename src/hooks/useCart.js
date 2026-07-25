@@ -1,10 +1,6 @@
 import { create } from "zustand";
 import { parsePriceString } from "../lib/pricing.js";
 
-/**
- * Zustand store for shopping cart state. Provides methods to add, remove,
- * and update items, plus computed totals for price and item count.
- */
 export const useCart = create((set, get) => ({
   items: [],
   addItem: (product, quantity = 1) => {
