@@ -25,11 +25,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+.vscode/
+.idea/
 .claude/
 .DS_Store
+.fleet/
+*.iml
 *.suo
 *.ntvs*
 *.njsproj
