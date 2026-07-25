@@ -25,11 +25,12 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+.vscode/
+.idea/
 .claude/
 .DS_Store
+.fleet/
+*.iml
 *.suo
 *.ntvs*
 *.njsproj
@@ -85,7 +86,12 @@ pids
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-.pnp.*.idea/
-.vscode/
-*.iml
-*.sql
+.pnp.*
+# Secrets and local tooling state — never commit
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
