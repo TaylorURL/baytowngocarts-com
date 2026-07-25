@@ -1,5 +1,5 @@
-// React Bits (reactbits.dev) — animated components copied into the project and
-// tuned to the Speedway 146 design system. See individual files for props.
+// Vendored from reactbits.dev and retuned for this design system — expect local
+// divergence from upstream.
 export { default as BlurText } from "./BlurText.jsx";
 export { default as ClickSpark } from "./ClickSpark.jsx";
 export { default as CountUp } from "./CountUp.jsx";

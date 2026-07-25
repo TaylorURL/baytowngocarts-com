@@ -1,5 +1,4 @@
 import { Component } from "react";
-/** On-brand fallback shown when a render error is caught. */
 const DefaultFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6 text-center">
     <div className="max-w-md">
@@ -19,10 +18,8 @@ const DefaultFallback = () => (
     </div>
   </div>
 );
-/**
- * Top-level React error boundary. Captures render errors in the component
- * tree and renders a fallback instead of crashing to a blank page.
- */
+// Last line of defence: without this a render error takes the whole page to
+// blank white.
 class ErrorBoundary extends Component {
   state = { hasError: false };
   static getDerivedStateFromError() {

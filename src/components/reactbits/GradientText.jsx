@@ -44,7 +44,6 @@ export default function GradientText({
         progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100);
       }
     } else {
-      // Continuously increase position for seamless looping
       progress.set((elapsedRef.current / animationDuration) * 100);
     }
   });
@@ -60,7 +59,7 @@ export default function GradientText({
     } else if (direction === 'vertical') {
       return `50% ${p}%`;
     } else {
-      // For diagonal, move only horizontally to avoid interference patterns
+      // Diagonal moves horizontally only; animating both axes beats against itself.
       return `${p}% 50%`;
     }
   });
@@ -75,7 +74,7 @@ export default function GradientText({
 
   const gradientAngle =
     direction === 'horizontal' ? 'to right' : direction === 'vertical' ? 'to bottom' : 'to bottom right';
-  // Duplicate first color at the end for seamless looping
+  // First colour repeated at the end so the loop point is invisible.
   const gradientColors = [...colors, colors[0]].join(', ');
 
   const gradientStyle = {

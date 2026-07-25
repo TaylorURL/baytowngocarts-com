@@ -14,7 +14,7 @@ const LIGHT_COLORS = [
   { on: "#16a34a", glow: "rgba(22,163,74,0.85)", dim: "#0a3d1a" },
 ];
 
-/** Starting-grid traffic light. Pure decoration, cycles red/yellow/green. */
+// Decorative only — the lit index is driven by a timer, not by app state.
 const TrafficLights = ({ activeLight, size = 10, gap = 1.5 }) => (
   <div className="flex items-center" style={{ gap: `${gap * 4}px` }}>
     {LIGHT_COLORS.map((c, i) => {
@@ -93,7 +93,6 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Race-stripe accent bar — sits flush at the very top */}
       <div className="h-1 race-stripe" aria-hidden="true" />
 
       {/* Top bar: wordmark, info, cart, auth */}
@@ -349,7 +348,6 @@ const Header = () => {
               <Icon name="close" className="h-5 w-5" />
             </button>
           </div>
-          {/* Race ribbon under the drawer header */}
           <div className="h-1 race-stripe" aria-hidden="true" />
           {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-1">

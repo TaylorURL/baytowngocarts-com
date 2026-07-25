@@ -30,7 +30,6 @@ const FEATURES = [
 
 const FeatureSection = () => (
   <section className="relative py-24 bg-chalk overflow-hidden">
-    {/* Hairline chrome rule across the very top of the section */}
     <div
       aria-hidden="true"
       className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-asphalt-200 to-transparent"
@@ -41,8 +40,6 @@ const FeatureSection = () => (
         className="max-w-3xl mx-auto text-center mb-16"
         data-aos="fade-up"
       >
-        {/* Chrome rule anchoring the eyebrow — matches the rhythm of the
-            other light bands (Attractions, Testimonial). */}
         <div className="flex justify-center mb-6" aria-hidden="true">
           <span className="block h-[3px] w-10 bg-asphalt-300 rounded-full" />
         </div>
@@ -68,20 +65,17 @@ const FeatureSection = () => (
               data-aos="fade-up"
               data-aos-delay={index * 80}
             >
-              {/* Edge-to-edge race-stripe ribbon that paints on hover */}
               <div
                 aria-hidden="true"
                 className="absolute top-0 inset-x-0 h-[3px] race-stripe rounded-t-lg origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-slow ease-snap"
               />
 
-              {/* Pit-board index — top-right corner */}
               <div className="absolute top-4 right-5 font-display tracking-speedway text-xs text-asphalt-400 tabular-nums group-hover:text-race-600 transition-colors duration-base ease-snap">
                 {label}
                 <span className="text-asphalt-300 mx-1">/</span>
                 <span className="text-asphalt-300">{total}</span>
               </div>
 
-              {/* Icon plate with chrome ring */}
               <div className="relative bg-race-50 ring-1 ring-inset ring-asphalt-200/70 w-12 h-12 rounded-md flex items-center justify-center mb-6 group-hover:bg-race-600 group-hover:ring-race-700 transition-colors duration-base ease-snap">
                 <Icon
                   name={icon}
@@ -93,7 +87,6 @@ const FeatureSection = () => (
                 {title}
               </h3>
 
-              {/* Hairline divider — draws in on hover */}
               <div
                 aria-hidden="true"
                 className="mt-3 mb-4 h-px bg-asphalt-200 origin-left scale-x-50 group-hover:scale-x-100 group-hover:bg-race-500 transition-[transform,background-color] duration-slow ease-snap"

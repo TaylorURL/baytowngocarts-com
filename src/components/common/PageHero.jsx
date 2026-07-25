@@ -23,7 +23,6 @@ const PageHero = ({
     <section
       className={`relative bg-asphalt-900 overflow-hidden pt-32 pb-20 ${minHeightClass} flex items-center`}
     >
-      {/* Asphalt grain base */}
       <div className="absolute inset-0 z-0 asphalt-grain" aria-hidden="true" />
       {backgroundImage && (
         <div
@@ -32,11 +31,10 @@ const PageHero = ({
           aria-hidden="true"
         />
       )}
-      {/* Checker accent — kept very low-contrast as ambient texture */}
+      {/* Deliberately near-invisible — pushed higher it fights the headline. */}
       <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
-      {/* Vignette darkens the edges so the headline always pops */}
+      {/* Edge vignette buys headline contrast over arbitrary photography. */}
       <div className="absolute inset-0 z-[3] bg-hero-vignette" aria-hidden="true" />
-      {/* Drifting embers — race red / pit-lane orange dust */}
       <div
         className="absolute inset-0 z-[4] pointer-events-none opacity-60"
         aria-hidden="true"
@@ -51,7 +49,6 @@ const PageHero = ({
           disableRotation
         />
       </div>
-      {/* Top race stripe — the "starting line" */}
       {showStripe && (
         <div className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe" aria-hidden="true" />
       )}

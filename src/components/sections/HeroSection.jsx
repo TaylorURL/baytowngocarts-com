@@ -36,10 +36,8 @@ const HeroSection = () => {
           />
         ))}
       </div>
-      {/* Asphalt grain + checker + vignette layers */}
       <div className="absolute inset-0 z-[1] asphalt-grain opacity-70" aria-hidden="true" />
       <div className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay" aria-hidden="true" />
-      {/* Drifting embers over the track */}
       <div
         className="absolute inset-0 z-[2] pointer-events-none opacity-70"
         aria-hidden="true"
@@ -55,7 +53,7 @@ const HeroSection = () => {
         />
       </div>
       <div className="absolute inset-0 z-[3] bg-gradient-to-b from-asphalt-950/55 via-transparent to-asphalt-950/85" aria-hidden="true" />
-      {/* Corner-only vignette so the photo center stays bright but headlines have contrast */}
+      {/* Corners only — darkening the centre would dull the photography. */}
       <div
         className="absolute inset-0 z-[3] pointer-events-none"
         aria-hidden="true"
@@ -64,7 +62,6 @@ const HeroSection = () => {
             "radial-gradient(ellipse at center, transparent 55%, rgba(8,10,14,0.7) 100%)",
         }}
       />
-      {/* Top race stripe — the starting line */}
       <div className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe" aria-hidden="true" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32 md:pt-44 md:pb-44">
@@ -92,7 +89,6 @@ const HeroSection = () => {
               mainClassName="block text-race-500 tracking-[-0.01em]"
             />
           </h1>
-          {/* Starting-line accent — chrome hairline + race-stripe tick */}
           <div
             className="mt-6 flex items-center gap-3"
             aria-hidden="true"
@@ -129,7 +125,6 @@ const HeroSection = () => {
             </Link>
           </div>
 
-          {/* Quick-glance info row — starting-grid info bar */}
           <div
             className="mt-10 inline-flex flex-wrap items-stretch gap-0 rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm divide-x divide-chalk/10"
             data-aos="fade-up"
@@ -157,13 +152,11 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Instrument-cluster stat panel */}
         <div
           className="mt-16 max-w-2xl"
           data-aos="fade-up"
           data-aos-delay="500"
         >
-          {/* Chrome top-rule + status eyebrow */}
           <div className="flex items-center gap-3 mb-3">
             <span className="block h-[2px] w-10 bg-gradient-to-r from-chalk/0 via-chalk/70 to-chalk/0 rounded-full" aria-hidden="true" />
             <span className="font-display tracking-speedway text-[10px] text-chalk/60 uppercase">
@@ -176,7 +169,6 @@ const HeroSection = () => {
             </span>
           </div>
           <div className="relative rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm shadow-track overflow-hidden">
-            {/* Chrome top hairline */}
             <span
               className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/40 to-transparent"
               aria-hidden="true"
@@ -193,7 +185,6 @@ const HeroSection = () => {
                 </div>
               ))}
             </div>
-            {/* Chrome bottom hairline */}
             <span
               className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/20 to-transparent"
               aria-hidden="true"
@@ -201,12 +192,10 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      {/* Caution-tape hairline above the slope */}
       <div
         className="absolute bottom-16 left-0 right-0 h-[3px] z-[6] caution-tape opacity-80"
         aria-hidden="true"
       />
-      {/* Slope into next section */}
       <div
         className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider"
         aria-hidden="true"

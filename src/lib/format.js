@@ -1,13 +1,7 @@
-/**
- * Formats a Stripe-style cents amount as a USD currency string.
- * @example formatCents(1399) // "$13.99"
- */
+/** @example formatCents(1399) // "$13.99" */
 export const formatCents = (cents) => `$${(cents / 100).toFixed(2)}`;
 
-/**
- * Formats a numeric dollar amount as a USD currency string.
- * @example formatDollars(13.99) // "$13.99"
- */
+/** @example formatDollars(13.99) // "$13.99" */
 export const formatDollars = (dollars) => `$${dollars.toFixed(2)}`;
 
 const SHORT_DATETIME_OPTIONS = {
@@ -34,14 +28,14 @@ const COMPACT_DATETIME_OPTIONS = {
   minute: "2-digit",
 };
 
-/** "Jun 15, 2026, 02:30 PM" — used in staff order tables. */
+/** "Jun 15, 2026, 02:30 PM" */
 export const formatShortDateTime = (dateString) =>
   new Date(dateString).toLocaleDateString("en-US", SHORT_DATETIME_OPTIONS);
 
-/** "June 15, 2026, 02:30 PM" — used on purchase detail pages. */
+/** "June 15, 2026, 02:30 PM" */
 export const formatLongDateTime = (dateString) =>
   new Date(dateString).toLocaleDateString("en-US", LONG_DATETIME_OPTIONS);
 
-/** "Jun 15, 2026, 02:30 PM" — used on the user dashboard. */
+/** "Jun 15, 2026, 02:30 PM" — same output as formatShortDateTime. */
 export const formatCompactDateTime = (dateString) =>
   new Date(dateString).toLocaleDateString("en-US", COMPACT_DATETIME_OPTIONS);
