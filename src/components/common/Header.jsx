@@ -95,7 +95,6 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="h-1 race-stripe" aria-hidden="true" />
 
-      {/* Top bar: wordmark, info, cart, auth */}
       <div className="bg-asphalt-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[72px]">
@@ -116,7 +115,6 @@ const Header = () => {
               className="sm:hidden"
             />
 
-            {/* Center: contact info */}
             <div className="hidden xl:flex items-center gap-7 text-gray-300">
               <a
                 href={CONTACT_INFO.phoneTel}
@@ -141,7 +139,6 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Right: cart + auth (desktop) */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
                 to="/cart"
@@ -245,7 +242,6 @@ const Header = () => {
               )}
             </div>
 
-            {/* Mobile: cart + hamburger */}
             <div className="flex items-center gap-1 lg:hidden">
               <Link
                 to="/cart"
@@ -313,7 +309,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile overlay */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-asphalt-950/80 z-40 lg:hidden"
@@ -321,14 +316,12 @@ const Header = () => {
         />
       )}
 
-      {/* Mobile drawer */}
       <div
         className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 lg:hidden bg-asphalt-900 border-l border-white/10 shadow-[-12px_0_40px_rgba(0,0,0,0.4)] transform transition-transform duration-slow ease-drawer ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Drawer header */}
           <div className="flex items-center justify-between px-5 py-4 bg-asphalt-950 border-b border-white/10">
             <Wordmark
               to="/"
@@ -349,7 +342,6 @@ const Header = () => {
             </button>
           </div>
           <div className="h-1 race-stripe" aria-hidden="true" />
-          {/* Nav links */}
           <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-1">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname === item.href;
@@ -377,7 +369,6 @@ const Header = () => {
               );
             })}
           </nav>
-          {/* Drawer footer */}
           <div className="p-4 border-t border-asphalt-700 space-y-2">
             {user ? (
               <>

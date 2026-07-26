@@ -24,7 +24,6 @@ const HeroSection = () => {
   );
   return (
     <div className="relative bg-asphalt-900 overflow-hidden min-h-screen">
-      {/* Crossfading photography */}
       <div className="absolute inset-0 z-0" aria-hidden="true">
         {HERO_BACKGROUND_IMAGES.map((image, index) => (
           <div
