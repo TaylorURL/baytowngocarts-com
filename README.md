@@ -9,11 +9,11 @@
 </p>
 <p align="center">
   The storefront and back office for Speedway 146 — book races, packages, and parties online.<br />
-  Live at <a href="https://speedway146.com">speedway146.com</a>.
+  Live at <a href="https://baytowngokarts.com">baytowngokarts.com</a>.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-3.3.16-e11d2a?style=for-the-badge" alt="Version 3.3.16" />
+  <img src="https://img.shields.io/badge/version-3.3.17-e11d2a?style=for-the-badge" alt="Version 3.3.17" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-5-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -43,7 +43,7 @@ A track's website usually stops at hours and a phone number. This one sells the 
 
 <br />
 
-> The repository is named `baytowngocarts-com` for historical reasons — the live product is **Speedway 146**.
+> The repository is named `baytowngocarts-com` for historical reasons — the live product is **Speedway 146**, served from `baytowngokarts.com`.
 
 ## Stack
 
@@ -54,6 +54,7 @@ A track's website usually stops at hours and a phone number. This one sells the 
 | Styling | Tailwind CSS 3 over CSS custom properties (`src/styles/Theme.css`) |
 | Cart state | Zustand |
 | Animation | Framer Motion 11 · AOS · `react-intersection-observer` |
+| WebGL effects | `ogl` — particles, tilted cards, rotating text |
 | Backend | Supabase (Postgres + RLS, Deno edge functions) |
 | Payments | Stripe Checkout via Stripe Connect |
 | Analytics | `site_traffic` table (ipapi.co geo) + cookieless Sunday Analyzer beacon |
@@ -81,7 +82,7 @@ The edge functions read their own secrets from the Supabase project: `STRIPE_SEC
 | Script | Does |
 | :--- | :--- |
 | `npm run dev` | Start the Vite dev server. |
-| `npm run build` | Production build. |
+| `npm run build` | Production build to `dist/`. |
 | `npm run preview` | Serve the production build locally. |
 | `npm run lint` | Lint with ESLint. |
 
@@ -99,7 +100,7 @@ flowchart TD
 
 ## How it works
 
-- **Products are generated, not hand-listed.** `src/lib/stripe-config.js` builds the catalog from small tier tables — single-kart bundles (1/4/8/15/25/35/50 tickets), double-seater bundles, and party packages — deriving ids, price ids, labels, and per-race rates.
+- **Products are generated, not hand-listed.** `src/lib/stripe-config.js` builds the catalog from small tier tables — single-kart bundles (1/4/8/15/25/35/50 tickets), double-seater bundles (1/2/4/6), and party packages — deriving ids, price ids, labels, and per-race rates.
 - **Checkout is validated server-side.** `create-checkout` compares each client price against the canonical map and rejects mismatches, then applies a 4% + $0.30 transaction fee, a 1% platform fee, 8.25% Texas sales tax, and a 10% group discount at 15 or more tickets.
 - **Orders are written by the webhook, not the browser.** `stripe-webhook` verifies the Stripe signature and writes the order — numbered `SPW146-YYYY-NNNNNN` — into the `purchases` table with the service-role key.
 - **Two independent analytics layers.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation; `sunday-analyzer` fires a separate cookieless beacon via `sendBeacon`.
@@ -114,8 +115,7 @@ baytowngokarts-com/
 │   ├── robots.txt, sitemap.xml
 │   └── release.json
 ├── supabase/
-│   ├── functions/             create-checkout, stripe-webhook (Deno)
-│   └── site-traffic-schema.sql
+│   └── functions/             create-checkout, stripe-webhook (Deno)
 ├── src/
 │   ├── components/            common UI, marketing sections, pricing cards, forms
 │   ├── pages/                 Home, Pricing, Cart, Success, StaffPanel, Traffic, …
