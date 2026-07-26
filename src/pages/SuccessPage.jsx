@@ -1,7 +1,3 @@
-/**
- * Post-checkout success page. Records the completed purchase in Supabase,
- * clears the cart, and shows next-step instructions to the customer.
- */
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Button from "../components/common/Button";

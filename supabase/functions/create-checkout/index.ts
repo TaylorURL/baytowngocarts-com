@@ -61,7 +61,6 @@ serve(async (req) => {
     const { items, successUrl, cancelUrl, customerEmail, userId } =
       await req.json();
 
-    // --- Input validation ---
     if (
       !successUrl ||
       !cancelUrl ||
@@ -124,7 +123,6 @@ serve(async (req) => {
       }
     }
 
-    // --- Server-side price validation ---
     for (const item of items) {
       const clientPrice = parseFloat(
         typeof item.price === "string"
@@ -155,7 +153,6 @@ serve(async (req) => {
         );
       }
     }
-    // --- End input validation ---
 
     let rawSubtotal = 0;
     let totalQuantity = 0;
