@@ -1,7 +1,3 @@
-/**
- * Login page with email/password authentication. Redirects the user back to
- * their original destination (or home) after a successful sign-in.
- */
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";

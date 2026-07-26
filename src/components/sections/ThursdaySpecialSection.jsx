@@ -29,7 +29,6 @@ const ThursdaySpecialSection = () => (
     <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto" data-aos="fade-up">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-12 items-center">
-          {/* Left column: copy, highlights, CTAs */}
           <div className="lg:col-span-3">
             <SectionEyebrow tone="dark" className="text-chalk/90">
               {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
@@ -103,7 +102,6 @@ const ThursdaySpecialSection = () => (
             </div>
           </div>
 
-          {/* Right column: price card */}
           <div className="lg:col-span-2" data-aos="fade-left" data-aos-delay="120">
             <div className="relative">
               <div

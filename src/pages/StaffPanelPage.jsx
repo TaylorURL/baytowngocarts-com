@@ -84,10 +84,6 @@ function getDateFilterStart(filterKey) {
       return null;
   }
 }
-/**
- * Renders the staff-only admin panel with order stats, search, filtering, and order details.
- * Redirects non-staff users to the home page.
- */
 export default function StaffPanelPage() {
   const navigate = useNavigate();
   const { isStaff, loading: staffLoading } = useAdmin();
@@ -300,7 +296,6 @@ export default function StaffPanelPage() {
                 </div>
               ) : (
                 <>
-                  {/* Desktop table */}
                   <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
@@ -381,7 +376,6 @@ export default function StaffPanelPage() {
                       </tbody>
                     </table>
                   </div>
-                  {/* Mobile cards */}
                   <div className="lg:hidden space-y-3">
                     {displayOrders.map((order) => (
                       <div

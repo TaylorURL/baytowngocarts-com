@@ -1,25 +1,23 @@
-/* ------------------------------------------------------------------
- * SPEEDWAY 146 — design tokens
- * Brand: energetic Texan outdoor go-kart venue on TX-146. Asphalt &
- * race red, caution-yellow accents, no cheesy checkered flags or
- * pickup-truck cliches. Friendly enough for a 7-year-old's birthday,
- * confident enough to feel fast.
+/*
+ * Speedway 146 design tokens.
  *
- * Palette anchors:
- *   asphalt   — the track itself. The trust-dark for hero surfaces.
- *   race      — racing red. Primary brand colour. CTAs, accents.
- *   ignite    — pit-lane orange. Secondary accent, warmth, momentum.
- *   caution   — highway caution yellow. Earned, never default.
- *   chalk     — warm white. Body surface in light mode.
- *   silver    — chrome / gunmetal for trim and dividers.
+ * Tokens run primitive (raw hex) -> semantic (--bg-default, --text-muted, …)
+ * -> component. Nothing outside this file should reach for a primitive; both
+ * components and pages consume the semantic layer, so a palette change here
+ * lands everywhere without a find-and-replace.
  *
- * Three-tier tokens: primitive (hex) → semantic (--color-bg, etc.)
- * → component. Components use semantic; pages use semantic.
- * ------------------------------------------------------------------ */
+ * What each ramp is for, since the names are venue metaphors rather than hues:
+ *   asphalt — the track. Dark foundation for hero and inverted surfaces.
+ *   race    — racing red. Primary brand colour, CTAs and accents.
+ *   ignite  — pit-lane orange. Secondary accent for warmth and momentum.
+ *   caution — highway caution yellow. Reserved for genuine warnings.
+ *   chalk   — warm white. Body surface in light mode.
+ *   silver  — chrome/gunmetal for trim and dividers.
+ */
 :root {
-  /* ──────────── Primitives ──────────── */
+  /* Primitives */
 
-  /* Asphalt — deep neutrals (replaces "navy" as the dark foundation) */
+  /* Asphalt — the dark neutral ramp */
   --color-asphalt-950: #07080a;
   --color-asphalt-900: #0e0f12;
   --color-asphalt-800: #17191e;
@@ -88,15 +86,15 @@
   --color-chalk: #fbfbf8; /* warm off-white for body backgrounds */
   --color-black: #000000;
 
-  /* Legacy navy aliases — point at asphalt so old usages keep working
-     through the revamp transition. */
+  /* Navy aliases predate the asphalt ramp. They forward to it so older
+     usages keep resolving; new code should name asphalt directly. */
   --color-navy-900: var(--color-asphalt-900);
   --color-navy-800: var(--color-asphalt-800);
   --color-navy-700: var(--color-asphalt-700);
   --color-navy-600: var(--color-asphalt-600);
   --color-navy-500: var(--color-asphalt-500);
 
-  /* Legacy red aliases — kept until every page migrates. */
+  /* Red aliases forwarding to the race ramp, same story as navy above. */
   --color-red-900: var(--color-race-900);
   --color-red-800: var(--color-race-800);
   --color-red-700: var(--color-race-700);
@@ -108,11 +106,11 @@
   --color-red-100: var(--color-race-100);
   --color-red-50:  var(--color-race-50);
 
-  /* Legacy yellow aliases */
+  /* Yellow aliases forwarding to the caution ramp. */
   --color-yellow-400: var(--color-caution-500);
   --color-yellow-300: var(--color-caution-400);
 
-  /* ──────────── Semantic surface tokens ──────────── */
+  /* Semantic surface tokens */
   --bg-default:       var(--color-chalk);
   --bg-elevated:      var(--color-white);
   --bg-sunken:        var(--color-gray-100);
@@ -133,7 +131,7 @@
   --accent-primary-h: var(--color-race-700);
   --accent-secondary: var(--color-ignite-500);
 
-  /* ──────────── Shadows ──────────── */
+  /* Shadows */
   --shadow-race:
     0 14px 30px -10px color-mix(in srgb, var(--color-race-600) 40%, transparent),
     0 4px 12px -4px color-mix(in srgb, var(--color-race-700) 22%, transparent);
@@ -144,11 +142,11 @@
     0 18px 40px -16px color-mix(in srgb, var(--color-asphalt-950) 35%, transparent),
     0 2px 6px -2px color-mix(in srgb, var(--color-asphalt-950) 15%, transparent);
 
-  /* Legacy shadow aliases */
+  /* Shadow aliases under their pre-rename names. */
   --shadow-red: var(--shadow-race);
   --shadow-racing: var(--shadow-track);
 
-  /* ──────────── Motion ──────────── */
+  /* Motion */
   --ease-snap:     cubic-bezier(0.22, 1, 0.36, 1);   /* race-out, default */
   --ease-decel:    cubic-bezier(0.83, 0, 0.17, 1);   /* heavy decel */
   --ease-drawer:   cubic-bezier(0.32, 0.72, 0, 1);   /* drawers / sheets */
@@ -160,24 +158,21 @@
   --dur-slow:   320ms;
   --dur-hero:   700ms;
 
-  /* ──────────── Radii ──────────── */
-  /* Tight radius scale. Cards stop at -lg (16px). No -2xl, no -3xl.
-     "Rounded-2xl on every surface" was the previous AI tell — gone. */
+  /* Radii. Deliberately tight — cards stop at -lg; anything softer starts to
+     read as a generic SaaS card rather than signage. */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 22px;
   --radius-pill: 9999px;
 
-  /* ──────────── Iconography ────────────
-   * Speedway 146 uses a single hand-tuned icon family at
-   * src/components/common/Icon.jsx. Monoline outline, 1.75 stroke,
-   * 24×24 viewBox, currentColor, rounded caps. No lucide-react, no
-   * mixing fills with outlines, no emoji.
+  /* Iconography
    *
-   * Why custom: the previous pass leaned on lucide-react's defaults
-   * (Zap for racing, Trophy for leagues, Baby for bounce, Sparkles
-   * for "popular") — the textbook AI icon palette. Custom paths for
-   * flag / helmet / kart / stopwatch / lap / fuel / wrench /
-   * traffic-light let the icons describe the actual venue. */
+   * One hand-drawn family in src/components/common/Icon.jsx: monoline
+   * outline, 1.75 stroke, 24x24 viewBox, currentColor, rounded caps. No
+   * icon library, no mixing fills with outlines, no emoji.
+   *
+   * Custom paths exist because a generic set has no glyph for a kart, a
+   * lap, a helmet or a traffic light, and substituting a bolt or a trophy
+   * for them describes some other business. */
 }
