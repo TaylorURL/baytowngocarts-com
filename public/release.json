@@ -1,6 +1,5 @@
 {
   "version": "3.3.14",
   "projectName": "Speedway 146",
-  "branch": "main",
-  "provider": "claude-code"
+  "branch": "main"
 }
