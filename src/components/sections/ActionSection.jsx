@@ -86,7 +86,6 @@ const ActionSection = () => (
           </Link>
         </div>
 
-        {/* Pit-radio direct line */}
         <div
           className="mt-12 pt-8 border-t border-asphalt-700 flex flex-col sm:flex-row items-center justify-center gap-4"
           data-aos="fade-up"
