@@ -267,7 +267,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Bottom nav strip with traffic lights */}
       <div className="hidden lg:block bg-asphalt-950 border-b border-white/10 shadow-lg shadow-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
