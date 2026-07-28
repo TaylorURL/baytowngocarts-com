@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-3.3.17-e11d2a?style=for-the-badge" alt="Version 3.3.17" />
+  <img src="https://img.shields.io/badge/version-3.3.21-e11d2a?style=for-the-badge" alt="Version 3.3.21" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-5-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -117,12 +117,14 @@ baytowngokarts-com/
 ├── supabase/
 │   └── functions/             create-checkout, stripe-webhook (Deno)
 ├── src/
-│   ├── components/            common UI, marketing sections, pricing cards, forms
+│   ├── components/            common UI, marketing sections, pricing cards, forms,
+│   │                          reactbits (WebGL/motion effects)
 │   ├── pages/                 Home, Pricing, Cart, Success, StaffPanel, Traffic, …
 │   ├── layouts/               MainLayout — header, footer, pageview logging
 │   ├── hooks/                 useCart (Zustand), useAuth, useAdmin, useTraffic
 │   ├── lib/
 │   │   ├── stripe-config.js   Ticket tiers, packages, price ids
+│   │   ├── pricing.js         Fees, tax, and group-discount maths shared with checkout
 │   │   ├── supabase.js        Shared Supabase client
 │   │   ├── content/           Hero, gallery, FAQs, testimonials, business info
 │   │   └── sunday-analyzer/   Cookieless pageview beacon
