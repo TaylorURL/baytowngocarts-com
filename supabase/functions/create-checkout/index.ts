@@ -52,6 +52,20 @@ function toCents(dollars: number): number {
   return Math.round(dollars * 100);
 }
 
+/**
+ * True when `value` is an absolute URL whose origin is exactly ALLOWED_ORIGIN.
+ * Compares the parsed origin rather than a string prefix, so a lookalike host
+ * such as https://baytowngokarts.com.example.com is rejected.
+ */
+function isAllowedRedirect(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  try {
+    return new URL(value).origin === ALLOWED_ORIGIN;
+  } catch {
+    return false;
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -61,12 +75,7 @@ serve(async (req) => {
     const { items, successUrl, cancelUrl, customerEmail, userId } =
       await req.json();
 
-    if (
-      !successUrl ||
-      !cancelUrl ||
-      !successUrl.startsWith(ALLOWED_ORIGIN) ||
-      !cancelUrl.startsWith(ALLOWED_ORIGIN)
-    ) {
+    if (!isAllowedRedirect(successUrl) || !isAllowedRedirect(cancelUrl)) {
       return new Response(JSON.stringify({ error: "Invalid redirect URL." }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 400,
