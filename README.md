@@ -53,7 +53,7 @@ A track's website usually stops at hours and a phone number. This one sells the 
 | Build & dev | Vite 5 |
 | Styling | Tailwind CSS 3 over CSS custom properties (`src/styles/Theme.css`) |
 | Cart state | Zustand |
-| Animation | Framer Motion 11 · AOS · `react-intersection-observer` |
+| Animation | `motion` 12 · AOS (scroll reveals) |
 | WebGL effects | `ogl` — particles, tilted cards, rotating text |
 | Backend | Supabase (Postgres + RLS, Deno edge functions) |
 | Payments | Stripe Checkout via Stripe Connect |
@@ -124,7 +124,8 @@ baytowngokarts-com/
 │   ├── hooks/                 useCart (Zustand), useAuth, useAdmin, useTraffic
 │   ├── lib/
 │   │   ├── stripe-config.js   Ticket tiers, packages, price ids
-│   │   ├── pricing.js         Fees, tax, and group-discount maths shared with checkout
+│   │   ├── pricing.js         Price-string parsing helpers
+│   │   ├── format.js          Cent / dollar display formatting
 │   │   ├── supabase.js        Shared Supabase client
 │   │   ├── content/           Hero, gallery, FAQs, testimonials, business info
 │   │   └── sunday-analyzer/   Cookieless pageview beacon
