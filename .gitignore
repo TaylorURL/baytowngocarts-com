@@ -32,6 +32,7 @@ lerna-debug.log*
 CLAUDE.md
 .DS_Store
 .fleet/
+.junie/
 *.iml
 *.suo
 *.ntvs*
