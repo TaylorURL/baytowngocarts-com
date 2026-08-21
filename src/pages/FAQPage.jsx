@@ -73,8 +73,14 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
         )}
       </div>
       {searchTerm && (
-        <div className="mt-3 text-chalk/80 text-sm">
-          Found {formatResultCount(filteredCount)} for "{searchTerm}"
+        <div className="mt-3 flex justify-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-asphalt-950/70 px-4 py-1.5 text-sm text-chalk ring-1 ring-chalk/15 backdrop-blur-sm">
+            <span
+              className="block h-1.5 w-1.5 rounded-full bg-race-500"
+              aria-hidden="true"
+            />
+            Found {formatResultCount(filteredCount)} for "{searchTerm}"
+          </span>
         </div>
       )}
     </div>
