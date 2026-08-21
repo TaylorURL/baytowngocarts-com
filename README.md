@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-3.3.26-e11d2a?style=for-the-badge" alt="Version 3.3.26" />
+  <img src="https://img.shields.io/badge/version-3.3.27-e11d2a?style=for-the-badge" alt="Version 3.3.27" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
-  <img src="https://img.shields.io/badge/Vite-5-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" />
+  <img src="https://img.shields.io/badge/Vite-6-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
   <img src="https://img.shields.io/badge/Supabase-b91c1c?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
   <img src="https://img.shields.io/badge/Stripe-e11d2a?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
@@ -49,8 +49,8 @@ A track's website usually stops at hours and a phone number. This one sells the 
 
 | Layer | Technology |
 | :--- | :--- |
-| UI | React 18 + React Router 6 |
-| Build & dev | Vite 5 |
+| UI | React 18 + React Router 7 |
+| Build & dev | Vite 6 |
 | Styling | Tailwind CSS 3 over CSS custom properties (`src/styles/Theme.css`) |
 | Cart state | Zustand |
 | Animation | `motion` 12 · AOS (scroll reveals) |
