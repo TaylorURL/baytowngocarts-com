@@ -105,11 +105,18 @@ const Particles = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new Renderer({
-      dpr: pixelRatio,
-      depth: false,
-      alpha: true
-    });
+    let renderer;
+    try {
+      renderer = new Renderer({
+        dpr: pixelRatio,
+        depth: false,
+        alpha: true
+      });
+    } catch {
+      // WebGL unavailable (no GPU, GPU disabled, context limit reached).
+      // Particles are decorative, so the page works fine without them.
+      return;
+    }
     const gl = renderer.gl;
     container.appendChild(gl.canvas);
     gl.clearColor(0, 0, 0, 0);
