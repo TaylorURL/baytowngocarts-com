@@ -66,13 +66,12 @@ const PartySection = () => (
             </ul>
 
             <div
-              className="mt-9 flex flex-col sm:flex-row gap-3"
+              className="mt-9 flex flex-col sm:flex-row sm:flex-wrap gap-3"
               data-aos="fade-up"
               data-aos-delay="260"
             >
               <Link to={PARTY_PROMO.faqLink}>
-                <Button size="lg" variant="primary" className="group">
-                  <Icon name="search" className="h-5 w-5" />
+                <Button size="lg" variant="primary" className="group whitespace-nowrap">
                   {PARTY_PROMO.faqCta}
                   <Icon
                     name="arrow-right"
@@ -81,9 +80,9 @@ const PartySection = () => (
                 </Button>
               </Link>
               <a href={CONTACT_INFO.phoneTel}>
-                <Button size="lg" variant="outline" className="tabular-nums">
+                <Button size="lg" variant="outline" className="whitespace-nowrap">
                   <Icon name="phone" className="h-5 w-5" />
-                  Call to Book a Date
+                  Call to Book
                 </Button>
               </a>
             </div>
@@ -108,12 +107,13 @@ const PartySection = () => (
                   alt={PARTY_PROMO.imageAlt}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-asphalt-950/80 via-asphalt-950/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-asphalt-950/70 via-asphalt-950/25 to-transparent" />
                 <div className="absolute top-4 right-4 bg-race-600 text-chalk px-2.5 py-2 rounded-md shadow-lift ring-1 ring-inset ring-race-300/60">
                   <Icon name="cake" className="h-5 w-5" />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="font-display tracking-speedway uppercase text-[11px] text-chalk/70">
+                {/* Dedicated scrim behind the caption, same recipe as the gallery figcaptions. */}
+                <div className="absolute bottom-0 left-0 right-0 px-6 pb-6 pt-16 bg-gradient-to-t from-asphalt-950/95 via-asphalt-950/60 to-transparent">
+                  <div className="font-display tracking-speedway uppercase text-[11px] text-chalk/90">
                     The Party Room
                   </div>
                   <div className="mt-1 font-display text-2xl text-chalk tracking-tight leading-none">
