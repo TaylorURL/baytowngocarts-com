@@ -1,6 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+// Colors resolve through the CSS vars in src/styles/Theme.css. The function
+// form is what keeps Tailwind's `/opacity` modifiers working on top of a
+// var() color — a plain string here makes Tailwind silently drop every
+// `bg-asphalt-950/80`-style utility instead of generating it.
+const withAlpha = (cssVar) => ({ opacityValue }) =>
+  opacityValue === undefined
+    ? `var(${cssVar})`
+    : `color-mix(in srgb, var(${cssVar}) calc(${opacityValue} * 100%), transparent)`;
+
 const ramp = (name, stops) =>
-  Object.fromEntries(stops.map((s) => [s, `var(--color-${name}-${s})`]));
+  Object.fromEntries(stops.map((s) => [s, withAlpha(`--color-${name}-${s}`)]));
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -58,22 +67,22 @@ export default {
         red: ramp("red", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]),
         gray: ramp("gray", [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
         yellow: {
-          300: "var(--color-caution-400)",
-          400: "var(--color-caution-500)",
+          300: withAlpha("--color-caution-400"),
+          400: withAlpha("--color-caution-500"),
         },
         amber: {
-          400: "var(--color-caution-400)",
-          500: "var(--color-caution-500)",
+          400: withAlpha("--color-caution-400"),
+          500: withAlpha("--color-caution-500"),
         },
         green: ramp("green", [50, 200, 600, 700]),
         silver: {
-          light: "var(--color-silver-light)",
-          DEFAULT: "var(--color-silver)",
-          dark: "var(--color-silver-dark)",
+          light: withAlpha("--color-silver-light"),
+          DEFAULT: withAlpha("--color-silver"),
+          dark: withAlpha("--color-silver-dark"),
         },
-        chalk: "var(--color-chalk)",
-        white: "var(--color-white)",
-        black: "var(--color-black)",
+        chalk: withAlpha("--color-chalk"),
+        white: withAlpha("--color-white"),
+        black: withAlpha("--color-black"),
       },
       backgroundImage: {
         "race-stripe":

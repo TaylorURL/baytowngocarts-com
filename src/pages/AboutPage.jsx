@@ -9,7 +9,7 @@ import { CONTACT_INFO } from "../lib/content/business.js";
 
 const FACTS = [
   { value: "2019", label: "Opened on TX-146", accent: "race" },
-  { value: '5"', label: "Suggested Min Age", accent: "ignite" },
+  { value: "5", label: "Suggested Min Age", accent: "ignite" },
   { value: "5:00", label: "Per Heat", accent: "race" },
   { value: "60", label: "Party Room Cap", accent: "chalk" },
 ];
@@ -74,7 +74,7 @@ const AboutPage = () => (
       badge="About"
       title="The track"
       titleAccent="on TX-146."
-      description="Six years of running outdoor karts on the same patch of asphalt in Baytown — the long version, in case you want it."
+      description="Seven years of running outdoor karts on the same patch of asphalt in Baytown — the long version, in case you want it."
       backgroundImage="/images/16.JPEG"
       dividerColorClass="bg-chalk"
     />
@@ -207,7 +207,7 @@ const AboutPage = () => (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade-up">
           <SectionEyebrow tone="light" className="justify-center">
-            Six years on TX-146
+            Seven years on TX-146
           </SectionEyebrow>
           <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-asphalt-900">
             How we got here.
