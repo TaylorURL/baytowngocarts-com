@@ -28,7 +28,9 @@ lerna-debug.log*
 # Editor directories and files
 .vscode/
 .idea/
-.claude/
+# Claude Code: local state stays ignored, but shared project skills are tracked
+.claude/*
+!.claude/skills/
 .DS_Store
 .fleet/
 .junie/
