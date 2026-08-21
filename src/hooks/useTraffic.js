@@ -1,8 +1,32 @@
 import { useEffect } from "react";
 import { supabase } from "../lib/supabase";
+/** How long a page view waits on geo enrichment before writing without it. */
+const GEO_LOOKUP_TIMEOUT_MS = 2000;
+/**
+ * City and country are enrichment on a record that has to be written either
+ * way, so the lookup runs under a deadline rather than holding the write open
+ * for as long as ipapi.co takes to answer. A page view still sitting behind a
+ * slow lookup when the visitor leaves is never written at all.
+ *
+ * @returns {Promise<object|null>} ipapi.co payload, or null if it did not arrive in time
+ */
+const readGeoData = () =>
+  Promise.race([
+    fetch("https://ipapi.co/json/")
+      .then((response) => (response.ok ? response.json() : null))
+      .catch(() => null),
+    new Promise((resolve) => {
+      setTimeout(resolve, GEO_LOOKUP_TIMEOUT_MS, null);
+    }),
+  ]);
 /**
  * Staff-only routes are skipped so internal browsing never shows up in the
  * customer traffic numbers.
+ *
+ * The write goes out as a keepalive request rather than through the Supabase
+ * client the rest of this file uses. A page view is recorded at the moment a
+ * visitor is most likely to navigate away, and an ordinary request is cancelled
+ * when its page goes, so the shortest visits are the ones that go unrecorded.
  *
  * @param {string} pathname - route path to log
  */
@@ -14,36 +38,43 @@ export const logPageView = async (pathname) => {
   ) {
     return;
   }
+  const geoData = await readGeoData();
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
   try {
-    const userAgent = navigator.userAgent;
-    const referrer = document.referrer || null;
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    let geoData = null;
-    try {
-      const geoResponse = await fetch("https://ipapi.co/json/");
-      if (geoResponse.ok) {
-        geoData = await geoResponse.json();
-      }
-    } catch (geoError) {
-      console.error("Geolocation fetch failed:", geoError);
+    const response = await fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/site_traffic`,
+      {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          "Content-Type": "application/json",
+          apikey: anonKey,
+          Authorization: `Bearer ${anonKey}`,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          page_path: pathname,
+          user_agent: navigator.userAgent,
+          referrer: document.referrer || null,
+          screen_width: window.screen.width,
+          screen_height: window.screen.height,
+          city: geoData?.city || null,
+          region: geoData?.region || null,
+          country: geoData?.country_name || null,
+          country_code: geoData?.country_code || null,
+          latitude: geoData?.latitude || null,
+          longitude: geoData?.longitude || null,
+          timestamp: new Date().toISOString(),
+        }),
+      },
+    );
+    if (!response.ok) {
+      console.error(`Page view write rejected: HTTP ${response.status}`);
     }
-    await supabase.from("site_traffic").insert({
-      page_path: pathname,
-      user_agent: userAgent,
-      referrer: referrer,
-      screen_width: screenWidth,
-      screen_height: screenHeight,
-      city: geoData?.city || null,
-      region: geoData?.region || null,
-      country: geoData?.country_name || null,
-      country_code: geoData?.country_code || null,
-      latitude: geoData?.latitude || null,
-      longitude: geoData?.longitude || null,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    console.error("Error logging page view:", error);
+  } catch {
+    // A request that never reached the network is lost telemetry rather than a
+    // fault anyone can act on, and the reporter installed in index.html already
+    // records it once. Raising it again here would only duplicate that.
   }
 };
 export const useTrafficLogger = (pathname) => {
