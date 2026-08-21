@@ -87,30 +87,23 @@ const ActionSection = () => (
         </div>
 
         <div
-          className="mt-12 pt-8 border-t border-asphalt-700 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-12 pt-8 border-t border-asphalt-700 flex flex-col items-center gap-2"
           data-aos="fade-up"
           data-aos-delay="150"
         >
           <span className="text-sm text-gray-400 uppercase tracking-widest font-display">
-            Or skip the form
+            Parties are booked by phone
           </span>
           <a
             href={CONTACT_INFO.phoneTel}
-            className="group relative inline-flex items-center gap-3 overflow-hidden bg-asphalt-800 hover:bg-asphalt-700 text-chalk pl-6 pr-6 py-3 rounded-md font-bold shadow-track ring-1 ring-asphalt-700 hover:ring-asphalt-600 transition-[background-color,transform,box-shadow] duration-base ease-snap hover:-translate-y-0.5 hover:shadow-lift active:scale-95"
+            className="inline-flex items-center gap-3 font-display text-4xl tracking-wide tabular-nums text-chalk hover:text-race-400 transition-colors duration-base ease-snap"
           >
-            <span
-              className="absolute left-0 top-0 bottom-0 w-1 bg-race-600"
-              aria-hidden="true"
-            />
-            <span
-              className="ml-1 inline-flex h-2 w-2 rounded-full bg-race-500 animate-pulse-race"
-              aria-hidden="true"
-            />
-            <Icon name="phone" className="h-4 w-4 text-race-500" />
-            <span className="tabular-nums tracking-wide">
-              {CONTACT_INFO.phone}
-            </span>
+            <Icon name="phone" className="h-7 w-7 text-race-500" />
+            {CONTACT_INFO.phone}
           </a>
+          <span className="text-sm text-gray-500">
+            Thursday – Sunday · weekends until 10:30 PM
+          </span>
         </div>
       </div>
     </div>

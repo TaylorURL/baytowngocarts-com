@@ -285,8 +285,8 @@ const ReadyToRaceCTA = () => (
           <span className="block text-race-500">Now run a heat.</span>
         </h2>
         <p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
-          Single race is $13.99. Family deal is $59.99 for four. Wristband is
-          2.5 hours unlimited.
+          Single race is $13.99. Four races are $51.99. Thursdays run 2.5
+          hours unlimited for $49.99.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Magnet padding={70} magnetStrength={4}>
