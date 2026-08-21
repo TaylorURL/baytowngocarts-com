@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Button from "../components/common/Button";
 import Icon from "../components/common/Icon.jsx";
 import PageHero from "../components/common/PageHero.jsx";
@@ -302,11 +302,19 @@ const ReadyToRaceCTA = () => (
 );
 
 const FAQPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  // Links elsewhere on the site (e.g. the home-page party CTA) can land here
+  // with the search pre-filled via /faq?search=….
+  const [searchParams] = useSearchParams();
+  const urlSearchTerm = searchParams.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState(urlSearchTerm);
   const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES_ID);
   const [isSticky, setIsSticky] = useState(false);
   const stickyRef = useRef(null);
   const anchorRef = useRef(null);
+
+  useEffect(() => {
+    setSearchTerm(urlSearchTerm);
+  }, [urlSearchTerm]);
 
   useEffect(() => {
     const handleScroll = () => {
