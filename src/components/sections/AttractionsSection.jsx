@@ -41,8 +41,11 @@ const ATTRACTIONS = [
       "Decor 30 min early",
     ],
     accent: "race",
+    link: { to: "/faq?search=party", label: "Party FAQs" },
   },
 ];
+
+const DEFAULT_LINK = { to: "/pricing", label: "See Pricing" };
 
 const ACCENT = {
   race: {
@@ -88,8 +91,9 @@ const AttractionsSection = () => (
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {ATTRACTIONS.map(
-          ({ title, description, image, icon, features, accent }, index) => {
+          ({ title, description, image, icon, features, accent, link }, index) => {
             const a = ACCENT[accent];
+            const { to, label } = link ?? DEFAULT_LINK;
             return (
               <article
                 key={title}
@@ -136,11 +140,11 @@ const AttractionsSection = () => (
                     ))}
                   </ul>
                   <Link
-                    to="/pricing"
+                    to={to}
                     className={`inline-flex items-center gap-2 font-display tracking-speedway text-sm ${a.link} transition-colors duration-base ease-snap`}
                   >
                     <span className="relative">
-                      See Pricing
+                      {label}
                       <span
                         aria-hidden="true"
                         className={`absolute left-0 -bottom-0.5 h-[2px] w-6 ${a.linkRule} transition-all duration-base ease-snap group-hover:w-full`}
