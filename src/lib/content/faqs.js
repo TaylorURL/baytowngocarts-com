@@ -107,7 +107,7 @@ export const FAQS = [
   {
     question: "How do I book a private event or party?",
     answer:
-      "To book any private event—including birthdays, family outings, corporate events, or team-building—please call (346) 932-1266.",
+      "To book any private event—including birthdays, family outings, corporate events, or team-building—please call (281) 722-4468.",
     category: "Events",
   },
   {
