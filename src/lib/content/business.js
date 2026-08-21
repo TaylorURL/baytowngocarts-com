@@ -11,8 +11,8 @@ export const HOLIDAY_HOURS_NOTE =
   "Holiday hours vary — check our Google page for the latest schedule and any changes.";
 
 export const CONTACT_INFO = {
-  phone: "(346) 932-1266",
-  phoneTel: "tel:(346) 932-1266",
+  phone: "(281) 722-4468",
+  phoneTel: "tel:(281) 722-4468",
   email: "speedsway146@gmail.com",
   emailMailto: "mailto:speedsway146@gmail.com",
   address: "6750 TX-146, Baytown, TX 77523",
