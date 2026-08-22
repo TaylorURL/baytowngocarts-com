@@ -110,6 +110,10 @@
         }
       })();
     </script>
+    <!-- Traffic analytics. The site key is public by design: it says which
+         site a hit belongs to, and the collector accepts it only from this
+         site's own origins. Deferred, so nothing on the page waits for it. -->
+    <script src="https://gujgtjqqurildqurpffh.supabase.co/functions/v1/analytics-tracker" data-site="sa_cbe7f67d98394373c5c11cf6e7a8d0b6" defer></script>
   </head>
   <body>
     <div id="root"></div>

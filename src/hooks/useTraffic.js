@@ -77,6 +77,15 @@ export const logPageView = async (pathname) => {
     // records it once. Raising it again here would only duplicate that.
   }
 };
+/**
+ * Records one page view per route the visitor lands on.
+ *
+ * Keyed on the path, so a router that re-renders without navigating does not
+ * log twice, and a return to a path already seen this session logs again -
+ * which is what a page view means.
+ *
+ * @param {string} pathname - the route currently rendered
+ */
 export const useTrafficLogger = (pathname) => {
   useEffect(() => {
     logPageView(pathname);
