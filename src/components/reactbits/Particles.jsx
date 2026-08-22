@@ -83,6 +83,31 @@ const fragment = /* glsl */ `
   }
 `;
 
+/**
+ * A drifting field of points behind a section, drawn with WebGL.
+ *
+ * Vendored from React Bits rather than installed, so the shaders above are the
+ * component's own source and not a dependency's build output.
+ *
+ * The canvas fills its container and is decorative: it carries no information,
+ * it is not in the tab order, and on a machine without WebGL the effect is
+ * skipped and the section renders without it. A caller therefore does not need
+ * a fallback, but it does need to give the container a size, since the canvas
+ * measures its parent rather than declaring a height of its own.
+ *
+ * @param {number} particleCount - points in the field
+ * @param {number} particleSpread - how far from centre they scatter
+ * @param {number} speed - drift rate; the shader's time multiplier
+ * @param {string[]} [particleColors] - hex colours to sample from, white if absent
+ * @param {boolean} moveParticlesOnHover - whether the field follows the pointer
+ * @param {number} particleHoverFactor - how far it follows
+ * @param {boolean} alphaParticles - soft-edged points rather than round ones
+ * @param {number} particleBaseSize - point size before randomness
+ * @param {number} sizeRandomness - 0 for uniform points, 1 for a wide spread
+ * @param {number} cameraDistance - distance from the field, which sets its depth
+ * @param {boolean} disableRotation - hold the field still instead of turning it
+ * @param {number} pixelRatio - device pixel ratio to render at; 1 keeps it cheap
+ */
 const Particles = ({
   particleCount = 200,
   particleSpread = 10,
