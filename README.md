@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-3.3.35-e11d2a?style=for-the-badge" alt="Version 3.3.35" />
+  <img src="https://img.shields.io/badge/version-3.3.38-e11d2a?style=for-the-badge" alt="Version 3.3.38" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-6-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -103,7 +103,7 @@ flowchart TD
 - **Products are generated, not hand-listed.** `src/lib/stripe-config.js` builds the catalog from small tier tables — single-kart bundles (1/4/8/15/25/35/50 tickets), double-seater bundles (1/2/4/6), and party packages — deriving ids, price ids, labels, and per-race rates.
 - **Checkout is validated server-side.** `create-checkout` compares each client price against the canonical map and rejects mismatches, then applies a 4% + $0.30 transaction fee, a 1% platform fee, 8.25% Texas sales tax, and a 10% group discount at 15 or more tickets.
 - **Orders are written by the webhook, not the browser.** `stripe-webhook` verifies the Stripe signature and writes the order — numbered `SPW146-YYYY-NNNNNN` — into the `purchases` table with the service-role key.
-- **Two independent analytics layers.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation; `sunday-analyzer` fires a separate cookieless beacon via `sendBeacon`.
+- **Two independent analytics layers.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation, and feeds the site's own `/traffic` page; the hosted tracker in `index.html` reports the same visits to the central collector behind taylorurl.com/status.
 - **One file owns the palette.** Every Tailwind color maps to a CSS custom property in `Theme.css`, so the asphalt / race-red / caution system is a single-file edit.
 
 ## Project structure
@@ -127,8 +127,7 @@ baytowngokarts-com/
 │   │   ├── pricing.js         Price-string parsing helpers
 │   │   ├── format.js          Cent / dollar display formatting
 │   │   ├── supabase.js        Shared Supabase client
-│   │   ├── content/           Hero, gallery, FAQs, testimonials, business info
-│   │   └── sunday-analyzer/   Cookieless pageview beacon
+│   │   └── content/           Hero, gallery, FAQs, testimonials, business info
 │   └── styles/Theme.css       Design tokens (CSS custom properties)
 └── vercel.json                SPA rewrites, security headers, caching
 ```
