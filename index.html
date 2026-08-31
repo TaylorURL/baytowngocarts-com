@@ -73,8 +73,24 @@
         var endpoint = "https://sunday.tail1f78d7.ts.net/report";
         var site = "Baytown Go Karts";
         var sent = 0;
+        // React 18 recovers from hydration errors #418, #421, #422, #423 and
+        // #425 on its own: the mismatch is caught, the prerendered tree is
+        // discarded and the page draws itself again client-side, so the
+        // visitor never sees a break. The ones that still reach this reporter
+        // are the ones a user-agent regex cannot pick out - the tab was
+        // rewritten between prerender-serve and hydration by something outside
+        // the app. Chrome's built-in Translate is the common one, and a
+        // Chrome Custom Tabs host running evaluateJavascript into the tab, a
+        // cellular carrier or ISP injecting HTML on the wire, and an on-device
+        // antivirus or parental-control proxy do the same. Opening a ticket
+        // every time chrome://translate does its job would drown the real
+        // defects in noise from things this site does not own.
+        var recoveredReact =
+          /Minified React error #(?:418|421|422|423|425)\b/;
         function report(kind, message, stack) {
           if (sent >= 10) return;
+          if (recoveredReact.test(String(message || ""))) return;
+          if (recoveredReact.test(String(stack || ""))) return;
           sent += 1;
           try {
             var body = JSON.stringify({
