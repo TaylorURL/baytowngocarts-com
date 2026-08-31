@@ -42,7 +42,7 @@ const MainLayout = () => {
           </Suspense>
         </main>
         <Footer>
-          <SplitRail version={__BUILD_VERSION__} />
+          <SplitRail version={__BUILD_VERSION__} year={__BUILD_YEAR__} />
         </Footer>
       </div>
     </ClickSpark>
