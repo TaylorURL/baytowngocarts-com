@@ -14,10 +14,13 @@
  * chunk that is genuinely missing to become a loop. A load that succeeds
  * afterwards releases the allowance, so the next deploy gets its own.
  *
- * The refresh is announced on the way out, because the page reporter sees the
- * same missing chunk before this does. The browser fails the preload link
- * first and that failure is a resource error with nothing attached to say the
- * page is about to fix itself; the announcement is what says so.
+ * The refresh is announced on every stale-chunk rejection, whether or not the
+ * reload proceeds. The page reporter uses the event to drop the held asset
+ * failure, and a browser that cannot spend its allowance -- session storage
+ * closed on an iOS in-app browser, or the allowance already used -- is still
+ * in the build-refresh situation the reporter is asking about. The visitor
+ * sees whatever the error boundary shows either way; the ticket is noise the
+ * site cannot fix.
  */
 
 const RELOAD_MARK = "speedway146:build-refresh";
@@ -67,9 +70,10 @@ export function withBuildRefresh(loader) {
         return module;
       },
       (error) => {
-        if (typeof window === "undefined" || reloadSpent()) throw error;
-        spendReload();
+        if (typeof window === "undefined") throw error;
         window.dispatchEvent(new Event(REFRESH_EVENT));
+        if (reloadSpent()) throw error;
+        spendReload();
         window.location.reload();
         /* The reload is already under way. Settling this promise either way
            would only put something on screen for the instant before it. */
