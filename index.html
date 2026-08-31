@@ -186,7 +186,9 @@
               var rel = (event.target.rel || "").toLowerCase();
               if (
                 event.target.tagName.toLowerCase() === "link" &&
-                (rel === "preload" || rel === "modulepreload" || rel === "prefetch")
+                (rel === "preload" ||
+                  rel === "modulepreload" ||
+                  rel === "prefetch")
               ) {
                 return;
               }
