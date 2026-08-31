@@ -224,6 +224,26 @@
           report("console", parts.join(" "));
           return consoleError.apply(console, arguments);
         };
+        // A third-party fetch that fails or answers 5xx is not this site's to
+        // fix: a privacy extension or tracking-protection ruleset blocking a
+        // request outside our origin is the common cause, and the caller that
+        // asked for it already decides what a failure means (the geo lookup
+        // resolves to null and the page view is written without it). Reporting
+        // one anyway files a ticket that reads like an outage from something a
+        // visitor never noticed. The wrapper's reports stay on requests whose
+        // host we serve - same origin and the Supabase backend behind it.
+        function firstParty(url) {
+          if (typeof url !== "string" || !url) return false;
+          if (url.charAt(0) === "/" && url.charAt(1) !== "/") return true;
+          if (
+            url === location.origin ||
+            url.indexOf(location.origin + "/") === 0
+          )
+            return true;
+          var match = url.match(/^https?:\/\/([^/]+)/);
+          if (!match) return false;
+          return /\.supabase\.(?:co|in)$/i.test(match[1]);
+        }
         if (window.fetch) {
           var originalFetch = window.fetch;
           window.fetch = function (input) {
@@ -233,7 +253,7 @@
               return originalFetch.apply(window, arguments);
             return originalFetch.apply(window, arguments).then(
               function (response) {
-                if (response.status >= 500)
+                if (response.status >= 500 && firstParty(target))
                   report(
                     "http",
                     "HTTP " + response.status + " from " + target.split("?")[0],
@@ -241,12 +261,14 @@
                 return response;
               },
               function (error) {
-                report(
-                  "network",
-                  (error && error.message ? error.message : String(error)) +
-                    " fetching " +
-                    target.split("?")[0],
-                );
+                if (firstParty(target)) {
+                  report(
+                    "network",
+                    (error && error.message ? error.message : String(error)) +
+                      " fetching " +
+                      target.split("?")[0],
+                  );
+                }
                 throw error;
               },
             );
