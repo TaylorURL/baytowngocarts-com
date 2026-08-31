@@ -85,8 +85,7 @@
         // antivirus or parental-control proxy do the same. Opening a ticket
         // every time chrome://translate does its job would drown the real
         // defects in noise from things this site does not own.
-        var recoveredReact =
-          /Minified React error #(?:418|421|422|423|425)\b/;
+        var recoveredReact = /Minified React error #(?:418|421|422|423|425)\b/;
         function report(kind, message, stack) {
           if (sent >= 10) return;
           if (recoveredReact.test(String(message || ""))) return;
