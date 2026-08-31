@@ -1,7 +1,7 @@
 {
   "name": "speedway146-website",
   "private": true,
-  "version": "2026.35.24",
+  "version": "2026.36.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",
-    "@taylorurl/split-rail": "github:TaylorURL/split-rail#v2026.35.4",
+    "@taylorurl/split-rail": "github:TaylorURL/split-rail#v2026.36.0",
     "motion": "^12.42.2",
     "ogl": "^1.0.11",
     "react": "^18.3.1",
