@@ -1,0 +1,109 @@
+import { Link } from "react-router-dom";
+import Icon from "../components/common/Icon.jsx";
+import Pill from "../components/common/Pill.jsx";
+import ParticleField from "../components/reactbits/ParticleField.jsx";
+import CountUp from "../components/reactbits/CountUp.jsx";
+import BlurText from "../components/reactbits/BlurText.jsx";
+import Magnet from "../components/reactbits/Magnet.jsx";
+import RouteMeta from "../components/common/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+
+export const metadata = {
+  title: "Page Not Found | Speedway 146 Baytown",
+  description:
+    "That page is not on our track. Head back to the pit lane for racing prices, party bookings and opening hours at Speedway 146 in Baytown.",
+  canonical: "/404",
+  robots: "noindex, follow",
+  crumbs: [{ name: "Page Not Found", path: "/404" }],
+  openGraph: {
+    "og:title": "Page Not Found | Speedway 146 Baytown",
+    "og:description":
+      "That page is not on our track. Head back to the pit lane for racing prices, party bookings and opening hours at Speedway 146 in Baytown.",
+    "og:url": SITE_URL + "/404",
+    "og:image": SHARE_IMAGE,
+    "og:type": "website",
+  },
+};
+
+const NotFoundPage = () => (
+  <div className="w-full -mt-20">
+    <RouteMeta metadata={metadata} />
+    <section className="relative bg-asphalt-950 overflow-hidden min-h-dvh flex items-center">
+      <div
+        className="absolute inset-0 pointer-events-none asphalt-grain opacity-70"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 opacity-15 bg-cover bg-center bg-[url('/images/18.webp')]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute top-0 left-0 right-0 h-1.5 race-stripe"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-race-600/20 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 z-[3] pointer-events-none opacity-60"
+        aria-hidden="true"
+      >
+        <ParticleField
+          particleCount={150}
+          particleSpread={13}
+          speed={0.07}
+          particleBaseSize={80}
+          alphaParticles
+          disableRotation
+        />
+      </div>
+
+      <div
+        className="relative z-10 container mx-auto px-4 text-center"
+        data-aos="fade"
+      >
+        <Pill variant="race">Wrong Turn</Pill>
+        <h1 className="mt-6 font-display text-[8rem] md:text-[12rem] leading-none text-race-500 tracking-tight [text-shadow:0_8px_30px_color-mix(in_srgb,var(--accent-primary)_45%,transparent)]">
+          <CountUp to={404} duration={1.2} />
+        </h1>
+        <h2 className="mt-2 text-3xl md:text-4xl font-bold text-chalk">
+          That page isn't on our track.
+        </h2>
+        <BlurText
+          text="You took a wrong turn somewhere. No worries, pit lane is right this way."
+          animateBy="words"
+          delay={25}
+          className="mt-4 text-lg text-gray-400 max-w-md mx-auto justify-center"
+        />
+        <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+          <Magnet padding={70} magnetStrength={4}>
+            <Link
+              to="/"
+              className="group inline-flex items-center justify-center gap-2 bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg shadow-race transition-[background-color,transform] duration-base ease-snap hover:-translate-y-0.5 active:scale-95"
+            >
+              <Icon name="home" className="h-5 w-5" />
+              Back to Home
+            </Link>
+          </Magnet>
+          <Link
+            to="/pricing"
+            className="group inline-flex items-center justify-center gap-2 border-2 border-chalk/30 hover:border-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg transition-[border-color,transform] duration-base ease-snap active:scale-95"
+          >
+            <Icon
+              name="arrow-left"
+              className="h-5 w-5 transition-transform duration-base ease-snap group-hover:-translate-x-1"
+            />
+            See Pricing Instead
+          </Link>
+        </div>
+      </div>
+    </section>
+  </div>
+);
+
+export default NotFoundPage;

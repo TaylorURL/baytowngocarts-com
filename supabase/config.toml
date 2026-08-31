@@ -1,0 +1,10 @@
+project_id = "ggkqadmnvrjsewnazdxj"
+
+[functions.create-checkout]
+verify_jwt = true
+
+# Stripe signs its posts with the webhook secret and sends no Supabase token,
+# so the gateway has to let the request through for the function to check the
+# signature itself.
+[functions.stripe-webhook]
+verify_jwt = false

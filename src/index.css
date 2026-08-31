@@ -1,0 +1,516 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  /* clip rather than hidden: hidden turns the element into a scroll container
+     and breaks the fixed header and every sticky panel inside it. */
+  overflow-x: clip;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  font-family:
+    "Barlow",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  background-color: var(--bg-default);
+  color: var(--fg-default);
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Bebas Neue", system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    /* Balance stops a headline stranding its last word on a line of its own;
+       the wrap rules keep a long compound inside the viewport. */
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+    min-width: 0;
+    /* All-caps has no descenders, so a line-height under 1 collides. */
+    line-height: 1.02;
+  }
+
+  p,
+  li,
+  dd,
+  blockquote,
+  figcaption {
+    text-wrap: pretty;
+  }
+
+  /* An anchor jump lands underneath a fixed header unless the target reserves
+     the header's height above itself. */
+  :target {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  /*
+   * The affordance baseline.
+   *
+   * Cursor, tap behaviour, focus ring, press and disabled describe "this
+   * responds to a pointer" rather than anything a single control decides for
+   * itself. Keeping them here means a control added later inherits them, and
+   * the utilities layer still wins wherever a component has its own answer.
+   */
+  a,
+  button,
+  summary,
+  label,
+  select,
+  input,
+  textarea,
+  [role="button"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="link"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  a,
+  button,
+  summary,
+  select,
+  label[for],
+  [role="button"],
+  [role="tab"],
+  [role="menuitem"] {
+    cursor: pointer;
+  }
+
+  a,
+  button,
+  summary,
+  select,
+  [role="button"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="link"] {
+    transition:
+      color var(--dur-base) var(--ease-snap),
+      background-color var(--dur-base) var(--ease-snap),
+      border-color var(--dur-base) var(--ease-snap),
+      opacity var(--dur-base) var(--ease-snap),
+      transform var(--dur-fast) var(--ease-snap);
+  }
+
+  /* The pointer needs to know a thing is live before it commits. Anything that
+     paints its own hover overrides this from the utilities layer. */
+  a:not([class*="hover"]):hover,
+  button:not([class*="hover"]):hover,
+  summary:not([class*="hover"]):hover,
+  select:not([class*="hover"]):hover,
+  textarea:not([class*="hover"]):hover,
+  input:not([class*="hover"]):hover,
+  label[for]:not([class*="hover"]):hover,
+  [role="button"]:not([class*="hover"]):hover,
+  [role="tab"]:not([class*="hover"]):hover,
+  [role="menuitem"]:not([class*="hover"]):hover,
+  [role="link"]:not([class*="hover"]):hover {
+    opacity: 0.88;
+  }
+
+  /* The press. Short enough to read as the click itself rather than as an
+     animation that happens after it. */
+  a:active,
+  button:active,
+  summary:active,
+  [role="button"]:active,
+  [role="tab"]:active,
+  [role="menuitem"]:active,
+  [role="link"]:active {
+    transform: scale(0.97);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role="button"]:focus-visible,
+  [role="tab"]:focus-visible,
+  [role="menuitem"]:focus-visible,
+  [role="link"]:focus-visible,
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* A control that looks pressable and does nothing gets blamed on the reader,
+     so a disabled one stops looking pressable. */
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  [aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  button:disabled:hover,
+  input:disabled:hover,
+  select:disabled:hover,
+  textarea:disabled:hover,
+  [aria-disabled="true"]:hover {
+    opacity: 0.45;
+  }
+
+  button:disabled:active,
+  [aria-disabled="true"]:active {
+    transform: none;
+  }
+
+  /* Fields take a surface of their own. Against the page ground a bordered box
+     reads as a label rather than as somewhere to type. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select {
+    /* One control height, shared with the buttons beside these fields, and
+       already at the touch-target floor. */
+    min-height: var(--control-height);
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    background-color: var(--field-bg);
+    border-color: var(--field-border);
+    color: var(--fg-default);
+    /* The focus ring is an outline reserved at rest, so no border width
+       changes between states and nothing shifts on focus. */
+    outline: 2px solid transparent;
+    outline-offset: 1px;
+    /* iOS zooms the page on a field under 16px. */
+    font-size: 1rem;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  progress {
+    accent-color: var(--accent-primary);
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--field-border-hv);
+  }
+
+  input[aria-invalid="true"],
+  select[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: var(--accent-primary);
+    /* The ring carries the state alongside the colour, so red is not the only
+       thing saying the field is wrong. */
+    outline: 3px solid var(--field-invalid-ring);
+    outline-offset: 0;
+  }
+
+  /* OS select chrome ignores every token, so it goes and the caret is drawn
+     from the palette instead. */
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
+      linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) center,
+      calc(100% - 13px) center;
+    background-size:
+      5px 5px,
+      5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 2.25rem;
+  }
+
+  /* Autofill repaints the field in the browser's own yellow unless the fill is
+     pushed behind an inset shadow of the field's colour. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: var(--fg-default);
+    -webkit-box-shadow: var(--fill-autofill-mask);
+    box-shadow: var(--fill-autofill-mask);
+    caret-color: var(--fg-default);
+    transition: background-color var(--dur-autofill-hold) var(--ease-decel) 0s;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--fg-subtle);
+    opacity: 1;
+  }
+
+  ::selection {
+    background: var(--color-race-600);
+    color: var(--color-white);
+  }
+}
+
+main {
+  padding-top: var(--header-height);
+}
+
+@layer components {
+  /*
+   * Sections arrive as they are scrolled to. The hidden state is behind
+   * `js-reveal`, which lib/reveal.js sets once it is able to reveal them, so a
+   * page whose scripts do not run shows its content rather than a blank
+   * column.
+   */
+  .js-reveal [data-aos="fade"] {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-snap);
+  }
+
+  .js-reveal [data-aos="fade"].aos-animate {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn var(--dur-slow) var(--ease-snap) both;
+  }
+  .animate-slide-up {
+    animation: slideUp var(--dur-slow) var(--ease-snap) both;
+  }
+  .animate-slide-up.delay-100 {
+    animation-delay: 100ms;
+  }
+
+  /* Gated behind (hover: hover) so touch devices never stick in the lifted state. */
+  .hover-lift {
+    transition:
+      transform var(--dur-slow) var(--ease-snap),
+      box-shadow var(--dur-slow) var(--ease-snap);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lift);
+    }
+  }
+
+  .button-hover {
+    transition:
+      transform var(--dur-fast) var(--ease-snap),
+      background-color var(--dur-base) var(--ease-snap),
+      box-shadow var(--dur-base) var(--ease-snap);
+  }
+  .button-hover:active {
+    transform: scale(0.97);
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /*
+   * A section below the fold costs style and layout at load whether or not
+   * anybody scrolls to it. `auto` lets the browser skip that work until the
+   * section is approached, and remembers the height it last laid out at, so
+   * the scrollbar settles after the first pass rather than jumping as each
+   * section is reached. The placeholder height only stands in before that
+   * first pass.
+   */
+  .section-defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  .image-hover {
+    overflow: hidden;
+  }
+  .image-hover img {
+    transition: transform var(--dur-slow) var(--ease-snap);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .image-hover:hover img {
+      transform: scale(1.08);
+    }
+  }
+
+  /* Three stacked shadows — one is not enough over busy photography. */
+  .hero-text-shadow {
+    text-shadow:
+      2px 2px 12px var(--ink-veil-strong),
+      0 0 24px var(--ink-veil),
+      4px 4px 18px var(--ink-veil-soft);
+  }
+
+  .asphalt-grain {
+    pointer-events: none;
+    background-image:
+      radial-gradient(
+        circle at 18% 22%,
+        color-mix(in srgb, var(--color-asphalt-700) 60%, transparent) 0,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 78% 65%,
+        color-mix(in srgb, var(--color-asphalt-700) 55%, transparent) 0,
+        transparent 42%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-asphalt-900),
+        var(--color-asphalt-950)
+      );
+  }
+
+  /* Keep the contrast low. As a foreground pattern it overwhelms everything. */
+  .checker-overlay {
+    background-image:
+      linear-gradient(45deg, var(--color-black) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--color-black) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--color-black) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--color-black) 75%);
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0;
+  }
+
+  .caution-tape {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--color-caution-500) 0 14px,
+      var(--color-asphalt-900) 14px 28px
+    );
+  }
+
+  .race-stripe {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--color-race-600) 0 12px,
+      var(--color-race-700) 12px 24px
+    );
+  }
+
+  /* Tabular figures so price and stat columns line up. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .speedway-divider {
+    clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A toast arrives on the frame it is inserted. Run as a keyframe rather than
+   as a transition off a mounted state, which has no start value to move from
+   until a frame later. */
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toast-in {
+  animation: toastIn var(--dur-base) var(--ease-snap) both;
+}
+
+/* The placeholder holds a box while its content is still on the way. */
+@keyframes placeholderPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.placeholder-pulse {
+  animation: placeholderPulse var(--dur-ambient) var(--ease-snap) infinite;
+}
+
+@media (max-width: 640px) {
+  h1 {
+    letter-spacing: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The placeholder still reads as pending; it just stops moving. It leads the
+     block because a blanket duration override leaves a looping placeholder
+     restarting rather than still. */
+  .placeholder-pulse,
+  .animate-pulse {
+    animation: none !important;
+    opacity: 1;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--dur-none) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--dur-none) !important;
+    scroll-behavior: auto !important;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  .image-hover:hover img {
+    transform: none;
+  }
+  a:active,
+  button:active,
+  summary:active,
+  [role="button"]:active,
+  [role="tab"]:active,
+  [role="menuitem"]:active,
+  [role="link"]:active {
+    transform: none;
+  }
+}

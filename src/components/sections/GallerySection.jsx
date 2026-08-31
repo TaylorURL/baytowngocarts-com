@@ -1,0 +1,185 @@
+import { useState } from "react";
+import Icon from "../common/Icon.jsx";
+import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import {
+  GALLERY_IMAGES,
+  GALLERY_IMAGES_PER_SLIDE,
+} from "../../lib/content/gallery.js";
+import { srcSet } from "../../lib/images.js";
+
+const GallerySection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = Math.ceil(
+    GALLERY_IMAGES.length / GALLERY_IMAGES_PER_SLIDE,
+  );
+  const navigateSlide = (direction) =>
+    setCurrentSlide((prev) => (prev + direction + totalSlides) % totalSlides);
+  const getSlideImages = (slideIndex) =>
+    GALLERY_IMAGES.slice(
+      slideIndex * GALLERY_IMAGES_PER_SLIDE,
+      (slideIndex + 1) * GALLERY_IMAGES_PER_SLIDE,
+    );
+
+  const pad = (n) => String(n).padStart(2, "0");
+
+  return (
+    <section className="py-24 bg-asphalt-900 text-chalk relative overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none asphalt-grain opacity-50"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute top-0 left-0 right-0 h-1 race-stripe"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1 race-stripe"
+        aria-hidden="true"
+      />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center mb-14" data-aos="fade">
+          <span
+            className="mx-auto mb-5 block h-px w-16 bg-gradient-to-r from-transparent via-silver/60 to-transparent"
+            aria-hidden="true"
+          />
+          <SectionEyebrow tone="dark" className="justify-center">
+            Gallery
+          </SectionEyebrow>
+          <h2 className="mt-5 text-4xl lg:text-5xl font-bold leading-[1.05]">
+            Track-side, not stock photos.
+          </h2>
+          <p className="mt-4 text-lg text-gray-400">
+            Real karts, real guests, real Saturdays at Speedway 146.
+          </p>
+        </div>
+        <div className="relative" data-aos="fade" data-aos-delay="150">
+          <div className="relative overflow-hidden">
+            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+              <div
+                key={slideIndex}
+                className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-opacity duration-slow ease-snap ${
+                  slideIndex === currentSlide
+                    ? "opacity-100 relative"
+                    : "opacity-0 absolute inset-0 pointer-events-none"
+                }`}
+              >
+                {getSlideImages(slideIndex).map((image, index) => {
+                  const lapNumber =
+                    slideIndex * GALLERY_IMAGES_PER_SLIDE + index + 1;
+                  return (
+                    <figure
+                      key={index}
+                      className="relative rounded-md overflow-hidden ring-1 ring-asphalt-700 hover:ring-race-500 shadow-track hover:shadow-lift transition-[box-shadow,transform,ring-color] duration-base ease-snap group cursor-pointer hover:-translate-y-1"
+                    >
+                      <div className="w-full h-64 bg-asphalt-800 overflow-hidden">
+                        <img
+                          src={image.src}
+                          srcSet={srcSet(image.src, image.width)}
+                          sizes="(min-width: 1024px) 23vw, (min-width: 768px) 46vw, 92vw"
+                          alt={image.alt}
+                          width={image.width}
+                          height={image.height}
+                          loading="lazy"
+                          className="w-full h-full object-cover transition-transform duration-slow ease-snap group-hover:scale-110"
+                        />
+                      </div>
+
+                      <span
+                        className="pointer-events-none absolute top-2 left-2 h-3 w-3 border-l border-t border-silver/70"
+                        aria-hidden="true"
+                      />
+                      <span
+                        className="pointer-events-none absolute top-2 right-2 h-3 w-3 border-r border-t border-silver/70"
+                        aria-hidden="true"
+                      />
+
+                      <span className="absolute top-3 right-5 inline-flex items-center gap-1 rounded-sm bg-asphalt-950/80 px-2 py-0.5 font-display tracking-speedway text-[10px] text-chalk ring-1 ring-asphalt-700">
+                        <span
+                          className="h-1 w-2 rounded-sm bg-race-500"
+                          aria-hidden="true"
+                        />
+                        <span className="tabular-nums">
+                          Lap {pad(lapNumber)}
+                        </span>
+                      </span>
+
+                      <figcaption className="absolute inset-x-0 bottom-0 px-4 pt-10 pb-3 bg-gradient-to-t from-asphalt-950/95 via-asphalt-950/55 to-transparent">
+                        <div className="flex items-center gap-2">
+                          <Icon name="flag" className="h-4 w-4 text-race-500" />
+                          <span className="text-sm font-bold text-chalk tracking-wide">
+                            {image.title}
+                          </span>
+                        </div>
+                      </figcaption>
+                    </figure>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <div className="flex justify-center items-center gap-5">
+              <button
+                onClick={() => navigateSlide(-1)}
+                className="bg-asphalt-800 hover:bg-race-600 text-chalk p-3 rounded-md ring-1 ring-asphalt-700 hover:ring-race-500 transition-[background-color,transform,box-shadow,ring-color] duration-base ease-snap hover:-translate-x-0.5 active:scale-95 shadow-track"
+                aria-label="Previous Images"
+              >
+                <Icon name="chevron-left" className="h-5 w-5" />
+              </button>
+              <div
+                className="flex items-center gap-2"
+                role="tablist"
+                aria-label="Gallery Slides"
+              >
+                {/* The mark is a 2px rule; the box around it is what a thumb
+                    aims at, so the two are separate elements. */}
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    role="tab"
+                    aria-selected={index === currentSlide}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className="group/dot flex h-11 min-w-11 items-center justify-center"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`block rounded-sm h-2 transition-[width,background-color] duration-base ease-snap ${
+                        index === currentSlide
+                          ? "bg-race-500 w-10"
+                          : "bg-asphalt-700 group-hover/dot:bg-asphalt-600 w-2"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => navigateSlide(1)}
+                className="bg-asphalt-800 hover:bg-race-600 text-chalk p-3 rounded-md ring-1 ring-asphalt-700 hover:ring-race-500 transition-[background-color,transform,box-shadow,ring-color] duration-base ease-snap hover:translate-x-0.5 active:scale-95 shadow-track"
+                aria-label="Next Images"
+              >
+                <Icon name="chevron-right" className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div
+              className="flex items-center gap-3 font-display tracking-speedway text-xs text-gray-400"
+              aria-live="polite"
+            >
+              <span className="h-px w-8 bg-silver/40" aria-hidden="true" />
+              <span className="tabular-nums">
+                <span className="text-chalk">{pad(currentSlide + 1)}</span>
+                <span className="mx-1 text-asphalt-600">/</span>
+                <span>{pad(totalSlides)}</span>
+              </span>
+              <span className="h-px w-8 bg-silver/40" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default GallerySection;

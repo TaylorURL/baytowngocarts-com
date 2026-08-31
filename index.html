@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
+    <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="/site.webmanifest" rel="manifest" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Speedway 146 - Outdoor Go-Kart Track in Baytown, Texas</title>
+    <meta
+      content="Speedway 146 runs outdoor go-kart racing, bounce houses and party rooms at 6750 TX-146 in Baytown, Texas, Thursday through Sunday."
+      name="description"
+    />
+    <meta
+      property="og:title"
+      content="Speedway 146 | Go-Kart Racing & Family Fun in Baytown, TX"
+    />
+    <meta
+      property="og:description"
+      content="Baytown's go-to spot for family fun! Go-kart racing, bounce houses, and party rooms."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://baytowngokarts.com" />
+    <meta
+      property="og:image"
+      content="https://baytowngokarts.com/images/share-card.jpg"
+    />
+    <meta property="og:site_name" content="Speedway 146" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://baytowngokarts.com" />
+    <link
+      rel="preconnect"
+      href="https://ggkqadmnvrjsewnazdxj.supabase.co"
+      crossorigin
+    />
+    <link rel="dns-prefetch" href="https://sunday.tail1f78d7.ts.net" />
+    <link
+      rel="preload"
+      href="/images/14.webp"
+      imagesrcset="/images/14-480.webp 480w, /images/14-960.webp 960w, /images/14.webp 1800w"
+      imagesizes="100vw"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="/images/logo-128.webp"
+      imagesrcset="/images/logo-128.webp 128w, /images/logo-256.webp 256w, /images/logo.webp 512w"
+      imagesizes="64px"
+      as="image"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      href="/fonts/bebas-neue-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/barlow-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script>
+      (function () {
+        var endpoint = "https://sunday.tail1f78d7.ts.net/report";
+        var site = "Baytown Go Karts";
+        var sent = 0;
+        function report(kind, message, stack) {
+          if (sent >= 10) return;
+          sent += 1;
+          try {
+            var body = JSON.stringify({
+              site: site,
+              kind: kind,
+              message: String(message || "Unknown error").slice(0, 1500),
+              stack: String(stack || "").slice(0, 4000),
+              url: location.href,
+              userAgent: navigator.userAgent,
+            });
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(endpoint, body);
+            } else {
+              fetch(endpoint, {
+                method: "POST",
+                body: body,
+                keepalive: true,
+              }).catch(function () {});
+            }
+          } catch (ignored) {}
+        }
+        // A hashed build file that 404s is nearly always a document the host
+        // has moved past: the route loader asks for a chunk from the build the
+        // tab still holds, and it reloads onto the current one. That failure is
+        // the recovery working, so a report for one waits to see whether the
+        // recovery happens. A build that is missing a file for any other
+        // reason leaves the page where it is, and the wait ends with the
+        // report going out.
+        var heldAssets = [];
+        var HOLD_MS = 5000;
+        function buildAsset(url) {
+          return (
+            typeof url === "string" &&
+            url.indexOf(location.origin + "/assets/") === 0
+          );
+        }
+        function flushHeldAssets() {
+          while (heldAssets.length) {
+            report("resource", heldAssets.shift());
+          }
+        }
+        function holdAsset(message) {
+          heldAssets.push(message);
+          setTimeout(flushHeldAssets, HOLD_MS);
+        }
+        window.addEventListener("speedway146:build-refresh", function () {
+          heldAssets.length = 0;
+        });
+        // Leaving for any other reason ends the wait, so a page closed on a
+        // real failure still reports it.
+        window.addEventListener("pagehide", flushHeldAssets);
+        function servedHere(url) {
+          if (typeof url !== "string") return false;
+          // A stack frame carries the position appended to the URL, so the
+          // trailing line and column come off before the path is read.
+          var path = url.replace(/:\d+:\d+$/, "");
+          return (
+            path.indexOf(location.origin + "/") === 0 &&
+            /\.[cm]?jsx?(?:[?#]|$)/.test(path)
+          );
+        }
+        // An in-app browser evaluates its own script inside the page, and the
+        // engine attributes those frames to the document URL instead of to a
+        // file, which makes a failure in one read as a failure of the page. An
+        // error is this site's only when a file this site serves appears in it.
+        // One carrying no location at all is still reported: the page is the
+        // likelier source, and dropping those would lose real failures.
+        function attributable(filename, stack) {
+          var frames = String(stack || "").match(/https?:\/\/[^\s)'"]+/g) || [];
+          if (filename) frames.push(filename);
+          if (!frames.length) return true;
+          for (var i = 0; i < frames.length; i += 1) {
+            if (servedHere(frames[i])) return true;
+          }
+          return false;
+        }
+        // Capture phase, because element load failures fire error events that do not bubble.
+        window.addEventListener(
+          "error",
+          function (event) {
+            if (
+              event.target &&
+              event.target !== window &&
+              event.target.tagName
+            ) {
+              var source = event.target.src || event.target.href || "";
+              var failure =
+                "Failed to load " +
+                event.target.tagName.toLowerCase() +
+                ": " +
+                source;
+              if (buildAsset(source)) {
+                holdAsset(failure);
+              } else {
+                report("resource", failure);
+              }
+            } else {
+              var stack = event.error && event.error.stack;
+              if (!attributable(event.filename, stack)) return;
+              report("uncaught", event.message, stack);
+            }
+          },
+          true,
+        );
+        window.addEventListener("unhandledrejection", function (event) {
+          var reason = event.reason;
+          var stack = reason && reason.stack;
+          if (stack && !attributable("", stack)) return;
+          report(
+            "rejection",
+            reason && reason.message ? reason.message : reason,
+            stack,
+          );
+        });
+        var consoleError = console.error;
+        console.error = function () {
+          var parts = [];
+          for (var i = 0; i < arguments.length; i += 1) {
+            var piece = arguments[i];
+            if (piece && piece.stack) {
+              parts.push(piece.stack);
+            } else if (typeof piece === "object") {
+              try {
+                parts.push(JSON.stringify(piece));
+              } catch (ignored) {
+                parts.push(String(piece));
+              }
+            } else {
+              parts.push(String(piece));
+            }
+          }
+          report("console", parts.join(" "));
+          return consoleError.apply(console, arguments);
+        };
+        if (window.fetch) {
+          var originalFetch = window.fetch;
+          window.fetch = function (input) {
+            var target =
+              typeof input === "string" ? input : (input && input.url) || "";
+            if (target.indexOf(endpoint) === 0)
+              return originalFetch.apply(window, arguments);
+            return originalFetch.apply(window, arguments).then(
+              function (response) {
+                if (response.status >= 500)
+                  report(
+                    "http",
+                    "HTTP " + response.status + " from " + target.split("?")[0],
+                  );
+                return response;
+              },
+              function (error) {
+                report(
+                  "network",
+                  (error && error.message ? error.message : String(error)) +
+                    " fetching " +
+                    target.split("?")[0],
+                );
+                throw error;
+              },
+            );
+          };
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/src/main.jsx" type="module" defer></script>
+  </body>
+</html>

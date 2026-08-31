@@ -1,0 +1,138 @@
+/** @type {import('tailwindcss').Config} */
+// Colors resolve through the CSS vars in src/styles/Theme.css. The function
+// form is what keeps Tailwind's `/opacity` modifiers working on top of a
+// var() color — a plain string here makes Tailwind silently drop every
+// `bg-asphalt-950/80`-style utility instead of generating it.
+const withAlpha =
+  (cssVar) =>
+  ({ opacityValue }) =>
+    opacityValue === undefined
+      ? `var(${cssVar})`
+      : `color-mix(in srgb, var(${cssVar}) calc(${opacityValue} * 100%), transparent)`;
+
+const ramp = (name, stops) =>
+  Object.fromEntries(stops.map((s) => [s, withAlpha(`--color-${name}-${s}`)]));
+
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      maxWidth: { measure: "var(--measure)" },
+      fontFamily: {
+        display: [
+          '"Bebas Neue"',
+          '"Bebas Neue Fallback"',
+          "system-ui",
+          "sans-serif",
+        ],
+        sans: [
+          "Barlow",
+          '"Barlow Fallback"',
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "sans-serif",
+        ],
+      },
+      letterSpacing: {
+        widest: "0.18em",
+        speedway: "0.22em",
+      },
+      transitionTimingFunction: {
+        snap: "var(--ease-snap)",
+        decel: "var(--ease-decel)",
+        drawer: "var(--ease-drawer)",
+        "out-expo": "var(--ease-snap)",
+        "in-out-strong": "var(--ease-decel)",
+      },
+      transitionDuration: {
+        fast: "120ms",
+        base: "200ms",
+        slow: "250ms",
+        ambient: "1800ms",
+      },
+      // Named layers, so a stacking decision is a name rather than a number
+      // guessed against whatever else happened to be on the page. The steps
+      // are spaced far enough apart that a layer can be slipped between two of
+      // them without renumbering the rest.
+      zIndex: {
+        base: "0",
+        raised: "10",
+        sticky: "20",
+        docked: "40",
+        header: "50",
+        drawer: "60",
+        overlay: "70",
+        toast: "80",
+      },
+      keyframes: {
+        "star-movement-bottom": {
+          "0%": { transform: "translate(0%, 0%)", opacity: "1" },
+          "100%": { transform: "translate(-100%, 0%)", opacity: "0" },
+        },
+        "star-movement-top": {
+          "0%": { transform: "translate(0%, 0%)", opacity: "1" },
+          "100%": { transform: "translate(100%, 0%)", opacity: "0" },
+        },
+      },
+      animation: {
+        "star-movement-bottom":
+          "star-movement-bottom linear infinite alternate",
+        "star-movement-top": "star-movement-top linear infinite alternate",
+      },
+      colors: {
+        asphalt: ramp(
+          "asphalt",
+          [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950],
+        ),
+        race: ramp(
+          "race",
+          [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950],
+        ),
+        ignite: ramp("ignite", [100, 300, 400, 500, 600, 700]),
+        caution: ramp("caution", [100, 300, 400, 500, 700]),
+
+        gray: ramp(
+          "gray",
+          [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950],
+        ),
+        amber: {
+          400: withAlpha("--color-caution-400"),
+          500: withAlpha("--color-caution-500"),
+        },
+        green: ramp("green", [50, 200, 600, 700]),
+        silver: {
+          light: withAlpha("--color-silver-light"),
+          DEFAULT: withAlpha("--color-silver"),
+          dark: withAlpha("--color-silver-dark"),
+        },
+        chalk: withAlpha("--color-chalk"),
+        white: withAlpha("--color-white"),
+        black: withAlpha("--color-black"),
+      },
+      backgroundImage: {
+        "race-stripe":
+          "repeating-linear-gradient(135deg, var(--color-race-600) 0 12px, var(--color-race-700) 12px 24px)",
+        "caution-tape":
+          "repeating-linear-gradient(135deg, var(--color-caution-500) 0 16px, var(--color-asphalt-900) 16px 32px)",
+        "asphalt-grain":
+          "radial-gradient(circle at 25% 25%, color-mix(in srgb, var(--color-asphalt-700) 60%, transparent) 0, transparent 40%), radial-gradient(circle at 75% 75%, color-mix(in srgb, var(--color-asphalt-700) 60%, transparent) 0, transparent 45%), linear-gradient(180deg, var(--color-asphalt-900), var(--color-asphalt-950))",
+        "hero-vignette":
+          "radial-gradient(ellipse at center, transparent 0%, color-mix(in srgb, var(--color-asphalt-950) 70%, transparent) 100%)",
+      },
+      boxShadow: {
+        race: "var(--shadow-race)",
+        track: "var(--shadow-track)",
+        lift: "var(--shadow-lift)",
+      },
+      borderRadius: {
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        pill: "var(--radius-pill)",
+      },
+    },
+  },
+  plugins: [],
+};

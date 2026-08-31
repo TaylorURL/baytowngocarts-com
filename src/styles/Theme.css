@@ -1,0 +1,360 @@
+/*
+ * Speedway 146 design tokens.
+ *
+ * Two layers: the primitives hold the raw hex ramps, and the semantic tokens
+ * (--bg-default, --fg-muted, --field-bg and the rest) name what a surface is
+ * for. The element defaults in index.css read the semantic layer, and
+ * tailwind.config.js maps the colour utilities onto the primitive ramps, so a
+ * palette change is an edit to a ramp here and nowhere else.
+ *
+ * What each ramp is for, since the names are venue metaphors rather than hues:
+ *   asphalt — the track. Dark foundation for hero and inverted surfaces.
+ *   race    — racing red. Primary brand colour, CTAs and accents.
+ *   ignite  — pit-lane orange. Secondary accent for warmth and momentum.
+ *   caution — highway caution yellow. Reserved for genuine warnings.
+ *   chalk   — warm white. Body surface in light mode.
+ *   silver  — chrome/gunmetal for trim and dividers.
+ */
+:root {
+  /* Primitives */
+
+  /* Asphalt — the dark neutral ramp */
+  --color-asphalt-950: #07080a;
+  --color-asphalt-900: #0e0f12;
+  --color-asphalt-800: #17191e;
+  --color-asphalt-700: #22252c;
+  --color-asphalt-600: #2d3038;
+  --color-asphalt-500: #3a3e48;
+  --color-asphalt-400: #7a7f8a;
+  --color-asphalt-300: #b0b5bf;
+  --color-asphalt-200: #d2d6dd;
+  --color-asphalt-100: #e7eaef;
+  --color-asphalt-50: #f4f5f8;
+
+  /* Race red — primary brand color */
+  --color-race-950: #4a0d10;
+  --color-race-900: #6f1116;
+  --color-race-800: #95171d;
+  --color-race-700: #b91c1c;
+  --color-race-600: #dc1f28;
+  --color-race-500: #e11d2a;
+  --color-race-400: #ef4651;
+  --color-race-300: #f97982;
+  --color-race-200: #fdb4ba;
+  --color-race-100: #fde2e4;
+  --color-race-50: #fef4f5;
+
+  /* Pit-lane orange — secondary accent */
+  --color-ignite-700: #b04200;
+  --color-ignite-600: #d75500;
+  --color-ignite-500: #f26800;
+  --color-ignite-400: #ff8a36;
+  --color-ignite-300: #ffb27a;
+  --color-ignite-100: #ffe3cf;
+
+  /* Caution yellow — used sparingly */
+  --color-caution-700: #8a6a00;
+  --color-caution-500: #f2c100;
+  --color-caution-400: #ffd633;
+  --color-caution-300: #ffe066;
+  --color-caution-100: #fff4cc;
+
+  /* Chrome / silver — trims, dividers, mid surfaces */
+  --color-silver-light: #cbd0d7;
+  --color-silver: #8b95a5;
+  --color-silver-dark: #5a6577;
+
+  /* Greens — for success / discount notices only */
+  --color-green-700: #15803d;
+  --color-green-600: #16a34a;
+  --color-green-200: #bbf7d0;
+  --color-green-50: #f0fdf4;
+
+  /* Neutrals — slightly warm to play nicely with race red */
+  --color-gray-950: #08090b;
+  --color-gray-900: #0f1115;
+  --color-gray-800: #1c1f25;
+  --color-gray-700: #2f333c;
+  --color-gray-600: #4d5260;
+  --color-gray-500: #71768a;
+  --color-gray-400: #99a0b3;
+  --color-gray-300: #c6cbd6;
+  --color-gray-200: #e3e6ec;
+  --color-gray-100: #f1f3f7;
+  --color-gray-50: #f7f9fc;
+
+  --color-white: #ffffff;
+  --color-chalk: #fbfbf8; /* warm off-white for body backgrounds */
+  --color-black: #000000;
+
+  /* Semantic surface tokens */
+  --bg-default: var(--color-chalk);
+  --bg-elevated: var(--color-white);
+  --bg-sunken: var(--color-gray-100);
+  --bg-dark: var(--color-asphalt-900);
+  --bg-darker: var(--color-asphalt-950);
+
+  --fg-default: var(--color-gray-900);
+  --fg-muted: var(--color-gray-600);
+  --fg-subtle: var(--color-gray-500);
+  --fg-on-dark: var(--color-chalk);
+  --fg-on-dark-muted: var(--color-gray-400);
+
+  /* Fields carry their own ground so a text box never reads as the page
+     with a border drawn round it. */
+  --field-bg: var(--color-white);
+  --field-bg-dark: color-mix(
+    in srgb,
+    var(--color-white) 7%,
+    var(--color-asphalt-900)
+  );
+  --field-border: var(--color-gray-300);
+  --field-border-hv: var(--color-gray-400);
+
+  --border-default: var(--color-gray-200);
+  --border-strong: var(--color-gray-300);
+  --border-on-dark: color-mix(in srgb, var(--color-white) 12%, transparent);
+
+  --accent-primary: var(--color-race-600);
+  --accent-primary-h: var(--color-race-700);
+  --accent-secondary: var(--color-ignite-500);
+
+  --focus-ring: var(--color-race-500);
+  --field-invalid-ring: color-mix(
+    in srgb,
+    var(--color-race-500) 22%,
+    transparent
+  );
+
+  /* Ink used for text shadows over photography, where the shadow has to read
+     against whatever the picture happens to be doing behind it. */
+  --ink-veil-strong: color-mix(in srgb, var(--color-black) 85%, transparent);
+  --ink-veil: color-mix(in srgb, var(--color-black) 65%, transparent);
+  --ink-veil-soft: color-mix(in srgb, var(--color-black) 50%, transparent);
+
+  /* Colours the canvas and WebGL effects read through src/lib/tokens.js, so
+     the palette stays in this file rather than being copied into JS. */
+  --spark-primary: var(--color-race-500);
+  --spark-secondary: var(--color-ignite-500);
+  --spark-tertiary: var(--color-chalk);
+  --spotlight-race: color-mix(in srgb, var(--color-race-500) 16%, transparent);
+  --spotlight-ignite: color-mix(
+    in srgb,
+    var(--color-ignite-500) 16%,
+    transparent
+  );
+
+  /* The starting-light housing. Lit and unlit are two states of one lamp, so
+     both live beside each other rather than one being derived at runtime. */
+  --lamp-go-on: var(--color-green-600);
+  --lamp-go-off: color-mix(
+    in srgb,
+    var(--color-green-600) 22%,
+    var(--color-asphalt-950)
+  );
+  --lamp-set-on: var(--color-caution-500);
+  --lamp-set-off: color-mix(
+    in srgb,
+    var(--color-caution-500) 22%,
+    var(--color-asphalt-950)
+  );
+  --lamp-stop-on: var(--color-race-500);
+  --lamp-stop-off: color-mix(
+    in srgb,
+    var(--color-race-500) 22%,
+    var(--color-asphalt-950)
+  );
+
+  /* The moulding a lamp sits in: a shadow at the foot of the well, a highlight
+     across the top of the lens, and the deeper well an unlit lamp shows. All
+     three belong to the housing rather than to a stage, so they hold across
+     every lamp. */
+  --lamp-well: color-mix(in srgb, var(--color-black) 30%, transparent);
+  --lamp-sheen: color-mix(in srgb, var(--color-white) 18%, transparent);
+  --lamp-well-deep: color-mix(in srgb, var(--color-black) 55%, transparent);
+
+  /* Shadows */
+  --shadow-race:
+    0 14px 30px -10px color-mix(in srgb, var(--color-race-600) 40%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--color-race-700) 22%, transparent);
+  --shadow-track:
+    0 10px 25px -5px
+      color-mix(in srgb, var(--color-asphalt-900) 30%, transparent),
+    0 4px 8px -2px color-mix(in srgb, var(--color-asphalt-900) 18%, transparent);
+  --shadow-lift:
+    0 18px 40px -16px
+      color-mix(in srgb, var(--color-asphalt-950) 35%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--color-asphalt-950) 15%, transparent);
+
+  /* Rings and fills. A focus ring and an autofill mask travel through the
+     box-shadow property without being elevation, so they are named for what
+     they are and stay off the elevation scale. */
+  --ring-invalid: 0 0 0 3px var(--field-invalid-ring);
+  --fill-autofill-mask: 0 0 0 1000px var(--field-bg) inset;
+
+  /* Motion */
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1); /* race-out, default */
+  --ease-decel: cubic-bezier(0.83, 0, 0.17, 1); /* heavy decel */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); /* drawers / sheets */
+
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 250ms;
+  /* Ambient loops — a pulse or a placeholder breathing. Not UI response, so
+     it sits outside the sub-300ms budget the interface holds to. */
+  --dur-ambient: 1800ms;
+  /* A section arriving as it is scrolled to. Also not UI response: nothing is
+     waiting on it, and at interface speed it reads as a flicker. */
+  --dur-reveal: 700ms;
+  /* Long enough that the browser never gets round to repainting the field in
+     its own autofill colour. */
+  --dur-autofill-hold: 5000s;
+  --dur-none: 0.01ms;
+
+  /* Radii. Deliberately tight — cards stop at -lg; anything softer starts to
+     read as a generic SaaS card rather than signage. */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 9999px;
+
+  /* One control height across fields and buttons, at the touch-target floor. */
+  --control-height: 44px;
+
+  /* Line length for running prose, on the legal routes above all. A column
+     sized in rem holds at one type size and drifts at any other, while a ch
+     measure is tied to the text actually in it, so the line stays inside the
+     readable band whichever step the page is set at. */
+  --measure: 68ch;
+
+  /* The header stacks a stripe, a utility rail, the bar, and a navigation
+     tier. Sticky offsets, scroll padding, and anchor margins all read
+     --header-height rather than each keeping a copy of the sum.
+
+     The rail and the navigation tier only render from the lg breakpoint up;
+     below it the links live in the drawer and the venue's facts are in the
+     hero. Both are therefore zero by default and take their height in the
+     media query below, so the value is right at both widths instead of
+     over-padding every small screen by two tiers that are not on the page. */
+  --header-stripe: 4px;
+  --header-utility: 0px;
+  --header-utility-edge: 0px;
+  --header-bar: 64px;
+  --header-hairline: 1px;
+  --header-nav: 0px;
+  --header-nav-edge: 0px;
+  --header-height: calc(
+    var(--header-stripe) + var(--header-utility) + var(--header-utility-edge) +
+      var(--header-bar) + var(--header-hairline) + var(--header-nav) +
+      var(--header-nav-edge)
+  );
+
+  /* Iconography
+   *
+   * One hand-drawn family in src/components/common/Icon.jsx: monoline
+   * outline, 1.75 stroke, 24x24 viewBox, currentColor, rounded caps. No
+   * icon library, no mixing fills with outlines, no emoji.
+   *
+   * Custom paths exist because a generic set has no glyph for a kart, a
+   * lap, a helmet or a traffic light, and substituting a bolt or a trophy
+   * for them describes some other business. */
+}
+
+/* lg, where the utility rail and the navigation tier come onto the page and
+   the drawer stops carrying the links. The breakpoint matches Tailwind's lg,
+   which is what each tier's own `hidden lg:block` reads. */
+@media (min-width: 1024px) {
+  :root {
+    --header-utility: 30px;
+    --header-utility-edge: 1px;
+    --header-nav: 52px;
+    --header-nav-edge: 1px;
+  }
+}
+
+/*
+ * Three grounds, one palette.
+ *
+ * An element carrying data-theme resolves the semantic tokens to that ground
+ * and paints itself from them, so a band inverts without restating a colour.
+ *
+ * Light repeats :root's values because a light band nested inside a dark one
+ * has to climb back out of the dark block.
+ */
+[data-theme="light"] {
+  --bg-default: var(--color-chalk);
+  --bg-elevated: var(--color-white);
+  --bg-sunken: var(--color-gray-100);
+
+  --fg-default: var(--color-gray-900);
+  --fg-muted: var(--color-gray-600);
+  --fg-subtle: var(--color-gray-500);
+
+  --border-default: var(--color-gray-200);
+  --border-strong: var(--color-gray-300);
+
+  --field-bg: var(--color-white);
+  --field-border: var(--color-gray-300);
+  --field-border-hv: var(--color-gray-400);
+
+  --focus-ring: var(--color-race-500);
+}
+
+/* Gray is the mid ground: a band that has to separate from the page without
+   going all the way to asphalt. Chrome, dividers and quiet panels. */
+[data-theme="gray"] {
+  --bg-default: var(--color-gray-100);
+  --bg-elevated: var(--color-white);
+  --bg-sunken: var(--color-gray-200);
+
+  --fg-default: var(--color-gray-900);
+  --fg-muted: var(--color-gray-600);
+  --fg-subtle: var(--color-gray-500);
+
+  --border-default: var(--color-gray-300);
+  --border-strong: var(--color-gray-400);
+
+  --field-bg: var(--color-white);
+  --field-border: var(--color-gray-400);
+  --field-border-hv: var(--color-gray-500);
+
+  --focus-ring: var(--color-race-600);
+}
+
+/* Dark is the track: asphalt ground, chalk type. The focus ring lightens
+   here, because race-500 on asphalt-900 does not clear 3:1 on its own. */
+[data-theme="dark"] {
+  --bg-default: var(--color-asphalt-900);
+  --bg-elevated: var(--color-asphalt-800);
+  --bg-sunken: var(--color-asphalt-950);
+
+  --fg-default: var(--color-chalk);
+  --fg-muted: var(--color-asphalt-300);
+  --fg-subtle: var(--color-asphalt-400);
+
+  --border-default: color-mix(in srgb, var(--color-white) 12%, transparent);
+  --border-strong: color-mix(in srgb, var(--color-white) 22%, transparent);
+
+  --field-bg: var(--field-bg-dark);
+  --field-border: color-mix(in srgb, var(--color-white) 18%, transparent);
+  --field-border-hv: color-mix(in srgb, var(--color-white) 32%, transparent);
+
+  --focus-ring: var(--color-race-300);
+  --field-invalid-ring: color-mix(
+    in srgb,
+    var(--color-race-300) 30%,
+    transparent
+  );
+
+  --ink-veil-strong: color-mix(in srgb, var(--color-black) 85%, transparent);
+  --ink-veil: color-mix(in srgb, var(--color-black) 70%, transparent);
+  --ink-veil-soft: color-mix(in srgb, var(--color-black) 55%, transparent);
+}
+
+/* A themed band paints its own ground and type, so a section only has to say
+   which ground it is on. */
+[data-theme] {
+  background-color: var(--bg-default);
+  color: var(--fg-default);
+}
