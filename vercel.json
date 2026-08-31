@@ -6,7 +6,7 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/(cart|dashboard|staff|traffic|login|signup|success)/?",
+      "source": "/(cart|dashboard|staff|traffic|login|signup|success)",
       "destination": "/app"
     },
     {
