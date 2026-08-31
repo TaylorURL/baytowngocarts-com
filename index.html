@@ -176,6 +176,22 @@
               event.target.tagName
             ) {
               var source = event.target.src || event.target.href || "";
+              // A preload is a hint the browser is allowed to drop, and iOS
+              // Safari drops the ones for images with imagesrcset when the
+              // candidate it would pick is not the href attribute. The picture
+              // still renders through the img element that follows, which
+              // fires its own error event if that fetch fails, so a preload
+              // failure carries no independent signal about what the visitor
+              // saw.
+              var rel = (event.target.rel || "").toLowerCase();
+              if (
+                event.target.tagName.toLowerCase() === "link" &&
+                (rel === "preload" ||
+                  rel === "modulepreload" ||
+                  rel === "prefetch")
+              ) {
+                return;
+              }
               var failure =
                 "Failed to load " +
                 event.target.tagName.toLowerCase() +
