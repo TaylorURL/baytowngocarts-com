@@ -48,7 +48,7 @@ const AuthShell = ({ children }) => (
     </div>
 
     <footer className="relative z-10 text-chalk">
-      <SplitRail version={__BUILD_VERSION__} />
+      <SplitRail version={__BUILD_VERSION__} year={__BUILD_YEAR__} />
     </footer>
   </div>
 );

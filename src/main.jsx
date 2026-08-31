@@ -26,10 +26,20 @@ const tree = (
  * against markup that has nothing to do with what React is about to draw, so
  * the branch is gated on the URL matching a prerendered path rather than on
  * whatever the DOM happens to hold.
+ *
+ * An in-app browser that evaluates its own script inside the document mutates
+ * the tree before this file runs. React 18's hydration compares comment
+ * fenceposts around every Suspense boundary, so a rewritten href or an
+ * injected node between them tears reconciliation apart into a cascade of
+ * #418, #422 and #425. On those user agents the prerendered markup is
+ * discarded and the tree draws itself from an empty root, which the browser
+ * paints on its own timeline without a hydration compare in the way.
  */
 const currentPath = location.pathname.replace(/\/+$/, "") || "/";
 const isPrerendered = PRERENDER_PATHS.includes(currentPath);
-if (isPrerendered && root.firstChild) {
+const ua = navigator.userAgent || "";
+const rewritesMarkup = /\bFBAN\/|\bFBAV\/|\bFB_IAB\b|Instagram|Line\//.test(ua);
+if (isPrerendered && root.firstChild && !rewritesMarkup) {
   hydrateRoot(root, tree);
 } else {
   if (root.firstChild) root.textContent = "";
