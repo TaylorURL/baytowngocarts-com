@@ -3,10 +3,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 const { version } = JSON.parse(readFileSync("./package.json", "utf8"));
+/* Frozen at build so the copyright line is the same string on both the
+   prerendered document and the render that attaches to it. Reading the year
+   from the browser's clock instead leaves the two disagreeing across a New
+   Year rollover and a device on the wrong time zone. */
+const buildYear = new Date().getUTCFullYear();
 
 export default defineConfig(({ isSsrBuild }) => ({
   define: {
     __BUILD_VERSION__: JSON.stringify(version),
+    __BUILD_YEAR__: JSON.stringify(buildYear),
   },
   plugins: [react()],
   optimizeDeps: {

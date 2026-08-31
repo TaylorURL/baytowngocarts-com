@@ -48,7 +48,11 @@ const Fact = ({ icon, label, children }) => (
 );
 
 const Footer = ({ children }) => {
-  const currentYear = new Date().getFullYear();
+  /* Baked in at build. Reading the browser's clock at render time leaves the
+     prerendered document and the render that attaches to it disagreeing across
+     a New Year rollover and on a device set to the wrong time zone, and the
+     two disagreeing is what throws hydration on that first paint. */
+  const currentYear = __BUILD_YEAR__;
   return (
     /* Chrome pinned to the viewport's bottom edge publishes the height it
        covers as --docked-reserve, and the footer carries it, so the reserved
@@ -137,9 +141,7 @@ const Footer = ({ children }) => {
         </nav>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
-          <p suppressHydrationWarning>
-            &copy; {currentYear} Speedway 146. All rights reserved.
-          </p>
+          <p>&copy; {currentYear} Speedway 146. All rights reserved.</p>
           <div className="flex gap-3">
             <Link
               to="/privacy"

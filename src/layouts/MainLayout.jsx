@@ -1,4 +1,4 @@
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/common/Header.jsx";
 import Footer from "../components/common/Footer.jsx";
@@ -13,10 +13,17 @@ const MainLayout = () => {
    * A route reached by clicking arrives on the same entrance the rest of the
    * page uses. The document the visitor came in on is already painted, so it
    * is left alone rather than faded up from nothing.
+   *
+   * The switch is committed by an effect rather than mutated in render:
+   * hydration replays this render against the prerendered document, and a
+   * ref set on a discarded attempt would put the entrance class on the very
+   * tree hydration is trying to reproduce.
    */
-  const arrived = useRef(false);
-  const entrance = arrived.current ? "animate-fade-in" : "";
-  arrived.current = true;
+  const [arrived, setArrived] = useState(false);
+  useEffect(() => {
+    setArrived(true);
+  }, []);
+  const entrance = arrived ? "animate-fade-in" : "";
   return (
     <ClickSpark sparkCount={10} sparkSize={11} sparkRadius={20} duration={500}>
       <div className="min-h-dvh flex flex-col">
