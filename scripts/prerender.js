@@ -15,6 +15,8 @@ import { join } from "node:path";
 
 const DIST = "dist";
 const MANAGED = "data-route-meta";
+const VIEWPORT =
+  '<meta content="width=device-width, initial-scale=1.0" name="viewport" />';
 
 const { render, PRERENDER_PATHS } = await import("../dist-ssr/entry-server.js");
 const shell = readFileSync(join(DIST, "index.html"), "utf8");
@@ -60,19 +62,29 @@ function applyHead(html, head) {
     "@context": "https://schema.org",
     "@graph": head.graph,
   }).replace(/</g, "\\u003c");
-  /* The candidates travel with the href: a preload naming one file has the
-     browser fetch that file whatever width the element goes on to choose. */
-  const hero = head.hero
-    ? [
-        `    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="${escape(head.hero.href)}" imagesrcset="${escape(head.hero.imagesrcset)}" imagesizes="${escape(head.hero.imagesizes)}" ${MANAGED} />`,
-      ]
-    : [];
   const block = [
-    ...hero,
     ...head.tags.map(renderTag),
     `    <script type="application/ld+json" ${MANAGED}>${graph}</script>`,
   ].join("\n");
-  return out.replace("</head>", `${block}\n  </head>`);
+  out = out.replace("</head>", `${block}\n  </head>`);
+  /*
+   * The candidates travel with the href: a preload naming one file has the
+   * browser fetch that file whatever width the element goes on to choose.
+   *
+   * It goes directly under the viewport, ahead of the fonts, the stylesheet
+   * and the bundle. A preload is queued where it is read, so one appended at
+   * the end of the head waits on a render-blocking file before the photograph
+   * the page is measured on is even asked for; and one read above the
+   * viewport measures `100vw` against the 980px desktop fallback and fetches
+   * a file several times the width the phone paints.
+   */
+  if (!head.hero) return out;
+  if (!out.includes(VIEWPORT))
+    throw new Error(
+      "the shell has no viewport meta for the hero preload to follow",
+    );
+  const hero = `    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="${escape(head.hero.href)}" imagesrcset="${escape(head.hero.imagesrcset)}" imagesizes="${escape(head.hero.imagesizes)}" ${MANAGED} />`;
+  return out.replace(VIEWPORT, () => `${VIEWPORT}\n${hero}`);
 }
 
 /*
