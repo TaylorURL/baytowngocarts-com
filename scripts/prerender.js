@@ -12,9 +12,46 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import Beasties from "beasties";
 
 const DIST = "dist";
 const MANAGED = "data-route-meta";
+// Beasties stamps the element it treated as the document; the page does not
+// need to carry that.
+const CONTAINER_STAMP = " data-beasties-container";
+
+/*
+ * Writes the rules a route's markup needs into the page itself.
+ *
+ * The first paint waits on the stylesheet: a browser will not draw a page
+ * whose <link rel="stylesheet"> is still in flight, and on a phone that link is
+ * a round trip and a download before any of the markup after it counts. Every
+ * route here is rendered whole, so the rules its markup needs are knowable
+ * here too. They go into a <style> in the head, and the sheet itself is asked
+ * for on a media query that matches nothing - fetched without holding the
+ * paint - and switched on when it lands. What arrives late is only what the
+ * page has no element for yet.
+ *
+ * The exceptions are the states the page takes on after it is served: the
+ * reveal marks a section with an attribute as it is scrolled to, a control
+ * takes one when it is pressed or current, and none of those are on any
+ * element at build time. Every rule keyed on a data- or aria- attribute rides
+ * along regardless. So do the font faces: a preloaded font file with no
+ * @font-face naming it is text set in the fallback and reset when the sheet
+ * lands.
+ */
+const inline = new Beasties({
+  path: DIST,
+  publicPath: "/",
+  preload: "media",
+  pruneSource: false,
+  inlineFonts: true,
+  preloadFonts: false,
+  allowRules: [/\[(data|aria)-/],
+  reduceInlineStyles: false,
+  mergeStylesheets: false,
+  logLevel: "silent",
+});
 const VIEWPORT =
   '<meta content="width=device-width, initial-scale=1.0" name="viewport" />';
 
@@ -135,9 +172,13 @@ for (const path of [...PRERENDER_PATHS, "/404"]) {
       `${path} rendered no head; every prerendered route needs a RouteMeta`,
     );
   if (!markup.trim()) throw new Error(`${path} rendered no markup`);
-  const document = applyHead(shell, head).replace(
+  const rendered = applyHead(shell, head).replace(
     '<div id="root"></div>',
     `<div id="root">${rawText(markup)}</div>`,
+  );
+  const document = (await inline.process(rendered)).replace(
+    CONTAINER_STAMP,
+    "",
   );
   const file = path === "/" ? "index.html" : `${path.replace(/^\//, "")}.html`;
   writeFileSync(join(DIST, file), document);

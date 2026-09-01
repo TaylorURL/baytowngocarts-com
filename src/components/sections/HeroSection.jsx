@@ -116,7 +116,7 @@ const HeroSection = () => {
             </Pill>
           </div>
           <h1
-            className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight animate-fade-in hero-text-shadow"
+            className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight hero-text-shadow"
             data-aos="fade"
             data-aos-delay="100"
           >
