@@ -7,7 +7,7 @@ export const HERO_BACKGROUND_IMAGES = [
   { src: "/images/14.webp", width: 1800, height: 1200 },
   { src: "/images/15.webp", width: 1600, height: 2400 },
   { src: "/images/16.webp", width: 1600, height: 2400 },
-  { src: "/images/17.webp", width: 1600, height: 2400 },
+  { src: "/images/16.webp", width: 1600, height: 2400 },
   { src: "/images/18.webp", width: 1200, height: 1800 },
 ];
 

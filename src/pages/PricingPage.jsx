@@ -27,7 +27,7 @@ export const metadata = {
   description:
     "Race prices, unlimited Thursday wristbands, group rates and party packages at Speedway 146 in Baytown. Buy online or pay at the gate.",
   canonical: "/pricing",
-  heroImage: "/images/17.webp",
+  heroImage: "/images/16.webp",
   robots: "index, follow",
   crumbs: [{ name: "Pricing", path: "/pricing" }],
   openGraph: {
@@ -226,7 +226,7 @@ const PricingPage = () => {
         }
         crumbs={metadata.crumbs}
         description="Every price is before 8.25% Texas sales tax. Cash pays 4% less than card. Groups of 15+ get 10% off racing automatically."
-        backgroundImage="/images/17.webp"
+        backgroundImage="/images/16.webp"
         dividerColorClass="bg-asphalt-50"
       >
         <div

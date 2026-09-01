@@ -49,7 +49,7 @@ export const GALLERY_IMAGES = [
     title: "Our Facilities",
   },
   {
-    src: "/images/22.webp",
+    src: "/images/14.webp",
     width: 1800,
     height: 1200,
     alt: "Racing action",

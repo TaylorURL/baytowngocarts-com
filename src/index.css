@@ -13,6 +13,7 @@ html {
 body {
   font-family:
     "Barlow",
+    "Barlow Fallback",
     system-ui,
     -apple-system,
     "Segoe UI",
@@ -32,7 +33,7 @@ body {
   h4,
   h5,
   h6 {
-    font-family: "Bebas Neue", system-ui, sans-serif;
+    font-family: "Bebas Neue", "Bebas Neue Fallback", system-ui, sans-serif;
     letter-spacing: 0.02em;
     /* Balance stops a headline stranding its last word on a line of its own;
        the wrap rules keep a long compound inside the viewport. */
@@ -274,14 +275,16 @@ main {
    * Sections arrive as they are scrolled to. The hidden state is behind
    * `js-reveal`, which lib/reveal.js sets once it is able to reveal them, so a
    * page whose scripts do not run shows its content rather than a blank
-   * column.
+   * column. `data-aos-shown` marks a section the document had already painted,
+   * which is held at full opacity rather than hidden and faded back in.
    */
   .js-reveal [data-aos="fade"] {
     opacity: 0;
     transition: opacity var(--dur-reveal) var(--ease-snap);
   }
 
-  .js-reveal [data-aos="fade"].aos-animate {
+  .js-reveal [data-aos="fade"].aos-animate,
+  .js-reveal [data-aos="fade"][data-aos-shown] {
     opacity: 1;
   }
 }

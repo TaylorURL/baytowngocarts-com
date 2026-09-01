@@ -1,13 +1,17 @@
 /*
  * Responsive sources for the photographs.
  *
- * Each photograph ships alongside 480 and 960 wide derivatives, so a phone
- * downloads a phone-sized file instead of the desktop one. The names are
- * derived rather than listed: `/images/20.webp` has `/images/20-480.webp` and
- * `/images/20-960.webp` beside it.
+ * Each photograph ships alongside 480, 720 and 960 wide derivatives, so a
+ * phone downloads a phone-sized file instead of the desktop one. The names are
+ * derived rather than listed: `/images/20.webp` has `/images/20-480.webp`,
+ * `/images/20-720.webp` and `/images/20-960.webp` beside it.
+ *
+ * The 720 is the step a gallery thumbnail lands on. Four to a row at a phone's
+ * pixel ratio it asks for about 665 device pixels, and without a candidate
+ * between 480 and 960 that request is answered with the 960.
  */
 
-const VARIANT_WIDTHS = [480, 960];
+const VARIANT_WIDTHS = [480, 720, 960];
 const LOGO_WIDTHS = [128, 256];
 
 /** The srcset for the wordmark, which ships at its own smaller widths. */
@@ -27,12 +31,10 @@ const PHOTO_SIZES = {
   "/images/14.webp": { width: 1800, height: 1200 },
   "/images/15.webp": { width: 1600, height: 2400 },
   "/images/16.webp": { width: 1600, height: 2400 },
-  "/images/17.webp": { width: 1600, height: 2400 },
   "/images/18.webp": { width: 1200, height: 1800 },
   "/images/19.webp": { width: 1200, height: 1800 },
   "/images/20.webp": { width: 1600, height: 2400 },
   "/images/21.webp": { width: 1600, height: 2400 },
-  "/images/22.webp": { width: 1800, height: 1200 },
 };
 
 /** The intrinsic box of a photograph, falling back to the commonest shape. */

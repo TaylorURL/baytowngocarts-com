@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Button from "../common/Button.jsx";
 import Icon from "../common/Icon.jsx";
 import StatTile from "../common/StatTile.jsx";
@@ -20,6 +21,24 @@ const HeroSection = () => {
     HERO_BACKGROUND_IMAGES,
     SLIDESHOW_INTERVAL_MS,
   );
+  const [readAhead, setReadAhead] = useState(false);
+
+  /* The frame after this one is worth having in hand before it is wanted, and
+     worth nothing while the headline is still being measured. Idle time is
+     after the paint; the ceiling is under one interval, so the file is asked
+     for with the rest of the interval left to arrive in. */
+  useEffect(() => {
+    const start = () => setReadAhead(true);
+    if (typeof window.requestIdleCallback !== "function") {
+      const timer = setTimeout(start, SLIDESHOW_INTERVAL_MS / 2);
+      return () => clearTimeout(timer);
+    }
+    const handle = window.requestIdleCallback(start, {
+      timeout: SLIDESHOW_INTERVAL_MS / 2,
+    });
+    return () => window.cancelIdleCallback(handle);
+  }, []);
+
   return (
     <div
       data-hero
@@ -35,10 +54,10 @@ const HeroSection = () => {
           const isCurrent = index === currentImageIndex;
           const isNext =
             index === (currentImageIndex + 1) % HERO_BACKGROUND_IMAGES.length;
-          if (!isCurrent && !isNext) return null;
+          if (!isCurrent && !(isNext && readAhead)) return null;
           return (
             <img
-              key={image.src}
+              key={index}
               src={image.src}
               srcSet={srcSet(image.src, image.width)}
               sizes="100vw"

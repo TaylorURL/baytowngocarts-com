@@ -8,7 +8,7 @@ const ATTRACTIONS = [
     title: "Outdoor Karting",
     description:
       "Geared karts and full 5-minute heats. If a kart breaks down or there's a caution, the timer stops so you get every second. Kids race kids, adults race adults.",
-    image: "/images/22.webp",
+    image: "/images/14.webp",
     imageWidth: 1800,
     imageHeight: 1200,
     icon: "kart",

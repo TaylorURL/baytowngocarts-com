@@ -27,7 +27,6 @@ const Wordmark = ({
         sizes="64px"
         alt="Speedway 146 logo"
         loading="eager"
-        fetchpriority="high"
         width="512"
         height="560"
         className={`${s.logo} object-contain bg-transparent transition-transform duration-base ease-snap group-hover:scale-105`}
