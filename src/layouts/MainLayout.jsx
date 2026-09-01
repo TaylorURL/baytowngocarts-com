@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/common/Header.jsx";
 import Footer from "../components/common/Footer.jsx";
@@ -14,16 +14,22 @@ const MainLayout = () => {
    * page uses. The document the visitor came in on is already painted, so it
    * is left alone rather than faded up from nothing.
    *
-   * The switch is committed by an effect rather than mutated in render:
-   * hydration replays this render against the prerendered document, and a
-   * ref set on a discarded attempt would put the entrance class on the very
-   * tree hydration is trying to reproduce.
+   * Which one this is is read off the path rather than off the mount, because
+   * the layout mounts on both: an entrance owed to a click, granted the moment
+   * the layout attaches, takes the whole arrival back to nothing and fades it
+   * up again.
+   *
+   * The path the document landed on is fixed at the first render and never
+   * written to, so a render hydration discards and replays lands on the same
+   * answer. What is written is only ever written once the path has moved off
+   * it, which the render hydration replays cannot have done, and it stays
+   * written so that coming back around to where the visit started is a click
+   * like any other.
    */
-  const [arrived, setArrived] = useState(false);
-  useEffect(() => {
-    setArrived(true);
-  }, []);
-  const entrance = arrived ? "animate-fade-in" : "";
+  const landed = useRef(location.pathname);
+  const clicked = useRef(false);
+  if (location.pathname !== landed.current) clicked.current = true;
+  const entrance = clicked.current ? "animate-fade-in" : "";
   return (
     <ClickSpark sparkCount={10} sparkSize={11} sparkRadius={20} duration={500}>
       <div className="min-h-dvh flex flex-col">

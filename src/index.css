@@ -287,6 +287,17 @@ main {
   .js-reveal [data-aos="fade"][data-aos-shown] {
     opacity: 1;
   }
+
+  /*
+   * The hero is the first screen on every viewport the site is read on, so it
+   * is settled here rather than marked in script. Whatever order the boot runs
+   * in, and whichever nodes a render hands back, the part of the page in front
+   * of the reader is never taken away to be faded back in.
+   */
+  .js-reveal [data-hero] [data-aos="fade"] {
+    opacity: 1;
+    transition: none;
+  }
 }
 
 @layer utilities {

@@ -8,6 +8,7 @@ import RotatingText from "../reactbits/RotatingText.jsx";
 import BlurText from "../reactbits/BlurText.jsx";
 import Magnet from "../reactbits/Magnet.jsx";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
+import { whenSettled } from "../../lib/idle.js";
 import { srcSet } from "../../lib/images.js";
 import {
   HERO_BACKGROUND_IMAGES,
@@ -24,20 +25,14 @@ const HeroSection = () => {
   const [readAhead, setReadAhead] = useState(false);
 
   /* The frame after this one is worth having in hand before it is wanted, and
-     worth nothing while the headline is still being measured. Idle time is
-     after the paint; the ceiling is under one interval, so the file is asked
-     for with the rest of the interval left to arrive in. */
-  useEffect(() => {
-    const start = () => setReadAhead(true);
-    if (typeof window.requestIdleCallback !== "function") {
-      const timer = setTimeout(start, SLIDESHOW_INTERVAL_MS / 2);
-      return () => clearTimeout(timer);
-    }
-    const handle = window.requestIdleCallback(start, {
-      timeout: SLIDESHOW_INTERVAL_MS / 2,
-    });
-    return () => window.cancelIdleCallback(handle);
-  }, []);
+     worth nothing while the first one is still being painted. It rides the
+     same wait the rotation does, so the file is asked for once the page is no
+     longer competing with it and still lands with an interval left to arrive
+     in. */
+  useEffect(
+    () => whenSettled(() => setReadAhead(true), SLIDESHOW_INTERVAL_MS / 2),
+    [],
+  );
 
   return (
     <div
