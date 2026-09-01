@@ -28,6 +28,35 @@ const escape = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
+const ENTITIES = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#x27;": "'",
+};
+
+/*
+ * `<style>` holds raw text. A parser reads everything between the tags
+ * literally and decodes no entity in it, so an apostrophe that arrives written
+ * as `&#x27;` stays six characters wide in the document forever. The render
+ * that attaches to the document produces the apostrophe, finds a stylesheet
+ * that does not match the one in front of it, and throws away every node on
+ * the page to draw them all again - which is the whole prerender, spent.
+ *
+ * `renderToString` escapes a text child wherever it finds one, having no way
+ * to know this element will not decode it. Putting the text back is this
+ * step's job: it is the one writing the file.
+ */
+const rawText = (markup) =>
+  markup.replace(
+    /(<style\b[^>]*>)([\s\S]*?)(<\/style>)/g,
+    (whole, open, body, close) =>
+      open +
+      body.replace(/&(?:amp|lt|gt|quot|#x27);/g, (e) => ENTITIES[e]) +
+      close,
+  );
+
 const renderTag = (tag) => {
   const name = tag.rel ? "link" : "meta";
   const attrs = Object.entries(tag)
@@ -108,7 +137,7 @@ for (const path of [...PRERENDER_PATHS, "/404"]) {
   if (!markup.trim()) throw new Error(`${path} rendered no markup`);
   const document = applyHead(shell, head).replace(
     '<div id="root"></div>',
-    `<div id="root">${markup}</div>`,
+    `<div id="root">${rawText(markup)}</div>`,
   );
   const file = path === "/" ? "index.html" : `${path.replace(/^\//, "")}.html`;
   writeFileSync(join(DIST, file), document);
