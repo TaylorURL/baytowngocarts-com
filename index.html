@@ -99,12 +99,21 @@
         // inside one arrives at this handler with nothing of the site in its
         // stack. A stack naming only extension scripts describes the visitor's
         // browser; one carrying a single site frame is the site's.
-        function extensionOnly(stack) {
-          var schemes = String(stack || "").match(/[a-z][a-z0-9+.-]*:\/\//gi);
+        //
+        // DuckDuckGo's iOS browser injects its Content Scope Scripts runtime
+        // under a user-script: URL scheme rather than an extension one, and it
+        // logs its own setup failures through console.error, which arrives here
+        // with the stack embedded in the message string and nothing in the stack
+        // argument. Reading both, and treating a user-script frame as a browser
+        // frame, keeps that log out of the queue.
+        function browserOnly(text) {
+          var schemes = String(text || "").match(/[a-z][a-z0-9+.-]*:\/\//gi);
           if (!schemes) return false;
           for (var i = 0; i < schemes.length; i += 1) {
             var scheme = schemes[i].slice(0, -3).toLowerCase();
-            if (scheme.slice(-9) !== "extension") return false;
+            if (scheme.slice(-9) === "extension") continue;
+            if (scheme === "user-script") continue;
+            return false;
           }
           return true;
         }
@@ -174,7 +183,7 @@
           if (sent >= 10) return; // a page stuck in an error loop stops at ten
           if (recoveredReact.test(String(message || ""))) return;
           if (recoveredReact.test(String(stack || ""))) return;
-          if (extensionOnly(stack)) return;
+          if (browserOnly(stack) || browserOnly(message)) return;
           sent += 1;
           try {
             send(
