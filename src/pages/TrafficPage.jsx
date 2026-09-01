@@ -11,6 +11,8 @@ import {
 } from "../components/common/Skeleton.jsx";
 import RouteMeta from "../components/common/RouteMeta.jsx";
 import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import { formatShortDateTime } from "../lib/format.js";
+import { hourAt } from "../lib/timezone.js";
 
 export const metadata = {
   title: "Site Traffic | Speedway 146 Staff Tools",
@@ -180,7 +182,7 @@ export default function TrafficPage() {
   const hourlyData = useMemo(() => {
     const hours = Array(24).fill(0);
     traffic.forEach((v) => {
-      hours[new Date(v.timestamp).getHours()]++;
+      hours[hourAt(v.timestamp)]++;
     });
     return hours;
   }, [traffic]);
@@ -411,7 +413,7 @@ export default function TrafficPage() {
                             className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors duration-base ease-snap"
                           >
                             <td className="py-3 px-4 text-sm text-asphalt-600 tabular-nums">
-                              {new Date(view.timestamp).toLocaleString()}
+                              {formatShortDateTime(view.timestamp)}
                             </td>
                             <td className="py-3 px-4 text-sm font-medium text-asphalt-800">
                               {view.page_path}

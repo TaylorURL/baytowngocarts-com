@@ -31,10 +31,17 @@ const BlurText = ({
 }) => {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
   const [mounted, setMounted] = useState(false);
+  const [settled, setSettled] = useState(false);
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
+  /* Copy standing on screen at the moment this takes the paragraph over was
+     already painted. Blurring it back out to bring it in blanks a line the
+     reader is part-way through, so text that starts in view keeps its glyphs
+     and only text scrolled to afterwards animates. */
   useEffect(() => {
+    const box = ref.current?.getBoundingClientRect();
+    if (box && box.top < window.innerHeight && box.bottom > 0) setSettled(true);
     setMounted(true);
   }, []);
 
@@ -82,7 +89,7 @@ const BlurText = ({
     stepCount === 1 ? 0 : i / (stepCount - 1),
   );
 
-  if (!mounted) {
+  if (!mounted || settled) {
     return (
       <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
         {elements.map((segment, index) => (

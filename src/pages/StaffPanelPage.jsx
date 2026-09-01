@@ -9,6 +9,7 @@ import StatusBadge from "../components/common/StatusBadge.jsx";
 import StaffNav from "../components/common/StaffNav.jsx";
 import RouteMeta from "../components/common/RouteMeta.jsx";
 import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import { midnightOn, partsAt } from "../lib/timezone.js";
 
 export const metadata = {
   title: "Staff Panel | Speedway 146 Operations",
@@ -83,23 +84,23 @@ const DEFAULT_STATS = {
   todayOrders: 0,
   todayRevenue: 0,
 };
+// Every boundary is the track's. Taken off the browser, an order placed on a
+// Sunday evening counts against Monday for a staffer checking from a later
+// zone, and the day's takings on the tiles disagree with the rows beneath them.
 function getDateFilterStart(filterKey) {
   if (filterKey === "all") return null;
-  const now = new Date();
+  const { year, month, day } = partsAt(new Date());
   switch (filterKey) {
     case "today":
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    case "week": {
-      const d = new Date(now);
-      d.setDate(now.getDate() - 7);
-      return d;
-    }
+      return midnightOn(year, month, day);
+    case "week":
+      return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     case "month":
-      return new Date(now.getFullYear(), now.getMonth(), 1);
+      return midnightOn(year, month, 1);
     case "quarter":
-      return new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+      return midnightOn(year, Math.floor((month - 1) / 3) * 3 + 1, 1);
     case "year":
-      return new Date(now.getFullYear(), 0, 1);
+      return midnightOn(year, 1, 1);
     default:
       return null;
   }
@@ -144,8 +145,8 @@ export default function StaffPanelPage() {
       }
       const totalRevenue =
         revenueData.reduce((sum, order) => sum + order.total_amount, 0) / 100;
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
+      const today = partsAt(new Date());
+      const todayStart = midnightOn(today.year, today.month, today.day);
       const todayOrders = revenueData.filter(
         (order) => new Date(order.created_at) >= todayStart,
       );
@@ -219,7 +220,7 @@ export default function StaffPanelPage() {
         }
         crumbs={metadata.crumbs}
         description="Live order ledger. Search by order number, filter by date window, expand for line items."
-        backgroundImage="/images/22.webp"
+        backgroundImage="/images/14.webp"
         dividerColorClass="bg-asphalt-50"
       />
       <section className="py-12 bg-asphalt-50">

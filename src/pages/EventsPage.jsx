@@ -38,7 +38,7 @@ const EVENT_TYPES = [
     title: "Birthday Parties",
     description:
       "Private room rental with 20 racing wristbands included. Staff runs the heats. Decorate 30 minutes before guests arrive. Extra wristbands available day-of upon request.",
-    image: "/images/17.webp",
+    image: "/images/16.webp",
     imageWidth: 1600,
     imageHeight: 2400,
     icon: "cake",

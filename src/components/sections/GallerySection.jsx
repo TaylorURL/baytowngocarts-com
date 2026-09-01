@@ -9,11 +9,19 @@ import { srcSet } from "../../lib/images.js";
 
 const GallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  /* A slide sits at the same document offset as the one on screen, so the
+     browser fetches its photographs the moment it exists whatever the loading
+     attribute says. Only a slide that has been on screen is in the document. */
+  const [visited, setVisited] = useState(() => new Set([0]));
   const totalSlides = Math.ceil(
     GALLERY_IMAGES.length / GALLERY_IMAGES_PER_SLIDE,
   );
+  const showSlide = (index) => {
+    setCurrentSlide(index);
+    setVisited((prev) => (prev.has(index) ? prev : new Set(prev).add(index)));
+  };
   const navigateSlide = (direction) =>
-    setCurrentSlide((prev) => (prev + direction + totalSlides) % totalSlides);
+    showSlide((currentSlide + direction + totalSlides) % totalSlides);
   const getSlideImages = (slideIndex) =>
     GALLERY_IMAGES.slice(
       slideIndex * GALLERY_IMAGES_PER_SLIDE,
@@ -54,68 +62,74 @@ const GallerySection = () => {
         </div>
         <div className="relative" data-aos="fade" data-aos-delay="150">
           <div className="relative overflow-hidden">
-            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-              <div
-                key={slideIndex}
-                className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-opacity duration-slow ease-snap ${
-                  slideIndex === currentSlide
-                    ? "opacity-100 relative"
-                    : "opacity-0 absolute inset-0 pointer-events-none"
-                }`}
-              >
-                {getSlideImages(slideIndex).map((image, index) => {
-                  const lapNumber =
-                    slideIndex * GALLERY_IMAGES_PER_SLIDE + index + 1;
-                  return (
-                    <figure
-                      key={index}
-                      className="relative rounded-md overflow-hidden ring-1 ring-asphalt-700 hover:ring-race-500 shadow-track hover:shadow-lift transition-[box-shadow,transform,ring-color] duration-base ease-snap group cursor-pointer hover:-translate-y-1"
-                    >
-                      <div className="w-full h-64 bg-asphalt-800 overflow-hidden">
-                        <img
-                          src={image.src}
-                          srcSet={srcSet(image.src, image.width)}
-                          sizes="(min-width: 1024px) 23vw, (min-width: 768px) 46vw, 92vw"
-                          alt={image.alt}
-                          width={image.width}
-                          height={image.height}
-                          loading="lazy"
-                          className="w-full h-full object-cover transition-transform duration-slow ease-snap group-hover:scale-110"
-                        />
-                      </div>
+            {Array.from({ length: totalSlides }).map((_, slideIndex) => {
+              if (!visited.has(slideIndex)) return null;
+              return (
+                <div
+                  key={slideIndex}
+                  className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 transition-opacity duration-slow ease-snap ${
+                    slideIndex === currentSlide
+                      ? "opacity-100 relative"
+                      : "opacity-0 absolute inset-0 pointer-events-none"
+                  }`}
+                >
+                  {getSlideImages(slideIndex).map((image, index) => {
+                    const lapNumber =
+                      slideIndex * GALLERY_IMAGES_PER_SLIDE + index + 1;
+                    return (
+                      <figure
+                        key={index}
+                        className="relative rounded-md overflow-hidden ring-1 ring-asphalt-700 hover:ring-race-500 shadow-track hover:shadow-lift transition-[box-shadow,transform,ring-color] duration-base ease-snap group cursor-pointer hover:-translate-y-1"
+                      >
+                        <div className="w-full h-64 bg-asphalt-800 overflow-hidden">
+                          <img
+                            src={image.src}
+                            srcSet={srcSet(image.src, image.width)}
+                            sizes="(min-width: 1024px) 23vw, (min-width: 768px) 46vw, 92vw"
+                            alt={image.alt}
+                            width={image.width}
+                            height={image.height}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-slow ease-snap group-hover:scale-110"
+                          />
+                        </div>
 
-                      <span
-                        className="pointer-events-none absolute top-2 left-2 h-3 w-3 border-l border-t border-silver/70"
-                        aria-hidden="true"
-                      />
-                      <span
-                        className="pointer-events-none absolute top-2 right-2 h-3 w-3 border-r border-t border-silver/70"
-                        aria-hidden="true"
-                      />
-
-                      <span className="absolute top-3 right-5 inline-flex items-center gap-1 rounded-sm bg-asphalt-950/80 px-2 py-0.5 font-display tracking-speedway text-[10px] text-chalk ring-1 ring-asphalt-700">
                         <span
-                          className="h-1 w-2 rounded-sm bg-race-500"
+                          className="pointer-events-none absolute top-2 left-2 h-3 w-3 border-l border-t border-silver/70"
                           aria-hidden="true"
                         />
-                        <span className="tabular-nums">
-                          Lap {pad(lapNumber)}
-                        </span>
-                      </span>
+                        <span
+                          className="pointer-events-none absolute top-2 right-2 h-3 w-3 border-r border-t border-silver/70"
+                          aria-hidden="true"
+                        />
 
-                      <figcaption className="absolute inset-x-0 bottom-0 px-4 pt-10 pb-3 bg-gradient-to-t from-asphalt-950/95 via-asphalt-950/55 to-transparent">
-                        <div className="flex items-center gap-2">
-                          <Icon name="flag" className="h-4 w-4 text-race-500" />
-                          <span className="text-sm font-bold text-chalk tracking-wide">
-                            {image.title}
+                        <span className="absolute top-3 right-5 inline-flex items-center gap-1 rounded-sm bg-asphalt-950/80 px-2 py-0.5 font-display tracking-speedway text-[10px] text-chalk ring-1 ring-asphalt-700">
+                          <span
+                            className="h-1 w-2 rounded-sm bg-race-500"
+                            aria-hidden="true"
+                          />
+                          <span className="tabular-nums">
+                            Lap {pad(lapNumber)}
                           </span>
-                        </div>
-                      </figcaption>
-                    </figure>
-                  );
-                })}
-              </div>
-            ))}
+                        </span>
+
+                        <figcaption className="absolute inset-x-0 bottom-0 px-4 pt-10 pb-3 bg-gradient-to-t from-asphalt-950/95 via-asphalt-950/55 to-transparent">
+                          <div className="flex items-center gap-2">
+                            <Icon
+                              name="flag"
+                              className="h-4 w-4 text-race-500"
+                            />
+                            <span className="text-sm font-bold text-chalk tracking-wide">
+                              {image.title}
+                            </span>
+                          </div>
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-10 flex flex-col items-center gap-3">
@@ -137,7 +151,7 @@ const GallerySection = () => {
                 {Array.from({ length: totalSlides }).map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setCurrentSlide(index)}
+                    onClick={() => showSlide(index)}
                     role="tab"
                     aria-selected={index === currentSlide}
                     aria-label={`Go to slide ${index + 1}`}

@@ -2,12 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- The viewport comes before anything that resolves against it. A preload
+         carrying `imagesizes` is read where it sits, and one read above this
+         line measures 100vw against the 980px desktop fallback and asks for a
+         file several times the width the phone will paint. -->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link href="/favicon.ico" rel="icon" type="image/x-icon" />
     <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
     <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
     <link href="/site.webmanifest" rel="manifest" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="format-detection" content="telephone=no" />
     <title>Speedway 146 - Outdoor Go-Kart Track in Baytown, Texas</title>
     <meta
@@ -40,19 +44,11 @@
     <link
       rel="preload"
       href="/images/14.webp"
-      imagesrcset="/images/14-480.webp 480w, /images/14-960.webp 960w, /images/14.webp 1800w"
+      imagesrcset="/images/14-480.webp 480w, /images/14-720.webp 720w, /images/14-960.webp 960w, /images/14.webp 1800w"
       imagesizes="100vw"
       as="image"
       type="image/webp"
       fetchpriority="high"
-    />
-    <link
-      rel="preload"
-      href="/images/logo-128.webp"
-      imagesrcset="/images/logo-128.webp 128w, /images/logo-256.webp 256w, /images/logo.webp 512w"
-      imagesizes="64px"
-      as="image"
-      type="image/webp"
     />
     <link
       rel="preload"

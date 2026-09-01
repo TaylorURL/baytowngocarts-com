@@ -13,7 +13,7 @@ export const metadata = {
   description:
     "Call, email or drive out to 6750 TX-146 in Baytown. Opening hours, directions and the party booking form for Speedway 146 go-karts.",
   canonical: "/contact",
-  heroImage: "/images/22.webp",
+  heroImage: "/images/14.webp",
   robots: "index, follow",
   crumbs: [{ name: "Contact", path: "/contact" }],
   openGraph: {
@@ -64,7 +64,7 @@ const ContactPage = () => (
       }
       crumbs={metadata.crumbs}
       description="The fastest way to book is by phone. Parties, corporate slots, and group bookings are confirmed live. Form and email work too."
-      backgroundImage="/images/22.webp"
+      backgroundImage="/images/14.webp"
       dividerColorClass="bg-chalk"
     />
 
