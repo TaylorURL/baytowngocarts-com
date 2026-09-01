@@ -6,8 +6,16 @@ const { version } = JSON.parse(readFileSync("./package.json", "utf8"));
 /* Frozen at build so the copyright line is the same string on both the
    prerendered document and the render that attaches to it. Reading the year
    from the browser's clock instead leaves the two disagreeing across a New
-   Year rollover and a device on the wrong time zone. */
-const buildYear = new Date().getUTCFullYear();
+   Year rollover and a device on the wrong time zone.
+
+   Read in the park's own zone rather than the build machine's: CI runs in UTC,
+   which turns the year over six hours before Baytown does. */
+const buildYear = Number(
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Chicago",
+    year: "numeric",
+  }).format(new Date()),
+);
 
 export default defineConfig(({ isSsrBuild }) => ({
   define: {

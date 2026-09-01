@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { supabaseClient } from "../lib/supabase";
+import { midnightOn, partsAt } from "../lib/timezone.js";
 /** How long a page view waits on geo enrichment before writing without it. */
 const GEO_LOOKUP_TIMEOUT_MS = 2000;
 /**
@@ -98,27 +99,25 @@ export const useTrafficLogger = (pathname) => {
 export const getTrafficStats = async (timeRange = "today") => {
   try {
     let startDate;
-    const now = new Date();
+    // Every boundary is the track's, so a range reads the same from the office
+    // and from a phone in another state.
+    const { year, month, day } = partsAt(new Date());
     switch (timeRange) {
-      case "today":
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        break;
       case "week":
-        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         break;
       case "month":
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        startDate = midnightOn(year, month, 1);
         break;
-      case "quarter": {
-        const quarterMonth = Math.floor(now.getMonth() / 3) * 3;
-        startDate = new Date(now.getFullYear(), quarterMonth, 1);
+      case "quarter":
+        startDate = midnightOn(year, Math.floor((month - 1) / 3) * 3 + 1, 1);
         break;
-      }
       case "year":
-        startDate = new Date(now.getFullYear(), 0, 1);
+        startDate = midnightOn(year, 1, 1);
         break;
+      case "today":
       default:
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        startDate = midnightOn(year, month, day);
     }
     const { data, error } = await (
       await supabaseClient()
