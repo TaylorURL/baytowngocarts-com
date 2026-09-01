@@ -1,3 +1,5 @@
+import { ZONE } from "./timezone.js";
+
 /** @example formatCents(1399) // "$13.99" */
 export const formatCents = (cents) => `$${(cents / 100).toFixed(2)}`;
 
@@ -5,6 +7,7 @@ export const formatCents = (cents) => `$${(cents / 100).toFixed(2)}`;
 export const formatDollars = (dollars) => `$${dollars.toFixed(2)}`;
 
 const SHORT_DATETIME_OPTIONS = {
+  timeZone: ZONE,
   month: "short",
   day: "numeric",
   year: "numeric",
@@ -13,6 +16,7 @@ const SHORT_DATETIME_OPTIONS = {
 };
 
 const LONG_DATETIME_OPTIONS = {
+  timeZone: ZONE,
   year: "numeric",
   month: "long",
   day: "numeric",
@@ -21,6 +25,7 @@ const LONG_DATETIME_OPTIONS = {
 };
 
 const COMPACT_DATETIME_OPTIONS = {
+  timeZone: ZONE,
   year: "numeric",
   month: "short",
   day: "numeric",
