@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { whenSettled } from "../lib/idle.js";
+import { whenStill } from "../lib/idle.js";
 /**
  * The rotation begins once the page has arrived. A frame swapped behind the
  * headline while the rest of the document is still landing repaints the
@@ -15,7 +15,7 @@ const useImageSlideshow = (images, intervalMs) => {
   useEffect(() => {
     if (!intervalMs || images.length <= 1) return;
     let interval;
-    const cancel = whenSettled(() => {
+    const cancel = whenStill(() => {
       interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % images.length);
       }, intervalMs);

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
-import { whenSettled } from "../../lib/idle.js";
+import { whenStill } from "../../lib/idle.js";
 import { countFormatter } from "../../lib/format.js";
 
 const Counter = lazy(withBuildRefresh(() => import("./CountUpMotion.jsx")));
@@ -26,7 +26,7 @@ const CountUp = (props) => {
   } = props;
   const [settled, setSettled] = useState(false);
 
-  useEffect(() => whenSettled(() => setSettled(true)), []);
+  useEffect(() => whenStill(() => setSettled(true)), []);
 
   const held = (
     <span className={className}>
