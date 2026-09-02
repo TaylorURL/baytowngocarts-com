@@ -53,6 +53,18 @@ export function startReveals() {
   const onScreen = (box) =>
     box.bottom > 0 && box.top < (window.innerHeight || root.clientHeight);
 
+  /* A section the browser has skipped is below the fold by definition:
+     `content-visibility: auto` skips what nobody has reached and nothing else.
+     Asking such an element for its box makes the browser lay the whole section
+     out to answer, which is the work the page bought the deferral to avoid, and
+     the answer is one this already knows. Where the question cannot be put -
+     an engine without `checkVisibility`, or without the flag that makes it
+     account for skipped content - the box is measured as before. */
+  const skipped = (el) =>
+    typeof el.checkVisibility === "function" &&
+    el.checkVisibility() &&
+    !el.checkVisibility({ contentVisibilityAuto: true });
+
   /*
    * Everything the first screen showed is held at full opacity rather than
    * hidden and faded back in, which would blank the part of the page a reader
@@ -65,7 +77,16 @@ export function startReveals() {
    */
   const settle = () => {
     frame = 0;
-    const pending = [...document.querySelectorAll(SELECTOR)].filter(waiting);
+    const pending = [];
+    for (const el of document.querySelectorAll(SELECTOR)) {
+      if (!waiting(el)) continue;
+      if (skipped(el)) {
+        observer.observe(el);
+        handed = true;
+      } else {
+        pending.push(el);
+      }
+    }
     /* Every box is measured before the first mark is written, because a mark
        invalidates the styles the next measurement would otherwise have to stop
        and settle. */
