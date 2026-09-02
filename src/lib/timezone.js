@@ -38,17 +38,6 @@ export const partsAt = (value) => {
 /** The hour of the day an instant fell in here, 0 to 23. */
 export const hourAt = (value) => partsAt(value)?.hour ?? 0;
 
-/** The calendar date an instant fell on here, as `YYYY-MM-DD`. */
-export const dayAt = (value = new Date()) => {
-  const found = partsAt(value);
-  if (!found) return "";
-  return `${found.year}-${String(found.month).padStart(2, "0")}-${String(found.day).padStart(2, "0")}`;
-};
-
-/** The year here, for a line that names the business rather than the reader. */
-export const yearHere = () =>
-  partsAt(new Date())?.year ?? new Date().getUTCFullYear();
-
 const offsetAt = (instant) => {
   const found = partsAt(instant);
   return (

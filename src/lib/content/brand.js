@@ -8,15 +8,3 @@ export const BRAND = {
   location: "Baytown, TX",
   since: "2019",
 };
-
-export const EYEBROWS = {
-  about: "Our Story",
-  pricing: "Pricing",
-  events: "Events & Parties",
-  contact: "Get in Touch",
-  faq: "Help Center",
-  staff: "Operations",
-  cart: "Your Cart",
-  dashboard: "Your Account",
-  legal: "Legal",
-};
