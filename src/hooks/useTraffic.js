@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { supabaseClient } from "../lib/supabase";
+import { whenSettled } from "../lib/idle.js";
 import { midnightOn, partsAt } from "../lib/timezone.js";
 /** How long a page view waits on geo enrichment before writing without it. */
 const GEO_LOOKUP_TIMEOUT_MS = 2000;
@@ -88,9 +89,14 @@ export const logPageView = async (pathname) => {
  * @param {string} pathname - the route currently rendered
  */
 export const useTrafficLogger = (pathname) => {
-  useEffect(() => {
-    logPageView(pathname);
-  }, [pathname]);
+  /* The view is written once the page has arrived. The geo lookup opens a
+     connection to an origin the site does not serve, and an origin's first
+     request costs a DNS answer, a handshake and a certificate before a byte of
+     it moves - all of it on the connection the photograph the page is measured
+     on is still coming down. Nothing about the record changes for waiting, and
+     the write already carries `keepalive`, so a visitor who leaves in the
+     meantime is still counted. */
+  useEffect(() => whenSettled(() => logPageView(pathname)), [pathname]);
 };
 /**
  * @param {string} timeRange - "today" | "week" | "month" | "quarter" | "year"
