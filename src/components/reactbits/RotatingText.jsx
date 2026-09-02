@@ -2,7 +2,7 @@
 
 import { Suspense, forwardRef, lazy, useEffect, useState } from "react";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
-import { whenSettled } from "../../lib/idle.js";
+import { whenStill } from "../../lib/idle.js";
 
 const Rotation = lazy(
   withBuildRefresh(() => import("./RotatingTextMotion.jsx")),
@@ -28,7 +28,7 @@ const RotatingText = forwardRef((props, ref) => {
   const { texts, mainClassName } = props;
   const [settled, setSettled] = useState(false);
 
-  useEffect(() => whenSettled(() => setSettled(true)), []);
+  useEffect(() => whenStill(() => setSettled(true)), []);
 
   const held = (
     <span

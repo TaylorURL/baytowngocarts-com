@@ -1,6 +1,6 @@
 import { Suspense, lazy, useState, useEffect } from "react";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
-import { whenSettled } from "../../lib/idle.js";
+import { whenStill } from "../../lib/idle.js";
 
 const Particles = lazy(withBuildRefresh(() => import("./Particles.jsx")));
 
@@ -15,7 +15,7 @@ const Particles = lazy(withBuildRefresh(() => import("./Particles.jsx")));
  */
 const ParticleField = (props) => {
   const [settled, setSettled] = useState(false);
-  useEffect(() => whenSettled(() => setSettled(true)), []);
+  useEffect(() => whenStill(() => setSettled(true)), []);
   if (!settled) return null;
   return (
     <Suspense fallback={null}>
