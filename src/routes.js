@@ -81,19 +81,3 @@ export const PRERENDER_PATHS = [
   "/",
   ...ROUTES.filter((r) => r.prerender).map((r) => r.prerender),
 ];
-
-/*
- * The paths the host cannot answer from a prerendered file: account, checkout
- * and staff routes, which are rendered in the browser and kept out of the
- * index. Everything not listed here and not prerendered is a real miss.
- */
-export const CLIENT_ONLY_PATHS = [
-  "/cart",
-  "/dashboard",
-  "/staff",
-  "/traffic",
-  "/login",
-  "/signup",
-  "/success",
-  "/purchase/:orderId",
-];

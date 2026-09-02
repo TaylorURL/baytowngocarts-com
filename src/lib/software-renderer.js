@@ -1,7 +1,7 @@
 // A renderer with no GPU behind it names itself: Chrome's SwiftShader, Mesa's
 // llvmpipe, a platform's software fallback. Any of them rasterises a shader on
 // the same thread the page is laid out on.
-const SOFTWARE_RENDERER =
+export const SOFTWARE_RENDERER =
   /swiftshader|llvmpipe|softpipe|software|basic render/i;
 
 /**

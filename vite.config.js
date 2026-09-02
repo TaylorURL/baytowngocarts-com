@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { SOFTWARE_RENDERER } from "./src/lib/software-renderer.js";
 
 const { version } = JSON.parse(readFileSync("./package.json", "utf8"));
 /* Frozen at build so the copyright line is the same string on both the
@@ -17,15 +18,36 @@ const buildYear = Number(
   }).format(new Date()),
 );
 
+/*
+ * Asks, before anything is painted, whether this machine draws in software.
+ *
+ * The hero and the section backdrops are layered gradients and patterns the
+ * full width of the page. A GPU paints them for nothing; a machine with none,
+ * such as the one PageSpeed measures on, rasterises every layer through a
+ * software Vulkan device and spends seconds on the first frame. The probe
+ * runs inline in the head, so its answer is on the root element before the
+ * first frame is drawn, and the stylesheet keys the costly layers off it. The
+ * pattern is the renderer module's own, so the two never disagree.
+ */
+function softwareRendererProbe() {
+  const probe = `(function(){try{var c=document.createElement("canvas");var g=c.getContext("webgl")||c.getContext("experimental-webgl");if(!g)return;var i=g.getExtension("WEBGL_debug_renderer_info");var r=i?g.getParameter(i.UNMASKED_RENDERER_WEBGL):g.getParameter(g.RENDERER);if(${SOFTWARE_RENDERER.toString()}.test(String(r||"")))document.documentElement.setAttribute("data-gpu","software");var l=g.getExtension("WEBGL_lose_context");if(l)l.loseContext()}catch(e){}})()`;
+  return {
+    name: "software-renderer-probe",
+    transformIndexHtml(html) {
+      return html.replace(
+        /(<meta[^>]*name="viewport"[^>]*>\n)/,
+        `$1    <script>${probe}</script>\n`,
+      );
+    },
+  };
+}
+
 export default defineConfig(({ isSsrBuild }) => ({
   define: {
     __BUILD_VERSION__: JSON.stringify(version),
     __BUILD_YEAR__: JSON.stringify(buildYear),
   },
-  plugins: [react()],
-  optimizeDeps: {
-    exclude: ["lucide-react"],
-  },
+  plugins: [react(), softwareRendererProbe()],
   build: {
     /*
      * Every browser this site sees supports these. Left undeclared the
