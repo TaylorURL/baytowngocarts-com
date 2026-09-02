@@ -11,6 +11,9 @@
   The storefront and back office for Speedway 146. Book races, packages, and parties online.<br />
   Live at <a href="https://baytowngokarts.com">baytowngokarts.com</a>.
 </p>
+<p align="center">
+  <sub>Published for reading. Proprietary — see <a href="LICENSE.md">LICENSE.md</a>. Outside contributions are not accepted.</sub>
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-2026.36.21-e11d2a?style=for-the-badge" alt="Version 2026.36.21" />
@@ -107,7 +110,7 @@ flowchart TD
 - **Checkout is validated server-side.** `create-checkout` compares each client price against the canonical map and rejects mismatches, then applies a 4% + $0.30 transaction fee, a 1% platform fee, 8.25% Texas sales tax, and a 10% group discount at 15 or more tickets.
 - **Two writers, one order row.** `stripe-webhook` verifies the Stripe signature and writes the order into `purchases` with the service-role key. The success page writes the same order from the browser, which is what puts it in front of a buyer who lands back before Stripe's post has been delivered. `stripe_session_id` is unique, so whichever arrives second is refused by the database rather than doubling the order. Either writer numbers it `SPW146-YYYY-NNNNNN`.
 - **Every route ships as a document.** `scripts/prerender.js` renders each indexed route through `src/entry-server.jsx` after the Vite build and writes its markup and head into a file of its own, so a crawler is served the page rather than an empty shell. `src/routes.js` is the one table the client router, the build-time render and the prerender step all read.
-- **Two independent analytics layers.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation, and feeds the site's own `/traffic` page; a hosted tracker script attached on load reports the same visits to TaylorURL's shared collector. Browser errors travel a third path, to the reporting endpoint behind taylorurl.com/status.
+- **Traffic is counted by the site itself.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation, and feeds the site's own `/traffic` page. Browser errors travel a separate path, reported from `index.html` to the endpoint behind taylorurl.com/status.
 - **One file owns the palette.** Every Tailwind color maps to a CSS custom property in `Theme.css`, so the asphalt / race-red / caution system is a single-file edit. The canvas and WebGL effects read the same properties at runtime through `src/lib/tokens.js`.
 - **Each route declares its own head.** A page exports a `metadata` object next to its markup, and `RouteMeta` writes the title, description, canonical, share card and a JSON-LD graph: `WebSite`, `LocalBusiness` with hours and address, `BreadcrumbList`, and `Product` nodes generated from the Stripe catalog.
 
@@ -115,8 +118,10 @@ flowchart TD
 
 ```
 baytowngocarts-com/
+├── api/
+│   └── version.js             Reports the commit this deployment was built from
 ├── public/
-│   ├── images/                Venue photos, logo, share card, waiver PDFs
+│   ├── images/                Venue photos, logo, share card
 │   ├── fonts/                 Self-hosted Bebas Neue and Barlow subsets
 │   ├── robots.txt, sitemap.xml, llms.txt
 │   └── release.json

@@ -11,9 +11,6 @@ export const HERO_BACKGROUND_IMAGES = [
   { src: "/images/18.webp", width: 1200, height: 1800 },
 ];
 
-/** The frame the document preloads, and the only one on screen at first paint. */
-export const HERO_FIRST_FRAME = HERO_BACKGROUND_IMAGES[0];
-
 export const HERO_STATS = [
   { value: '40"', label: "Kiddie Kart Min" },
   { value: "5:00", label: "Heat Length" },

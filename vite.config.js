@@ -23,9 +23,6 @@ export default defineConfig(({ isSsrBuild }) => ({
     __BUILD_YEAR__: JSON.stringify(buildYear),
   },
   plugins: [react()],
-  optimizeDeps: {
-    exclude: ["lucide-react"],
-  },
   build: {
     /*
      * Every browser this site sees supports these. Left undeclared the
