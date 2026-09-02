@@ -94,6 +94,33 @@ const rawText = (markup) =>
       close,
   );
 
+/*
+ * Runs the bundle after the first frame rather than before it.
+ *
+ * Every route written here is a finished document, so its first frame owes
+ * the bundle nothing. A module script is deferred, which only means it waits
+ * for the parser: it runs the moment parsing ends, and on a slow phone that
+ * moment arrives before the browser has found a frame to paint the document
+ * in. The page then sits blank while the bundle adopts markup nobody has been
+ * shown, and the whole download is charged to the first paint.
+ *
+ * The entry keeps its early fetch, as a module preload, and loses its script
+ * tag. An inline module in its place asks for the bundle one frame after the
+ * first, which is the first frame the document can have been painted in and
+ * the earliest the bundle can no longer hold it back. The shell the app
+ * mounts into is left alone: with nothing served, nothing waits.
+ */
+function paintFirst(html) {
+  const entry = html.match(
+    /^[ \t]*<script type="module" crossorigin src="([^"]+)"><\/script>\n/m,
+  );
+  if (!entry) throw new Error("the shell carries no module entry");
+  const [tag, src] = entry;
+  const preload = `    <link rel="modulepreload" crossorigin href="${src}" />\n`;
+  const boot = `    <script type="module">requestAnimationFrame(() => requestAnimationFrame(() => import(${JSON.stringify(src)})))</script>\n`;
+  return html.replace(tag, `${preload}${boot}`);
+}
+
 const renderTag = (tag) => {
   const name = tag.rel ? "link" : "meta";
   const attrs = Object.entries(tag)
@@ -172,7 +199,7 @@ for (const path of [...PRERENDER_PATHS, "/404"]) {
       `${path} rendered no head; every prerendered route needs a RouteMeta`,
     );
   if (!markup.trim()) throw new Error(`${path} rendered no markup`);
-  const rendered = applyHead(shell, head).replace(
+  const rendered = paintFirst(applyHead(shell, head)).replace(
     '<div id="root"></div>',
     `<div id="root">${rawText(markup)}</div>`,
   );
