@@ -29,10 +29,24 @@ const readGeoData = () =>
  * client the rest of this file uses. A page view is recorded at the moment a
  * visitor is most likely to navigate away, and an ordinary request is cancelled
  * when its page goes, so the shortest visits are the ones that go unrecorded.
+ * `keepalive` is what lets the browser carry it to completion after the
+ * document is gone, and it only does that for a request already handed over:
+ * one still being assembled when the tab closes is torn down with everything
+ * else. So the caller issues this before the page goes rather than racing it.
+ *
+ * `view` carries the one record between the two callers that can reach it, so
+ * a visitor who leaves while the enrichment is still out is written once and
+ * not twice.
  *
  * @param {string} pathname - route path to log
+ * @param {{written: boolean}} view - the record's state, shared by both callers
+ * @param {boolean} enrich - whether to wait on the geo lookup before writing
  */
-export const logPageView = async (pathname) => {
+export const logPageView = async (
+  pathname,
+  view = { written: false },
+  enrich = true,
+) => {
   if (
     pathname === "/traffic" ||
     pathname === "/staff" ||
@@ -40,7 +54,13 @@ export const logPageView = async (pathname) => {
   ) {
     return;
   }
-  const geoData = await readGeoData();
+  if (view.written) return;
+  /* A visitor on their way out is not kept waiting on an origin this site does
+     not serve. The record is worth more without a city on it than it is
+     unwritten. */
+  const geoData = enrich ? await readGeoData() : null;
+  if (view.written) return;
+  view.written = true;
   const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
   try {
     const response = await fetch(
@@ -74,9 +94,11 @@ export const logPageView = async (pathname) => {
       console.error(`Page view write rejected: HTTP ${response.status}`);
     }
   } catch {
-    // A request that never reached the network is lost telemetry rather than a
-    // fault anyone can act on, and the reporter installed in index.html already
-    // records it once. Raising it again here would only duplicate that.
+    // A page view lost because the reader left is not a fault anyone can act
+    // on: the visit ended, and the record it would have written describes a
+    // visit nobody is waiting to read about. It is swallowed here rather than
+    // raised, and the request is issued before the page goes so the browser
+    // has something to carry rather than something to cancel.
   }
 };
 /**
@@ -89,14 +111,27 @@ export const logPageView = async (pathname) => {
  * @param {string} pathname - the route currently rendered
  */
 export const useTrafficLogger = (pathname) => {
-  /* The view is written once the page has arrived. The geo lookup opens a
-     connection to an origin the site does not serve, and an origin's first
-     request costs a DNS answer, a handshake and a certificate before a byte of
-     it moves - all of it on the connection the photograph the page is measured
-     on is still coming down. Nothing about the record changes for waiting, and
-     the write already carries `keepalive`, so a visitor who leaves in the
-     meantime is still counted. */
-  useEffect(() => whenSettled(() => logPageView(pathname)), [pathname]);
+  useEffect(() => {
+    /* The view is written once the page has arrived. The geo lookup opens a
+       connection to an origin the site does not serve, and an origin's first
+       request costs a DNS answer, a handshake and a certificate before a byte
+       of it moves - all of it on the connection the photograph the page is
+       measured on is still coming down. Nothing about the record changes for
+       waiting. */
+    const view = { written: false };
+    const waiting = whenSettled(() => logPageView(pathname, view));
+    /* A reader who leaves inside that wait is written on the way out instead,
+       without the enrichment, because a request handed to the browser before
+       the document goes is one `keepalive` carries to completion and a request
+       still being assembled as the tab closes is one the teardown cancels. The
+       shortest visits are the ones this exists to catch. */
+    const leaving = () => logPageView(pathname, view, false);
+    window.addEventListener("pagehide", leaving);
+    return () => {
+      waiting();
+      window.removeEventListener("pagehide", leaving);
+    };
+  }, [pathname]);
 };
 /**
  * @param {string} timeRange - "today" | "week" | "month" | "quarter" | "year"
