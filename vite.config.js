@@ -66,9 +66,26 @@ export default defineConfig(({ isSsrBuild }) => ({
              * visitor's whole cache.
              */
             manualChunks: {
-              react: ["react", "react-dom", "react-router-dom"],
+              /*
+               * The JSX runtime is named here because React's own entry does
+               * not reach it: it is pulled in by the compiled output of every
+               * component instead, and a module no group claims joins the
+               * first group that happens to reach it. Named alongside React it
+               * is where everything that renders an element already looks.
+               *
+               * The animation library is left to the splitter. Nothing on a
+               * first paint reaches for it any more, so every path to it is a
+               * dynamic import and it is already a chunk of its own; naming it
+               * a group only gives it the chance to claim the JSX runtime, and
+               * the entry then has to load the whole library to draw a div.
+               */
+              react: [
+                "react",
+                "react-dom",
+                "react-router-dom",
+                "react/jsx-runtime",
+              ],
               supabase: ["@supabase/supabase-js"],
-              motion: ["motion", "motion/react"],
               gl: ["ogl"],
             },
           },

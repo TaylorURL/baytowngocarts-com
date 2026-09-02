@@ -1,116 +1,46 @@
-import { useInView, useMotionValue, useSpring } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { withBuildRefresh } from "../../lib/chunk-recovery.js";
+import { whenSettled } from "../../lib/idle.js";
+import { countFormatter } from "../../lib/format.js";
 
-export default function CountUp({
-  to,
-  from = 0,
-  direction = "up",
-  delay = 0,
-  duration = 2,
-  className = "",
-  startWhen = true,
-  separator = "",
-  onStart,
-  onEnd,
-}) {
-  const ref = useRef(null);
-  const motionValue = useMotionValue(direction === "down" ? to : from);
+const Counter = lazy(withBuildRefresh(() => import("./CountUpMotion.jsx")));
 
-  const damping = 20 + 40 * (1 / duration);
-  const stiffness = 100 * (1 / duration);
+/*
+ * The figure the count starts on, written into the document.
+ *
+ * The spring that carries a stat from zero to its value is the animation
+ * library, and the number itself is a string this can produce without it. A
+ * tile that leaves the digits to the bundle stands on the first screen showing
+ * a currency symbol with nothing after it for as long as the bundle takes, and
+ * gains its width back when the figure lands. So the starting figure ships with
+ * the page and the count is picked up once the page has arrived, which is the
+ * same wait the hero's photographs and the particle field ride.
+ */
+const CountUp = (props) => {
+  const {
+    to,
+    from = 0,
+    direction = "up",
+    separator = "",
+    className = "",
+  } = props;
+  const [settled, setSettled] = useState(false);
 
-  const springValue = useSpring(motionValue, {
-    damping,
-    stiffness,
-  });
+  useEffect(() => whenSettled(() => setSettled(true)), []);
 
-  const isInView = useInView(ref, { once: true, margin: "0px" });
-
-  const getDecimalPlaces = (num) => {
-    const str = num.toString();
-
-    if (str.includes(".")) {
-      const decimals = str.split(".")[1];
-
-      if (parseInt(decimals) !== 0) {
-        return decimals.length;
-      }
-    }
-
-    return 0;
-  };
-
-  const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
-
-  const formatValue = useCallback(
-    (latest) => {
-      const hasDecimals = maxDecimals > 0;
-
-      const options = {
-        useGrouping: !!separator,
-        minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-        maximumFractionDigits: hasDecimals ? maxDecimals : 0,
-      };
-
-      const formattedNumber = Intl.NumberFormat("en-US", options).format(
-        latest,
-      );
-
-      return separator
-        ? formattedNumber.replace(/,/g, separator)
-        : formattedNumber;
-    },
-    [maxDecimals, separator],
+  const held = (
+    <span className={className}>
+      {countFormatter(from, to, separator)(direction === "down" ? to : from)}
+    </span>
   );
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.textContent = formatValue(direction === "down" ? to : from);
-    }
-  }, [from, to, direction, formatValue]);
+  if (!settled) return held;
 
-  useEffect(() => {
-    if (isInView && startWhen) {
-      if (typeof onStart === "function") onStart();
+  return (
+    <Suspense fallback={held}>
+      <Counter {...props} />
+    </Suspense>
+  );
+};
 
-      const timeoutId = setTimeout(() => {
-        motionValue.set(direction === "down" ? from : to);
-      }, delay * 1000);
-
-      const durationTimeoutId = setTimeout(
-        () => {
-          if (typeof onEnd === "function") onEnd();
-        },
-        delay * 1000 + duration * 1000,
-      );
-
-      return () => {
-        clearTimeout(timeoutId);
-        clearTimeout(durationTimeoutId);
-      };
-    }
-  }, [
-    isInView,
-    startWhen,
-    motionValue,
-    direction,
-    from,
-    to,
-    delay,
-    onStart,
-    onEnd,
-    duration,
-  ]);
-
-  useEffect(() => {
-    const unsubscribe = springValue.on("change", (latest) => {
-      if (ref.current) {
-        ref.current.textContent = formatValue(latest);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [springValue, formatValue]);
-
-  return <span className={className} ref={ref} />;
-}
+export default CountUp;

@@ -40,6 +40,7 @@ const TestimonialSection = () => (
             {/* The explicit "/ 5" is there because stars alone get skimmed. */}
             <div
               className="relative flex items-center gap-2 mb-5"
+              role="img"
               aria-label={`${rating} out of 5 stars`}
             >
               <div className="flex items-center gap-0.5">

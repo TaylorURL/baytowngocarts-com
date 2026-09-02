@@ -49,8 +49,14 @@ const Wordmark = ({
   );
 
   if (!to) return inner;
+  /* The header carries one of these per breakpoint and hides the one the
+     viewport is not on, which leaves a link in the tab order whose whole
+     content is display:none and which therefore answers to nothing. The name
+     sits outside what the breakpoint hides, so the link has one at every
+     width. */
   return (
     <Link to={to} onClick={onNavigate} className="group inline-block">
+      <span className="sr-only">Speedway 146 Home</span>
       {inner}
     </Link>
   );
