@@ -8,7 +8,7 @@ import RotatingText from "../reactbits/RotatingText.jsx";
 import BlurText from "../reactbits/BlurText.jsx";
 import Magnet from "../reactbits/Magnet.jsx";
 import useImageSlideshow from "../../hooks/useImageSlideshow.js";
-import { whenSettled } from "../../lib/idle.js";
+import { whenStill } from "../../lib/idle.js";
 import { srcSet } from "../../lib/images.js";
 import {
   HERO_BACKGROUND_IMAGES,
@@ -30,7 +30,7 @@ const HeroSection = () => {
      longer competing with it and still lands with an interval left to arrive
      in. */
   useEffect(
-    () => whenSettled(() => setReadAhead(true), SLIDESHOW_INTERVAL_MS / 2),
+    () => whenStill(() => setReadAhead(true), SLIDESHOW_INTERVAL_MS / 2),
     [],
   );
 

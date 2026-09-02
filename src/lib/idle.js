@@ -1,3 +1,8 @@
+/* How long the first screen is held still after the browser first goes idle.
+   Long enough to outlast the rest of an arrival on a slow phone, where the
+   bundle, the fonts and the photography all land well after the document. */
+const QUIET_MS = 3000;
+
 /*
  * Work that belongs after the page has arrived.
  *
@@ -12,19 +17,60 @@
  * @returns {Function} cancels the wait, whichever stage it is at
  */
 export function whenSettled(run, timeout = 2000) {
+  return wait(run, timeout, 0);
+}
+
+/*
+ * Work that may not redraw the first screen.
+ *
+ * Arriving and being still are not the same thing. The browser's first spare
+ * moment falls in the middle of the arrival - after the document has landed,
+ * while the bundle, the fonts and the photography are still coming - and a
+ * layer that starts drawing there repaints the screen underneath a reader who
+ * has only just been given it. So the spare moment is asked for twice, with a
+ * quiet stretch in between, and the work runs on the second one. What the
+ * reader meets is the screen the document described, held still until the page
+ * has stopped arriving, and then the motion the page has always had.
+ *
+ * @param {Function} run - what to do once the first screen can be redrawn
+ * @param {number} timeout - how long either idle wait may hold the work back
+ * @returns {Function} cancels the wait, whichever stage it is at
+ */
+export function whenStill(run, timeout = 2000) {
+  return wait(run, timeout, QUIET_MS);
+}
+
+function wait(run, timeout, quietMs) {
   let idle;
-  let timer;
+  let quiet;
+  let spare;
+  let paintTimer;
   let observer;
   let painted = false;
   let loaded = document.readyState === "complete";
 
+  const whenSpare = (then) => {
+    if (typeof window.requestIdleCallback === "function") {
+      idle = window.requestIdleCallback(then, { timeout });
+    } else {
+      spare = setTimeout(then, 0);
+    }
+  };
+
   const queue = () => {
     if (!painted || !loaded) return;
-    if (typeof window.requestIdleCallback === "function") {
-      idle = window.requestIdleCallback(run, { timeout });
-    } else {
-      timer = setTimeout(run, 0);
+    if (!quietMs) {
+      whenSpare(run);
+      return;
     }
+    whenSpare(() => {
+      idle = undefined;
+      spare = undefined;
+      quiet = setTimeout(() => {
+        quiet = undefined;
+        whenSpare(run);
+      }, quietMs);
+    });
   };
   const onLoad = () => {
     loaded = true;
@@ -48,7 +94,7 @@ export function whenSettled(run, timeout = 2000) {
       if (list.getEntriesByName("first-contentful-paint").length) onPaint();
     });
     observer.observe({ type: "paint", buffered: true });
-    timer = setTimeout(onPaint, timeout);
+    paintTimer = setTimeout(onPaint, timeout);
   } catch {
     onPaint();
   }
@@ -60,6 +106,8 @@ export function whenSettled(run, timeout = 2000) {
     window.removeEventListener("load", onLoad);
     if (observer) observer.disconnect();
     if (idle !== undefined) window.cancelIdleCallback(idle);
-    if (timer !== undefined) clearTimeout(timer);
+    if (quiet !== undefined) clearTimeout(quiet);
+    if (spare !== undefined) clearTimeout(spare);
+    if (paintTimer !== undefined) clearTimeout(paintTimer);
   };
 }
