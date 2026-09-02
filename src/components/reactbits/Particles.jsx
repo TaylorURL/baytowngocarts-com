@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 import { sparkPalette } from "../../lib/tokens.js";
 import useFrameLoop from "../../hooks/useFrameLoop.js";
+import { drawsInSoftware } from "../../lib/software-renderer.js";
 
 const STILL = "(prefers-reduced-motion: reduce)";
 
@@ -146,6 +147,7 @@ const Particles = ({
       return;
     }
     const gl = renderer.gl;
+    const software = drawsInSoftware(gl);
     container.appendChild(gl.canvas);
     gl.clearColor(0, 0, 0, 0);
 
@@ -251,11 +253,12 @@ const Particles = ({
     };
 
     /*
-     * A field nobody can see, and a field a reader asked to hold still, are
-     * both drawn once and left. The layer looks the way it did and costs
-     * nothing for the rest of the visit.
+     * A field nobody can see, a field a reader asked to hold still, and a
+     * field a machine with no GPU would have to draw in software are all
+     * drawn once and left. The layer looks the way it did and costs nothing
+     * for the rest of the visit.
      */
-    if (onScreen && !window.matchMedia(STILL).matches) {
+    if (onScreen && !software && !window.matchMedia(STILL).matches) {
       animationFrameId = requestAnimationFrame(update);
     } else {
       renderer.render({ scene: particles, camera });
