@@ -388,12 +388,29 @@
         }
         if (window.fetch) {
           var originalFetch = window.fetch;
-          window.fetch = function (input) {
+          window.fetch = function (input, init) {
             var target =
               typeof input === "string" ? input : (input && input.url) || "";
             // Reports about the reporter's own request would loop, so the endpoint passes through unwrapped.
             if (target.indexOf(endpoint) === 0)
               return originalFetch.apply(window, arguments);
+            // A caller that sets keepalive has already told the browser this
+            // request is allowed to outlive its page - and that the browser is
+            // allowed to drop it if the way out is too crowded to carry it.
+            // The pagehide traffic write is the caller here, and iOS Safari on
+            // a mobile network tears those down at its own schedule, so a
+            // network failure describes the exit rather than a defect on the
+            // site. The caller reads the outcome for itself and files nothing.
+            var keepalive = false;
+            try {
+              if (init && init.keepalive) keepalive = true;
+              else if (
+                input &&
+                typeof input === "object" &&
+                input.keepalive
+              )
+                keepalive = true;
+            } catch (ignored) {}
             return originalFetch.apply(window, arguments).then(
               function (response) {
                 if (response.status >= 500 && firstParty(target))
@@ -404,7 +421,7 @@
                 return response;
               },
               function (error) {
-                if (firstParty(target)) {
+                if (!keepalive && firstParty(target)) {
                   report(
                     "network",
                     (error && error.message ? error.message : String(error)) +
