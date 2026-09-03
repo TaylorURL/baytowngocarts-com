@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.36.27-e11d2a?style=for-the-badge" alt="Version 2026.36.27" />
+  <img src="https://img.shields.io/badge/version-2026.36.28-e11d2a?style=for-the-badge" alt="Version 2026.36.28" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-6-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -152,7 +152,6 @@ baytowngocarts-com/
 │   ├── index.css              Element defaults, reveal states, and the shared utilities
 │   └── styles/                Theme.css design tokens, fonts.css face declarations
 ├── scripts/
-│   ├── calver.js              Moves the CalVer version across the manifests
 │   └── prerender.js           Renders the static routes after the Vite build
 └── vercel.json                SPA rewrites, security headers, caching
 ```

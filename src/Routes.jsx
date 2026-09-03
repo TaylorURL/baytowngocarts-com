@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Route, Routes as RouterRoutes } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout.jsx";
 import RouteFallback from "./components/common/RouteFallback.jsx";
-import { ALL_ROUTES, BARE_ROUTES, HomePage, ROUTES } from "./routes.js";
+import { BARE_ROUTES, HomePage, ROUTES } from "./routes.js";
 
 const Routes = () => (
   <Suspense fallback={<RouteFallback />}>
@@ -20,5 +20,4 @@ const Routes = () => (
   </Suspense>
 );
 
-export { ALL_ROUTES };
 export default Routes;
