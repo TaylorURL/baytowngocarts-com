@@ -117,6 +117,22 @@
           }
           return true;
         }
+        // A crawler's rendered visit runs the page in a headless environment
+        // that cancels its own outgoing requests on its own schedule, so the
+        // dynamic module import for the app bundle drops as "Importing a
+        // module script failed" and a Supabase fetch drops as a network error
+        // - one ticket per crawl, for a page no reader would have seen. The
+        // list mirrors the one useTraffic uses to skip crawler page views, so
+        // both the traffic record and the report are quiet on the same visits.
+        var CRAWLER_UA =
+          /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent/i;
+        function isCrawler() {
+          try {
+            return CRAWLER_UA.test(navigator.userAgent || "");
+          } catch (ignored) {
+            return false;
+          }
+        }
         // A request the page makes writes its own failure to the console when it
         // fails, and a collector that cannot be reached would then be the loudest
         // thing on the page. The same request issued inside a worker writes
@@ -181,6 +197,7 @@
         function report(kind, message, stack) {
           hold(kind, message, stack);
           if (sent >= 10) return; // a page stuck in an error loop stops at ten
+          if (isCrawler()) return;
           if (recoveredReact.test(String(message || ""))) return;
           if (recoveredReact.test(String(stack || ""))) return;
           if (browserOnly(stack) || browserOnly(message)) return;
