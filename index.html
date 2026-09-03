@@ -404,11 +404,7 @@
             var keepalive = false;
             try {
               if (init && init.keepalive) keepalive = true;
-              else if (
-                input &&
-                typeof input === "object" &&
-                input.keepalive
-              )
+              else if (input && typeof input === "object" && input.keepalive)
                 keepalive = true;
             } catch (ignored) {}
             return originalFetch.apply(window, arguments).then(
