@@ -152,7 +152,6 @@ baytowngocarts-com/
 │   ├── index.css              Element defaults, reveal states, and the shared utilities
 │   └── styles/                Theme.css design tokens, fonts.css face declarations
 ├── scripts/
-│   ├── calver.js              Moves the CalVer version across the manifests
 │   └── prerender.js           Renders the static routes after the Vite build
 └── vercel.json                SPA rewrites, security headers, caching
 ```
