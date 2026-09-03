@@ -4,6 +4,21 @@ import { whenSettled } from "../lib/idle.js";
 import { midnightOn, partsAt } from "../lib/timezone.js";
 /** How long a page view waits on geo enrichment before writing without it. */
 const GEO_LOOKUP_TIMEOUT_MS = 2000;
+/* A crawler's rendered visit is not the traffic this file exists to count, and
+   the environments they render in cancel outgoing requests on their own
+   schedule - a fetch dropped that way lands in the reporter as a supabase
+   network failure for a record no reader would have wanted. Both the pollution
+   of site_traffic and the noise on the ticket queue disappear at the same time
+   by not writing the record in the first place. */
+const CRAWLER_UA =
+  /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent/i;
+const isCrawler = () => {
+  try {
+    return CRAWLER_UA.test(navigator.userAgent || "");
+  } catch {
+    return false;
+  }
+};
 /**
  * City and country are enrichment on a record that has to be written either
  * way, so the lookup runs under a deadline rather than holding the write open
@@ -54,6 +69,7 @@ export const logPageView = async (
   ) {
     return;
   }
+  if (isCrawler()) return;
   if (view.written) return;
   /* A visitor on their way out is not kept waiting on an origin this site does
      not serve. The record is worth more without a city on it than it is
