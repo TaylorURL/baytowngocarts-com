@@ -11,7 +11,7 @@ const GEO_LOOKUP_TIMEOUT_MS = 2000;
    of site_traffic and the noise on the ticket queue disappear at the same time
    by not writing the record in the first place. */
 const CRAWLER_UA =
-  /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent/i;
+  /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent|headlesschrome/i;
 const isCrawler = () => {
   try {
     return CRAWLER_UA.test(navigator.userAgent || "");

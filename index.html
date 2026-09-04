@@ -125,7 +125,7 @@
         // list mirrors the one useTraffic uses to skip crawler page views, so
         // both the traffic record and the report are quiet on the same visits.
         var CRAWLER_UA =
-          /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent/i;
+          /bot\b|crawler|spider|slurp|bingpreview|facebookexternalhit|whatsapp|telegrambot|discordbot|linkedinbot|petalbot|semrushbot|ahrefsbot|mj12bot|baiduspider|applebot|yandex|duckduckbot|chatgpt|perplexity|claudebot|gptbot|amazonbot|meta-externalagent|headlesschrome/i;
         function isCrawler() {
           try {
             return CRAWLER_UA.test(navigator.userAgent || "");
