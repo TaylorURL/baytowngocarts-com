@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { supabaseClient } from "../lib/supabase";
+import {
+  hasStoredSession,
+  onSupabaseClient,
+  supabaseClient,
+} from "../lib/supabase";
 /** @returns {{ user: object|null, loading: boolean, signIn: Function, signUp: Function, signOut: Function }} */
 export function useAuth() {
   const [user, setUser] = useState(null);
@@ -10,25 +14,40 @@ export function useAuth() {
     // be unsubscribed by whichever of the two happens second.
     let cancelled = false;
     let subscription = null;
-    supabaseClient()
-      .then((client) => {
+    let stopWaiting = null;
+    const attach = (client) => {
+      if (cancelled) return;
+      client.auth.getUser().then(({ data }) => {
         if (cancelled) return;
-        client.auth.getUser().then(({ data }) => {
-          if (cancelled) return;
-          setUser(data?.user ?? null);
-          setLoading(false);
-        });
-        subscription = client.auth.onAuthStateChange((event, session) => {
-          setUser(session?.user ?? null);
-          setLoading(false);
-        }).data.subscription;
-        if (cancelled) subscription.unsubscribe();
-      })
-      .catch(() => {
-        if (!cancelled) setLoading(false);
+        setUser(data?.user ?? null);
+        setLoading(false);
       });
+      subscription = client.auth.onAuthStateChange((event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }).data.subscription;
+      if (cancelled) subscription.unsubscribe();
+    };
+    // Asking for a client is asking for the auth library, and the header asks
+    // on every route - so the front page pulled a library the size of the rest
+    // of its first screen to establish that the reader has no account. A
+    // browser with no session in storage cannot be signed in, and that answer
+    // is already on the machine. The library is still fetched the moment
+    // anybody signs in, here or anywhere else on the page, and this attaches
+    // to the client that call builds.
+    if (hasStoredSession()) {
+      supabaseClient()
+        .then(attach)
+        .catch(() => {
+          if (!cancelled) setLoading(false);
+        });
+    } else {
+      setLoading(false);
+      stopWaiting = onSupabaseClient(attach);
+    }
     return () => {
       cancelled = true;
+      if (stopWaiting) stopWaiting();
       if (subscription) subscription.unsubscribe();
     };
   }, []);

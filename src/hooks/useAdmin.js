@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
-import { supabaseClient } from "../lib/supabase";
+import {
+  hasStoredSession,
+  onSupabaseClient,
+  supabaseClient,
+} from "../lib/supabase";
 /** @returns {{ isStaff: boolean, loading: boolean, refetch: Function }} */
 export function useAdmin() {
   const [isStaff, setIsStaff] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    checkStaffStatus();
+    // The same gate the auth hook keeps, for the same reason: this runs beside
+    // it on every route through the header, and reaching for a client here
+    // fetches the auth library whether or not the reader has an account.
+    // Nobody is staff without being signed in first, so a browser holding no
+    // session answers the question on its own, and the check runs against the
+    // client a sign-in on this page builds.
+    if (hasStoredSession()) {
+      checkStaffStatus();
+      return undefined;
+    }
+    setIsStaff(false);
+    setLoading(false);
+    return onSupabaseClient(() => checkStaffStatus());
   }, []);
   const checkStaffStatus = async () => {
     try {
