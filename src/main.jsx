@@ -5,6 +5,7 @@ import "./styles/fonts.css";
 import "./styles/Theme.css";
 import "./index.css";
 import ErrorBoundary from "./components/common/ErrorBoundary.jsx";
+import { startFontWeights } from "./lib/fonts.js";
 import { startReveals } from "./lib/reveal.js";
 import { PRERENDER_PATHS } from "./routes.js";
 const root = document.getElementById("root");
@@ -46,4 +47,5 @@ if (isPrerendered && root.firstChild && !rewritesMarkup) {
   createRoot(root).render(tree);
 }
 
+startFontWeights();
 startReveals();
