@@ -8,9 +8,10 @@
  * declaring them beside the rest put three files and 68 KB at the front of the
  * queue, on the same link the hero is still coming down. src/lib/fonts.js asks
  * for this sheet once the page has arrived, which is the first moment the type
- * it sets is worth the bandwidth. Until then those lines set in the
- * metric-matched fallback, which is the substitution every face on this site
- * already makes while it waits.
+ * it sets is worth the bandwidth. Until then the family has one face declared,
+ * weight 400, and every line here sets in it, darkened by the browser where it
+ * asked for a bolder cut. The stand-in at the foot of fonts.css stands in for
+ * a family with nothing loaded at all, and does not come up.
  */
 @font-face {
   font-family: "Barlow";

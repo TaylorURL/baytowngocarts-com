@@ -11,8 +11,8 @@
  * wants that weight - and the heavier Barlow cuts are set on the utility rail,
  * in the footer and on the cards further down, none of which a reader is
  * waiting on. Those live in barlow-weights.css, attached after the page has
- * arrived, and until it lands they set in the stand-ins at the foot of this
- * file.
+ * arrived; until it lands the browser sets those lines in the 400 declared
+ * here and darkens the bolder ones itself.
  */
 @font-face {
   font-family: "Bebas Neue";
