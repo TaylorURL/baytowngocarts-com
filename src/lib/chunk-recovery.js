@@ -11,8 +11,17 @@
  *
  * The document is what pins a build, so a reload settles it. One reload per
  * tab is allowed, which is enough for a chunk that moved and not enough for a
- * chunk that is genuinely missing to become a loop. A load that succeeds
- * afterwards releases the allowance, so the next deploy gets its own.
+ * chunk that is genuinely missing to become a loop. The chunk the reload was
+ * spent on releases the allowance once it does arrive, so the next deploy
+ * gets its own.
+ *
+ * Which chunk that was is written into the mark, because a document loads
+ * more than one and only one of them is the one that failed. A route chunk
+ * resolves at hydration and anything deferred is asked for seconds later, so
+ * an allowance released on any success at all is the loader that worked
+ * handing it back to the loader that did not: spend, reload, release, fail,
+ * spend again, for as long as the visitor leaves the page open. A loader
+ * takes the allowance back only when the mark is its own.
  *
  * The refresh is announced on every stale-chunk rejection, whether or not the
  * reload proceeds. The page reporter uses the event to drop the held asset
@@ -33,23 +42,24 @@ const REFRESH_EVENT = "speedway146:build-refresh";
    an allowance already spent. */
 function reloadSpent() {
   try {
-    return sessionStorage.getItem(RELOAD_MARK) === "1";
+    return sessionStorage.getItem(RELOAD_MARK) !== null;
   } catch {
     return true;
   }
 }
 
-function spendReload() {
+function spendReload(chunk) {
   try {
-    sessionStorage.setItem(RELOAD_MARK, "1");
+    sessionStorage.setItem(RELOAD_MARK, chunk);
   } catch {
     // Nothing to spend when the store is closed to us.
   }
 }
 
-function releaseReload() {
+function releaseReload(chunk) {
   try {
-    sessionStorage.removeItem(RELOAD_MARK);
+    if (sessionStorage.getItem(RELOAD_MARK) === chunk)
+      sessionStorage.removeItem(RELOAD_MARK);
   } catch {
     // Nothing to release when the store is closed to us.
   }
@@ -63,17 +73,21 @@ function releaseReload() {
  * @returns {() => Promise<unknown>} The same loader, with the refresh attached.
  */
 export function withBuildRefresh(loader) {
+  /* A loader names itself by its own source, which carries the built filename
+     of the chunk it asks for: different for every wrapped loader, and the same
+     string in every document a build serves. */
+  const chunk = String(loader);
   return () =>
     loader().then(
       (module) => {
-        releaseReload();
+        releaseReload(chunk);
         return module;
       },
       (error) => {
         if (typeof window === "undefined") throw error;
         window.dispatchEvent(new Event(REFRESH_EVENT));
         if (reloadSpent()) throw error;
-        spendReload();
+        spendReload(chunk);
         window.location.reload();
         /* The reload is already under way. Settling this promise either way
            would only put something on screen for the instant before it. */
