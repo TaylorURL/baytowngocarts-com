@@ -29,12 +29,12 @@ export function useAuth() {
       if (cancelled) subscription.unsubscribe();
     };
     // Asking for a client is asking for the auth library, and the header asks
-    // on every route - so the front page pulled a library the size of the rest
-    // of its first screen to establish that the reader has no account. A
-    // browser with no session in storage cannot be signed in, and that answer
-    // is already on the machine. The library is still fetched the moment
-    // anybody signs in, here or anywhere else on the page, and this attaches
-    // to the client that call builds.
+    // on every route - so a front page with nobody signed in would pull a
+    // library the size of the rest of its first screen to establish exactly
+    // that. A browser with no session in storage cannot be signed in, and that
+    // answer is already on the machine. The library is still fetched the
+    // moment anybody signs in, here or anywhere else on the page, and this
+    // attaches to the client that call builds.
     if (hasStoredSession()) {
       supabaseClient()
         .then(attach)

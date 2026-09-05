@@ -40,8 +40,13 @@ export const supabaseClient = async () => {
   return building;
 };
 
+/* What a session looks like arriving in a URL: the tokens the project's own
+   redirect carries in the fragment, and the codes it carries instead when the
+   link had expired or been used. */
+const URL_SESSION = /(?:^|[#?&])(?:access_token|error_code|error_description)=/;
+
 /**
- * Whether this browser is holding a session at all.
+ * Whether this browser is holding a session, or is being handed one.
  *
  * The library persists one in localStorage under a key it derives from the
  * project URL, and splits a long one across numbered siblings, so this asks
@@ -51,7 +56,17 @@ export const supabaseClient = async () => {
  * to give it: the header asks on every route, and the visitor it asks about is
  * usually somebody with no account reading the front page.
  *
- * @returns {boolean} whether a stored session could exist
+ * Storage is not the only way a session arrives. Somebody following a link the
+ * project mailed - a confirmation, a recovery, an invite - lands with the
+ * tokens in the URL and nothing in storage yet, and the library reads them out
+ * of the URL while it is being built, so they are read only if something asks
+ * for a client to read them. That arrival is the one where storage gives the
+ * wrong answer, so the URL is asked as well. The code half of the same
+ * exchange needs no clause here: it leaves its verifier under a key the scan
+ * below already matches, and a code with no verifier behind it is not a
+ * session this browser can finish.
+ *
+ * @returns {boolean} whether a session could be waiting for the library
  */
 export const hasStoredSession = () => {
   try {
@@ -65,7 +80,10 @@ export const hasStoredSession = () => {
     // Storage the browser will not open is storage the library could not have
     // written a session into either.
   }
-  return false;
+  return (
+    URL_SESSION.test(window.location.hash) ||
+    URL_SESSION.test(window.location.search)
+  );
 };
 
 /**

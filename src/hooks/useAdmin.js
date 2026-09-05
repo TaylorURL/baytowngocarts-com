@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  hasStoredSession,
-  onSupabaseClient,
-  supabaseClient,
-} from "../lib/supabase";
+import { hasStoredSession, supabaseClient } from "../lib/supabase";
 /** @returns {{ isStaff: boolean, loading: boolean, refetch: Function }} */
 export function useAdmin() {
   const [isStaff, setIsStaff] = useState(false);
@@ -13,15 +9,16 @@ export function useAdmin() {
     // it on every route through the header, and reaching for a client here
     // fetches the auth library whether or not the reader has an account.
     // Nobody is staff without being signed in first, so a browser holding no
-    // session answers the question on its own, and the check runs against the
-    // client a sign-in on this page builds.
-    if (hasStoredSession()) {
-      checkStaffStatus();
-      return undefined;
+    // session answers the question on its own. The check is a mount effect
+    // either way, so signing in without leaving the page leaves the staff
+    // links out of the header until the next load - and the panels that guard
+    // on this hook mount their own copy of it, which reads the session the
+    // sign-in stored.
+    if (!hasStoredSession()) {
+      setLoading(false);
+      return;
     }
-    setIsStaff(false);
-    setLoading(false);
-    return onSupabaseClient(() => checkStaffStatus());
+    checkStaffStatus();
   }, []);
   const checkStaffStatus = async () => {
     try {
