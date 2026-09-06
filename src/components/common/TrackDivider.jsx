@@ -764,7 +764,11 @@ const TrackDivider = ({ className = "", sign = false }) => {
   const stretch = stretchFor(pathname);
 
   return (
-    <div className={className} aria-hidden="true">
+    /* The band is scenery and nothing in it is a target, so it takes no
+       clicks. Its shading reaches 11rem above the drawing, over ground the
+       hero puts its own controls on, and an element that paints there without
+       saying this swallows every one of them. */
+    <div className={`pointer-events-none ${className}`} aria-hidden="true">
       {/* The photograph above settles into the scene rather than being cut off
           by it: the ground darkens on the way down to the track, so the band is
           the floor of the hero and not a strip parked under it. It sits behind

@@ -45,7 +45,10 @@ const BLADES = (() => {
 })();
 
 const TurfFringe = ({ className = "" }) => (
-  <div className={className} aria-hidden="true">
+  /* Grass in front of a section is scenery, and the shadow it hangs over the
+     top of that section is scenery too. Neither takes a click off whatever the
+     section puts under them. */
+  <div className={`pointer-events-none ${className}`} aria-hidden="true">
     <div className="h-28 bg-gradient-to-b from-asphalt-950/50 to-transparent" />
     <svg
       className="absolute inset-x-0 top-0 h-5 w-full md:h-6"
