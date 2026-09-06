@@ -102,7 +102,6 @@ const AboutPage = () => (
       crumbs={metadata.crumbs}
       description="Speedway 146 is an outdoor go-kart track on TX-146 in Baytown. Seven years on the same patch of asphalt, the long version, in case you want it."
       backgroundImage="/images/16.webp"
-      dividerColorClass="bg-chalk"
     />
 
     <section className="py-20 bg-asphalt-900 text-chalk">

@@ -1,4 +1,6 @@
 import { Skeleton, SkeletonRegion } from "./Skeleton.jsx";
+import TrackDivider from "./TrackDivider.jsx";
+import TurfFringe from "./TurfFringe.jsx";
 
 /*
  * Holds a route's shape while its chunk arrives.
@@ -11,7 +13,7 @@ import { Skeleton, SkeletonRegion } from "./Skeleton.jsx";
  */
 const RouteFallback = () => (
   <SkeletonRegion label="Loading page" className="w-full -mt-20">
-    <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-20 min-h-[50dvh] flex items-center">
+    <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-44 md:pb-56 min-h-[var(--hero-height)] flex items-center">
       <div
         className="absolute inset-0 z-0 pointer-events-none asphalt-grain"
         aria-hidden="true"
@@ -28,11 +30,11 @@ const RouteFallback = () => (
           <Skeleton className="mx-auto h-6 w-full max-w-xl bg-asphalt-700" />
         </div>
       </div>
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider"
-        aria-hidden="true"
-      />
+      <TrackDivider className="absolute bottom-0 left-0 right-0 z-20" />
     </section>
+    <div className="relative z-20 h-0">
+      <TurfFringe className="absolute inset-x-0 top-0" />
+    </div>
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div className="max-w-3xl mx-auto text-center">
         <Skeleton className="mx-auto mb-5 h-4 w-32" />

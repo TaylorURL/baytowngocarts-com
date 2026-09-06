@@ -43,8 +43,6 @@ const OrdersHero = ({ count }) => (
     crumbs={metadata.crumbs}
     description="Race tickets, party packages, and bookings. Anything paid for shows up here."
     backgroundImage="/images/21.webp"
-    minHeightClass="min-h-[50dvh]"
-    dividerColorClass="bg-asphalt-50"
   >
     <div className="mt-8 flex flex-wrap justify-center gap-4">
       <div className="flex items-center gap-3 bg-asphalt-800/80 px-5 py-2.5 rounded-md border border-race-600/50">

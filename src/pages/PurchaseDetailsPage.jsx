@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import TrackDivider from "../components/common/TrackDivider.jsx";
+import TurfFringe from "../components/common/TurfFringe.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
@@ -122,7 +124,7 @@ export default function PurchaseDetailsPage() {
   return (
     <div className="w-full -mt-20">
       <RouteMeta metadata={metadata} />
-      <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-20 min-h-[40dvh] flex items-center">
+      <section className="relative bg-asphalt-900 overflow-hidden pt-32 pb-44 md:pb-56 min-h-[var(--hero-height)] flex items-center">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -160,8 +162,11 @@ export default function PurchaseDetailsPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-asphalt-50 speedway-divider" />
+        <TrackDivider className="absolute bottom-0 left-0 right-0 z-20" />
       </section>
+      <div className="relative z-20 h-0">
+        <TurfFringe className="absolute inset-x-0 top-0" />
+      </div>
 
       <section className="py-20 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

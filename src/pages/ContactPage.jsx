@@ -65,7 +65,6 @@ const ContactPage = () => (
       crumbs={metadata.crumbs}
       description="The fastest way to book is by phone. Parties, corporate slots, and group bookings are confirmed live. Form and email work too."
       backgroundImage="/images/14.webp"
-      dividerColorClass="bg-chalk"
     />
 
     <section className="py-20 bg-chalk">
