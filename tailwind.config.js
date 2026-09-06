@@ -100,6 +100,7 @@ export default {
           400: withAlpha("--color-caution-400"),
           500: withAlpha("--color-caution-500"),
         },
+        turf: ramp("turf", [300, 400, 500, 600, 700]),
         green: ramp("green", [50, 200, 600, 700]),
         silver: {
           light: withAlpha("--color-silver-light"),

@@ -72,7 +72,6 @@ const FAQHeroSection = ({ searchTerm, onSearchChange, filteredCount }) => (
     crumbs={metadata.crumbs}
     description="Hours, height requirements, refund policy, group discounts, weather rules. Search or scroll."
     backgroundImage="/images/15.webp"
-    dividerColorClass="bg-chalk"
   >
     <div className="mt-8 max-w-2xl mx-auto">
       <div className="relative">
@@ -127,7 +126,7 @@ const CategoryFilterBar = ({
 }) => (
   <section
     ref={stickyRef}
-    className={`py-4 border-b-2 sticky top-14 lg:top-28 z-docked transition-colors duration-base ease-snap ${
+    className={`py-4 border-b-2 sticky top-[var(--header-height)] z-docked transition-colors duration-base ease-snap ${
       isSticky
         ? "bg-asphalt-800 border-race-600"
         : "bg-chalk border-asphalt-100"

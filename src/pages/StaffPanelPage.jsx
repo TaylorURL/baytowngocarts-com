@@ -221,7 +221,6 @@ export default function StaffPanelPage() {
         crumbs={metadata.crumbs}
         description="Live order ledger. Search by order number, filter by date window, expand for line items."
         backgroundImage="/images/14.webp"
-        dividerColorClass="bg-asphalt-50"
       />
       <section className="py-12 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

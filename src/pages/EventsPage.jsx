@@ -117,7 +117,6 @@ const EventsPage = () => (
       crumbs={metadata.crumbs}
       description="Birthdays, corporate outings and Thursday specials are all run on the same track. Same venue, same karts, your group, your schedule."
       backgroundImage="/images/14.webp"
-      dividerColorClass="bg-chalk"
     >
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         {HERO_BADGES.map(({ icon, label }) => (

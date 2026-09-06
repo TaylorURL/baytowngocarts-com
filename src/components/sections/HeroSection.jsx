@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "../common/Button.jsx";
 import Icon from "../common/Icon.jsx";
 import StatTile from "../common/StatTile.jsx";
+import TrackDivider from "../common/TrackDivider.jsx";
 import Pill from "../common/Pill.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import RotatingText from "../reactbits/RotatingText.jsx";
@@ -37,7 +38,7 @@ const HeroSection = () => {
   return (
     <div
       data-hero
-      className="relative bg-asphalt-900 overflow-hidden min-h-dvh"
+      className="relative flex min-h-[var(--hero-height)] flex-col overflow-hidden bg-asphalt-900"
     >
       {/* Only the slide on screen and the one after it are mounted. Giving all
           five a file at once fetches every photograph before the first one has
@@ -108,147 +109,141 @@ const HeroSection = () => {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 md:pt-24 md:pb-32">
-        <div className="md:max-w-3xl">
-          <div className="flex items-center gap-3 mb-6" data-aos="fade">
-            <Pill variant="race" size="sm">
-              Outdoor Speedway · Open Thu to Sun
-            </Pill>
-          </div>
-          <h1
-            className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold text-chalk leading-[0.92] tracking-tight hero-text-shadow"
-            data-aos="fade"
-            data-aos-delay="100"
-          >
-            Real Karts.
-            <RotatingText
-              texts={["Real Speed.", "Real Racing.", "Full Throttle."]}
-              rotationInterval={2600}
-              staggerDuration={0.02}
-              splitLevelClassName="overflow-hidden"
-              mainClassName="block text-race-500 tracking-[-0.01em]"
-            />
-          </h1>
-          <div
-            className="mt-6 flex items-center gap-3"
-            aria-hidden="true"
-            data-aos="fade"
-            data-aos-delay="150"
-          >
-            <span className="block h-[2px] w-16 bg-gradient-to-r from-chalk/70 to-chalk/0 rounded-full" />
-            <span className="block h-2 w-8 race-stripe rounded-sm" />
-            <span className="block h-px flex-1 max-w-[140px] bg-chalk/15" />
-          </div>
-          <BlurText
-            text="Speedway 146 is Baytown's outdoor go-kart speedway on TX-146. 5-minute heats, family-friendly track, open Thursday through Sunday."
-            animateBy="words"
-            delay={30}
-            className="mt-6 text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed"
-          />
-          <div
-            className="mt-10 flex flex-col sm:flex-row gap-3"
-            data-aos="fade"
-            data-aos-delay="300"
-          >
-            <Magnet
-              padding={70}
-              magnetStrength={4}
-              innerClassName="w-full sm:w-auto"
-            >
-              <Button
-                to="/pricing"
-                size="lg"
-                variant="primary"
-                className="group"
+      <div className="relative z-10 flex flex-1 items-center">
+        <div className="mx-auto w-full max-w-7xl px-4 pb-6 pt-[5.5rem] sm:px-6 md:pt-28 lg:px-8 lg:pb-14">
+          <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-3 mb-5" data-aos="fade">
+                <Pill variant="race" size="sm">
+                  Outdoor Speedway · Open Thu to Sun
+                </Pill>
+              </div>
+              <h1
+                className="text-[2.75rem] md:text-6xl lg:text-7xl font-bold text-chalk leading-[0.92] tracking-tight hero-text-shadow"
+                data-aos="fade"
+                data-aos-delay="100"
               >
-                See Pricing
-                <Icon
-                  name="arrow-right"
-                  className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1.5"
+                Real Karts.
+                <RotatingText
+                  texts={["Real Speed.", "Real Racing.", "Full Throttle."]}
+                  rotationInterval={2600}
+                  staggerDuration={0.02}
+                  splitLevelClassName="overflow-hidden"
+                  mainClassName="block text-race-500 tracking-[-0.01em]"
                 />
-              </Button>
-            </Magnet>
-            <Button to="/contact" size="lg" variant="outlineLight">
-              Book a Party
-            </Button>
-          </div>
+              </h1>
+              <BlurText
+                text="Speedway 146 is Baytown's outdoor go-kart speedway on TX-146. 5-minute heats, family-friendly track, open Thursday through Sunday."
+                animateBy="words"
+                delay={30}
+                className="mt-5 text-base md:text-xl text-gray-300 max-w-xl leading-relaxed"
+              />
+              <div
+                className="mt-7 flex flex-col sm:flex-row gap-3"
+                data-aos="fade"
+                data-aos-delay="300"
+              >
+                <Magnet
+                  padding={70}
+                  magnetStrength={4}
+                  innerClassName="w-full sm:w-auto"
+                >
+                  <Button
+                    to="/pricing"
+                    size="lg"
+                    variant="primary"
+                    className="group"
+                  >
+                    See Pricing
+                    <Icon
+                      name="arrow-right"
+                      className="h-5 w-5 transition-transform duration-base ease-snap group-hover:translate-x-1.5"
+                    />
+                  </Button>
+                </Magnet>
+                <Button to="/contact" size="md" variant="outlineLight">
+                  Book a Party
+                </Button>
+              </div>
+            </div>
 
-          <div
-            className="mt-10 inline-flex flex-wrap items-stretch gap-0 rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm divide-x divide-chalk/10"
-            data-aos="fade"
-            data-aos-delay="400"
-          >
-            <a
-              href={CONTACT_INFO.phoneTel}
-              className="group inline-flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-200 hover:text-chalk transition-colors duration-base ease-snap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-race-500 focus-visible:ring-offset-2 focus-visible:ring-offset-asphalt-950 rounded-md"
-            >
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-race-600/15 text-race-500 group-hover:bg-race-600/25 transition-colors duration-base ease-snap">
-                <Icon name="phone" className="h-3.5 w-3.5" />
-              </span>
-              <span className="font-display tracking-speedway text-[13px] tabular-nums">
-                {CONTACT_INFO.phone}
-              </span>
-            </a>
-            <span className="inline-flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-200">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-race-600/15 text-race-500">
-                <Icon name="map-pin" className="h-3.5 w-3.5" />
-              </span>
-              <span className="font-display tracking-speedway text-[13px]">
-                {CONTACT_INFO.addressLine1} · Baytown
-              </span>
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-2xl" data-aos="fade" data-aos-delay="500">
-          <div className="flex items-center gap-3 mb-3">
-            <span
-              className="block h-[2px] w-10 bg-gradient-to-r from-chalk/0 via-chalk/70 to-chalk/0 rounded-full"
-              aria-hidden="true"
-            />
-            <span className="font-display tracking-speedway text-[10px] text-chalk/60 uppercase">
-              Track Telemetry
-            </span>
-            <span
-              className="block h-px flex-1 bg-chalk/10"
-              aria-hidden="true"
-            />
-            <span className="inline-flex items-center gap-1.5 font-display tracking-speedway text-[10px] text-race-500 uppercase">
-              Live
-            </span>
-          </div>
-          <div className="relative rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm shadow-track overflow-hidden">
-            <span
-              className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/40 to-transparent"
-              aria-hidden="true"
-            />
-            <div className="grid grid-cols-2 md:grid-cols-3 divide-x divide-chalk/10">
-              {HERO_STATS.map(({ value, label, className }, idx) => (
-                <div key={label} className="px-4 py-5 md:py-6">
-                  <StatTile
-                    value={value}
-                    label={label}
-                    accent={idx === 0 ? "race" : idx === 1 ? "ignite" : "chalk"}
-                    className={className ?? ""}
+            <div className="flex flex-col gap-5 lg:col-span-5">
+              <div
+                className="inline-flex flex-wrap items-stretch gap-0 rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm divide-x divide-chalk/10"
+                data-aos="fade"
+                data-aos-delay="400"
+              >
+                <a
+                  href={CONTACT_INFO.phoneTel}
+                  className="group inline-flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-200 hover:text-chalk transition-colors duration-base ease-snap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-race-500 focus-visible:ring-offset-2 focus-visible:ring-offset-asphalt-950 rounded-md"
+                >
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-race-600/15 text-race-500 group-hover:bg-race-600/25 transition-colors duration-base ease-snap">
+                    <Icon name="phone" className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="font-display tracking-speedway text-[13px] tabular-nums">
+                    {CONTACT_INFO.phone}
+                  </span>
+                </a>
+                <span className="inline-flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-200">
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-sm bg-race-600/15 text-race-500">
+                    <Icon name="map-pin" className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="font-display tracking-speedway text-[13px]">
+                    {CONTACT_INFO.addressLine1} · Baytown
+                  </span>
+                </span>
+              </div>
+              <div
+                className="hidden md:block"
+                data-aos="fade"
+                data-aos-delay="500"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <span
+                    className="block h-[2px] w-10 bg-gradient-to-r from-chalk/0 via-chalk/70 to-chalk/0 rounded-full"
+                    aria-hidden="true"
+                  />
+                  <span className="font-display tracking-speedway text-[10px] text-chalk/60 uppercase">
+                    Track Telemetry
+                  </span>
+                  <span
+                    className="block h-px flex-1 bg-chalk/10"
+                    aria-hidden="true"
+                  />
+                  <span className="inline-flex items-center gap-1.5 font-display tracking-speedway text-[10px] text-race-500 uppercase">
+                    Live
+                  </span>
+                </div>
+                <div className="relative rounded-md border border-chalk/10 bg-asphalt-950/55 backdrop-blur-sm shadow-track overflow-hidden">
+                  <span
+                    className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/40 to-transparent"
+                    aria-hidden="true"
+                  />
+                  <div className="grid grid-cols-2 md:grid-cols-3 divide-x divide-chalk/10">
+                    {HERO_STATS.map(({ value, label, className }, idx) => (
+                      <div key={label} className="px-4 py-5 md:py-6">
+                        <StatTile
+                          value={value}
+                          label={label}
+                          accent={
+                            idx === 0 ? "race" : idx === 1 ? "ignite" : "chalk"
+                          }
+                          className={className ?? ""}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <span
+                    className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/20 to-transparent"
+                    aria-hidden="true"
                   />
                 </div>
-              ))}
+              </div>
             </div>
-            <span
-              className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-chalk/20 to-transparent"
-              aria-hidden="true"
-            />
           </div>
         </div>
       </div>
-      <div
-        className="absolute bottom-16 left-0 right-0 h-[3px] z-[6] caution-tape opacity-80"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-16 z-[6] bg-chalk speedway-divider"
-        aria-hidden="true"
-      />
+      <TrackDivider sign className="relative z-20 w-full" />
     </div>
   );
 };
