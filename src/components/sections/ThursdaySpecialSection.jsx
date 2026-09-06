@@ -1,6 +1,7 @@
 import Button from "../common/Button.jsx";
 import Icon from "../common/Icon.jsx";
 import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import TurfFringe from "../common/TurfFringe.jsx";
 import { THURSDAY_UNLIMITED_SPECIAL } from "../../lib/content/specials.js";
 
 const ThursdaySpecialSection = () => (
@@ -14,11 +15,13 @@ const ThursdaySpecialSection = () => (
       aria-hidden="true"
     />
 
-    {/* Tape plus inner rule, so the two edges read as one band. */}
-    <div className="absolute top-0 left-0 right-0" aria-hidden="true">
-      <div className="h-2 caution-tape" />
-      <div className="h-px bg-chalk/20" />
-    </div>
+    {/* Only the closing edge is tape now. The track crossing the top of the
+        section is the boundary the one above it used to be, and this is the
+        far side of that: the divider's verge ends in shadow, this picks the
+        shadow up at the value it ended on, and the blades stand in front of
+        the red so the two meet on grass rather than on a ruled line. */}
+    <TurfFringe className="absolute inset-x-0 top-0" />
+
     <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
       <div className="h-px bg-chalk/20" />
       <div className="h-2 caution-tape" />
@@ -95,61 +98,16 @@ const ThursdaySpecialSection = () => (
             </div>
           </div>
 
+          {/* What the section is selling costs one number, and the section
+              has already said what it buys and which day it runs. The plate
+              carries the number and the unit and stops there. */}
           <div className="lg:col-span-2" data-aos="fade" data-aos-delay="120">
-            <div className="relative">
-              <div
-                className="absolute -inset-1 rounded-lg bg-gradient-to-b from-chalk/20 via-transparent to-asphalt-950/40 blur-md"
-                aria-hidden="true"
-              />
-
-              <div className="relative bg-asphalt-950/80 border-2 border-chalk/25 rounded-lg shadow-lift backdrop-blur-sm overflow-hidden">
-                <div
-                  className="flex items-center justify-between px-5 py-2 border-b border-chalk/15 bg-asphalt-900/80"
-                  aria-hidden="true"
-                >
-                  <span className="font-display tracking-speedway text-[10px] text-chalk/50">
-                    Pit Board
-                  </span>
-                </div>
-
-                <div className="px-7 pt-7 pb-8 text-center">
-                  <div className="inline-flex items-center gap-2 bg-caution-400 text-asphalt-950 px-3 py-1 rounded-full text-[10px] font-display tracking-speedway uppercase mb-6 shadow-track">
-                    <Icon name="stopwatch" className="h-3.5 w-3.5" />
-                    Featured Special
-                  </div>
-
-                  <div className="flex items-center justify-center gap-3">
-                    <span
-                      className="hidden sm:block h-8 w-px bg-chalk/25"
-                      aria-hidden="true"
-                    />
-                    <div className="font-display text-7xl tracking-wide tabular-nums leading-none text-chalk">
-                      {THURSDAY_UNLIMITED_SPECIAL.price}
-                    </div>
-                    <span
-                      className="hidden sm:block h-8 w-px bg-chalk/25"
-                      aria-hidden="true"
-                    />
-                  </div>
-
-                  <div className="mt-3 text-sm text-chalk/75 tracking-wide">
-                    {THURSDAY_UNLIMITED_SPECIAL.perPerson}
-                  </div>
-
-                  <div className="mt-6 pt-5 border-t-2 border-chalk/15 flex items-center justify-center gap-3">
-                    <span
-                      className="block h-[3px] w-4 bg-caution-400 rounded-full"
-                      aria-hidden="true"
-                    />
-                    <span className="text-xs font-display tracking-speedway uppercase text-caution-300">
-                      Thursdays Only
-                    </span>
-                    <span
-                      className="block h-[3px] w-4 bg-caution-400 rounded-full"
-                      aria-hidden="true"
-                    />
-                  </div>
-                </div>
+            <div className="rounded-lg border-2 border-chalk/25 bg-asphalt-950/80 px-7 py-8 shadow-lift backdrop-blur-sm">
+              <div className="font-display text-7xl leading-none tracking-wide tabular-nums text-chalk">
+                {THURSDAY_UNLIMITED_SPECIAL.price}
+              </div>
+              <div className="mt-3 text-sm tracking-wide text-chalk/75">
+                {THURSDAY_UNLIMITED_SPECIAL.perPerson}
               </div>
             </div>
           </div>

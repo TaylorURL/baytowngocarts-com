@@ -445,10 +445,6 @@ main {
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
-
-  .speedway-divider {
-    clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
-  }
 }
 
 @keyframes fadeIn {

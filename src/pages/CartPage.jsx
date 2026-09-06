@@ -161,8 +161,6 @@ const CartHero = () => (
     crumbs={metadata.crumbs}
     description="Review the wristbands and packages here, then check out."
     backgroundImage={CART_HERO_IMAGE}
-    minHeightClass="min-h-[40dvh]"
-    dividerColorClass="bg-chalk"
   />
 );
 

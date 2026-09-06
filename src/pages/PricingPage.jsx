@@ -8,6 +8,7 @@ import {
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
+import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
 import { THURSDAY_UNLIMITED_SPECIAL } from "../lib/content/specials.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
@@ -227,7 +228,6 @@ const PricingPage = () => {
         crumbs={metadata.crumbs}
         description="Every price is before 8.25% Texas sales tax. Cash pays 4% less than card. Groups of 15+ get 10% off racing automatically."
         backgroundImage="/images/16.webp"
-        dividerColorClass="bg-asphalt-50"
       >
         <div
           role="tablist"
@@ -255,27 +255,37 @@ const PricingPage = () => {
         </div>
       </PageHero>
 
-      <section className="py-10 bg-asphalt-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto rounded-lg border-2 border-race-500 bg-gradient-to-br from-race-700 via-race-600 to-race-700 text-chalk shadow-lift overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 p-6 md:p-8">
-              <div className="md:col-span-2">
-                <div className="inline-flex items-center gap-2 bg-caution-400 text-asphalt-950 px-3 py-1 rounded-full text-[10px] font-display tracking-speedway uppercase mb-3">
-                  <Icon name="stopwatch" className="h-3.5 w-3.5" />
-                  {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
-                </div>
-                <h2 className="font-display text-3xl md:text-4xl tracking-tight leading-tight">
-                  {THURSDAY_UNLIMITED_SPECIAL.title}
-                </h2>
-                <p className="mt-2 text-chalk/85 text-sm md:text-base leading-relaxed">
-                  {THURSDAY_UNLIMITED_SPECIAL.description}
-                </p>
-              </div>
-              <div className="text-center md:text-right">
-                <div className="font-display text-5xl md:text-6xl tracking-wide tabular-nums leading-none text-chalk">
+      {/* The headline offer is a band the page runs through, not a card
+          floating on one. Same plate as the home page gives it, so the two
+          pages state the price the same way. */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-race-700 via-race-600 to-race-700 py-14 text-chalk">
+        <div
+          className="pointer-events-none absolute inset-0 asphalt-grain opacity-25"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 race-stripe opacity-[0.06] mix-blend-overlay"
+          aria-hidden="true"
+        />
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-5 lg:gap-12">
+            <div className="flex flex-col gap-4 lg:col-span-3">
+              <SectionEyebrow tone="dark" className="text-chalk/90">
+                {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
+              </SectionEyebrow>
+              <h2 className="font-display text-3xl leading-[0.95] tracking-tight md:text-5xl">
+                {THURSDAY_UNLIMITED_SPECIAL.title}
+              </h2>
+              <p className="max-w-xl leading-relaxed text-chalk/85">
+                {THURSDAY_UNLIMITED_SPECIAL.description}
+              </p>
+            </div>
+            <div className="lg:col-span-2">
+              <div className="rounded-lg border-2 border-chalk/25 bg-asphalt-950/80 px-7 py-8 shadow-lift backdrop-blur-sm">
+                <div className="font-display text-6xl leading-none tracking-wide tabular-nums text-chalk">
                   {THURSDAY_UNLIMITED_SPECIAL.price}
                 </div>
-                <div className="mt-2 text-xs text-chalk/80">
+                <div className="mt-3 text-sm tracking-wide text-chalk/75">
                   {THURSDAY_UNLIMITED_SPECIAL.perPerson}
                 </div>
               </div>

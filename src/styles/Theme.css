@@ -12,6 +12,8 @@
  *   race    — racing red. Primary brand colour, CTAs and accents.
  *   ignite  — pit-lane orange. Secondary accent for warmth and momentum.
  *   caution — highway caution yellow. Reserved for genuine warnings.
+ *   turf    — the grass beside the track. Ground, never a signal, which
+ *             is why it sits apart from the success greens below.
  *   chalk   — warm white. Body surface in light mode.
  *   silver  — chrome/gunmetal for trim and dividers.
  */
@@ -63,6 +65,13 @@
   --color-silver-light: #cbd0d7;
   --color-silver: #8b95a5;
   --color-silver-dark: #5a6577;
+
+  /* Turf — the mown verge either side of the track */
+  --color-turf-700: #16301b;
+  --color-turf-600: #1f4425;
+  --color-turf-500: #2b5a31;
+  --color-turf-400: #37703d;
+  --color-turf-300: #4a8a50;
 
   /* Greens — for success / discount notices only */
   --color-green-700: #15803d;
@@ -249,6 +258,12 @@
       var(--header-bar) + var(--header-hairline) + var(--header-nav) +
       var(--header-nav-edge)
   );
+
+  /* A hero is as tall as the viewport it is given, so the track divider that
+     closes it lands on the fold on every page. Every page pulls its first
+     section 5rem up under the fixed header, which is that much more viewport
+     than the header's height alone would leave. */
+  --hero-height: calc(100dvh - var(--header-height) + 5rem);
 
   /* Iconography
    *
