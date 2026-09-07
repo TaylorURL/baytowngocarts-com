@@ -57,19 +57,15 @@ const PageHero = ({
           className="absolute inset-0 z-[3] bg-hero-vignette"
           aria-hidden="true"
         />
-        <div
-          className="absolute inset-0 z-[4] pointer-events-none opacity-60"
-          aria-hidden="true"
-        >
-          <ParticleField
-            particleCount={140}
-            particleSpread={12}
-            speed={0.06}
-            particleBaseSize={70}
-            alphaParticles
-            disableRotation
-          />
-        </div>
+        <ParticleField
+          layer="absolute inset-0 z-[4] pointer-events-none opacity-60"
+          particleCount={140}
+          particleSpread={12}
+          speed={0.06}
+          particleBaseSize={70}
+          alphaParticles
+          disableRotation
+        />
         {showStripe && (
           <div
             className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe"
