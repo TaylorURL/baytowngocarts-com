@@ -4,9 +4,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useCart } from "../../hooks/useCart";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 import NavDisclosure from "./NavDisclosure.jsx";
-import StartingLights from "./StartingLights.jsx";
+import StartingLights from "../decor/StartingLights.jsx";
 import UtilityStrip from "./UtilityStrip.jsx";
 import Wordmark from "./Wordmark.jsx";
 

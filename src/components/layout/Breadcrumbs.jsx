@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 /**
  * The trail from the front page to here.

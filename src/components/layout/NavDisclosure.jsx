@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 /*
  * A top-level destination that opens the sections beneath it.

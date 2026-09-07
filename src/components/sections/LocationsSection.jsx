@@ -5,7 +5,7 @@ import {
   CONTACT_INFO,
   HOLIDAY_HOURS_NOTE,
 } from "../../lib/content/business.js";
-import Icon from "../common/Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 /**
  * The map, with its box held while the embed loads.

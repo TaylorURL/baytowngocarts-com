@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Route, Routes as RouterRoutes } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout.jsx";
-import RouteFallback from "./components/common/RouteFallback.jsx";
+import MainLayout from "./components/layout/MainLayout.jsx";
+import RouteFallback from "./components/shell/RouteFallback.jsx";
 import { BARE_ROUTES, HomePage, ROUTES } from "./routes.js";
 
 const Routes = () => (

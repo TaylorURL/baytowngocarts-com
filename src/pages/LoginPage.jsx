@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useToast } from "../hooks/useToast.js";
-import Button from "../components/common/Button";
-import Icon from "../components/common/Icon.jsx";
-import AuthShell from "../components/common/AuthShell.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import Button from "../components/ui/Button";
+import Icon from "../components/ui/Icon.jsx";
+import AuthShell from "../components/layout/AuthShell.jsx";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Sign In to Your Speedway 146 Account",

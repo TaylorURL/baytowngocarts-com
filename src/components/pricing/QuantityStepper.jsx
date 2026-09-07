@@ -1,4 +1,4 @@
-import Icon from "../common/Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 const STEPPER_SIZES = {
   sm: { button: "w-8 h-8", icon: "h-4 w-4", input: "w-12 py-1 text-sm" },

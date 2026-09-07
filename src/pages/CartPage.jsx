@@ -5,10 +5,10 @@ import { useAuth } from "../hooks/useAuth";
 import { supabaseClient } from "../lib/supabase";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Your Cart | Speedway 146 Go-Karts Baytown",

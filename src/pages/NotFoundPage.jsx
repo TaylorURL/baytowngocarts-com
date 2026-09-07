@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import Icon from "../components/common/Icon.jsx";
-import Pill from "../components/common/Pill.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import Pill from "../components/ui/Pill.jsx";
 import ParticleField from "../components/reactbits/ParticleField.jsx";
 import CountUp from "../components/reactbits/CountUp.jsx";
 import BlurText from "../components/reactbits/BlurText.jsx";
 import Magnet from "../components/reactbits/Magnet.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Page Not Found | Speedway 146 Baytown",

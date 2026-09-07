@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Button from "../common/Button.jsx";
-import Icon from "../common/Icon.jsx";
-import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
+import SectionEyebrow from "../ui/SectionEyebrow.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 import { PARTY_PROMO } from "../../lib/content/party.js";
 import { srcSet } from "../../lib/images.js";

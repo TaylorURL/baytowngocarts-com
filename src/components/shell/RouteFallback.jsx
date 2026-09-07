@@ -1,6 +1,6 @@
-import { Skeleton, SkeletonRegion } from "./Skeleton.jsx";
-import TrackDivider from "./TrackDivider.jsx";
-import TurfFringe from "./TurfFringe.jsx";
+import { Skeleton, SkeletonRegion } from "../ui/Skeleton.jsx";
+import TrackDivider from "../decor/TrackDivider.jsx";
+import TurfFringe from "../decor/TurfFringe.jsx";
 
 /*
  * Holds a route's shape while its chunk arrives.

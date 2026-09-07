@@ -1,7 +1,7 @@
-import Button from "../common/Button.jsx";
-import Icon from "../common/Icon.jsx";
-import SectionEyebrow from "../common/SectionEyebrow.jsx";
-import TurfFringe from "../common/TurfFringe.jsx";
+import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
+import SectionEyebrow from "../ui/SectionEyebrow.jsx";
+import TurfFringe from "../decor/TurfFringe.jsx";
 import { THURSDAY_UNLIMITED_SPECIAL } from "../../lib/content/specials.js";
 
 const ThursdaySpecialSection = () => (

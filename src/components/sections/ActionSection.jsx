@@ -1,6 +1,6 @@
-import Button from "../common/Button.jsx";
-import Pill from "../common/Pill.jsx";
-import Icon from "../common/Icon.jsx";
+import Button from "../ui/Button.jsx";
+import Pill from "../ui/Pill.jsx";
+import Icon from "../ui/Icon.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import Magnet from "../reactbits/Magnet.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";

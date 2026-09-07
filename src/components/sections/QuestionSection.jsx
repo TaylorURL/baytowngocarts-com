@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Icon from "../common/Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 const QuestionSection = ({ faq }) => {
   const [isOpen, setIsOpen] = useState(false);

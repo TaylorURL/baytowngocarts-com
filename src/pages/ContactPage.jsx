@@ -1,12 +1,12 @@
 import ContactForm from "../components/forms/ContactForm.jsx";
 import LocationsSection from "../components/sections/LocationsSection.jsx";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
-import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
+import SectionEyebrow from "../components/ui/SectionEyebrow.jsx";
 import Magnet from "../components/reactbits/Magnet.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Contact & Directions | Speedway 146 Baytown TX",

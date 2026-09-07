@@ -2,15 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../hooks/useAdmin";
 import { getTrafficStats } from "../hooks/useTraffic";
-import Icon from "../components/common/Icon.jsx";
-import StaffNav from "../components/common/StaffNav.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import StaffNav from "../components/layout/StaffNav.jsx";
 import {
   ListPanelSkeleton,
   SkeletonRegion,
   StatCardSkeleton,
-} from "../components/common/Skeleton.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+} from "../components/ui/Skeleton.jsx";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 import { formatShortDateTime } from "../lib/format.js";
 import { hourAt } from "../lib/timezone.js";
 

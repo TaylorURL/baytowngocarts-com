@@ -6,8 +6,8 @@ import FeatureSection from "../components/sections/FeatureSection.jsx";
 import AttractionsSection from "../components/sections/AttractionsSection.jsx";
 import TestimonialSection from "../components/sections/TestimonialSection.jsx";
 import ActionSection from "../components/sections/ActionSection.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Speedway 146 | Go-Kart Racing in Baytown, TX",

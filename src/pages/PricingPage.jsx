@@ -8,20 +8,20 @@ import {
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
-import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import SectionEyebrow from "../components/ui/SectionEyebrow.jsx";
 import { THURSDAY_UNLIMITED_SPECIAL } from "../lib/content/specials.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
 import useHydrated from "../hooks/useHydrated.js";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
 import SpotlightCard from "../components/reactbits/SpotlightCard.jsx";
 import TabButton from "../components/pricing/TabButton.jsx";
 import QuantityStepper from "../components/pricing/QuantityStepper.jsx";
 import RacingProductCard from "../components/pricing/RacingProductCard.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL, productSchema } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL, productSchema } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Go-Kart Prices & Wristbands | Speedway 146 Baytown",
