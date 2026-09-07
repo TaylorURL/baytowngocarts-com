@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Button from "../common/Button.jsx";
-import Icon from "../common/Icon.jsx";
-import StatTile from "../common/StatTile.jsx";
-import TrackDivider from "../common/TrackDivider.jsx";
-import Pill from "../common/Pill.jsx";
+import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
+import StatTile from "../ui/StatTile.jsx";
+import TrackDivider from "../decor/TrackDivider.jsx";
+import Pill from "../ui/Pill.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import RotatingText from "../reactbits/RotatingText.jsx";
 import BlurText from "../reactbits/BlurText.jsx";

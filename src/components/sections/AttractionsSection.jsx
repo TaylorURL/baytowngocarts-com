@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Icon from "../common/Icon.jsx";
-import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import Icon from "../ui/Icon.jsx";
+import SectionEyebrow from "../ui/SectionEyebrow.jsx";
 import { srcSet } from "../../lib/images.js";
 
 const ATTRACTIONS = [

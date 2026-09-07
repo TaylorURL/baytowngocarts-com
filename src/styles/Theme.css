@@ -267,7 +267,7 @@
 
   /* Iconography
    *
-   * One hand-drawn family in src/components/common/Icon.jsx: monoline
+   * One hand-drawn family in src/components/ui/Icon.jsx: monoline
    * outline, 1.75 stroke, 24x24 viewBox, currentColor, rounded caps. No
    * icon library, no mixing fills with outlines, no emoji.
    *

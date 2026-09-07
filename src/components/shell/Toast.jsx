@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ToastContext } from "../../hooks/useToast.js";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 /*
  * Transient feedback, bottom right, gone on its own.

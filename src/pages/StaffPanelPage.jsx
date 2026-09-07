@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabaseClient } from "../lib/supabase";
 import { formatShortDateTime, formatCents } from "../lib/format.js";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
-import StatusBadge from "../components/common/StatusBadge.jsx";
-import StaffNav from "../components/common/StaffNav.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
+import StatusBadge from "../components/ui/StatusBadge.jsx";
+import StaffNav from "../components/layout/StaffNav.jsx";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 import { midnightOn, partsAt } from "../lib/timezone.js";
 
 export const metadata = {

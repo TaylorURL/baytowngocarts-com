@@ -1,6 +1,6 @@
-import Pill from "./Pill.jsx";
-import TrackDivider from "./TrackDivider.jsx";
-import TurfFringe from "./TurfFringe.jsx";
+import Pill from "../ui/Pill.jsx";
+import TrackDivider from "../decor/TrackDivider.jsx";
+import TurfFringe from "../decor/TurfFringe.jsx";
 import Breadcrumbs from "./Breadcrumbs.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import { photoSize, srcSet } from "../../lib/images.js";

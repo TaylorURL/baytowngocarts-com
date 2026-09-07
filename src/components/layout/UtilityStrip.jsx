@@ -1,5 +1,5 @@
 import { CONTACT_INFO } from "../../lib/content/business.js";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 /*
  * The rail above the bar. It carries what a visitor needs from the venue

@@ -1,4 +1,4 @@
-import { BRAND } from "./brand.js";
+import { BRAND } from "../content/brand.js";
 import { photoSize, srcSet } from "../images.js";
 import {
   SHARE_IMAGE,
@@ -6,7 +6,7 @@ import {
   breadcrumbSchema,
   localBusinessSchema,
   websiteSchema,
-} from "./seo.js";
+} from "./schema.js";
 
 /** The width both heroes ask for, each painting its photograph full bleed. */
 const HERO_SIZES = "100vw";

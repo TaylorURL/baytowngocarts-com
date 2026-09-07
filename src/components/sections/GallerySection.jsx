@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Icon from "../common/Icon.jsx";
-import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import Icon from "../ui/Icon.jsx";
+import SectionEyebrow from "../ui/SectionEyebrow.jsx";
 import {
   GALLERY_IMAGES,
   GALLERY_IMAGES_PER_SLIDE,

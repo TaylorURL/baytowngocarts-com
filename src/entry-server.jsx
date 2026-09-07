@@ -2,11 +2,11 @@ import { StrictMode } from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import Routes from "./Routes.jsx";
-import ErrorBoundary from "./components/common/ErrorBoundary.jsx";
-import ScrollToTop from "./components/common/ScrollToTop.jsx";
-import { ToastProvider } from "./components/common/Toast.jsx";
+import ErrorBoundary from "./components/shell/ErrorBoundary.jsx";
+import ScrollToTop from "./components/shell/ScrollToTop.jsx";
+import { ToastProvider } from "./components/shell/Toast.jsx";
 import { ALL_ROUTES } from "./routes.js";
-import { takeHead } from "./lib/content/head-sink.js";
+import { takeHead } from "./lib/seo/head-sink.js";
 
 /**
  * Renders one route to markup and head at build time.

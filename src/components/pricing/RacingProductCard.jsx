@@ -1,6 +1,6 @@
 import { parsePriceString } from "../../lib/pricing.js";
 import { formatDollars } from "../../lib/format.js";
-import Icon from "../common/Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 import StarBorder from "../reactbits/StarBorder.jsx";
 import QuantityStepper from "./QuantityStepper.jsx";
 

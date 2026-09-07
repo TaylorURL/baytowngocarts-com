@@ -1,5 +1,5 @@
-import Icon from "../common/Icon.jsx";
-import SectionEyebrow from "../common/SectionEyebrow.jsx";
+import Icon from "../ui/Icon.jsx";
+import SectionEyebrow from "../ui/SectionEyebrow.jsx";
 import { TESTIMONIALS } from "../../lib/content/testimonials.js";
 
 const TestimonialSection = () => (

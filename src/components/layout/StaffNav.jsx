@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 const VIEWS = [
   { label: "Staff Panel", href: "/staff", icon: "shield" },

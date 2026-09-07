@@ -1,5 +1,9 @@
-import { BRAND } from "./brand.js";
-import { BUSINESS_HOURS, CONTACT_INFO, SOCIAL_URLS } from "./business.js";
+import { BRAND } from "../content/brand.js";
+import {
+  BUSINESS_HOURS,
+  CONTACT_INFO,
+  SOCIAL_URLS,
+} from "../content/business.js";
 
 export const SITE_URL = "https://baytowngokarts.com";
 export const SHARE_IMAGE = `${SITE_URL}/images/share-card.jpg`;

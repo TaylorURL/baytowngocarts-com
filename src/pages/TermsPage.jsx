@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import TrackDivider from "../components/common/TrackDivider.jsx";
-import TurfFringe from "../components/common/TurfFringe.jsx";
-import Icon from "../components/common/Icon.jsx";
-import Pill from "../components/common/Pill.jsx";
+import TrackDivider from "../components/decor/TrackDivider.jsx";
+import TurfFringe from "../components/decor/TurfFringe.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import Pill from "../components/ui/Pill.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL, articleSchema } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL, articleSchema } from "../lib/seo/schema.js";
 
 const UPDATED = "2026-03-15";
 const UPDATED_LABEL = "March 15, 2026";
