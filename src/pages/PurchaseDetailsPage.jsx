@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import TrackDivider from "../components/common/TrackDivider.jsx";
-import TurfFringe from "../components/common/TurfFringe.jsx";
+import TrackDivider from "../components/decor/TrackDivider.jsx";
+import TurfFringe from "../components/decor/TurfFringe.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabaseClient } from "../lib/supabase";
 import { formatLongDateTime, formatCents } from "../lib/format.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
-import Icon from "../components/common/Icon.jsx";
-import StatusBadge from "../components/common/StatusBadge.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import Icon from "../components/ui/Icon.jsx";
+import StatusBadge from "../components/ui/StatusBadge.jsx";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Order Details | Speedway 146 Baytown",

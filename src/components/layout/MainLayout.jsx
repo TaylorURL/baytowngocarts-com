@@ -1,11 +1,11 @@
 import { Suspense, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "../components/common/Header.jsx";
-import Footer from "../components/common/Footer.jsx";
+import Header from "./Header.jsx";
+import Footer from "./Footer.jsx";
 import SplitRail from "@taylorurl/split-rail";
-import ClickSpark from "../components/reactbits/ClickSpark.jsx";
-import RouteFallback from "../components/common/RouteFallback.jsx";
-import { useTrafficLogger } from "../hooks/useTraffic";
+import ClickSpark from "../reactbits/ClickSpark.jsx";
+import RouteFallback from "../shell/RouteFallback.jsx";
+import { useTrafficLogger } from "../../hooks/useTraffic";
 const MainLayout = () => {
   const location = useLocation();
   useTrafficLogger(location.pathname);

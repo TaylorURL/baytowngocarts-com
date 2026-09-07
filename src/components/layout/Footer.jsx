@@ -7,7 +7,7 @@ import {
   HOLIDAY_HOURS_NOTE,
   SOCIAL_URLS,
 } from "../../lib/content/business.js";
-import Icon from "./Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 import Wordmark from "./Wordmark.jsx";
 
 /*

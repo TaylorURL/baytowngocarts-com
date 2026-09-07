@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Button from "../common/Button.jsx";
-import Icon from "../common/Icon.jsx";
-import StatTile from "../common/StatTile.jsx";
-import TrackDivider from "../common/TrackDivider.jsx";
-import Pill from "../common/Pill.jsx";
+import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
+import StatTile from "../ui/StatTile.jsx";
+import TrackDivider from "../decor/TrackDivider.jsx";
+import Pill from "../ui/Pill.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import RotatingText from "../reactbits/RotatingText.jsx";
 import BlurText from "../reactbits/BlurText.jsx";
@@ -71,33 +71,29 @@ const HeroSection = () => {
         })}
       </div>
       <div
-        className="absolute inset-0 pointer-events-none z-[1] asphalt-grain opacity-70"
+        className="hero-overlay absolute inset-0 pointer-events-none z-[1] asphalt-grain opacity-70"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 z-[2] opacity-[0.06] checker-overlay"
+        className="hero-overlay absolute inset-0 z-[2] opacity-[0.06] checker-overlay"
         aria-hidden="true"
       />
+      <ParticleField
+        layer="absolute inset-0 z-[2] pointer-events-none opacity-70"
+        particleCount={180}
+        particleSpread={14}
+        speed={0.07}
+        particleBaseSize={80}
+        alphaParticles
+        disableRotation
+      />
       <div
-        className="absolute inset-0 z-[2] pointer-events-none opacity-70"
-        aria-hidden="true"
-      >
-        <ParticleField
-          particleCount={180}
-          particleSpread={14}
-          speed={0.07}
-          particleBaseSize={80}
-          alphaParticles
-          disableRotation
-        />
-      </div>
-      <div
-        className="absolute inset-0 z-[3] bg-gradient-to-b from-asphalt-950/55 via-transparent to-asphalt-950/85"
+        className="hero-overlay absolute inset-0 z-[3] bg-gradient-to-b from-asphalt-950/55 via-transparent to-asphalt-950/85"
         aria-hidden="true"
       />
       {/* Corners only — darkening the centre would dull the photography. */}
       <div
-        className="absolute inset-0 z-[3] pointer-events-none"
+        className="hero-overlay absolute inset-0 z-[3] pointer-events-none"
         aria-hidden="true"
         style={{
           background:
@@ -105,7 +101,7 @@ const HeroSection = () => {
         }}
       />
       <div
-        className="absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe"
+        className="hero-overlay absolute top-0 left-0 right-0 h-1.5 z-[5] race-stripe"
         aria-hidden="true"
       />
 

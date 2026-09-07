@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import Button from "../components/common/Button";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
+import Button from "../components/ui/Button";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
 import QuestionSection from "../components/sections/QuestionSection.jsx";
 import SpotlightCard from "../components/reactbits/SpotlightCard.jsx";
 import Magnet from "../components/reactbits/Magnet.jsx";
 import useHydrated from "../hooks/useHydrated.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
 import { FAQS } from "../lib/content/faqs.js";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Go-Kart FAQ | Age, Height & Rules at Speedway 146",

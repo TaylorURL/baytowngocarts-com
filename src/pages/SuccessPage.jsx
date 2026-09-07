@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Button from "../components/common/Button";
-import Icon from "../components/common/Icon.jsx";
-import AuthShell from "../components/common/AuthShell.jsx";
+import Button from "../components/ui/Button";
+import Icon from "../components/ui/Icon.jsx";
+import AuthShell from "../components/layout/AuthShell.jsx";
 import { useAuth } from "../hooks/useAuth";
 import { supabaseClient } from "../lib/supabase";
 import { useCart } from "../hooks/useCart";
 import { priceStringToCents } from "../lib/pricing.js";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Order Confirmed | Speedway 146 Baytown",

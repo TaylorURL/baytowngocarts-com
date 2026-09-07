@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.36.34-e11d2a?style=for-the-badge" alt="Version 2026.36.34" />
+  <img src="https://img.shields.io/badge/version-2026.37.0-e11d2a?style=for-the-badge" alt="Version 2026.37.0" />
   <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/Vite-6-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
@@ -130,10 +130,16 @@ baytowngocarts-com/
 │   ├── functions/             create-checkout, stripe-webhook (Deno)
 │   └── migrations/            the schema, as applied
 ├── src/
-│   ├── components/            common UI, marketing sections, pricing cards, forms,
-│   │                          reactbits (WebGL/motion effects)
+│   ├── components/
+│   │   ├── ui/                Button, Icon, Pill, Skeleton, and the other shared primitives
+│   │   ├── layout/            MainLayout, header, footer, navigation, page and auth shells
+│   │   ├── sections/          The marketing sections the pages are assembled from
+│   │   ├── decor/             The drawn track scenery: dividers, signs, turf, lights
+│   │   ├── shell/             ErrorBoundary, Toast, ScrollToTop, RouteMeta, RouteFallback
+│   │   ├── pricing/           Pricing cards, tabs, quantity steppers
+│   │   ├── forms/             ContactForm
+│   │   └── reactbits/         WebGL/motion effects
 │   ├── pages/                 Home, Pricing, Cart, Success, StaffPanel, Traffic, ...
-│   ├── layouts/               MainLayout: header, footer, pageview logging
 │   ├── routes.js              The one route table, read by router, build and prerender
 │   ├── main.jsx               Browser entry: attaches to a prerendered document, renders into an empty one
 │   ├── entry-server.jsx       Build-time render entry (react-dom/server)
@@ -147,10 +153,10 @@ baytowngocarts-com/
 │   │   ├── chunk-recovery.js  Reloads once when a stale chunk 404s after a deploy
 │   │   ├── supabase.js        Shared Supabase client
 │   │   ├── tokens.js          Reads palette tokens for the canvas effects
-│   │   └── content/           Hero, gallery, FAQs, testimonials, business info,
-│   │                          and the per-route SEO helpers
-│   ├── index.css              Element defaults, reveal states, and the shared utilities
-│   └── styles/                Theme.css design tokens, fonts.css face declarations
+│   │   ├── content/           Hero, gallery, FAQs, testimonials, business info
+│   │   └── seo/               Per-route head tags and the schema.org builders
+│   └── styles/                index.css element defaults and utilities, Theme.css
+│                              design tokens, fonts.css face declarations
 ├── scripts/
 │   └── prerender.js           Renders the static routes after the Vite build
 └── vercel.json                SPA rewrites, security headers, caching

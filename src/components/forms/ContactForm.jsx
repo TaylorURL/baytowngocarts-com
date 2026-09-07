@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "../common/Button.jsx";
-import Icon from "../common/Icon.jsx";
+import Button from "../ui/Button.jsx";
+import Icon from "../ui/Icon.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
 const INPUT_CLASS =

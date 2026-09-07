@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import Icon from "../components/common/Icon.jsx";
-import Pill from "../components/common/Pill.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import Pill from "../components/ui/Pill.jsx";
 import ParticleField from "../components/reactbits/ParticleField.jsx";
 import CountUp from "../components/reactbits/CountUp.jsx";
 import BlurText from "../components/reactbits/BlurText.jsx";
 import Magnet from "../components/reactbits/Magnet.jsx";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 
 export const metadata = {
   title: "Page Not Found | Speedway 146 Baytown",
@@ -49,19 +49,15 @@ const NotFoundPage = () => (
         className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-race-600/20 blur-3xl"
         aria-hidden="true"
       />
-      <div
-        className="absolute inset-0 z-[3] pointer-events-none opacity-60"
-        aria-hidden="true"
-      >
-        <ParticleField
-          particleCount={150}
-          particleSpread={13}
-          speed={0.07}
-          particleBaseSize={80}
-          alphaParticles
-          disableRotation
-        />
-      </div>
+      <ParticleField
+        layer="absolute inset-0 z-[3] pointer-events-none opacity-60"
+        particleCount={150}
+        particleSpread={13}
+        speed={0.07}
+        particleBaseSize={80}
+        alphaParticles
+        disableRotation
+      />
 
       <div
         className="relative z-10 container mx-auto px-4 text-center"

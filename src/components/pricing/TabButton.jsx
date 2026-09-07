@@ -1,4 +1,4 @@
-import Icon from "../common/Icon.jsx";
+import Icon from "../ui/Icon.jsx";
 
 const TabButton = ({ iconName, label, isActive, onSelect }) => (
   <button

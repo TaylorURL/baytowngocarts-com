@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { routeHead, tagSelector } from "../../lib/content/head.js";
-import { recordHead } from "../../lib/content/head-sink.js";
+import { routeHead, tagSelector } from "../../lib/seo/head.js";
+import { recordHead } from "../../lib/seo/head-sink.js";
 
 const MANAGED = "data-route-meta";
 

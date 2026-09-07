@@ -1,12 +1,12 @@
-import Button from "../components/common/Button.jsx";
-import Icon from "../components/common/Icon.jsx";
-import PageHero from "../components/common/PageHero.jsx";
-import SectionEyebrow from "../components/common/SectionEyebrow.jsx";
+import Button from "../components/ui/Button.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import PageHero from "../components/layout/PageHero.jsx";
+import SectionEyebrow from "../components/ui/SectionEyebrow.jsx";
 import SpotlightCard from "../components/reactbits/SpotlightCard.jsx";
 import Magnet from "../components/reactbits/Magnet.jsx";
 import { CONTACT_INFO } from "../lib/content/business.js";
-import RouteMeta from "../components/common/RouteMeta.jsx";
-import { SHARE_IMAGE, SITE_URL } from "../lib/content/seo.js";
+import RouteMeta from "../components/shell/RouteMeta.jsx";
+import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 import { srcSet } from "../lib/images.js";
 
 export const metadata = {

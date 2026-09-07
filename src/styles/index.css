@@ -390,6 +390,14 @@ main {
     mix-blend-mode: normal !important;
   }
 
+  /* A layer stripped of everything it draws is still a layer: five full-bleed
+     boxes stacked over the first screen, each one composited before the frame
+     can be shown, and together they held that frame for a second. The block
+     above takes away what they draw; this takes away the carrying of them. */
+  html[data-gpu="software"] .hero-overlay {
+    display: none;
+  }
+
   .asphalt-grain {
     pointer-events: none;
     background-image:

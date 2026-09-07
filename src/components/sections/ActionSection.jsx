@@ -1,6 +1,6 @@
-import Button from "../common/Button.jsx";
-import Pill from "../common/Pill.jsx";
-import Icon from "../common/Icon.jsx";
+import Button from "../ui/Button.jsx";
+import Pill from "../ui/Pill.jsx";
+import Icon from "../ui/Icon.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 import Magnet from "../reactbits/Magnet.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
@@ -20,19 +20,15 @@ const ActionSection = () => (
           "radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--accent-primary) 10%, transparent) 0%, color-mix(in srgb, var(--accent-primary) 4%, transparent) 30%, transparent 65%)",
       }}
     />
-    <div
-      className="absolute inset-0 pointer-events-none opacity-50"
-      aria-hidden="true"
-    >
-      <ParticleField
-        particleCount={130}
-        particleSpread={12}
-        speed={0.06}
-        particleBaseSize={70}
-        alphaParticles
-        disableRotation
-      />
-    </div>
+    <ParticleField
+      layer="absolute inset-0 pointer-events-none opacity-50"
+      particleCount={130}
+      particleSpread={12}
+      speed={0.06}
+      particleBaseSize={70}
+      alphaParticles
+      disableRotation
+    />
     <div
       className="absolute top-0 left-0 right-0 h-2 caution-tape"
       aria-hidden="true"
