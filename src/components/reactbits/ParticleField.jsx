@@ -11,16 +11,20 @@ const Particles = lazy(withBuildRefresh(() => import("./Particles.jsx")));
  * it sits behind - and on a machine without a GPU that drawing is rasterised
  * on the same thread the page is painting on. It waits for the page to arrive
  * and the browser to have a moment spare, the same wait the hero's next
- * photograph rides.
+ * photograph rides. The layer it draws into waits with it, because a box that
+ * covers the hero and holds nothing is still a box the first frame has to be
+ * composited around.
  */
-const ParticleField = (props) => {
+const ParticleField = ({ layer, ...props }) => {
   const [settled, setSettled] = useState(false);
   useEffect(() => whenStill(() => setSettled(true)), []);
   if (!settled) return null;
   return (
-    <Suspense fallback={null}>
-      <Particles {...props} />
-    </Suspense>
+    <div className={layer} aria-hidden="true">
+      <Suspense fallback={null}>
+        <Particles {...props} />
+      </Suspense>
+    </div>
   );
 };
 

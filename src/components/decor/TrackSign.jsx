@@ -95,7 +95,7 @@ const TrackSign = () => (
       <img
         src="/images/logo.webp"
         srcSet={logoSrcSet("/images/logo.webp", 512)}
-        sizes="144px"
+        sizes="(min-width: 768px) 74px, 44px"
         alt=""
         loading="eager"
         decoding="async"

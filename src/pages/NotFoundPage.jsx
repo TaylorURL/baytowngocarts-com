@@ -49,19 +49,15 @@ const NotFoundPage = () => (
         className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-race-600/20 blur-3xl"
         aria-hidden="true"
       />
-      <div
-        className="absolute inset-0 z-[3] pointer-events-none opacity-60"
-        aria-hidden="true"
-      >
-        <ParticleField
-          particleCount={150}
-          particleSpread={13}
-          speed={0.07}
-          particleBaseSize={80}
-          alphaParticles
-          disableRotation
-        />
-      </div>
+      <ParticleField
+        layer="absolute inset-0 z-[3] pointer-events-none opacity-60"
+        particleCount={150}
+        particleSpread={13}
+        speed={0.07}
+        particleBaseSize={80}
+        alphaParticles
+        disableRotation
+      />
 
       <div
         className="relative z-10 container mx-auto px-4 text-center"
