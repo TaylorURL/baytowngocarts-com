@@ -242,6 +242,55 @@
         window.addEventListener("speedway146:build-refresh", function () {
           heldAssets.length = 0;
         });
+        // The refresh above is announced by withBuildRefresh, which wraps the
+        // dynamic imports the routes are loaded through. A stylesheet is not
+        // one: it fails as an element error with no promise to reject and no
+        // loader to wrap, so nothing ever reached it. The hold therefore always
+        // expired on a stylesheet and the visitor was left reading an unstyled
+        // page with nothing bringing it back.
+        //
+        // The failed file is re-fetched past the cache before the reload, which
+        // is the part a plain reload does not do. A miss under /assets used to
+        // be answered with a year-long immutable response, so a browser that
+        // recorded one replays it from disk against a file the host is serving;
+        // only a request that bypasses the cache replaces that entry. The
+        // document itself is served must-revalidate, so the reload picks up new
+        // hashes on its own where the build really has moved on.
+        //
+        // One reload per tab, marked before it is taken and never released, so
+        // a file that is genuinely gone cannot loop. The gate is the mark being
+        // there at all rather than it naming this file: a document carries more
+        // than one stylesheet, and an allowance held per URL lets two that are
+        // both permanently gone hand it back and forth and reload forever. The
+        // URL is written as the value anyway, because which one spent it is the
+        // first thing worth knowing from a tab that is still broken.
+        //
+        // A store that cannot be written counts as already spent - an ungated
+        // reload is worse than an unstyled page - and the key is the stylesheet's
+        // own, so it can never spend the allowance chunk-recovery needs.
+        // Whenever the reload is not taken nothing is announced, so the hold
+        // expires and the failure reports as it did before: this recovers the
+        // visitor, it does not quiet the queue.
+        var STYLE_MARK = "speedway146:style-refresh";
+        function recoverStylesheet(url) {
+          try {
+            if (sessionStorage.getItem(STYLE_MARK) !== null) return;
+            sessionStorage.setItem(STYLE_MARK, url);
+          } catch (ignored) {
+            return;
+          }
+          window.dispatchEvent(new Event("speedway146:build-refresh"));
+          function proceed() {
+            try {
+              location.reload();
+            } catch (ignored) {}
+          }
+          try {
+            fetch(url, { cache: "reload" }).then(proceed, proceed);
+          } catch (ignored) {
+            proceed();
+          }
+        }
         // Leaving for any other reason ends the wait, so a page closed on a
         // real failure still reports it.
         window.addEventListener("pagehide", flushHeldAssets);
@@ -321,7 +370,16 @@
                   ": " +
                   source;
                 if (buildAsset(source)) {
+                  // Held first: the recovery clears the held failures as it
+                  // goes, and this one is only noise if the reload it is about
+                  // to take actually happens.
                   holdAsset(failure);
+                  if (
+                    event.target.tagName.toLowerCase() === "link" &&
+                    rel === "stylesheet"
+                  ) {
+                    recoverStylesheet(source);
+                  }
                 } else {
                   report("resource", failure);
                 }
