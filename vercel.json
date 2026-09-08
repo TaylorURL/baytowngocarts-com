@@ -6,6 +6,10 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/assets/(.*)",
+      "destination": "/api/asset-missing"
+    },
+    {
       "source": "/(cart|dashboard|staff|traffic|login|signup|success)",
       "destination": "/app"
     },
