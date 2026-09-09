@@ -4,7 +4,6 @@ import { useToast } from "../hooks/useToast.js";
 import { BOUNCE_PRICING } from "../lib/content/bounce.js";
 import {
   STRIPE_PRODUCTS,
-  STRIPE_DOUBLE_SEATER_PRODUCTS,
   STRIPE_PARTY_PACKAGES,
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
@@ -74,6 +73,7 @@ const HEIGHT_REQUIREMENTS = [
 
 const POLICY_LINES = [
   "Each race ticket = one full 5-minute heat",
+  "Double-seater kart = two race tickets, exchanged at the desk",
   "Timer stops for breakdowns or cautions",
   "Safety glasses provided, helmets always recommended",
   "All packages must be used same day",
@@ -82,24 +82,20 @@ const POLICY_LINES = [
 ];
 
 const getIconName = (product) => {
-  if (product.isDoubleSeater) return "users";
   if (product.isPartyPackage) return "flag";
   return "kart";
 };
 
 // Every bookable item on the page, as Product nodes under the venue, so a
 // result can carry the price a reader would otherwise have to open the page for.
-const PRICING_SCHEMA = [
-  ...STRIPE_PRODUCTS,
-  ...STRIPE_DOUBLE_SEATER_PRODUCTS,
-  ...STRIPE_PARTY_PACKAGES,
-].map((product) =>
-  productSchema({
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    url: "/pricing",
-  }),
+const PRICING_SCHEMA = [...STRIPE_PRODUCTS, ...STRIPE_PARTY_PACKAGES].map(
+  (product) =>
+    productSchema({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      url: "/pricing",
+    }),
 );
 
 const PricingPage = () => {
@@ -170,11 +166,7 @@ const PricingPage = () => {
     return () => root.style.removeProperty("--docked-reserve");
   }, [reserve]);
 
-  const allProducts = [
-    ...STRIPE_PRODUCTS,
-    ...STRIPE_DOUBLE_SEATER_PRODUCTS,
-    ...STRIPE_PARTY_PACKAGES,
-  ];
+  const allProducts = [...STRIPE_PRODUCTS, ...STRIPE_PARTY_PACKAGES];
 
   const totalPrice = allProducts.reduce(
     (sum, product) =>
@@ -570,29 +562,6 @@ const PricingPage = () => {
                       product.isPopular ? "text-race-600" : "text-asphalt-600"
                     }
                     features={product.features.slice(0, 2)}
-                    onUpdateQuantity={updateQuantity}
-                    onSetQuantity={setQuantityDirect}
-                  />
-                ))}
-              </div>
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-asphalt-900 mb-2">
-                  Double Seater Tickets
-                </h3>
-                <p className="text-asphalt-600 text-sm">
-                  One driver, one passenger. Driver 53"+, passenger 33"+.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl mx-auto mb-12">
-                {STRIPE_DOUBLE_SEATER_PRODUCTS.map((product) => (
-                  <RacingProductCard
-                    key={product.id}
-                    product={product}
-                    quantity={getQuantity(product.id)}
-                    iconName={getIconName(product)}
-                    iconWrapperClass="bg-asphalt-800"
-                    iconClass="text-chalk"
-                    perUnitLabel="per kart"
                     onUpdateQuantity={updateQuantity}
                     onSetQuantity={setQuantityDirect}
                   />

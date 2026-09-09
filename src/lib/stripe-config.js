@@ -30,15 +30,6 @@ const SINGLE_KART_TIERS = [
   { tickets: 50, price: "$399.99", perRace: "$8.00" },
 ];
 
-// Double-seater bundles: driver 53"+, passenger 33"+. Only tiers up to 6
-// tickets are confirmed against the price list.
-const DOUBLE_SEATER_TIERS = [
-  { tickets: 1, price: "$19.99", perRace: "$19.99" },
-  { tickets: 2, price: "$37.99", perRace: "$19.00" },
-  { tickets: 4, price: "$67.99", perRace: "$17.00", isPopular: true },
-  { tickets: 6, price: "$89.99", perRace: "$15.00" },
-];
-
 const buildKartTier = ({ tickets, price, perRace, isPopular }, slugPrefix) => {
   const ticketLabel = tickets === 1 ? "Ticket" : "Tickets";
   const slug = `${slugPrefix}_${tickets}`;
@@ -62,21 +53,9 @@ const SINGLE_KART_FEATURES = [
   "Full 5-min heats, timer pauses on cautions",
 ];
 
-const DOUBLE_SEATER_FEATURES = [
-  'Driver 53"+ / Passenger 33"+',
-  "One driver, one passenger",
-  "Same-day use",
-];
-
 const LIVE_PRODUCTS = SINGLE_KART_TIERS.map((tier) => ({
   ...buildKartTier(tier, "single_kart"),
   features: SINGLE_KART_FEATURES,
-}));
-
-const DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_TIERS.map((tier) => ({
-  ...buildKartTier(tier, "double_seater"),
-  features: DOUBLE_SEATER_FEATURES,
-  isDoubleSeater: true,
 }));
 
 const PARTY_PACKAGES = [
@@ -147,7 +126,6 @@ const PARTY_PACKAGES = [
 ];
 
 export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
-export const STRIPE_DOUBLE_SEATER_PRODUCTS = DOUBLE_SEATER_PRODUCTS;
 export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS
   ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS]
   : LIVE_PRODUCTS;

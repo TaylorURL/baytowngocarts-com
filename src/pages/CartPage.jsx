@@ -308,8 +308,7 @@ export default function CartPage() {
               Nothing in here yet
             </h2>
             <p className="text-asphalt-300 text-xl mb-8">
-              Racing wristbands, double-seaters and party packages are all on
-              the pricing page.
+              Racing wristbands and party packages are all on the pricing page.
             </p>
             <Link
               to="/pricing"
