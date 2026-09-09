@@ -35,11 +35,6 @@ const PRODUCT_PRICES: Record<string, number> = {
   prod_single_kart_25: 224.99,
   prod_single_kart_35: 297.99,
   prod_single_kart_50: 399.99,
-  // Double-seater ticket tiers
-  prod_double_seater_1: 19.99,
-  prod_double_seater_2: 37.99,
-  prod_double_seater_4: 67.99,
-  prod_double_seater_6: 89.99,
   // Party packages and upgrades
   prod_party_all_access: 699.0,
   prod_party_bounce_upgrade: 150.0,
