@@ -37,7 +37,7 @@ export const FAQS = [
   {
     question: "Do you have double-seater karts?",
     answer:
-      'Yes. We currently have one double-seater kart available. Driver must be 53"+ and passenger must be 33"+.',
+      'Yes. We currently have one double-seater kart available. Driver must be 53"+ and passenger must be 33"+. There is no separate double-seater ticket: exchange two race tickets at the front desk for one double-seater heat.',
     category: "Racing",
   },
   {
