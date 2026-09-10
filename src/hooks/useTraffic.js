@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { supabaseClient } from "../lib/supabase";
 import { whenSettled } from "../lib/idle.js";
-import { midnightOn, partsAt } from "../lib/timezone.js";
+import { midnightOn, partsAt, weekStartOn } from "../lib/timezone.js";
 /** How long a page view waits on geo enrichment before writing without it. */
 const GEO_LOOKUP_TIMEOUT_MS = 2000;
 /* A crawler's rendered visit is not the traffic this file exists to count, and
@@ -161,7 +161,7 @@ export const getTrafficStats = async (timeRange = "today") => {
     const { year, month, day } = partsAt(new Date());
     switch (timeRange) {
       case "week":
-        startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        startDate = weekStartOn(year, month, day);
         break;
       case "month":
         startDate = midnightOn(year, month, 1);

@@ -16,7 +16,6 @@ const ContactForm = () => {
     phone: "",
     eventDate: "",
     eventType: "",
-    guestCount: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
