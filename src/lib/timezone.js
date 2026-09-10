@@ -70,3 +70,27 @@ export const midnightOn = (year, month, day) => {
   const first = new Date(wall - offsetAt(new Date(wall)));
   return new Date(wall - offsetAt(first));
 };
+
+/**
+ * Midnight on the Sunday the week containing that day began.
+ *
+ * The panels put this range next to the month, the quarter and the year, all
+ * of which start where the calendar starts one. A rolling seven days back from
+ * now sits under the same heading and answers a different question, and the
+ * two disagree for six days out of seven.
+ *
+ * The weekday is read off the date the track's clock showed rather than off
+ * the reader's, and a day number at or below zero rolls back into the previous
+ * month on its own.
+ *
+ * @param {number} year
+ * @param {number} month 1 to 12.
+ * @param {number} day
+ * @returns {Date} midnight on that week's Sunday, here.
+ */
+export const weekStartOn = (year, month, day) =>
+  midnightOn(
+    year,
+    month,
+    day - new Date(Date.UTC(year, month - 1, day)).getUTCDay(),
+  );

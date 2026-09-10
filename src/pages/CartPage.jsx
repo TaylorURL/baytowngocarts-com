@@ -325,6 +325,7 @@ export default function CartPage() {
   const fees = calculateFees(getTotal(), totalItems);
   return (
     <div className="w-full -mt-20">
+      <RouteMeta metadata={metadata} />
       <CartHero />
       <section className="py-24 bg-asphalt-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
