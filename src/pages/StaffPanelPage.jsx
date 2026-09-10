@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabaseClient } from "../lib/supabase";
@@ -9,7 +9,7 @@ import StatusBadge from "../components/ui/StatusBadge.jsx";
 import StaffNav from "../components/layout/StaffNav.jsx";
 import RouteMeta from "../components/shell/RouteMeta.jsx";
 import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
-import { midnightOn, partsAt } from "../lib/timezone.js";
+import { midnightOn, partsAt, weekStartOn } from "../lib/timezone.js";
 
 export const metadata = {
   title: "Staff Panel | Speedway 146 Operations",
@@ -94,7 +94,7 @@ function getDateFilterStart(filterKey) {
     case "today":
       return midnightOn(year, month, day);
     case "week":
-      return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      return weekStartOn(year, month, day);
     case "month":
       return midnightOn(year, month, 1);
     case "quarter":
@@ -104,6 +104,67 @@ function getDateFilterStart(filterKey) {
     default:
       return null;
   }
+}
+// The line items behind one order. The table and the stacked cards are two
+// presentations of the same row and both open onto this, so what a staffer
+// reads after expanding does not depend on the width of the screen it opened
+// on.
+function OrderDetail({ order, onOpen }) {
+  return (
+    <div className="border-t border-asphalt-200 bg-asphalt-50 p-4 space-y-4">
+      <div className="flex items-center gap-2 text-sm text-asphalt-600">
+        <Icon name="mail" className="h-4 w-4 text-asphalt-400" />
+        <span>{order.customer_email || "N/A"}</span>
+      </div>
+      <div>
+        <h3 className="text-xs font-display tracking-speedway uppercase text-asphalt-500 mb-2">
+          Items
+        </h3>
+        <div className="space-y-2">
+          {order.items?.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex justify-between items-center bg-white rounded-md p-3 border border-asphalt-100"
+            >
+              <div>
+                <p className="font-medium text-asphalt-900 text-sm">
+                  {item.product_name}
+                </p>
+                <p className="text-xs text-asphalt-500 tabular-nums">
+                  {item.quantity} × {formatCents(item.price)}
+                </p>
+              </div>
+              <span className="font-bold text-asphalt-900 text-sm tabular-nums">
+                {formatCents(item.subtotal)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex justify-between items-center bg-white rounded-md p-3 border-2 border-asphalt-200">
+        <div>
+          <p className="font-display tracking-speedway uppercase text-xs text-asphalt-700">
+            Total
+          </p>
+          <p className="text-xs text-asphalt-500 tabular-nums">
+            {order.total_quantity}{" "}
+            {order.total_quantity > 1 ? "people" : "person"}
+          </p>
+        </div>
+        <span className="text-xl font-black text-race-600 tabular-nums">
+          {formatCents(order.total_amount)}
+        </span>
+      </div>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="w-full bg-race-600 hover:bg-race-500 text-chalk font-display tracking-speedway uppercase text-sm py-3 rounded-md transition-colors duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
+      >
+        <Icon name="eye" className="h-4 w-4" />
+        Full Order
+      </button>
+    </div>
+  );
 }
 export default function StaffPanelPage() {
   const navigate = useNavigate();
@@ -359,75 +420,90 @@ export default function StaffPanelPage() {
                       </thead>
                       <tbody>
                         {displayOrders.map((order) => (
-                          <tr
-                            key={order.id}
-                            className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors duration-base ease-snap"
-                          >
-                            <td className="py-4 px-4">
-                              <span className="font-mono text-sm font-semibold text-asphalt-900 tabular-nums">
-                                {order.order_number}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-sm text-asphalt-700">
-                                {order.customer_email || "N/A"}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-sm text-asphalt-700 tabular-nums">
-                                {order.items?.length || 0}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-sm font-semibold text-asphalt-900 tabular-nums">
-                                {order.total_quantity}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-sm font-bold text-green-600 tabular-nums">
-                                {formatCents(order.total_amount)}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <span className="text-xs text-asphalt-500 tabular-nums">
-                                {formatShortDateTime(order.created_at)}
-                              </span>
-                            </td>
-                            <td className="py-4 px-4">
-                              <StatusBadge status={order.status} />
-                            </td>
-                            <td className="py-4 px-4">
-                              <div className="flex items-center gap-4">
-                                <button
-                                  type="button"
-                                  onClick={() => toggleOrder(order.id)}
-                                  aria-expanded={expandedOrder === order.id}
-                                  className="text-asphalt-600 hover:text-asphalt-900 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
-                                >
-                                  <Icon
-                                    name="chevron-down"
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
+                          <Fragment key={order.id}>
+                            <tr className="border-b border-asphalt-100 hover:bg-asphalt-50 transition-colors duration-base ease-snap">
+                              <td className="py-4 px-4">
+                                <span className="font-mono text-sm font-semibold text-asphalt-900 tabular-nums">
+                                  {order.order_number}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <span className="text-sm text-asphalt-700">
+                                  {order.customer_email || "N/A"}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <span className="text-sm text-asphalt-700 tabular-nums">
+                                  {order.items?.length || 0}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <span className="text-sm font-semibold text-asphalt-900 tabular-nums">
+                                  {order.total_quantity}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <span className="text-sm font-bold text-green-600 tabular-nums">
+                                  {formatCents(order.total_amount)}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <span className="text-xs text-asphalt-500 tabular-nums">
+                                  {formatShortDateTime(order.created_at)}
+                                </span>
+                              </td>
+                              <td className="py-4 px-4">
+                                <StatusBadge status={order.status} />
+                              </td>
+                              <td className="py-4 px-4">
+                                <div className="flex items-center gap-4">
+                                  <button
+                                    type="button"
+                                    onClick={() => toggleOrder(order.id)}
+                                    aria-expanded={expandedOrder === order.id}
+                                    className="text-asphalt-600 hover:text-asphalt-900 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
+                                  >
+                                    <Icon
+                                      name="chevron-down"
+                                      className={`h-4 w-4 transition-transform duration-base ease-snap ${
+                                        expandedOrder === order.id
+                                          ? "rotate-180"
+                                          : ""
+                                      }`}
+                                      aria-hidden="true"
+                                    />
+                                    Items
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      navigate(`/purchase/${order.id}`)
+                                    }
+                                    className="text-race-600 hover:text-race-700 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
+                                  >
+                                    <Icon
+                                      name="eye"
+                                      className="h-4 w-4"
+                                      aria-hidden="true"
+                                    />
+                                    View
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {expandedOrder === order.id && (
+                              <tr className="border-b border-asphalt-100">
+                                <td colSpan={8} className="p-0">
+                                  <OrderDetail
+                                    order={order}
+                                    onOpen={() =>
+                                      navigate(`/purchase/${order.id}`)
+                                    }
                                   />
-                                  Items
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    navigate(`/purchase/${order.id}`)
-                                  }
-                                  className="text-race-600 hover:text-race-700 font-display tracking-speedway uppercase text-xs flex items-center gap-1 transition-colors duration-base ease-snap"
-                                >
-                                  <Icon
-                                    name="eye"
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
-                                  />
-                                  View
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                                </td>
+                              </tr>
+                            )}
+                          </Fragment>
                         ))}
                       </tbody>
                     </table>
@@ -469,64 +545,10 @@ export default function StaffPanelPage() {
                           </p>
                         </button>
                         {expandedOrder === order.id && (
-                          <div className="border-t border-asphalt-200 bg-asphalt-50 p-4 space-y-4">
-                            <div className="flex items-center gap-2 text-sm text-asphalt-600">
-                              <Icon
-                                name="mail"
-                                className="h-4 w-4 text-asphalt-400"
-                              />
-                              <span>{order.customer_email || "N/A"}</span>
-                            </div>
-                            <div>
-                              <h3 className="text-xs font-display tracking-speedway uppercase text-asphalt-500 mb-2">
-                                Items
-                              </h3>
-                              <div className="space-y-2">
-                                {order.items?.map((item, idx) => (
-                                  <div
-                                    key={idx}
-                                    className="flex justify-between items-center bg-white rounded-md p-3 border border-asphalt-100"
-                                  >
-                                    <div>
-                                      <p className="font-medium text-asphalt-900 text-sm">
-                                        {item.product_name}
-                                      </p>
-                                      <p className="text-xs text-asphalt-500 tabular-nums">
-                                        {item.quantity} ×{" "}
-                                        {formatCents(item.price)}
-                                      </p>
-                                    </div>
-                                    <span className="font-bold text-asphalt-900 text-sm tabular-nums">
-                                      {formatCents(item.subtotal)}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="flex justify-between items-center bg-white rounded-md p-3 border-2 border-asphalt-200">
-                              <div>
-                                <p className="font-display tracking-speedway uppercase text-xs text-asphalt-700">
-                                  Total
-                                </p>
-                                <p className="text-xs text-asphalt-500 tabular-nums">
-                                  {order.total_quantity}{" "}
-                                  {order.total_quantity > 1
-                                    ? "people"
-                                    : "person"}
-                                </p>
-                              </div>
-                              <span className="text-xl font-black text-race-600 tabular-nums">
-                                {formatCents(order.total_amount)}
-                              </span>
-                            </div>
-                            <button
-                              onClick={() => navigate(`/purchase/${order.id}`)}
-                              className="w-full bg-race-600 hover:bg-race-500 text-chalk font-display tracking-speedway uppercase text-sm py-3 rounded-md transition-colors duration-base ease-snap active:scale-95 flex items-center justify-center gap-2"
-                            >
-                              <Icon name="eye" className="h-4 w-4" />
-                              Full Order
-                            </button>
-                          </div>
+                          <OrderDetail
+                            order={order}
+                            onOpen={() => navigate(`/purchase/${order.id}`)}
+                          />
                         )}
                       </div>
                     ))}
