@@ -110,6 +110,52 @@ const rawText = (markup) =>
  * the earliest the bundle can no longer hold it back. The shell the app
  * mounts into is left alone: with nothing served, nothing waits.
  */
+
+/*
+ * Recovers the one import nothing was watching.
+ *
+ * withBuildRefresh covers the route chunks and the deferred components, but it
+ * lives inside the bundle, so the import that fetches the bundle itself has
+ * never been under it. That import failing is the worst of the set and the
+ * quietest: the document is a finished page and it is already painted, so the
+ * visitor is left reading a site that looks entirely normal and answers
+ * nothing - no navigation, no cart, no booking - and no error boundary ever
+ * runs to say otherwise, because the code that would have drawn one is the
+ * code that did not arrive. A hashed filename goes missing whenever a tab is
+ * loaded across a deploy, and a phone drops a request on its own account, and
+ * either one ends here.
+ *
+ * Asking again is not the recovery it looks like. A module fetch that fails is
+ * recorded against its URL in the document's module map, and every later
+ * import of that specifier is handed the recorded failure with no request
+ * made, so a second import of the same URL cannot reach the network at all.
+ * Reaching it means asking for a different URL, and an entry imported under a
+ * query is an entry whose dependency preloads no longer match the ones the
+ * document already holds - measured here, that recovers the bundle and then
+ * costs a second reload when the mismatch reaches the deferred components.
+ *
+ * So the boot recovers the way the route chunks already do. The document is
+ * what pins a build, it is served must-revalidate, and a fresh one carries the
+ * current hashes and a clean module map, which answers the stale tab and the
+ * dropped request in one move. One reload per tab, gated on the mark being
+ * written rather than on the reload being wanted, because a bundle missing
+ * from every build would otherwise reload the page forever. The key is the
+ * boot's own, so it can never spend the allowance chunk-recovery needs once
+ * the bundle is running.
+ *
+ * Where no reload is available the rejection is rethrown and reports as it
+ * always did. Where the reload is taken nothing is reported, which is the same
+ * trade the route chunks already make: a failure that healed itself describes
+ * a deploy the visitor walked into rather than a defect in the site.
+ */
+const bootScript = (src) =>
+  [
+    `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh";`,
+    `const spent=()=>{try{return sessionStorage.getItem(MARK)!==null}catch{return true}};`,
+    `const spend=()=>{try{sessionStorage.setItem(MARK,boot);return true}catch{return false}};`,
+    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).catch((error)=>{if(spent()||!spend())throw error;location.reload()})}));`,
+  ].join("");
+
 function paintFirst(html) {
   const entry = html.match(
     /^[ \t]*<script type="module" crossorigin src="([^"]+)"><\/script>\n/m,
@@ -117,7 +163,7 @@ function paintFirst(html) {
   if (!entry) throw new Error("the shell carries no module entry");
   const [tag, src] = entry;
   const preload = `    <link rel="modulepreload" crossorigin href="${src}" />\n`;
-  const boot = `    <script type="module">requestAnimationFrame(() => requestAnimationFrame(() => import(${JSON.stringify(src)})))</script>\n`;
+  const boot = `    <script type="module">${bootScript(src)}</script>\n`;
   return html.replace(tag, `${preload}${boot}`);
 }
 
