@@ -5,6 +5,11 @@ import StatTile from "../ui/StatTile.jsx";
 import TrackDivider from "../decor/TrackDivider.jsx";
 import Pill from "../ui/Pill.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
+/* A headline that decorates itself is never worth the whole page. Anything
+   thrown while the rotating line is mounted stops here and leaves the phrase
+   the document was written with standing, rather than reaching the boundary
+   around the app and putting an error screen over a page that had loaded. */
+import ErrorBoundary from "../shell/ErrorBoundary.jsx";
 import RotatingText from "../reactbits/RotatingText.jsx";
 import BlurText from "../reactbits/BlurText.jsx";
 import Magnet from "../reactbits/Magnet.jsx";
@@ -119,14 +124,33 @@ const HeroSection = () => {
                 data-aos="fade"
                 data-aos-delay="100"
               >
-                Real Karts.
-                <RotatingText
-                  texts={["Real Speed.", "Real Racing.", "Full Throttle."]}
-                  rotationInterval={2600}
-                  staggerDuration={0.02}
-                  splitLevelClassName="overflow-hidden"
-                  mainClassName="block text-race-500 tracking-[-0.01em]"
-                />
+                {/* The first line is an element rather than the bare text it
+                    reads as. A browser's own page translation rewrites the
+                    text it finds in a heading and reparents the inline
+                    elements standing beside it, and the second line here is
+                    swapped for the animated one once the page has settled -
+                    an insertion React positions against the node it recorded.
+                    A loose text node alongside it is the thing translation
+                    moves, and the heading it was recorded in is then no
+                    longer that node's parent. Wrapped, each line is
+                    translated inside itself and the heading keeps the
+                    children React wrote. */}
+                <span className="block">Real Karts.</span>
+                <ErrorBoundary
+                  fallback={
+                    <span className="block text-race-500 tracking-[-0.01em]">
+                      Real Speed.
+                    </span>
+                  }
+                >
+                  <RotatingText
+                    texts={["Real Speed.", "Real Racing.", "Full Throttle."]}
+                    rotationInterval={2600}
+                    staggerDuration={0.02}
+                    splitLevelClassName="overflow-hidden"
+                    mainClassName="block text-race-500 tracking-[-0.01em]"
+                  />
+                </ErrorBoundary>
               </h1>
               <BlurText
                 text="Speedway 146 is Baytown's outdoor go-kart speedway on TX-146. 5-minute heats, family-friendly track, open Thursday through Sunday."
