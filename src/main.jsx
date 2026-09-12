@@ -9,13 +9,41 @@ import { startFontWeights } from "./lib/fonts.js";
 import { startReveals } from "./lib/reveal.js";
 import { PRERENDER_PATHS } from "./routes.js";
 const root = document.getElementById("root");
+
+/*
+ * The one redraw the boundary is allowed to ask for. A document rewritten
+ * underneath a mounted tree - a page translation, an injected script, a host
+ * that edits the markup on the wire - leaves React holding nodes the document
+ * no longer parents, and the commit that meets one throws. Nothing is wrong
+ * with the page, so it is drawn again from an empty root, which is the same
+ * recovery React 18 takes on a hydration mismatch of its own.
+ *
+ * Once, and never again: the thing doing the rewriting is usually still there,
+ * and a tree that redraws every time it is touched is worse than the error
+ * screen it is avoiding.
+ */
+let spent = false;
+const redraw = () => {
+  if (spent) return;
+  spent = true;
+  try {
+    mounted?.unmount();
+  } catch {
+    // A root torn by the same mutation cannot always take itself down. The
+    // container is emptied either way and the new root owns it from there.
+  }
+  root.textContent = "";
+  createRoot(root).render(tree);
+};
+
 const tree = (
   <StrictMode>
-    <ErrorBoundary>
+    <ErrorBoundary onDetached={redraw}>
       <App />
     </ErrorBoundary>
   </StrictMode>
 );
+let mounted = null;
 
 /*
  * The build writes each indexed route's markup into its own document, so on
@@ -41,10 +69,11 @@ const isPrerendered = PRERENDER_PATHS.includes(currentPath);
 const ua = navigator.userAgent || "";
 const rewritesMarkup = /\bFBAN\/|\bFBAV\/|\bFB_IAB\b|Instagram|Line\//.test(ua);
 if (isPrerendered && root.firstChild && !rewritesMarkup) {
-  hydrateRoot(root, tree);
+  mounted = hydrateRoot(root, tree);
 } else {
   if (root.firstChild) root.textContent = "";
-  createRoot(root).render(tree);
+  mounted = createRoot(root);
+  mounted.render(tree);
 }
 
 startFontWeights();
