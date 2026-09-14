@@ -23,12 +23,53 @@ import {
 } from "../../lib/content/hero.js";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 
+/* How many times a frame is asked for before the rotation stops offering it. */
+const FRAME_ATTEMPTS = 2;
+
+/* The same candidates, asked for past whatever answered the first time. */
+const retrySrcSet = (set, attempt) =>
+  set.replace(/\.webp /g, `.webp?attempt=${attempt} `);
+
 const HeroSection = () => {
-  const [currentImageIndex] = useImageSlideshow(
+  const [currentImageIndex, setCurrentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,
     SLIDESHOW_INTERVAL_MS,
   );
   const [readAhead, setReadAhead] = useState(false);
+  /* Frames whose file did not arrive, counted by how many times it did not.
+     A phone loses a request for reasons that have nothing to do with the file
+     - an in-app browser suspending the page behind its host, a handover
+     between cells - and this is the largest thing on the first screen, so a
+     fetch nobody asks for twice leaves a reader looking at bare asphalt for
+     the length of a slide. The second request goes past the first answer,
+     because a browser that recorded a broken response for a file served
+     immutable replays it from disk for a year otherwise. A frame that misses
+     twice leaves the rotation rather than coming round empty again. */
+  const [misses, setMisses] = useState({});
+
+  const missed = (index) =>
+    setMisses((prev) =>
+      (prev[index] || 0) >= FRAME_ATTEMPTS
+        ? prev
+        : { ...prev, [index]: (prev[index] || 0) + 1 },
+    );
+
+  const usable = (index) => (misses[index] || 0) < FRAME_ATTEMPTS;
+  const nextUsable = (from) => {
+    for (let step = 1; step <= HERO_BACKGROUND_IMAGES.length; step += 1) {
+      const index = (from + step) % HERO_BACKGROUND_IMAGES.length;
+      if (usable(index)) return index;
+    }
+    return from;
+  };
+
+  /* The rotation counts through indexes of its own, so a frame dropped while
+     it is the one on screen is stepped past here rather than waited out. */
+  useEffect(() => {
+    if (usable(currentImageIndex)) return;
+    const next = nextUsable(currentImageIndex);
+    if (next !== currentImageIndex) setCurrentImageIndex(next);
+  });
 
   /* The frame after this one is worth having in hand before it is wanted, and
      worth nothing while the first one is still being painted. It rides the
@@ -53,14 +94,20 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0" aria-hidden="true">
         {HERO_BACKGROUND_IMAGES.map((image, index) => {
           const isCurrent = index === currentImageIndex;
-          const isNext =
-            index === (currentImageIndex + 1) % HERO_BACKGROUND_IMAGES.length;
+          const isNext = index === nextUsable(currentImageIndex);
           if (!isCurrent && !(isNext && readAhead)) return null;
+          if (!usable(index)) return null;
+          const attempt = misses[index] || 0;
+          const set = srcSet(image.src, image.width);
           return (
+            /* The attempt is part of the key, so a retry is a new element with
+               a new request rather than the same one being asked to try
+               again. */
             <img
-              key={index}
-              src={image.src}
-              srcSet={srcSet(image.src, image.width)}
+              key={`${index}:${attempt}`}
+              src={attempt ? `${image.src}?attempt=${attempt}` : image.src}
+              srcSet={attempt ? retrySrcSet(set, attempt) : set}
+              onError={() => missed(index)}
               sizes="100vw"
               width={image.width}
               height={image.height}

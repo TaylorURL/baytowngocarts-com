@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import ErrorBoundary from "../shell/ErrorBoundary.jsx";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
 
 const Animated = lazy(withBuildRefresh(() => import("./BlurTextMotion.jsx")));
@@ -39,10 +40,16 @@ const BlurText = (props) => {
 
   if (!animates) return held;
 
+  /* The paragraph is already written into the document, so a chunk that never
+     arrives costs the reader an animation rather than the page. Without the
+     boundary the rejection React raises out of the lazy element travels to the
+     one around the app and replaces everything. */
   return (
-    <Suspense fallback={held}>
-      <Animated {...props} />
-    </Suspense>
+    <ErrorBoundary fallback={held}>
+      <Suspense fallback={held}>
+        <Animated {...props} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from "react";
+import ErrorBoundary from "../shell/ErrorBoundary.jsx";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
 import { whenStill } from "../../lib/idle.js";
 import { countFormatter } from "../../lib/format.js";
@@ -36,10 +37,18 @@ const CountUp = (props) => {
 
   if (!settled) return held;
 
+  /* A chunk that never arrives rejects, React turns the rejection into a
+     render error, and an error with nothing standing in its way reaches the
+     boundary around the whole app - which puts an error screen over a page the
+     reader had already read, over an animation of a number. The figure is the
+     part worth keeping and it is already on screen, so the digits the document
+     shipped with stay where they are and the rest of the page is left alone. */
   return (
-    <Suspense fallback={held}>
-      <Counter {...props} />
-    </Suspense>
+    <ErrorBoundary fallback={held}>
+      <Suspense fallback={held}>
+        <Counter {...props} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
