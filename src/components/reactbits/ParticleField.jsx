@@ -1,4 +1,5 @@
 import { Suspense, lazy, useState, useEffect } from "react";
+import ErrorBoundary from "../shell/ErrorBoundary.jsx";
 import { withBuildRefresh } from "../../lib/chunk-recovery.js";
 import { whenStill } from "../../lib/idle.js";
 
@@ -19,11 +20,16 @@ const ParticleField = ({ layer, ...props }) => {
   const [settled, setSettled] = useState(false);
   useEffect(() => whenStill(() => setSettled(true)), []);
   if (!settled) return null;
+  /* Decoration nobody is told about is decoration whose absence nobody can
+     see, so a chunk that never arrives leaves the layer empty rather than
+     reaching the boundary around the app and taking the page with it. */
   return (
     <div className={layer} aria-hidden="true">
-      <Suspense fallback={null}>
-        <Particles {...props} />
-      </Suspense>
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <Particles {...props} />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };

@@ -34,6 +34,11 @@
 
 const RELOAD_MARK = "speedway146:build-refresh";
 
+/* The wait before the second attempt: long enough for a connection that
+   dropped mid-request to be back, short enough that a reader watching the
+   thing it belongs to does not see a gap. */
+const RETRY_MS = 400;
+
 /* Named in index.html, where the reporter listens for it. */
 const REFRESH_EVENT = "speedway146:build-refresh";
 
@@ -65,33 +70,76 @@ function releaseReload(chunk) {
   }
 }
 
+/*
+ * The built URL of the chunk a loader asks for, or an empty string where it
+ * cannot be read.
+ *
+ * A bundled loader carries that filename in its own source, written relative
+ * to the directory the built files sit in - which is the directory this module
+ * was served from too, so its own URL resolves the name.
+ */
+function chunkUrl(source) {
+  const match = /import\(\s*["']([^"']+)["']/.exec(source);
+  if (!match) return "";
+  try {
+    return new URL(match[1], import.meta.url).href;
+  } catch {
+    return "";
+  }
+}
+
+/*
+ * Asks for the chunk a second time, past whatever recorded the first answer.
+ *
+ * A failed module fetch is remembered against its URL: the browser hands the
+ * same rejection back to every later import of that URL, so calling the loader
+ * again returns the first answer with no request going out. A distinct URL is
+ * a distinct entry and the file behind it is the same file. Where the URL
+ * cannot be read the plain loader is still worth the call, since a browser
+ * that keeps no such record refetches.
+ */
+function retry(loader, url) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, RETRY_MS);
+  }).then(() => (url ? import(/* @vite-ignore */ `${url}?retry=1`) : loader()));
+}
+
 /**
- * Wraps a dynamic-import loader so a chunk missing from the served build
- * refreshes the page instead of failing the render.
+ * Wraps a dynamic-import loader so a chunk the reader could not fetch is asked
+ * for again, and one missing from the served build refreshes the page instead
+ * of failing the render.
  *
  * @param {() => Promise<unknown>} loader Dynamic import of a route or component.
- * @returns {() => Promise<unknown>} The same loader, with the refresh attached.
+ * @returns {() => Promise<unknown>} The same loader, with the recovery attached.
  */
 export function withBuildRefresh(loader) {
   /* A loader names itself by its own source, which carries the built filename
      of the chunk it asks for: different for every wrapped loader, and the same
      string in every document a build serves. */
   const chunk = String(loader);
+  const arrived = (module) => {
+    releaseReload(chunk);
+    return module;
+  };
+  const refresh = (error) => {
+    window.dispatchEvent(new Event(REFRESH_EVENT));
+    if (reloadSpent()) throw error;
+    spendReload(chunk);
+    window.location.reload();
+    /* The reload is already under way. Settling this promise either way
+       would only put something on screen for the instant before it. */
+    return new Promise(() => {});
+  };
+  /* A request that did not arrive is not a build that moved. An in-app browser
+     suspends its page the moment the host app takes the screen back and drops
+     what was in flight, and a phone changing cell does the same, so a first
+     rejection says only that this one fetch did not finish. Reloading the
+     document over that costs a reader the page they were already on. The
+     second attempt is what tells the two apart, and only a chunk that fails
+     twice is treated as one the host no longer has. */
   return () =>
-    loader().then(
-      (module) => {
-        releaseReload(chunk);
-        return module;
-      },
-      (error) => {
-        if (typeof window === "undefined") throw error;
-        window.dispatchEvent(new Event(REFRESH_EVENT));
-        if (reloadSpent()) throw error;
-        spendReload(chunk);
-        window.location.reload();
-        /* The reload is already under way. Settling this promise either way
-           would only put something on screen for the instant before it. */
-        return new Promise(() => {});
-      },
-    );
+    loader().then(arrived, (error) => {
+      if (typeof window === "undefined") throw error;
+      return retry(loader, chunkUrl(chunk)).then(arrived, () => refresh(error));
+    });
 }
