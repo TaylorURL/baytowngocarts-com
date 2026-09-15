@@ -68,7 +68,7 @@ export const FAQS = [
     section: "visiting",
     question: "How do I know the track is open to the public?",
     answer:
-      "Check our social media or our Google listing before you drive out, or call ahead. A private event can take the track out of public hours.",
+      "Check our social media or our Google listing before you drive out, or call ahead on (281) 722-4468. A private event can take the track out of public hours.",
   },
   {
     section: "visiting",
@@ -80,13 +80,13 @@ export const FAQS = [
     section: "visiting",
     question: "What should I wear?",
     answer:
-      "Closed-toe shoes are highly recommended, and avoid loose clothing. Long hair must be tied back, and hair ties are available on request. The track is outdoors, so expect dust and dirt.",
+      "We highly recommend closed-toe shoes. Avoid loose clothing. Long hair must be tied back, and we have hair ties if you need one. The track is outdoors, so expect dust and dirt.",
   },
   {
     section: "visiting",
     question: "Can we bring outside food or drinks?",
     answer:
-      "Not during public hours. Policies vary for private events, so call to ask about yours.",
+      "Not during public hours. Policies vary for private events, so call (281) 722-4468 to ask about yours.",
   },
   {
     section: "visiting",
@@ -110,7 +110,7 @@ export const FAQS = [
     section: "racing",
     question: "Is there a minimum age to drive a kart?",
     answer:
-      "There is no age requirement, but we suggest a minimum of five for anyone riding alone. Height is the real limit: Adult Karts need 53 inches or taller, Kiddie Karts need 40 inches or taller. On a Double-Seater the driver must be 53 inches or taller and the passenger 33 inches or taller.",
+      "There is no age requirement, but we suggest a minimum of five for anyone riding alone. The limit is height: 53 inches or taller for Adult Karts, 40 inches or taller for Kiddie Karts. On a Double-Seater the driver must be 53 inches or taller and the passenger 33 inches or taller.",
   },
   {
     section: "racing",
@@ -127,13 +127,13 @@ export const FAQS = [
     section: "racing",
     question: "Are helmets required?",
     answer:
-      "No, but we always recommend one. We do not provide helmets, so bring your own if you want to wear one. Safety glasses are provided for every rider.",
+      "No, but we always recommend one. We do not provide helmets, so bring your own if you want to wear one. We provide safety glasses for every rider.",
   },
   {
     section: "racing",
     question: "What safety gear do you provide?",
     answer:
-      "Safety glasses, for every rider. Helmets are not provided, so bring your own if you want one. Closed-toe shoes are highly recommended and long hair must be tied back.",
+      "Safety glasses, for every rider. We do not provide helmets, so bring your own if you want one. We highly recommend closed-toe shoes, and long hair must be tied back.",
   },
   {
     section: "racing",
@@ -179,7 +179,7 @@ export const FAQS = [
   {
     section: "pricing",
     question: "Do you offer gift vouchers?",
-    answer: "Yes. Gift vouchers can be bought at the track.",
+    answer: "Yes. You can buy gift vouchers at the track.",
   },
 
   {
@@ -192,7 +192,7 @@ export const FAQS = [
     section: "events",
     question: "How big is the party room, and what is included?",
     answer:
-      "The private party room fits up to 60 people and includes 20 wristbands for racing. Extra wristbands can be bought on the day.",
+      "The private party room fits up to 60 people and includes 20 wristbands for racing. You can buy extra wristbands on the day.",
   },
   {
     section: "events",
@@ -207,13 +207,14 @@ export const FAQS = [
   {
     section: "events",
     question: "Do you offer catering?",
-    answer: "Yes, onsite catering packages. Call for menu options and pricing.",
+    answer:
+      "Yes, onsite catering packages. Call (281) 722-4468 for menu options and pricing.",
   },
   {
     section: "events",
     question: "What is your cancellation policy?",
     answer:
-      "A deposit refund needs seven business days' notice. Every event also has to be reconfirmed 24 hours ahead.",
+      "To get a deposit refund, give us seven business days' notice. You also need to reconfirm your event 24 hours ahead.",
   },
   {
     section: "events",

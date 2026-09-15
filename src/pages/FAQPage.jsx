@@ -42,11 +42,11 @@ const FAQHero = ({ searchTerm, onSearchChange }) => (
     badge="FAQ"
     heading={
       <h1 className="mb-6 text-5xl font-bold leading-[0.95] tracking-tight text-chalk md:text-6xl lg:text-7xl">
-        Asked and <span className="text-race-500">answered.</span>
+        Go-kart questions, <span className="text-race-500">answered.</span>
       </h1>
     }
     crumbs={metadata.crumbs}
-    description="Hours, heights, prices, weather, waivers. Every answer is on this page — pick a topic or search."
+    description="Hours, heights, prices, weather, waivers. Every answer is on this page. Pick a topic or search."
     backgroundImage="/images/15.webp"
   >
     <div className="mx-auto mt-8 max-w-xl">
@@ -198,8 +198,9 @@ const StillAsking = () => (
         </h2>
         <p className="mt-6 text-[1.0625rem] leading-[1.65] text-gray-300">
           Anything not on this page is usually specific to your date, your group
-          or the weather that afternoon, and the phone answers all three faster
-          than a form. We are open Thursday to Sunday.
+          or the weather that afternoon, and we can answer all three faster on
+          the phone than by form. It is also how you book a party. We are open
+          Thursday to Sunday.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button
@@ -212,7 +213,7 @@ const StillAsking = () => (
           </Button>
           <Button to="/contact" size="lg" variant="outlineLight">
             <Icon name="send" className="h-5 w-5" />
-            Contact Form
+            Send a Message
           </Button>
         </div>
         <p className="mt-8 border-t border-chalk/10 pt-6 text-sm text-gray-400">
