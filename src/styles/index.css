@@ -272,6 +272,33 @@ main {
 
 @layer components {
   /*
+   * A heading that is prose rather than signage.
+   *
+   * Every h1-h6 takes the display face above, which is right for a headline
+   * cut into a page and wrong for a heading somebody has to read a sentence
+   * of: the face is caps-only, and capitals strip out the word shapes a
+   * reader scans by. A question on the FAQ is the case in point - it is a
+   * sentence with a question mark, and it belongs to the text face at the
+   * text face's tracking and leading.
+   *
+   * It is a class rather than four utilities at each call site because the
+   * opt-out is one decision, and a heading that half-opts-out - text face,
+   * display tracking - reads worse than either.
+   */
+  .heading-prose {
+    font-family:
+      Barlow,
+      "Barlow Fallback",
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    letter-spacing: normal;
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+
+  /*
    * Sections arrive as they are scrolled to. The hidden state is behind
    * `js-reveal`, which lib/reveal.js sets once it is able to reveal them, so a
    * page whose scripts do not run shows its content rather than a blank

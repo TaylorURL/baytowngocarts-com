@@ -47,9 +47,19 @@ const MainLayout = () => {
             </div>
           </Suspense>
         </main>
-        <Footer>
-          <SplitRail version={__BUILD_VERSION__} year={__BUILD_YEAR__} />
-        </Footer>
+        {/*
+          The footer is the one band on the page that was still laid out before
+          the first frame, and on a machine drawing in software that frame is
+          what the whole Speed Index is made of. It is skipped the same way the
+          home page skips the seven sections under the hero. It comes out
+          taller than the placeholder rather than shorter, so the growth is
+          downward off the end of the document and costs no layout shift.
+        */}
+        <div className="section-defer">
+          <Footer>
+            <SplitRail version={__BUILD_VERSION__} year={__BUILD_YEAR__} />
+          </Footer>
+        </div>
       </div>
     </ClickSpark>
   );
