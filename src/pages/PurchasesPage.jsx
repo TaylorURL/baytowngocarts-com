@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { supabaseClient } from "../lib/supabase";
-import { formatCompactDateTime, formatCents } from "../lib/format.js";
+import { formatShortDateTime, formatCents } from "../lib/format.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
 import Icon from "../components/ui/Icon.jsx";
 import PageHero from "../components/layout/PageHero.jsx";
@@ -143,7 +143,7 @@ const OrderCard = ({ order, index }) => (
               <div className="flex items-center gap-2 text-asphalt-600">
                 <Icon name="calendar" className="h-4 w-4" />
                 <span className="text-sm tabular-nums">
-                  {formatCompactDateTime(order.created_at)}
+                  {formatShortDateTime(order.created_at)}
                 </span>
               </div>
               <StatusBadge status={order.status} size="lg" />

@@ -57,7 +57,7 @@ const readGeoData = () =>
  * @param {{written: boolean}} view - the record's state, shared by both callers
  * @param {boolean} enrich - whether to wait on the geo lookup before writing
  */
-export const logPageView = async (
+const logPageView = async (
   pathname,
   view = { written: false },
   enrich = true,

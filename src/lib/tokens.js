@@ -21,7 +21,7 @@ export function token(name) {
   return value;
 }
 
-export function tokens(...names) {
+function tokens(...names) {
   return names.map(token);
 }
 

@@ -89,6 +89,7 @@ The edge functions read their own secrets from the Supabase project: `STRIPE_SEC
 | `npm run build`        | Build, then prerender every indexed route.     |
 | `npm run preview`      | Serve the production build locally.            |
 | `npm run lint`         | Lint with ESLint.                              |
+| `npm run lint:fix`     | Lint and apply what ESLint can fix.            |
 | `npm run format`       | Rewrite the tree to the Prettier config.       |
 | `npm run format:check` | Report formatting without writing; CI runs it. |
 
@@ -119,7 +120,8 @@ flowchart TD
 ```
 baytowngocarts-com/
 ├── api/
-│   └── version.js             Reports the commit this deployment was built from
+│   ├── version.js             Reports the commit this deployment was built from
+│   └── asset-missing.js       Answers a miss under /assets without caching it
 ├── public/
 │   ├── images/                Venue photos, logo, share card
 │   ├── fonts/                 Self-hosted Bebas Neue and Barlow subsets
