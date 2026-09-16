@@ -1,23 +1,3 @@
-// Whether the Stripe test products appear in the live product list.
-export const ENABLE_TEST_PRODUCTS = false;
-
-const TEST_PRODUCTS = [
-  {
-    id: "test_payment",
-    priceId: "test_payment_price",
-    name: "Test Payment",
-    description: "Live payment testing",
-    price: "$1.00",
-    mode: "payment",
-    features: [
-      "Test live Stripe payments",
-      "Verify integration works",
-      "Disable boolean after testing.",
-    ],
-    isTest: true,
-  },
-];
-
 // One Stripe product per tier. `buildKartTier` derives id, priceId and labels,
 // so adding a bundle is a single row here.
 const SINGLE_KART_TIERS = [
@@ -126,6 +106,4 @@ const PARTY_PACKAGES = [
 ];
 
 export const STRIPE_PARTY_PACKAGES = PARTY_PACKAGES;
-export const STRIPE_PRODUCTS = ENABLE_TEST_PRODUCTS
-  ? [...TEST_PRODUCTS, ...LIVE_PRODUCTS]
-  : LIVE_PRODUCTS;
+export const STRIPE_PRODUCTS = LIVE_PRODUCTS;

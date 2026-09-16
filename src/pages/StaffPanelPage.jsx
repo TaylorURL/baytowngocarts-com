@@ -2,7 +2,11 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../hooks/useAdmin";
 import { supabaseClient } from "../lib/supabase";
-import { formatShortDateTime, formatCents } from "../lib/format.js";
+import {
+  formatCents,
+  formatDollars,
+  formatShortDateTime,
+} from "../lib/format.js";
 import Icon from "../components/ui/Icon.jsx";
 import PageHero from "../components/layout/PageHero.jsx";
 import StatusBadge from "../components/ui/StatusBadge.jsx";
@@ -47,7 +51,7 @@ const STAT_CARDS = [
     iconColor: "text-green-700",
     trailingIcon: "trending-up",
     trailingColor: "text-green-600",
-    format: (v) => `$${v.toFixed(2)}`,
+    format: formatDollars,
   },
   {
     key: "todayOrders",
@@ -67,7 +71,7 @@ const STAT_CARDS = [
     iconColor: "text-caution-700",
     trailingIcon: "clock",
     trailingColor: "text-asphalt-500",
-    format: (v) => `$${v.toFixed(2)}`,
+    format: formatDollars,
   },
 ];
 const DATE_FILTERS = [
