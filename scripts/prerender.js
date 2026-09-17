@@ -137,11 +137,20 @@ const rawText = (markup) =>
  * So the boot recovers the way the route chunks already do. The document is
  * what pins a build, it is served must-revalidate, and a fresh one carries the
  * current hashes and a clean module map, which answers the stale tab and the
- * dropped request in one move. One reload per tab, gated on the mark being
- * written rather than on the reload being wanted, because a bundle missing
- * from every build would otherwise reload the page forever. The key is the
- * boot's own, so it can never spend the allowance chunk-recovery needs once
- * the bundle is running.
+ * dropped request in one move. The key is the boot's own, so it can never
+ * spend the allowance chunk-recovery needs once the bundle is running.
+ *
+ * One reload per boot, and which boot it was spent on is what the mark holds -
+ * the same bookkeeping chunk-recovery does, and for the same reason. An
+ * allowance is a claim about one file: a build whose entry is genuinely
+ * missing must not reload the page twice, and a build whose entry arrives must
+ * not leave the next build unable to reload at all. A session store outlives
+ * every deploy the tab sits through, so a mark that is only ever written is a
+ * tab that recovers once and is then defenceless for as long as it stays open,
+ * which is exactly the failure this recovery was added to end. The mark is
+ * released the moment the bundle arrives, and a spent mark stops only the boot
+ * whose name it carries, so every build gets its own reload and no build gets
+ * two.
  *
  * Where no reload is available the rejection is rethrown and reports as it
  * always did. Where the reload is taken nothing is reported, which is the same
@@ -151,9 +160,10 @@ const rawText = (markup) =>
 const bootScript = (src) =>
   [
     `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh";`,
-    `const spent=()=>{try{return sessionStorage.getItem(MARK)!==null}catch{return true}};`,
+    `const spent=()=>{try{return sessionStorage.getItem(MARK)===boot}catch{return true}};`,
     `const spend=()=>{try{sessionStorage.setItem(MARK,boot);return true}catch{return false}};`,
-    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).catch((error)=>{if(spent()||!spend())throw error;location.reload()})}));`,
+    `const release=()=>{try{if(sessionStorage.getItem(MARK)===boot)sessionStorage.removeItem(MARK)}catch{}};`,
+    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||!spend())throw error;location.reload()})}));`,
   ].join("");
 
 function paintFirst(html) {
