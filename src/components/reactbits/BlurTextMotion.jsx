@@ -33,18 +33,25 @@ const BlurTextMotion = ({
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
+  /* React detaches the ref during the commit that removes the paragraph, and
+     the observer's callback is delivered on a task of its own, so a reader who
+     scrolls the copy into view as the route changes under them reaches this
+     with ref.current already null. The observer watches one element and is
+     finished the moment it fires, so it is closed rather than handed a node to
+     look up again. */
   useEffect(() => {
-    if (!ref.current) return;
+    const paragraph = ref.current;
+    if (!paragraph) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.unobserve(ref.current);
+          observer.disconnect();
         }
       },
       { threshold, rootMargin },
     );
-    observer.observe(ref.current);
+    observer.observe(paragraph);
     return () => observer.disconnect();
   }, [threshold, rootMargin]);
 
