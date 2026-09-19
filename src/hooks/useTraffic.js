@@ -19,6 +19,19 @@ const isCrawler = () => {
     return false;
   }
 };
+/* A page-speed trace is the other visit that is not somebody reading the site,
+   and it sends a real phone's user agent so the list above cannot see it. What
+   names it is the parameter it asks for the page with: a measurement is served a
+   stale result unless its URL is unique per run, so every run carries one. The
+   reporter reads the same mark, so the traffic record and the ticket queue stay
+   quiet on the same visits. */
+const isMeasurement = () => {
+  try {
+    return /[?&]psi=/.test(window.location.search);
+  } catch {
+    return false;
+  }
+};
 /**
  * City and country are enrichment on a record that has to be written either
  * way, so the lookup runs under a deadline rather than holding the write open
@@ -69,7 +82,7 @@ const logPageView = async (
   ) {
     return;
   }
-  if (isCrawler()) return;
+  if (isCrawler() || isMeasurement()) return;
   if (view.written) return;
   /* A visitor on their way out is not kept waiting on an origin this site does
      not serve. The record is worth more without a city on it than it is

@@ -30,6 +30,22 @@ const FRAME_ATTEMPTS = 2;
 const retrySrcSet = (set, attempt) =>
   set.replace(/\.webp /g, `.webp?attempt=${attempt} `);
 
+/* A frame that arrives on a later request is a frame the reader saw, and the
+   first request's failure is being held rather than reported until something
+   says so. This is that something: without it every rescued frame is filed as a
+   photograph the visitor lost, on a file that paints correctly a moment later
+   and answers correctly ever after. */
+const announceRecovered = (src) => {
+  try {
+    window.dispatchEvent(
+      new CustomEvent("speedway146:asset-recovered", { detail: { url: src } }),
+    );
+  } catch {
+    /* Nothing to announce it with leaves the held failure to expire, which
+       reports it - the same place this started. */
+  }
+};
+
 const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,
@@ -108,6 +124,7 @@ const HeroSection = () => {
               src={attempt ? `${image.src}?attempt=${attempt}` : image.src}
               srcSet={attempt ? retrySrcSet(set, attempt) : set}
               onError={() => missed(index)}
+              onLoad={attempt ? () => announceRecovered(image.src) : undefined}
               sizes="100vw"
               width={image.width}
               height={image.height}

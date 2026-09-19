@@ -133,6 +133,21 @@
             return false;
           }
         }
+        // A synthetic trace of this page is not a reader either, and the crawler
+        // list above cannot pick one out: a page-speed run drives a real phone's
+        // profile and sends a real phone's user agent, throttles the connection
+        // to a quarter of one, and stops the page the moment its trace is long
+        // enough - so whatever is still in flight at that moment is cancelled by
+        // construction, and the largest photograph on the first screen is the
+        // likeliest thing to be in it. What does name the run is the parameter
+        // it asks for the page with: a measurement is served a stale result
+        // unless the URL is unique per run, so every one of them carries one.
+        // Read once, off the URL the document was loaded with, because a route
+        // change inside the app rewrites the query underneath it.
+        var synthetic = false;
+        try {
+          synthetic = /[?&]psi=/.test(location.search);
+        } catch (ignored) {}
         // A request the page makes writes its own failure to the console when it
         // fails, and a collector that cannot be reached would then be the loudest
         // thing on the page. The same request issued inside a worker writes
@@ -197,7 +212,7 @@
         function report(kind, message, stack) {
           hold(kind, message, stack);
           if (sent >= 10) return; // a page stuck in an error loop stops at ten
-          if (isCrawler()) return;
+          if (isCrawler() || synthetic) return;
           if (recoveredReact.test(String(message || ""))) return;
           if (recoveredReact.test(String(stack || ""))) return;
           if (browserOnly(stack) || browserOnly(message)) return;
@@ -241,6 +256,73 @@
         }
         window.addEventListener("speedway146:build-refresh", function () {
           heldAssets.length = 0;
+        });
+        // A photograph the page asks for a second time is the same wait in a
+        // different shape. The hero re-requests a frame that did not arrive,
+        // past the answer the first request recorded, and a frame that arrives
+        // on that second request is a frame the reader saw - so the first
+        // failure on its own describes the recovery starting rather than
+        // anything a visitor lost. Reporting it anyway files one report for
+        // every frame the retry goes on to rescue, on a file that is then
+        // correct at every later look, which is a fault that can never stop
+        // recurring however well the recovery works.
+        //
+        // So the failure waits under the URL the page asked for. The retry
+        // loading drops it, the retry failing sends it, and it is sent as the
+        // first URL rather than the second so one lost frame keeps one identity
+        // however many attempts it took to lose it.
+        var ATTEMPT = /[?&]attempt=\d+/;
+        var recovering = [];
+        var RECOVERY_MS = 8000;
+        function photoAsset(url) {
+          return (
+            typeof url === "string" &&
+            url.indexOf(location.origin + "/images/") === 0
+          );
+        }
+        // The element reports the src attribute it was given, so a srcset
+        // candidate and a retry of it both reduce to the one path, and the
+        // hero's own relative src resolves onto the same key.
+        function assetKey(url) {
+          var path = String(url || "")
+            .replace(ATTEMPT, "")
+            .replace(/[?&]$/, "");
+          return path.charAt(0) === "/" ? location.origin + path : path;
+        }
+        function settleRecovering(key, sending) {
+          for (var i = recovering.length - 1; i >= 0; i -= 1) {
+            if (recovering[i].key !== key) continue;
+            var entry = recovering.splice(i, 1)[0];
+            if (sending) report("resource", entry.message);
+          }
+        }
+        function holdRecovering(key, message) {
+          recovering.push({ key: key, message: message });
+          // A retry that never comes - the frame left the rotation, the
+          // component went with the route - ends the wait the same way a failed
+          // one does.
+          setTimeout(function () {
+            settleRecovering(key, true);
+          }, RECOVERY_MS);
+        }
+        window.addEventListener(
+          "speedway146:asset-recovered",
+          function (event) {
+            settleRecovering(
+              assetKey(event && event.detail && event.detail.url),
+              false,
+            );
+          },
+        );
+        // The page going is the reason the second request never ran, so what is
+        // still waiting describes the exit rather than the site: a trace harness
+        // stopping its page at the end of a run and a reader navigating away
+        // mid-load both cancel what is in flight, and neither saw a defect.
+        // Dropped rather than flushed - the build-asset hold above flushes here
+        // because a missing chunk leaves the page broken whether the reader
+        // stays or not, and a photograph nobody waited for does not.
+        window.addEventListener("pagehide", function () {
+          recovering.length = 0;
         });
         // The refresh above is announced by withBuildRefresh, which wraps the
         // dynamic imports the routes are loaded through. A stylesheet is not
@@ -379,6 +461,13 @@
                     rel === "stylesheet"
                   ) {
                     recoverStylesheet(source);
+                  }
+                } else if (photoAsset(source)) {
+                  var photo = assetKey(source);
+                  if (ATTEMPT.test(source)) {
+                    settleRecovering(photo, true);
+                  } else {
+                    holdRecovering(photo, failure);
                   }
                 } else {
                   report("resource", failure);
