@@ -54,7 +54,6 @@ const PARTY_UPGRADES = STRIPE_PARTY_PACKAGES.filter((p) => p.isUpgrade);
 const PARTY_FEATURES = [
   "20 racing wristbands included",
   "2 hours of organized racing",
-  "Wristbands can rotate among guests",
   "Extra wristbands available day-of upon request",
   "Staff runs the heats, no parental refereeing",
   "Shared track with public riders",
