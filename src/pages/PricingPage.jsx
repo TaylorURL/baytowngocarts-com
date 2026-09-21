@@ -54,7 +54,6 @@ const PARTY_UPGRADES = STRIPE_PARTY_PACKAGES.filter((p) => p.isUpgrade);
 const PARTY_FEATURES = [
   "20 racing wristbands included",
   "2 hours of organized racing",
-  "Wristbands can rotate among guests",
   "Extra wristbands available day-of upon request",
   "Staff runs the heats, no parental refereeing",
   "Shared track with public riders",
@@ -64,6 +63,17 @@ const PARTY_FEATURES = [
   "Tables + chairs already set up",
   "Public-side bounce wristbands available à la carte",
 ];
+
+/* The three lines the party card sets in bold: the two the package is bought
+   for, and the one a parent booking a private room is most likely to assume
+   the wrong way round. Held by their text rather than their position, because
+   an index silently points at a different line the moment the list above it
+   changes. */
+const EMPHASISED_PARTY_FEATURES = new Set([
+  "20 racing wristbands included",
+  "2 hours of organized racing",
+  "Shared track with public riders",
+]);
 
 const HEIGHT_REQUIREMENTS = [
   { label: "Kiddie Karts", value: 'Minimum 40" tall' },
@@ -388,7 +398,7 @@ const PricingPage = () => {
                                 className="h-5 w-5 text-race-600 flex-shrink-0 mt-0.5"
                               />
                               <span
-                                className={`${idx < 2 || idx === 5 ? "font-semibold text-asphalt-900" : "text-asphalt-700"}`}
+                                className={`${EMPHASISED_PARTY_FEATURES.has(feature) ? "font-semibold text-asphalt-900" : "text-asphalt-700"}`}
                               >
                                 {feature}
                               </span>
