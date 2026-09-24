@@ -125,45 +125,63 @@ const rawText = (markup) =>
  * loaded across a deploy, and a phone drops a request on its own account, and
  * either one ends here.
  *
- * Asking again is not the recovery it looks like. A module fetch that fails is
- * recorded against its URL in the document's module map, and every later
- * import of that specifier is handed the recorded failure with no request
- * made, so a second import of the same URL cannot reach the network at all.
- * Reaching it means asking for a different URL, and an entry imported under a
- * query is an entry whose dependency preloads no longer match the ones the
- * document already holds - measured here, that recovers the bundle and then
- * costs a second reload when the mismatch reaches the deferred components.
+ * Asking again is not the recovery it looks like, and the entry is the one
+ * import where that is true twice over. A module fetch that fails is recorded
+ * against its URL, so a second import of the same specifier is handed the
+ * recorded failure with no request made. Asking under a query does reach the
+ * network - and it loads a second copy of the entry at a URL nothing else
+ * names. Every chunk the page defers is built against the entry's real
+ * filename, so each of them still resolves to the specifier the failure is
+ * recorded under and each of them fails on a file the host served perfectly.
+ * Measured here: the bundle recovers, the hero particles, the rotating text
+ * and the counters all reject, and chunk-recovery spends the reload the boot
+ * had just avoided. A retry can move a route chunk. It cannot move the entry.
  *
- * So the boot recovers the way the route chunks already do. The document is
- * what pins a build, it is served must-revalidate, and a fresh one carries the
- * current hashes and a clean module map, which answers the stale tab and the
- * dropped request in one move. The key is the boot's own, so it can never
- * spend the allowance chunk-recovery needs once the bundle is running.
+ * So the recovery is a fresh document, which pins the current build and
+ * carries a clean module map, and it answers the stale tab and the dropped
+ * request in one move. What has to be right is the allowance, because a
+ * reload over a file that will never arrive is a loop.
  *
- * One reload per boot, and which boot it was spent on is what the mark holds -
- * the same bookkeeping chunk-recovery does, and for the same reason. An
- * allowance is a claim about one file: a build whose entry is genuinely
- * missing must not reload the page twice, and a build whose entry arrives must
- * not leave the next build unable to reload at all. A session store outlives
- * every deploy the tab sits through, so a mark that is only ever written is a
- * tab that recovers once and is then defenceless for as long as it stays open,
- * which is exactly the failure this recovery was added to end. The mark is
- * released the moment the bundle arrives, and a spent mark stops only the boot
- * whose name it carries, so every build gets its own reload and no build gets
- * two.
+ * One reload per boot, and which boot it was spent on is what the mark holds.
+ * An allowance is a claim about one file: a build whose entry is genuinely
+ * missing must not reload the page twice, and a build whose entry arrives
+ * must not leave the next build unable to reload at all. A session store
+ * outlives every deploy the tab sits through, so a mark that is only ever
+ * written is a tab that recovers once and is then defenceless for as long as
+ * it stays open. The mark is released the moment the bundle arrives, and a
+ * spent mark stops only the boot whose name it carries.
+ *
+ * That store is not always there. An in-app webview with storage shut, a
+ * browser in a locked-down privacy mode, a visitor who blocked site data:
+ * sessionStorage throws on the first touch, and a store that cannot be read
+ * cannot bound anything, so it counted as an allowance already spent. The
+ * page then had no recovery at all - one request, no reload, and a finished,
+ * painted document that answers nothing. That is not a rare shape on a phone,
+ * and it is the whole of what those readers got.
+ *
+ * The document itself knows what the store was being asked. A navigation
+ * entry records how this document was reached, and a document reached by a
+ * reload is the one place a second reload must not start from - which is
+ * exactly the bound, held by the browser, needing nothing of the page. So the
+ * mark stays where it can be read, because it is per build and survives the
+ * visitor's own refreshes, and the navigation type is what answers when the
+ * mark cannot be read or cannot be written. Either way the allowance is one.
  *
  * Where no reload is available the rejection is rethrown and reports as it
- * always did. Where the reload is taken nothing is reported, which is the same
- * trade the route chunks already make: a failure that healed itself describes
- * a deploy the visitor walked into rather than a defect in the site.
+ * always did. Where the reload is taken nothing is reported, which is the
+ * same trade the route chunks already make: a failure that healed itself
+ * describes a deploy the visitor walked into, or a phone changing cell,
+ * rather than a defect in the site.
  */
 const bootScript = (src) =>
   [
     `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh";`,
-    `const spent=()=>{try{return sessionStorage.getItem(MARK)===boot}catch{return true}};`,
+    `const mark=()=>{try{return sessionStorage.getItem(MARK)}catch{return undefined}};`,
+    `const reloaded=()=>{try{return performance.getEntriesByType("navigation")[0].type==="reload"}catch{return true}};`,
+    `const spent=()=>{const m=mark();return m===undefined?reloaded():m===boot};`,
     `const spend=()=>{try{sessionStorage.setItem(MARK,boot);return true}catch{return false}};`,
     `const release=()=>{try{if(sessionStorage.getItem(MARK)===boot)sessionStorage.removeItem(MARK)}catch{}};`,
-    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||!spend())throw error;location.reload()})}));`,
+    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||(!spend()&&reloaded()))throw error;location.reload()})}));`,
   ].join("");
 
 function paintFirst(html) {
