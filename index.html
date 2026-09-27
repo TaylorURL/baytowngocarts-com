@@ -106,8 +106,26 @@
         // with the stack embedded in the message string and nothing in the stack
         // argument. Reading both, and treating a user-script frame as a browser
         // frame, keeps that log out of the queue.
+        //
+        // The two schemes are not written the same way, and only one of them
+        // carries a double slash. An extension frame is a hierarchical URL, so
+        // it reads as chrome-extension://<id>/<path>, while WebKit gives an
+        // injected user script an opaque URL and the frame reads as
+        // request@user-script:4:2254:23. The scan below looks for the slashes,
+        // so it finds no scheme at all in the frame it was written for, and a
+        // text carrying no scheme belongs to the site by default - which sends
+        // the log out as a site error anyway.
+        //
+        // So write the opaque form into the hierarchical shape the scan already
+        // reads, rather than letting the scan match a scheme without slashes:
+        // every dotted filename in a stack ends in a colon too, and counting
+        // those as schemes stops any extension frame from being recognised.
         function browserOnly(text) {
-          var schemes = String(text || "").match(/[a-z][a-z0-9+.-]*:\/\//gi);
+          var body = String(text || "").replace(
+            /\buser-script:(?!\/\/)/gi,
+            "user-script://",
+          );
+          var schemes = body.match(/[a-z][a-z0-9+.-]*:\/\//gi);
           if (!schemes) return false;
           for (var i = 0; i < schemes.length; i += 1) {
             var scheme = schemes[i].slice(0, -3).toLowerCase();
