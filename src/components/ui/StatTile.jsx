@@ -44,14 +44,25 @@ const StatTile = ({
       >
         {parsed ? (
           <>
-            {parsed.prefix}
+            {/* The symbols either side of the figure are elements rather than
+                the bare text they read as. The count is picked up once the
+                page has settled, and that swap inserts the figure's element
+                at the position React recorded - the node standing after it,
+                which is the trailing symbol. A browser's own page translation
+                rewrites the text runs it finds in a block by moving each one
+                inside an element of its own, so a loose symbol stops being a
+                child of the tile the moment the page is translated and the
+                insertion then names a node this block no longer parents.
+                Wrapped, each symbol is translated inside itself and the tile
+                keeps the children React wrote. */}
+            {parsed.prefix ? <span>{parsed.prefix}</span> : null}
             <CountUp
               to={parsed.numeric}
               duration={1.6}
               separator={parsed.hasSeparator ? "," : ""}
               className="tabular-nums"
             />
-            {parsed.suffix}
+            {parsed.suffix ? <span>{parsed.suffix}</span> : null}
           </>
         ) : (
           value
