@@ -5,7 +5,7 @@ import {
   GALLERY_IMAGES,
   GALLERY_IMAGES_PER_SLIDE,
 } from "../../lib/content/gallery.js";
-import { srcSet } from "../../lib/images.js";
+import Photo from "../ui/Photo.jsx";
 
 const GallerySection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -82,9 +82,8 @@ const GallerySection = () => {
                         className="relative rounded-md overflow-hidden ring-1 ring-asphalt-700 hover:ring-race-500 shadow-track hover:shadow-lift transition-[box-shadow,transform,ring-color] duration-base ease-snap group cursor-pointer hover:-translate-y-1"
                       >
                         <div className="w-full h-64 bg-asphalt-800 overflow-hidden">
-                          <img
+                          <Photo
                             src={image.src}
-                            srcSet={srcSet(image.src, image.width)}
                             sizes="(min-width: 1024px) 23vw, (min-width: 768px) 46vw, 92vw"
                             alt={image.alt}
                             width={image.width}
