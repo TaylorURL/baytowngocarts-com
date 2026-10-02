@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "../ui/Icon.jsx";
 import SectionEyebrow from "../ui/SectionEyebrow.jsx";
-import { srcSet } from "../../lib/images.js";
+import Photo from "../ui/Photo.jsx";
 
 const ATTRACTIONS = [
   {
@@ -118,9 +118,8 @@ const AttractionsSection = () => (
                 data-aos-delay={index * 100}
               >
                 <div className="relative bg-asphalt-800 image-hover h-64 overflow-hidden">
-                  <img
+                  <Photo
                     src={image}
-                    srcSet={srcSet(image, imageWidth)}
                     sizes="(min-width: 1024px) 31vw, 92vw"
                     alt={title}
                     width={imageWidth}

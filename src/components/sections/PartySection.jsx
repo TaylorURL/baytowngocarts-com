@@ -4,7 +4,7 @@ import Icon from "../ui/Icon.jsx";
 import SectionEyebrow from "../ui/SectionEyebrow.jsx";
 import { CONTACT_INFO } from "../../lib/content/business.js";
 import { PARTY_PROMO } from "../../lib/content/party.js";
-import { srcSet } from "../../lib/images.js";
+import Photo from "../ui/Photo.jsx";
 
 const PartySection = () => (
   <section className="relative py-24 bg-chalk overflow-hidden">
@@ -116,9 +116,8 @@ const PartySection = () => (
               className="group relative block rounded-lg overflow-hidden border border-asphalt-200 hover:border-race-500 shadow-track hover:shadow-lift hover:-translate-y-1 transition-[border-color,box-shadow,transform] duration-base ease-snap"
             >
               <div className="relative bg-asphalt-800 image-hover h-80 lg:h-[26rem] overflow-hidden">
-                <img
+                <Photo
                   src={PARTY_PROMO.image}
-                  srcSet={srcSet(PARTY_PROMO.image, PARTY_PROMO.imageWidth)}
                   sizes="(min-width: 1024px) 384px, 92vw"
                   alt={PARTY_PROMO.imageAlt}
                   width={PARTY_PROMO.imageWidth}
