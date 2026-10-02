@@ -159,13 +159,33 @@ const rawText = (markup) =>
  * painted document that answers nothing. That is not a rare shape on a phone,
  * and it is the whole of what those readers got.
  *
- * The document itself knows what the store was being asked. A navigation
- * entry records how this document was reached, and a document reached by a
- * reload is the one place a second reload must not start from - which is
- * exactly the bound, held by the browser, needing nothing of the page. So the
- * mark stays where it can be read, because it is per build and survives the
- * visitor's own refreshes, and the navigation type is what answers when the
- * mark cannot be read or cannot be written. Either way the allowance is one.
+ * Where the store is shut, the bound has to come from somewhere the browser
+ * keeps for us. The navigation type was the first answer and it answers a
+ * different question than the one being asked: it says this document was
+ * reached by a reload, not that the page reloaded itself. A phone refreshes
+ * pages constantly - a pull on the list, a tab coming back to the front, a
+ * reader who thinks the page looks wrong and pulls again - and every one of
+ * those arrives as a reload with the allowance already counted gone. So a
+ * reader whose store is shut had a recovery only on a document they had
+ * navigated to, and none at all on one they had refreshed themselves, which on
+ * a phone is most of them. The first dropped request after a pull ends exactly
+ * where it ended before any of this: a finished, painted document that answers
+ * nothing.
+ *
+ * What the reload needs is a mark of its own, and the session history entry
+ * holds one. State attached to an entry survives that entry being reloaded,
+ * belongs to this tab and this entry alone, is not site data and so is not
+ * what a privacy mode or a webview closes, and a document the visitor
+ * navigated to carries none of it. So the question becomes the right one: not
+ * whether this document was reloaded, but whether this document was reloaded
+ * by the boot, over this build. It is written beside whatever state is already
+ * there and taken back off the same way, so the router that reads that entry
+ * after the bundle arrives finds it as it left it.
+ *
+ * The mark is therefore held in both places and read from whichever one can
+ * answer, the session store first because it is the one that outlives a
+ * visitor's own refreshes; the navigation type stays as the last resort for a
+ * browser that offers neither. The allowance is one, and it is never none.
  *
  * Where no reload is available the rejection is rethrown and reports as it
  * always did. Where the reload is taken nothing is reported, which is the
@@ -176,11 +196,13 @@ const rawText = (markup) =>
 const bootScript = (src) =>
   [
     `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh";`,
-    `const mark=()=>{try{return sessionStorage.getItem(MARK)}catch{return undefined}};`,
+    `const stored=()=>{try{return sessionStorage.getItem(MARK)}catch{return undefined}};`,
+    `const held=()=>{try{return(history.state||{})[MARK]||null}catch{return undefined}};`,
     `const reloaded=()=>{try{return performance.getEntriesByType("navigation")[0].type==="reload"}catch{return true}};`,
-    `const spent=()=>{const m=mark();return m===undefined?reloaded():m===boot};`,
-    `const spend=()=>{try{sessionStorage.setItem(MARK,boot);return true}catch{return false}};`,
-    `const release=()=>{try{if(sessionStorage.getItem(MARK)===boot)sessionStorage.removeItem(MARK)}catch{}};`,
+    `const spent=()=>{const s=stored();if(s!==undefined)return s===boot;const h=held();return h===undefined?reloaded():h===boot};`,
+    `const hold=()=>{try{history.replaceState(Object.assign({},history.state,{[MARK]:boot}),"");return held()===boot}catch{return false}};`,
+    `const spend=()=>{let ok=hold();try{sessionStorage.setItem(MARK,boot);ok=true}catch{}return ok};`,
+    `const release=()=>{try{if(stored()===boot)sessionStorage.removeItem(MARK)}catch{}try{if(held()===boot){const s=Object.assign({},history.state);delete s[MARK];history.replaceState(s,"")}}catch{}};`,
     `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||(!spend()&&reloaded()))throw error;location.reload()})}));`,
   ].join("");
 
