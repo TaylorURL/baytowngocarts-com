@@ -332,6 +332,49 @@
             );
           },
         );
+        // A photograph asks again for itself here, rather than only in the
+        // component that mounted it.
+        //
+        // The document is prerendered, so every photograph above the fold is
+        // in the markup and its request goes out while the parser is still
+        // reading it - long before React has hydrated and attached the handler
+        // that would have asked again. The gallery's tiles are the clearest
+        // case: four of them are in the first screen of markup, their requests
+        // are the first images the browser asks for, and a lost one was never
+        // retried because the only retry on the site was React state that did
+        // not exist yet. This listener is installed in the head before the
+        // body is parsed, so it is the one thing that sees those failures.
+        //
+        // The second request goes past the answer the first one recorded,
+        // because /images is served immutable for a year and a browser that
+        // recorded a broken response replays it from disk otherwise. One retry
+        // per element, so a file that is genuinely gone cannot loop.
+        function retryPhoto(element, key) {
+          try {
+            if (element.getAttribute("data-retried")) return;
+            element.setAttribute("data-retried", "1");
+          } catch (ignored) {
+            return;
+          }
+          var src = element.getAttribute("src") || "";
+          var set = element.getAttribute("srcset") || "";
+          element.addEventListener(
+            "load",
+            function () {
+              settleRecovering(key, false);
+            },
+            { once: true },
+          );
+          if (set) {
+            element.setAttribute(
+              "srcset",
+              set.replace(/\.webp /g, ".webp?attempt=1 "),
+            );
+          }
+          if (src.indexOf("?") === -1) {
+            element.setAttribute("src", src + "?attempt=1");
+          }
+        }
         // The page going is the reason the second request never ran, so what is
         // still waiting describes the exit rather than the site: a trace harness
         // stopping its page at the end of a run and a reader navigating away
@@ -481,11 +524,23 @@
                     recoverStylesheet(source);
                   }
                 } else if (photoAsset(source)) {
-                  var photo = assetKey(source);
-                  if (ATTEMPT.test(source)) {
+                  // Keyed on the candidate that actually failed rather than on
+                  // the element's src. The same photograph is mounted on more
+                  // than one surface at different widths - the hero asks for
+                  // the whole file, a gallery tile for a 480 - and they share
+                  // one src. Keyed on that, the hero's own frame recovering
+                  // settled a gallery tile's failure along with it, so a tile
+                  // that stayed blank reported nothing and a reader lost a
+                  // photograph the record said had come back. The message
+                  // still carries the src, so one lost photograph keeps one
+                  // identity whichever width was asked for.
+                  var candidate = event.target.currentSrc || source;
+                  var photo = assetKey(candidate);
+                  if (ATTEMPT.test(candidate)) {
                     settleRecovering(photo, true);
                   } else {
                     holdRecovering(photo, failure);
+                    retryPhoto(event.target, photo);
                   }
                 } else {
                   report("resource", failure);
