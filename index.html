@@ -652,6 +652,23 @@
         }
       })();
     </script>
+    <!-- Traffic analytics for the TaylorURL console. The site key is public by
+         design: it says which site a hit belongs to, and the collector accepts
+         it only from this site's own origins. Appended after load, so nothing
+         on the page waits for it. The staff pages and a buyer's purchase page
+         are not visits, the same paths the park's own counter leaves out. -->
+    <script>
+      addEventListener("load", function () {
+        var tracker = document.createElement("script");
+        tracker.src =
+          "https://gujgtjqqurildqurpffh.supabase.co/functions/v1/analytics-tracker";
+        tracker.dataset.site = "sa_cbe7f67d98394373c5c11cf6e7a8d0b6";
+        tracker.dataset.ignore = "/staff,/traffic,/purchase";
+        tracker.crossOrigin = "anonymous";
+        tracker.async = true;
+        document.head.appendChild(tracker);
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
