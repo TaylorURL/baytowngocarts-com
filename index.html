@@ -314,11 +314,37 @@
             if (sending) report("resource", entry.message);
           }
         }
-        function holdRecovering(key, message) {
+        function holdRecovering(key, message, retried) {
           recovering.push({ key: key, message: message });
-          // A retry that never comes - the frame left the rotation, the
-          // component went with the route - ends the wait the same way a failed
-          // one does.
+          // A retry that was never asked for - nothing on the page could change
+          // what the element was fetching - ends the wait the same way a failed
+          // one does, because nothing is coming.
+          //
+          // A retry that was asked for is answered by that request, not by a
+          // clock. The wait used to be a flat eight seconds from the first
+          // failure whatever the second request was doing, and the hero is
+          // where that breaks: a frame's element is mounted for the slide it is
+          // on and unmounted when the rotation moves past it, so a retry that
+          // has not answered inside one interval loses the element that would
+          // have announced it, and the frame's next turn is five slides away -
+          // past the clock. The recovery still happens and the reader still
+          // sees the photograph; the report has already gone.
+          //
+          // This photograph is the one that shape catches. It is the largest
+          // file the site serves, and the hero asks for it as the read-ahead
+          // behind the frame being painted, at the lowest priority the page
+          // hands out, while everything else on the first screen is still
+          // arriving - so it is both the likeliest request to be lost and the
+          // likeliest retry to answer after its own slide has gone. Reported
+          // anyway, that is a fault which cannot stop recurring however well
+          // the recovery works.
+          //
+          // Nothing is given up by waiting. A second request that fails reports
+          // from the attempt it carries, which is the permanent failure this
+          // was ever meant to catch, and a page that goes while one is still in
+          // flight drops what it was holding - the reason that request never
+          // answered is the page, not the site.
+          if (retried) return;
           setTimeout(function () {
             settleRecovering(key, true);
           }, RECOVERY_MS);
@@ -349,12 +375,16 @@
         // because /images is served immutable for a year and a browser that
         // recorded a broken response replays it from disk otherwise. One retry
         // per element, so a file that is genuinely gone cannot loop.
+        //
+        // Whether a second request was asked for is what the wait above turns
+        // on, so it is answered here rather than assumed: an element nothing
+        // could be rewritten on is an element that will not ask again.
         function retryPhoto(element, key) {
           try {
-            if (element.getAttribute("data-retried")) return;
+            if (element.getAttribute("data-retried")) return false;
             element.setAttribute("data-retried", "1");
           } catch (ignored) {
-            return;
+            return false;
           }
           var src = element.getAttribute("src") || "";
           var set = element.getAttribute("srcset") || "";
@@ -365,15 +395,19 @@
             },
             { once: true },
           );
+          var asked = false;
           if (set) {
             element.setAttribute(
               "srcset",
               set.replace(/\.webp /g, ".webp?attempt=1 "),
             );
+            asked = true;
           }
-          if (src.indexOf("?") === -1) {
+          if (src && src.indexOf("?") === -1) {
             element.setAttribute("src", src + "?attempt=1");
+            asked = true;
           }
+          return asked;
         }
         // The page going is the reason the second request never ran, so what is
         // still waiting describes the exit rather than the site: a trace harness
@@ -539,8 +573,11 @@
                   if (ATTEMPT.test(candidate)) {
                     settleRecovering(photo, true);
                   } else {
-                    holdRecovering(photo, failure);
-                    retryPhoto(event.target, photo);
+                    holdRecovering(
+                      photo,
+                      failure,
+                      retryPhoto(event.target, photo),
+                    );
                   }
                 } else {
                   report("resource", failure);
