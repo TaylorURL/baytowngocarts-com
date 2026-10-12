@@ -382,8 +382,27 @@
         // first URL rather than the second so one lost frame keeps one identity
         // however many attempts it took to lose it.
         var ATTEMPT = /[?&]attempt=\d+/;
+        var ATTEMPTS = /\?attempt=\d+/g;
         var recovering = [];
         var RECOVERY_MS = 8000;
+        // How long after a failure the photograph is asked for again, and how
+        // many times.
+        //
+        // The second request used to go out the instant the first one failed -
+        // 120ms behind it on the FAQ page, 283ms on the About page - which is
+        // not a second chance at all. What loses an image is almost never the
+        // file: it is a handover between cells, a captive portal answering for
+        // a moment, a connection dropped mid-response, and all of those last
+        // seconds rather than milliseconds. A retry fired inside the same
+        // interruption fails for the same reason the first request did, the
+        // element is then out of attempts for the rest of the visit, and the
+        // file answers perfectly to anyone who looks afterwards.
+        //
+        // So the requests are spread across the width of an interruption
+        // instead of being spent inside the first instant of one. The last of
+        // them is about four seconds past the first failure, which is still
+        // inside the visit that lost the photograph.
+        var RETRY_MS = [700, 3400];
         function photoAsset(url) {
           return (
             typeof url === "string" &&
@@ -471,35 +490,57 @@
         // Whether a second request was asked for is what the wait above turns
         // on, so it is answered here rather than assumed: an element nothing
         // could be rewritten on is an element that will not ask again.
+        //
+        // Each attempt is scheduled rather than issued, so the mark records
+        // which attempt has been spent and the element is read again when the
+        // timer fires. The candidates are rebuilt from the ones the page was
+        // served rather than from whatever the last attempt wrote, so the
+        // attempt number never accumulates in the URL.
         function retryPhoto(element, key) {
+          var spent;
           try {
-            if (element.getAttribute("data-retried")) return false;
-            element.setAttribute("data-retried", "1");
+            spent = Number(element.getAttribute("data-retried") || 0) || 0;
           } catch (ignored) {
             return false;
           }
-          var src = element.getAttribute("src") || "";
-          var set = element.getAttribute("srcset") || "";
-          element.addEventListener(
-            "load",
-            function () {
-              settleRecovering(key, false);
-            },
-            { once: true },
+          if (spent >= RETRY_MS.length) return false;
+          var attempt = spent + 1;
+          var src = (element.getAttribute("src") || "")
+            .replace(ATTEMPT, "")
+            .replace(/[?&]$/, "");
+          var set = (element.getAttribute("srcset") || "").replace(
+            ATTEMPTS,
+            "",
           );
-          var asked = false;
-          if (set) {
-            element.setAttribute(
-              "srcset",
-              set.replace(/\.webp /g, ".webp?attempt=1 "),
+          if (!src && !set) return false;
+          try {
+            element.setAttribute("data-retried", String(attempt));
+          } catch (ignored) {
+            return false;
+          }
+          // One listener for the whole chain: any attempt that loads is the
+          // photograph arriving, and the reader saw it.
+          if (!element.__photoWatched) {
+            element.__photoWatched = true;
+            element.addEventListener(
+              "load",
+              function () {
+                settleRecovering(key, false);
+              },
+              { once: true },
             );
-            asked = true;
           }
-          if (src && src.indexOf("?") === -1) {
-            element.setAttribute("src", src + "?attempt=1");
-            asked = true;
-          }
-          return asked;
+          setTimeout(function () {
+            try {
+              if (set)
+                element.setAttribute(
+                  "srcset",
+                  set.replace(/\.webp /g, ".webp?attempt=" + attempt + " "),
+                );
+              if (src) element.setAttribute("src", src + "?attempt=" + attempt);
+            } catch (ignored) {}
+          }, RETRY_MS[spent]);
+          return true;
         }
         // The page going is the reason the second request never ran, so what is
         // still waiting describes the exit rather than the site: a trace harness
@@ -663,7 +704,15 @@
                   var candidate = event.target.currentSrc || source;
                   var photo = assetKey(candidate);
                   if (ATTEMPT.test(candidate)) {
-                    settleRecovering(photo, true);
+                    // A later attempt failing is only the end of it when there
+                    // is no attempt left. While there is one, the photograph is
+                    // still being asked for and the failure stays held: the
+                    // interruption that took the first two requests is the
+                    // commonest reason a second one fails, and reporting there
+                    // files a photograph the third request goes on to deliver.
+                    if (!retryPhoto(event.target, photo)) {
+                      settleRecovering(photo, true);
+                    }
                   } else {
                     holdRecovering(
                       photo,
