@@ -399,10 +399,39 @@
         // file answers perfectly to anyone who looks afterwards.
         //
         // So the requests are spread across the width of an interruption
-        // instead of being spent inside the first instant of one. The last of
-        // them is about four seconds past the first failure, which is still
-        // inside the visit that lost the photograph.
-        var RETRY_MS = [700, 3400];
+        // instead of being spent inside the first instant of one.
+        //
+        // Four seconds was not that width. Spread over 700ms and 3.4s, the
+        // three requests were all spent inside the first four seconds and then
+        // the element was finished for the rest of the visit, however long the
+        // reader stayed and whenever the connection came back. A handover
+        // between cells, a lift, a captive portal, a dropped connection: none
+        // of those are over in four seconds, and an interruption that outlasts
+        // the schedule takes the photograph for the whole visit exactly as
+        // completely as no retry at all did. So the attempts now reach past
+        // half a minute, which is longer than the interruptions that lose an
+        // image and still inside the visit that lost it.
+        var RETRY_MS = [700, 3400, 9000, 20000];
+        // A clock is the wrong thing to wait on when the thing being waited
+        // for is the network. The moment a request can succeed again is the
+        // moment the connection returns or the reader comes back to the tab,
+        // so a scheduled attempt is brought forward to it rather than sitting
+        // out the rest of its timer - and a backgrounded tab throttles those
+        // timers anyway, which used to spend the whole schedule while the page
+        // was not even being looked at.
+        var waitingPhotos = [];
+        function issueWaitingPhotos() {
+          var waiting = waitingPhotos.splice(0, waitingPhotos.length);
+          for (var i = 0; i < waiting.length; i += 1) {
+            try {
+              waiting[i]();
+            } catch (ignored) {}
+          }
+        }
+        window.addEventListener("online", issueWaitingPhotos);
+        document.addEventListener("visibilitychange", function () {
+          if (!document.hidden) issueWaitingPhotos();
+        });
         function photoAsset(url) {
           return (
             typeof url === "string" &&
@@ -530,7 +559,12 @@
               { once: true },
             );
           }
-          setTimeout(function () {
+          // Issued once, by whichever of the timer and the connection coming
+          // back arrives first.
+          var issued = false;
+          var issue = function () {
+            if (issued) return;
+            issued = true;
             try {
               if (set)
                 element.setAttribute(
@@ -539,7 +573,9 @@
                 );
               if (src) element.setAttribute("src", src + "?attempt=" + attempt);
             } catch (ignored) {}
-          }, RETRY_MS[spent]);
+          };
+          waitingPhotos.push(issue);
+          setTimeout(issue, RETRY_MS[spent]);
           return true;
         }
         // The page going is the reason the second request never ran, so what is
