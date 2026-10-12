@@ -227,8 +227,100 @@
             return held.slice();
           },
         };
+        // A sample of the syntax every script in this build is emitted at - the
+        // floor vite.config.js names - handed to the engine that is about to be
+        // asked to run it. An engine that will not compile this cannot run any
+        // build of this site, so a parse failure in front of it describes the
+        // browser rather than the build. The answer cannot change inside a
+        // page, so it is compiled once and every reader of it gets the same
+        // one; two copies of the sample could drift apart, and then two parts
+        // of the document would disagree about the same visitor.
+        var floorRefused = null;
+        function engineBelowFloor() {
+          if (floorRefused !== null) return floorRefused;
+          try {
+            new Function(
+              "class P { #v = 1; static {} get v() { return this.#v } }" +
+                "return function (a) { var b = a?.b ?? 0; b ??= 1; return b + new P().v; }",
+            );
+            floorRefused = false;
+          } catch (error) {
+            // A page whose policy refuses Function throws something other than
+            // a SyntaxError, and a locked-down page is not an engine that
+            // cannot read the language.
+            floorRefused = error instanceof SyntaxError;
+          }
+          return floorRefused;
+        }
+        window.__speedway146EngineBelowFloor = engineBelowFloor;
+        // A script that fails to compile reports no frames, because nothing
+        // ran, and the engine names the fault in the message instead. That is
+        // all this looks for: which script it was stops mattering once the
+        // engine has said it cannot read the language the whole build is
+        // written in. The message and the stack are both read because the two
+        // ways this arrives put it in different places - an uncaught error
+        // carries it in the message, a rejected import in the stack.
+        function parseFailure(message, stack) {
+          return (
+            String(message || "").indexOf("SyntaxError") > -1 ||
+            String(stack || "").indexOf("SyntaxError") > -1
+          );
+        }
+        // The pages are prerendered, so an engine that cannot run the bundle is
+        // left reading a first screen that looks finished and answers nothing.
+        // This is a banner rather than a cover, because the directions, the
+        // hours and the phone number under it are the part that still works,
+        // and taking the page away would take those with it.
+        var told = false;
+        function tellReader() {
+          if (told) return;
+          told = true;
+          var box = document.createElement("div");
+          box.setAttribute("role", "status");
+          box.style.cssText =
+            "box-sizing:border-box;padding:16px 20px;border-bottom:1px solid " +
+            "var(--border-default,#e5e7eb);background:var(--bg-default,#ffffff);" +
+            "color:var(--fg-default,#111827);font:400 15px/1.5 system-ui,sans-serif;";
+          var heading = document.createElement("strong");
+          heading.style.cssText = "display:block;font-weight:600;";
+          heading.appendChild(
+            document.createTextNode("Your Browser Is Out of Date"),
+          );
+          var body = document.createElement("span");
+          body.style.cssText = "display:block;color:var(--fg-muted,#4b5563);";
+          body.appendChild(
+            document.createTextNode(
+              "The site needs a newer browser to run. Everything on this page still reads, and the contact details on it still reach us.",
+            ),
+          );
+          box.appendChild(heading);
+          box.appendChild(body);
+          function place() {
+            if (document.body)
+              document.body.insertBefore(box, document.body.firstChild);
+          }
+          if (document.body) place();
+          else document.addEventListener("DOMContentLoaded", place);
+        }
         function report(kind, message, stack) {
           hold(kind, message, stack);
+          // An engine that has just refused the floor cannot run any build of
+          // this site, so a parse failure in front of it did not come from this
+          // build and there is nothing in the repository to fix. The reader is
+          // told the browser is too old, and the failure stays on the page for
+          // its own console rather than filing. Left sending, every visit from
+          // a browser older than the site files the same fault again, which can
+          // never stop recurring however correct the build is, and a report
+          // that is guaranteed on an old-browser visit is what buries the ones
+          // worth reading. A SyntaxError from an engine that does compile the
+          // floor is a real build breakage and still reports, which is nearly
+          // every visitor the site has - a broken build would file from all of
+          // them. An ordinary runtime error from an old engine still reports
+          // too; only the parse failure is the browser's own.
+          if (parseFailure(message, stack) && engineBelowFloor()) {
+            tellReader();
+            return;
+          }
           if (sent >= 10) return; // a page stuck in an error loop stops at ten
           if (isCrawler() || synthetic) return;
           if (recoveredReact.test(String(message || ""))) return;
