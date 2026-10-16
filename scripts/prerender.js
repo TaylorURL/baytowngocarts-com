@@ -195,7 +195,7 @@ const rawText = (markup) =>
  */
 const bootScript = (src) =>
   [
-    `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh";`,
+    `const boot=${JSON.stringify(src)},MARK="speedway146:boot-refresh",NOTICE=${JSON.stringify(NOTICE_ID)};`,
     `const stored=()=>{try{return sessionStorage.getItem(MARK)}catch{return undefined}};`,
     `const held=()=>{try{return(history.state||{})[MARK]||null}catch{return undefined}};`,
     `const reloaded=()=>{try{return performance.getEntriesByType("navigation")[0].type==="reload"}catch{return true}};`,
@@ -203,8 +203,86 @@ const bootScript = (src) =>
     `const hold=()=>{try{history.replaceState(Object.assign({},history.state,{[MARK]:boot}),"");return held()===boot}catch{return false}};`,
     `const spend=()=>{let ok=hold();try{sessionStorage.setItem(MARK,boot);ok=true}catch{}return ok};`,
     `const release=()=>{try{if(stored()===boot)sessionStorage.removeItem(MARK)}catch{}try{if(held()===boot){const s=Object.assign({},history.state);delete s[MARK];history.replaceState(s,"")}}catch{}};`,
-    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||(!spend()&&reloaded()))throw error;location.reload()})}));`,
+    `const stall=()=>{try{const n=document.getElementById(NOTICE);if(!n)return;const b=n.querySelector("button");if(b)b.addEventListener("click",()=>{b.disabled=true;location.reload()});n.style.display="flex";if(b)b.focus({preventScroll:true})}catch{}};`,
+    `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||(!spend()&&reloaded())){stall();throw error}location.reload()})}));`,
   ].join("");
+
+/*
+ * What the reader is left holding when the reload is already gone.
+ *
+ * Every allowance above is one reload, and that is deliberate: a second one
+ * over a file that will never arrive is a loop. So the last failure on a
+ * build has nowhere to go and the rejection is rethrown, which reports it and
+ * nothing else. The reader's half of that moment had never been written. A
+ * prerendered route is a finished, painted page, so what they are looking at
+ * is a site that appears entirely normal and answers nothing - the menu does
+ * not open, the pricing does not expand, the booking does not start - with no
+ * error boundary over it, because the boundary is in the code that did not
+ * arrive. There is nothing in the page to tell them, and nothing to press.
+ *
+ * The one thing that is certainly there is the document, so the notice lives
+ * in the document: markup the prerender writes, carrying its own colours and
+ * type in a style attribute, revealed by the boot and by nothing else. It
+ * asks the stylesheet for the site's tokens and names a plain fallback for
+ * each, so it reads correctly whether or not the sheet landed, and it needs
+ * no script of its own - the boot is what binds the button, and the boot has
+ * already run by the time anyone can see it.
+ *
+ * A reload is the only thing the button can usefully do and it is the right
+ * thing: the document is served must-revalidate, so a fresh one pins the
+ * current build and brings a clean module map with it. The allowance stays
+ * spent, so nothing reloads on its own behind the reader's back; the loop the
+ * allowance exists to prevent needs a deliberate press each time round.
+ *
+ * The rejection is still reported, unchanged. This says what happened to the
+ * reader; it does not stop the site saying it to us.
+ */
+const NOTICE_ID = "boot-incomplete";
+
+const NOTICE_STYLE = [
+  "display:none",
+  "position:fixed",
+  "left:0",
+  "right:0",
+  "bottom:0",
+  "z-index:2147483647",
+  "flex-wrap:wrap",
+  "gap:0.75rem 1rem",
+  "align-items:center",
+  "justify-content:center",
+  "padding:1rem 1.25rem",
+  "background:var(--color-asphalt-900,#0e0f12)",
+  "border-top:2px solid var(--color-race-500,#e11d2a)",
+  "color:var(--color-asphalt-50,#f4f5f8)",
+  "font:400 1rem/1.45 Barlow,system-ui,-apple-system,Segoe UI,sans-serif",
+  "text-align:center",
+].join(";");
+
+const NOTICE_BUTTON_STYLE = [
+  "flex:none",
+  "padding:0.625rem 1.25rem",
+  "border:0",
+  "border-radius:0.25rem",
+  "background:var(--color-race-500,#e11d2a)",
+  "color:#fff",
+  "font:600 0.875rem/1 Barlow,system-ui,-apple-system,Segoe UI,sans-serif",
+  "letter-spacing:0.08em",
+  "text-transform:uppercase",
+  "cursor:pointer",
+].join(";");
+
+const notice = [
+  `<div id="${NOTICE_ID}" role="alert" style="${NOTICE_STYLE}">`,
+  `<span>This page did not finish loading.</span>`,
+  `<button type="button" style="${NOTICE_BUTTON_STYLE}">Try Again</button>`,
+  `</div>`,
+].join("");
+
+function offerRetry(html) {
+  if (!html.includes("</body>"))
+    throw new Error("the shell has no closing body for the notice");
+  return html.replace("</body>", `  ${notice}\n  </body>`);
+}
 
 function paintFirst(html) {
   const entry = html.match(
@@ -295,7 +373,7 @@ for (const path of [...PRERENDER_PATHS, "/404"]) {
       `${path} rendered no head; every prerendered route needs a RouteMeta`,
     );
   if (!markup.trim()) throw new Error(`${path} rendered no markup`);
-  const rendered = paintFirst(applyHead(shell, head)).replace(
+  const rendered = paintFirst(offerRetry(applyHead(shell, head))).replace(
     '<div id="root"></div>',
     `<div id="root">${rawText(markup)}</div>`,
   );
