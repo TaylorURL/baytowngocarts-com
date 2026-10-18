@@ -187,6 +187,15 @@ const rawText = (markup) =>
  * visitor's own refreshes; the navigation type stays as the last resort for a
  * browser that offers neither. The allowance is one, and it is never none.
  *
+ * The same notice answers a stylesheet that is gone for good. That failure
+ * has its own one-reload allowance in the head script, and where that
+ * allowance has been spent the sheet is never coming back on this load: the
+ * document keeps its inlined critical rules, so the first screen paints and
+ * the rest of the page draws blank. The head script raises
+ * `speedway146:page-incomplete`, and sets a flag for the render-blocking case
+ * that fails before this module is reached, so either way the reader gets the
+ * notice and the button that fetches the current build.
+ *
  * Where no reload is available the rejection is rethrown and reports as it
  * always did. Where the reload is taken nothing is reported, which is the
  * same trade the route chunks already make: a failure that healed itself
@@ -204,6 +213,8 @@ const bootScript = (src) =>
     `const spend=()=>{let ok=hold();try{sessionStorage.setItem(MARK,boot);ok=true}catch{}return ok};`,
     `const release=()=>{try{if(stored()===boot)sessionStorage.removeItem(MARK)}catch{}try{if(held()===boot){const s=Object.assign({},history.state);delete s[MARK];history.replaceState(s,"")}}catch{}};`,
     `const stall=()=>{try{const n=document.getElementById(NOTICE);if(!n)return;const b=n.querySelector("button");if(b)b.addEventListener("click",()=>{b.disabled=true;location.reload()});n.style.display="flex";if(b)b.focus({preventScroll:true})}catch{}};`,
+    `addEventListener("speedway146:page-incomplete",stall);`,
+    `if(window.__speedway146Incomplete)stall();`,
     `requestAnimationFrame(()=>requestAnimationFrame(()=>{import(boot).then(release,(error)=>{if(spent()||(!spend()&&reloaded())){stall();throw error}location.reload()})}));`,
   ].join("");
 
