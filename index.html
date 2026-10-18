@@ -617,12 +617,38 @@
         // Whenever the reload is not taken nothing is announced, so the hold
         // expires and the failure reports as it did before: this recovers the
         // visitor, it does not quiet the queue.
+        //
+        // A reload that cannot be taken is where the reader was left out. The
+        // sheet is the whole of the design past the first screen: the critical
+        // rules are inlined in the document, so the hero paints and everything
+        // under it is laid out by rules that never arrived and draws as blank
+        // page. A tab that has already spent its reload on this visit - a
+        // second deploy walked into, a second sheet gone, a store that cannot
+        // be written - is therefore looking at a site that ends after its first
+        // screen, with no reload coming and nothing saying why.
+        //
+        // So that tab is told, through the same notice a missing bundle
+        // reveals: the markup is in the document, the boot binds its button,
+        // and its button reloads, which is exactly the move the allowance is
+        // refusing to make unasked. The flag is read as well as the event
+        // because a render-blocking sheet fails while the document is still
+        // parsing, before the boot module runs and can listen.
         var STYLE_MARK = "speedway146:style-refresh";
+        function tellIncomplete() {
+          window.__speedway146Incomplete = true;
+          try {
+            window.dispatchEvent(new Event("speedway146:page-incomplete"));
+          } catch (ignored) {}
+        }
         function recoverStylesheet(url) {
           try {
-            if (sessionStorage.getItem(STYLE_MARK) !== null) return;
+            if (sessionStorage.getItem(STYLE_MARK) !== null) {
+              tellIncomplete();
+              return;
+            }
             sessionStorage.setItem(STYLE_MARK, url);
           } catch (ignored) {
+            tellIncomplete();
             return;
           }
           window.dispatchEvent(new Event("speedway146:build-refresh"));
