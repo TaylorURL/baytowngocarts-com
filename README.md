@@ -1,176 +1,46 @@
 <p align="center">
-  <img src="public/images/logo.webp" width="200" alt="Speedway 146" />
+  <img src="public/images/logo.webp" width="160" alt="Speedway 146" />
 </p>
 
 <h1 align="center">Speedway 146</h1>
 
-<p align="center">
-  <b>Go-kart racing and family entertainment in Baytown, TX.</b>
-</p>
-<p align="center">
-  The storefront and back office for Speedway 146. Book races, packages, and parties online.<br />
-  Live at <a href="https://baytowngokarts.com">baytowngokarts.com</a>.
-</p>
-<p align="center">
-  <sub>Published for reading. Proprietary — see <a href="LICENSE.md">LICENSE.md</a>. Outside contributions are not accepted.</sub>
-</p>
+<p align="center">Website for Speedway 146, a go-kart track in Baytown, Texas.</p>
+<p align="center"><a href="https://baytowngokarts.com">baytowngokarts.com</a></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.44.0-e11d2a?style=for-the-badge" alt="Version 2026.44.0" />
-  <img src="https://img.shields.io/badge/React-18-e11d2a?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
-  <img src="https://img.shields.io/badge/Vite-6-e11d2a?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 6" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-3-e11d2a?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 3" />
-  <img src="https://img.shields.io/badge/Supabase-b91c1c?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
-  <img src="https://img.shields.io/badge/Stripe-e11d2a?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
-  <img src="https://img.shields.io/badge/Vercel-07080a?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/version-2026.44.1-e11d2a?style=for-the-badge" alt="Version 2026.44.1" />
 </p>
 
-<br />
+Speedway 146 is an outdoor go-kart track on TX-146 in Baytown, with bounce houses and party rooms. The site lets families buy race tickets and book birthday parties online through Stripe instead of calling. Staff use the same site to see orders, revenue and traffic.
 
-## Why Speedway 146
+The repo is named `baytowngocarts-com`, but the live domain is spelled baytowngokarts.com.
 
-A track's website usually stops at hours and a phone number. This one sells the product: ticket bundles, double-seater packages, and party rentals go into a cart and out through Stripe Checkout, while the same app doubles as the staff back office for orders, revenue, and site traffic. Pricing is never trusted to the browser: every cart is re-priced server-side before a payment session exists.
+## What's on the site
 
-<table width="100%">
-  <tr>
-    <td width="50%" valign="top">
-      <h3 align="center">Server-authoritative pricing</h3>
-      <p align="center">A Supabase edge function re-prices every line against a canonical price map, applies tax, fees, and the group discount, then builds the Stripe session. Totals cannot be tampered with client-side.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3 align="center">Back office included</h3>
-      <p align="center">An authenticated staff panel for orders and revenue plus a live traffic dashboard, both reading straight from Postgres behind row-level security.</p>
-    </td>
-  </tr>
-</table>
+- Race ticket bundles, party packages and party add-ons, all in one cart that checks out through Stripe.
+- An events page for birthdays and corporate outings.
+- Customer accounts with past orders and receipts.
+- Reminder emails for abandoned carts and come-back offers for past customers, each with a one-click unsubscribe.
+- A staff panel for orders and revenue, and a traffic page that counts the site's own visits.
+- A FAQ on height limits, what to wear and how a heat runs, plus an about page and a contact page with hours and directions.
 
-<br />
-
-> The repository is named `baytowngocarts-com` for historical reasons. The live product is **Speedway 146**, served from `baytowngokarts.com`.
-
-## Stack
-
-| Layer         | Technology                                                            |
-| :------------ | :-------------------------------------------------------------------- |
-| UI            | React 18 + React Router 7                                             |
-| Build & dev   | Vite 6                                                                |
-| Styling       | Tailwind CSS 3 over CSS custom properties (`src/styles/Theme.css`)    |
-| Type          | Bebas Neue and Barlow, self-hosted from `public/fonts/`               |
-| Cart state    | Zustand                                                               |
-| Animation     | `motion` 12, plus `src/lib/reveal.js` for scroll reveals              |
-| WebGL effects | `ogl`: the particle fields behind the dark sections                   |
-| Backend       | Supabase (Postgres + RLS, Deno edge functions)                        |
-| Payments      | Stripe Checkout via Stripe Connect                                    |
-| Analytics     | `site_traffic` table, written by a cookieless beacon (ipapi.co geo)   |
-| Hosting       | Vercel (prerendered routes, account-route rewrites, security headers) |
-
-## Getting started
+## Running it locally
 
 ```bash
 npm install
-npm run dev           # Vite dev server
-npm run build         # client and server bundles, then a document per indexed route
+cp .env.example .env
+npm run dev        # Vite dev server
+npm run build      # builds the site and prerenders every public page
 ```
 
-The Supabase client is built on first use and throws if it is not configured, so two variables are required before anything reaches the database:
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env` to your Supabase project. The checkout and email functions in `supabase/functions` read their Stripe and Resend keys from the Supabase project, not from `.env`.
 
-| Variable                 | Purpose                                          |
-| :----------------------- | :----------------------------------------------- |
-| `VITE_SUPABASE_URL`      | Supabase project URL.                            |
-| `VITE_SUPABASE_ANON_KEY` | Supabase publishable key for the browser client. |
+## Built with
 
-The edge functions read their own secrets from the Supabase project: `STRIPE_SECRET_KEY`, `STRIPE_CONNECTED_ACCOUNT_ID`, `STRIPE_WEBHOOK_SECRET`, and `SUPABASE_SERVICE_ROLE_KEY`. The email sweep also reads `RESEND_API_KEY` (a sending-only key for baytowngokarts.com), `EMAIL_SWEEP_SECRET` (the same value pg_cron reads from the database vault as `email_sweep_secret`), `EMAIL_FROM` and `EMAIL_REPLY_TO`. The inbound forwarder reads `RESEND_INBOUND_API_KEY` (full access, because only that can read received mail), `EMAIL_INBOUND_WEBHOOK_SECRET` and `EMAIL_FORWARD_TO`.
-
-### Scripts
-
-| Script                 | Does                                           |
-| :--------------------- | :--------------------------------------------- |
-| `npm run dev`          | Start the Vite dev server.                     |
-| `npm run build`        | Build, then prerender every indexed route.     |
-| `npm run preview`      | Serve the production build locally.            |
-| `npm run lint`         | Lint with ESLint.                              |
-| `npm run lint:fix`     | Lint and apply what ESLint can fix.            |
-| `npm run format`       | Rewrite the tree to the Prettier config.       |
-| `npm run format:check` | Report formatting without writing; CI runs it. |
-
-## Architecture
-
-```mermaid
-flowchart TD
-    SPA["Browser SPA: React + Zustand cart"] -->|"cart"| CO["create-checkout edge function"]
-    CO -->|"hosted session"| ST["Stripe Checkout"]
-    ST -->|"payment completed"| WH["stripe-webhook edge function"]
-    WH -->|"write purchase"| DB[("Supabase Postgres, RLS-locked")]
-    SPA -->|"pageview rows"| DB
-    Staff["Staff panel + traffic dashboard"] -->|"orders, revenue, traffic"| DB
-```
-
-## How it works
-
-- **Products are generated, not hand-listed.** `src/lib/stripe-config.js` builds the catalog from small tier tables (single-kart bundles of 1/4/8/15/25/35/50 tickets, double-seater bundles of 1/2/4/6, and party packages), deriving ids, price ids, labels, and per-race rates.
-- **Checkout is validated server-side.** `create-checkout` compares each client price against the canonical map and rejects mismatches, then applies a 4% + $0.30 transaction fee, a 1% platform fee, 8.25% Texas sales tax, and a 10% group discount at 15 or more tickets.
-- **Two writers, one order row.** `stripe-webhook` verifies the Stripe signature and writes the order into `purchases` with the service-role key. The success page writes the same order from the browser, which is what puts it in front of a buyer who lands back before Stripe's post has been delivered. `stripe_session_id` is unique, so whichever arrives second is refused by the database rather than doubling the order. Either writer numbers it `SPW146-YYYY-NNNNNN`.
-- **Abandoned checkouts and lapsed customers get email.** `create-checkout` records each Stripe session in `checkout_attempts` and expires it after an hour. Every fifteen minutes pg_cron posts to the `email-sweep` function, which settles expired sessions against Stripe and sends what `email_candidates()` says is due: a cart reminder, a one-time 10% code a day later, a first-race email two days after signup for accounts that never bought, and a come-back email 45 days after the last order with an offer at 90. Mail leaves from `hello@baytowngokarts.com` through Resend, laid out in the site's own asphalt, race red and checkered strip. An offer is claimed by tapping its button, whose link puts the code on the cart from any page; the code is printed beside it as a fallback, priced again in `create-checkout` and spent by `stripe-webhook`. Each email carries a one-click unsubscribe handled by `email-unsubscribe` and a link to `/unsubscribe`. Staff accounts are never emailed. Replies, and anything else written to an address at the domain, reach `email-inbound` through Resend and go on to the track's Gmail with the writer on Reply-To.
-- **Every route ships as a document.** `scripts/prerender.js` renders each indexed route through `src/entry-server.jsx` after the Vite build and writes its markup and head into a file of its own, so a crawler is served the page rather than an empty shell. `src/routes.js` is the one table the client router, the build-time render and the prerender step all read.
-- **Traffic is counted by the site itself.** `useTraffic` logs a row per customer-facing page view (staff routes excluded) with user agent, referrer, screen size, and IP geolocation, and feeds the site's own `/traffic` page. Browser errors travel a separate path, reported from `index.html` to the endpoint behind taylorurl.com/status.
-- **One file owns the palette.** Every Tailwind color maps to a CSS custom property in `Theme.css`, so the asphalt / race-red / caution system is a single-file edit. The canvas and WebGL effects read the same properties at runtime through `src/lib/tokens.js`.
-- **Each route declares its own head.** A page exports a `metadata` object next to its markup, and `RouteMeta` writes the title, description, canonical, share card and a JSON-LD graph: `WebSite`, `LocalBusiness` with hours and address, `BreadcrumbList`, and `Product` nodes generated from the Stripe catalog.
-
-## Project structure
-
-```
-baytowngocarts-com/
-├── api/
-│   ├── version.js             Reports the commit this deployment was built from
-│   └── asset-missing.js       Answers a miss under /assets without caching it
-├── public/
-│   ├── images/                Venue photos, logo, share card
-│   ├── fonts/                 Self-hosted Bebas Neue and Barlow subsets
-│   ├── robots.txt, sitemap.xml, llms.txt
-│   └── release.json
-├── supabase/
-│   ├── config.toml            per-function JWT settings
-│   ├── functions/             create-checkout, stripe-webhook (Deno)
-│   └── migrations/            the schema, as applied
-├── src/
-│   ├── components/
-│   │   ├── ui/                Button, Icon, Pill, Skeleton, and the other shared primitives
-│   │   ├── layout/            MainLayout, header, footer, navigation, page and auth shells
-│   │   ├── sections/          The marketing sections the pages are assembled from
-│   │   ├── decor/             The drawn track scenery: dividers, signs, turf, lights
-│   │   ├── shell/             ErrorBoundary, Toast, ScrollToTop, RouteMeta, RouteFallback
-│   │   ├── pricing/           Pricing cards, tabs, quantity steppers
-│   │   ├── forms/             ContactForm
-│   │   └── reactbits/         WebGL/motion effects
-│   ├── pages/                 Home, Pricing, Cart, Success, StaffPanel, Traffic, ...
-│   ├── routes.js              The one route table, read by router, build and prerender
-│   ├── main.jsx               Browser entry: attaches to a prerendered document, renders into an empty one
-│   ├── entry-server.jsx       Build-time render entry (react-dom/server)
-│   ├── hooks/                 useCart (Zustand), useAuth, useAdmin, useTraffic, and the small view hooks
-│   ├── lib/
-│   │   ├── stripe-config.js   Ticket tiers, packages, price ids
-│   │   ├── pricing.js         Price-string parsing helpers
-│   │   ├── format.js          Cent / dollar display formatting
-│   │   ├── images.js          Responsive source sets for the venue photos
-│   │   ├── reveal.js          Fades a section in as it is scrolled to
-│   │   ├── chunk-recovery.js  Reloads once when a stale chunk 404s after a deploy
-│   │   ├── supabase.js        Shared Supabase client
-│   │   ├── tokens.js          Reads palette tokens for the canvas effects
-│   │   ├── content/           Hero, gallery, FAQs, testimonials, business info
-│   │   └── seo/               Per-route head tags and the schema.org builders
-│   └── styles/                index.css element defaults and utilities, Theme.css
-│                              design tokens, fonts.css face declarations
-├── scripts/
-│   └── prerender.js           Renders the static routes after the Vite build
-└── vercel.json                SPA rewrites, security headers, caching
-```
+React 18, React Router, Vite, Tailwind CSS, Zustand, Supabase, Stripe Checkout and Resend. Hosted on Vercel.
 
 ## License
 
-Copyright (c) 2026 TaylorURL LLC. All rights reserved. See [LICENSE.md](LICENSE.md).
+Proprietary. Copyright (c) 2026 TaylorURL LLC, all rights reserved. See [LICENSE.md](LICENSE.md).
 
-<br />
-
-<p align="center">
-  <sub>Built by <a href="https://taylorurl.com">TaylorURL</a>, custom sites for local businesses.</sub>
-</p>
+Built and maintained by [TaylorURL](https://www.taylorurl.com).
