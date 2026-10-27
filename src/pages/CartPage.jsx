@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart, useCartHydrated } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabaseClient } from "../lib/supabase";
@@ -66,15 +66,6 @@ function calculateFees(rawSubtotal, totalPeople, promoPercent = 0) {
     total,
   };
 }
-
-/** `add=prod_single_kart_15:2,prod_party_bounce_upgrade:1`, as the emails write it. */
-const parseCartParam = (value) =>
-  String(value || "")
-    .split(",")
-    .map((entry) => {
-      const [id, quantity] = entry.split(":");
-      return { id, quantity: Number(quantity) };
-    });
 
 /**
  * Whether the signed-in buyer's code is good, read through their own row. This
@@ -351,14 +342,12 @@ function OrderSummary({
 }
 export default function CartPage() {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const {
     items,
     promoCode,
     updateQuantity,
     removeItem,
-    restoreItems,
     setPromoCode,
     getTotal,
     getTotalItems,
@@ -366,19 +355,6 @@ export default function CartPage() {
   const cartReady = useCartHydrated();
   const [isProcessing, setIsProcessing] = useState(false);
   const [promo, setPromo] = useState({ status: "idle" });
-
-  // A reminder email links here with the cart it was about and, for an offer,
-  // its code. Read once the saved cart is back, so the saved one cannot land
-  // on top of it, then taken off the address so a refresh does not undo edits.
-  useEffect(() => {
-    if (!cartReady) return;
-    const add = searchParams.get("add");
-    const code = searchParams.get("code");
-    if (!add && !code) return;
-    if (add) restoreItems(parseCartParam(add));
-    if (code) setPromoCode(code);
-    setSearchParams({}, { replace: true });
-  }, [cartReady, searchParams, restoreItems, setPromoCode, setSearchParams]);
 
   useEffect(() => {
     if (!promoCode || authLoading) {
@@ -388,7 +364,8 @@ export default function CartPage() {
     if (!user) {
       setPromo({
         status: "signin",
-        message: "Sign in with the account it was sent to and it comes off.",
+        message:
+          "Sign in at checkout with the account it was sent to and it comes off.",
       });
       return;
     }
