@@ -54,51 +54,98 @@ Deno.test(
   },
 );
 
-Deno.test("the cart reminder lists the cart and links back to it", () => {
-  const email = renderEmail({
-    kind: "checkout_reminder",
-    items: ITEMS,
-    unsubscribeUrl: UNSUBSCRIBE,
-  });
-  assert(email.text.includes("15 Tickets × 2"), "ticket line missing");
-  assert(
-    email.text.includes("Bounce House + Game Tables × 1"),
-    "upgrade line missing",
-  );
-  const link = cartUrl(ITEMS);
-  assert(
-    email.html.includes(link.replace(/&/g, "&amp;")),
-    "cart link missing from html",
-  );
-  assert(!email.text.includes("RACE-"), "a reminder carries no code");
-});
+Deno.test(
+  "the cart reminder lists the cart with prices and links back to it",
+  () => {
+    const email = renderEmail({
+      kind: "checkout_reminder",
+      items: ITEMS,
+      unsubscribeUrl: UNSUBSCRIBE,
+    });
+    assert(
+      email.text.includes("15 Tickets, 2 × $149.99 = $299.98"),
+      "ticket line missing",
+    );
+    assert(
+      email.text.includes("Bounce House + Game Tables, 1 × $150.00 = $150.00"),
+      "upgrade line missing",
+    );
+    assert(email.text.includes("$449.98"), "subtotal missing");
+    const link = cartUrl(ITEMS);
+    assert(
+      email.html.includes(link.replace(/&/g, "&amp;")),
+      "cart link missing from html",
+    );
+    assert(!email.text.includes("RACE-"), "a reminder carries no code");
+  },
+);
 
-Deno.test("the offers carry the code and the expiry day", () => {
-  for (const kind of ["checkout_offer", "come_back_offer"] as const) {
+Deno.test(
+  "the offers are claimed by a link and carry the code as a fallback",
+  () => {
+    for (const kind of ["checkout_offer", "come_back_offer"] as const) {
+      const email = renderEmail({
+        kind,
+        items: ITEMS,
+        offer: OFFER,
+        unsubscribeUrl: UNSUBSCRIBE,
+      });
+      assert(email.text.includes("RACE-ABC234"), `${kind} has no code`);
+      assert(
+        email.text.includes("Friday, October 30"),
+        `${kind} has no expiry`,
+      );
+      assert(email.subject.includes("10%"), `${kind} subject has no percent`);
+      assert(
+        email.html.includes("Claim my 10% off"),
+        `${kind} has no claim button`,
+      );
+    }
+    const checkout = renderEmail({
+      kind: "checkout_offer",
+      items: ITEMS,
+      offer: OFFER,
+      unsubscribeUrl: UNSUBSCRIBE,
+    });
+    assert(
+      checkout.text.includes("/cart?add=prod_single_kart_15%3A2"),
+      "checkout offer link does not rebuild the cart",
+    );
+    assert(
+      checkout.text.includes("code=RACE-ABC234"),
+      "checkout offer link does not carry the code",
+    );
+    const comeBack = renderEmail({
+      kind: "come_back_offer",
+      offer: OFFER,
+      unsubscribeUrl: UNSUBSCRIBE,
+    });
+    assert(
+      comeBack.text.includes(
+        "https://baytowngokarts.com/pricing?code=RACE-ABC234",
+      ),
+      "come-back offer link does not carry the code to pricing",
+    );
+  },
+);
+
+Deno.test("every email shows the shield and a photo from the site", () => {
+  for (const kind of KINDS) {
     const email = renderEmail({
       kind,
       items: ITEMS,
       offer: OFFER,
       unsubscribeUrl: UNSUBSCRIBE,
     });
-    assert(email.text.includes("RACE-ABC234"), `${kind} has no code`);
-    assert(email.text.includes("Friday, October 30"), `${kind} has no expiry`);
-    assert(email.subject.includes("10%"), `${kind} subject has no percent`);
+    assert(
+      email.html.includes("https://baytowngokarts.com/images/email/logo.png"),
+      `${kind} has no logo`,
+    );
+    assert(
+      /images\/email\/(track|driver)\.jpg/.test(email.html),
+      `${kind} has no photo`,
+    );
   }
-  const checkout = renderEmail({
-    kind: "checkout_offer",
-    items: ITEMS,
-    offer: OFFER,
-    unsubscribeUrl: UNSUBSCRIBE,
-  });
-  assert(
-    checkout.text.includes("code=RACE-ABC234"),
-    "checkout offer link does not fill the code",
-  );
-  assert(
-    checkout.text.includes("add=prod_single_kart_15%3A2"),
-    "checkout offer link does not rebuild the cart",
-  );
 });
 
 Deno.test("the cart link drops products the site does not sell", () => {

@@ -40,8 +40,10 @@ const SUPABASE_URL = env("SUPABASE_URL");
 const STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY");
 const RESEND_API_KEY = env("RESEND_API_KEY");
 const SWEEP_SECRET = env("EMAIL_SWEEP_SECRET");
-const FROM = env("EMAIL_FROM") || "Speedway 146 <races@baytowngokarts.com>";
-const REPLY_TO = env("EMAIL_REPLY_TO") || "speedsway146@gmail.com";
+const FROM = env("EMAIL_FROM") || "Speedway 146 <hello@baytowngokarts.com>";
+// Replies come back to the domain, and email-inbound passes them on to the
+// track's Gmail.
+const REPLY_TO = env("EMAIL_REPLY_TO") || "hello@baytowngokarts.com";
 
 const db = createClient(SUPABASE_URL, env("SUPABASE_SERVICE_ROLE_KEY"), {
   auth: { autoRefreshToken: false, persistSession: false },
@@ -166,12 +168,16 @@ async function settleOpenAttempts() {
  * Writes the log row this send will be stamped on, or retakes one an earlier
  * sweep failed. Null when somebody else already holds it.
  */
-async function claim(kind: Kind, candidate: Candidate): Promise<Claim | null> {
+async function claim(
+  kind: Kind,
+  candidate: Candidate,
+  to: string,
+): Promise<Claim | null> {
   const inserted = await db
     .from("email_log")
     .insert({
       user_id: candidate.user_id,
-      email: candidate.email,
+      email: to,
       kind,
       ref: candidate.ref,
     })
@@ -195,7 +201,7 @@ async function claim(kind: Kind, candidate: Candidate): Promise<Claim | null> {
     .update({
       status: "claimed",
       attempts: held.data.attempts + 1,
-      email: candidate.email,
+      email: to,
       error: null,
     })
     .eq("id", held.data.id)
@@ -281,8 +287,12 @@ async function deliver(
 async function sendOne(
   kind: Kind,
   candidate: Candidate,
+  deliverTo: string | null,
 ): Promise<"sent" | "held" | "failed"> {
-  const held = await claim(kind, candidate);
+  // A test names the account whose rows it runs on and the inbox it lands in,
+  // so the whole pipeline runs for real without mailing the account itself.
+  const to = deliverTo ?? candidate.email;
+  const held = await claim(kind, candidate, to);
   if (!held) return "held";
 
   let offer: (Offer & { id: string }) | null = null;
@@ -296,7 +306,7 @@ async function sendOne(
       unsubscribeUrl: unsubscribePage(candidate.unsubscribe_token),
     });
     const providerId = await deliver(
-      candidate.email,
+      to,
       kind,
       email,
       unsubscribeOneClick(candidate.unsubscribe_token),
@@ -346,8 +356,11 @@ type Options = {
   dryRun: boolean;
   kinds: Kind[];
   onlyUserId: string | null;
+  deliverTo: string | null;
   ignoreWindow: boolean;
 };
+
+const ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function readOptions(body: Record<string, unknown>): Options | string {
   const kinds = Array.isArray(body.kinds) ? body.kinds : KINDS;
@@ -358,10 +371,16 @@ function readOptions(body: Record<string, unknown>): Options | string {
   }
   const onlyUserId =
     typeof body.onlyUserId === "string" ? body.onlyUserId : null;
+  const deliverTo =
+    typeof body.deliverTo === "string" ? body.deliverTo.trim() : null;
+  if (deliverTo && (!onlyUserId || !ADDRESS.test(deliverTo))) {
+    return "deliverTo needs a valid address and an onlyUserId";
+  }
   return {
     dryRun: body.dryRun === true,
     kinds: kinds as Kind[],
     onlyUserId,
+    deliverTo,
     // Only with one named account, so a test can run outside the hours and a
     // mistyped body cannot send the whole list at midnight.
     ignoreWindow: body.ignoreWindow === true && onlyUserId !== null,
@@ -375,12 +394,12 @@ async function preview(to: string, kinds: Kind[]) {
     const email = renderEmail({
       kind,
       items: [
-        { id: "prod_single_kart_15", quantity: 1 },
+        { id: "prod_single_kart_15", quantity: 2 },
         { id: "prod_party_bounce_upgrade", quantity: 1 },
       ],
       offer: OFFER_KINDS.includes(kind)
         ? {
-            code: "RACE-SAMPLE",
+            code: "RACE-K7M2QX",
             percentOff: OFFER_PERCENT,
             expiresAt: new Date(Date.now() + (OFFER_LIFETIME_MS[kind] ?? 0)),
           }
@@ -434,12 +453,10 @@ serve(async (req: Request) => {
       const { data, error } = await db.rpc("email_candidates", {
         p_kind: kind,
         p_limit: options.dryRun ? 500 : budget[group],
+        p_user_id: options.onlyUserId,
       });
       if (error) throw error;
-      const due = ((data ?? []) as Candidate[]).filter(
-        (candidate) =>
-          !options.onlyUserId || candidate.user_id === options.onlyUserId,
-      );
+      const due = (data ?? []) as Candidate[];
 
       if (options.dryRun) {
         report[kind] = { due: due.length, users: due.map((c) => c.user_id) };
@@ -449,7 +466,7 @@ serve(async (req: Request) => {
       const tally = { sent: 0, held: 0, failed: 0 };
       for (const candidate of due) {
         if (budget[group] <= 0) break;
-        const outcome = await sendOne(kind, candidate);
+        const outcome = await sendOne(kind, candidate, options.deliverTo);
         tally[outcome] += 1;
         if (outcome === "sent") budget[group] -= 1;
         await pause(SEND_SPACING_MS);

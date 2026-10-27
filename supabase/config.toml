@@ -18,3 +18,8 @@ verify_jwt = false
 # The unsubscribe token in the link is the credential.
 [functions.email-unsubscribe]
 verify_jwt = false
+
+# Resend posts received mail with a Svix signature rather than a Supabase
+# token, and the function checks that signature itself.
+[functions.email-inbound]
+verify_jwt = false
