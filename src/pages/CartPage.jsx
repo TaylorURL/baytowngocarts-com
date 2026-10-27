@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useCart, useCartHydrated } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { supabaseClient } from "../lib/supabase";
 import { parsePriceString } from "../lib/pricing.js";
@@ -40,18 +40,25 @@ const PENDING_PURCHASE_KEY = "pendingPurchase";
 const GROUP_DISCOUNT_DISPLAY = `${GROUP_DISCOUNT_PERCENT * 100}%`;
 const SALES_TAX_DISPLAY = `${TEXAS_SALES_TAX_PERCENT * 100}%`;
 
-function calculateFees(rawSubtotal, totalPeople) {
+/*
+ * Mirrors create-checkout: a promo code and the group discount do not stack,
+ * the larger of the two comes off before tax and fees.
+ */
+function calculateFees(rawSubtotal, totalPeople, promoPercent = 0) {
   const qualifiesForGroupDiscount = totalPeople >= GROUP_DISCOUNT_THRESHOLD;
-  const groupDiscount = qualifiesForGroupDiscount
-    ? rawSubtotal * GROUP_DISCOUNT_PERCENT
-    : 0;
-  const subtotal = rawSubtotal - groupDiscount;
+  const groupPercent = qualifiesForGroupDiscount ? GROUP_DISCOUNT_PERCENT : 0;
+  const usePromo = promoPercent > groupPercent;
+  const discountPercent = Math.max(groupPercent, promoPercent);
+  const discount = rawSubtotal * discountPercent;
+  const subtotal = rawSubtotal - discount;
   const salesTax = subtotal * TEXAS_SALES_TAX_PERCENT;
   const serviceFee = subtotal * COMBINED_FEE_PERCENT + FIXED_FEE;
   const total = subtotal + salesTax + serviceFee;
   return {
     rawSubtotal,
-    groupDiscount,
+    discount,
+    discountPercent,
+    usePromo,
     qualifiesForGroupDiscount,
     subtotal,
     salesTax,
@@ -59,11 +66,48 @@ function calculateFees(rawSubtotal, totalPeople) {
     total,
   };
 }
+
+/** `add=prod_single_kart_15:2,prod_party_bounce_upgrade:1`, as the emails write it. */
+const parseCartParam = (value) =>
+  String(value || "")
+    .split(",")
+    .map((entry) => {
+      const [id, quantity] = entry.split(":");
+      return { id, quantity: Number(quantity) };
+    });
+
+/**
+ * Whether the signed-in buyer's code is good, read through their own row. This
+ * only shows the discount before checkout; create-checkout checks it again.
+ */
+async function lookUpPromo(code) {
+  const { data, error } = await (
+    await supabaseClient()
+  )
+    .from("promo_codes")
+    .select("percent_off, expires_at, redeemed_at")
+    .eq("code", code)
+    .maybeSingle();
+  if (error) return { status: "error", message: "Couldn't check that code." };
+  if (!data) {
+    return {
+      status: "invalid",
+      message: "That code isn't valid on this account.",
+    };
+  }
+  if (data.redeemed_at) {
+    return { status: "invalid", message: "That code has already been used." };
+  }
+  if (new Date(data.expires_at).getTime() <= Date.now()) {
+    return { status: "invalid", message: "That code has expired." };
+  }
+  return { status: "valid", percentOff: data.percent_off };
+}
 /**
  * `invoke` carries the signed-in session's own token, and the function reads the
  * buyer's identity out of it, so nothing about who is buying travels in the body.
  */
-async function createCheckoutSession(checkoutItems) {
+async function createCheckoutSession(checkoutItems, promoCode) {
   const { data, error } = await (
     await supabaseClient()
   ).functions.invoke("create-checkout", {
@@ -71,6 +115,7 @@ async function createCheckoutSession(checkoutItems) {
       items: checkoutItems,
       successUrl: `${window.location.origin}/success`,
       cancelUrl: `${window.location.origin}/cart`,
+      ...(promoCode ? { promoCode } : {}),
     },
   });
   if (error) {
@@ -164,8 +209,73 @@ const CartHero = () => (
   />
 );
 
-function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
+function PromoCodeField({ promoCode, promo, onApply, onRemove }) {
+  const [draft, setDraft] = useState("");
+  const submit = (e) => {
+    e.preventDefault();
+    if (draft.trim()) onApply(draft);
+    setDraft("");
+  };
+  if (promoCode) {
+    const tone =
+      promo.status === "valid"
+        ? "text-green-700"
+        : promo.status === "checking"
+          ? "text-asphalt-500"
+          : "text-race-700";
+    return (
+      <div className="flex items-start justify-between gap-3 bg-asphalt-50 border border-asphalt-200 rounded-md p-3">
+        <div className="text-sm">
+          <p className="font-display tracking-wide text-asphalt-800">
+            Code {promoCode}
+          </p>
+          {promo.message && <p className={tone}>{promo.message}</p>}
+        </div>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-sm font-semibold text-asphalt-600 hover:text-race-600 transition-colors duration-base ease-snap"
+        >
+          Remove
+        </button>
+      </div>
+    );
+  }
+  return (
+    <form onSubmit={submit} className="flex gap-2">
+      <label htmlFor="promo-code" className="sr-only">
+        Promo code
+      </label>
+      <input
+        id="promo-code"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        placeholder="Promo code"
+        autoComplete="off"
+        className="flex-1 min-w-0 px-4 py-2.5 rounded-md bg-chalk text-asphalt-900 border-2 border-asphalt-200 uppercase placeholder:normal-case focus:outline-none focus:border-race-500"
+      />
+      <button
+        type="submit"
+        className="px-5 py-2.5 rounded-md bg-asphalt-800 hover:bg-asphalt-700 text-chalk font-semibold transition-colors duration-base ease-snap"
+      >
+        Apply
+      </button>
+    </form>
+  );
+}
+
+function OrderSummary({
+  fees,
+  totalItems,
+  isProcessing,
+  onCheckout,
+  promoField,
+  promoCode,
+}) {
   const remainingForDiscount = GROUP_DISCOUNT_THRESHOLD - totalItems;
+  const discountLabel = fees.usePromo
+    ? `Promo ${promoCode} (${Math.round(fees.discountPercent * 100)}%):`
+    : `Group Discount (${GROUP_DISCOUNT_DISPLAY}):`;
   return (
     <div className="mt-8 bg-chalk rounded-lg border-2 border-asphalt-100 shadow-lift p-8">
       <div className="space-y-4 mb-6">
@@ -188,13 +298,13 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
             {formatDollars(fees.rawSubtotal)}
           </span>
         </div>
-        {fees.qualifiesForGroupDiscount && (
+        {fees.discount > 0 && (
           <div className="flex justify-between text-sm">
             <span className="text-green-600 font-semibold">
-              Group Discount ({GROUP_DISCOUNT_DISPLAY}):
+              {discountLabel}
             </span>
             <span className="font-semibold text-green-600">
-              -{formatDollars(fees.groupDiscount)}
+              -{formatDollars(fees.discount)}
             </span>
           </div>
         )}
@@ -212,6 +322,7 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
             {formatDollars(fees.serviceFee)}
           </span>
         </div>
+        {promoField}
         <div className="border-t-2 border-asphalt-200 pt-4" />
         <div className="flex justify-between items-baseline">
           <span className="text-2xl font-bold text-asphalt-800">Total:</span>
@@ -240,13 +351,67 @@ function OrderSummary({ fees, totalItems, isProcessing, onCheckout }) {
 }
 export default function CartPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { items, updateQuantity, removeItem, getTotal, getTotalItems } =
-    useCart();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
+  const {
+    items,
+    promoCode,
+    updateQuantity,
+    removeItem,
+    restoreItems,
+    setPromoCode,
+    getTotal,
+    getTotalItems,
+  } = useCart();
+  const cartReady = useCartHydrated();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [promo, setPromo] = useState({ status: "idle" });
+
+  // A reminder email links here with the cart it was about and, for an offer,
+  // its code. Read once the saved cart is back, so the saved one cannot land
+  // on top of it, then taken off the address so a refresh does not undo edits.
+  useEffect(() => {
+    if (!cartReady) return;
+    const add = searchParams.get("add");
+    const code = searchParams.get("code");
+    if (!add && !code) return;
+    if (add) restoreItems(parseCartParam(add));
+    if (code) setPromoCode(code);
+    setSearchParams({}, { replace: true });
+  }, [cartReady, searchParams, restoreItems, setPromoCode, setSearchParams]);
+
+  useEffect(() => {
+    if (!promoCode || authLoading) {
+      setPromo({ status: "idle" });
+      return;
+    }
+    if (!user) {
+      setPromo({
+        status: "signin",
+        message: "Sign in with the account it was sent to and it comes off.",
+      });
+      return;
+    }
+    let current = true;
+    setPromo({ status: "checking", message: "Checking…" });
+    lookUpPromo(promoCode).then((result) => {
+      if (!current) return;
+      setPromo(
+        result.status === "valid"
+          ? { ...result, message: `${result.percentOff}% off is applied.` }
+          : result,
+      );
+    });
+    return () => {
+      current = false;
+    };
+  }, [promoCode, user, authLoading]);
+
+  const promoPercent = promo.status === "valid" ? promo.percentOff / 100 : 0;
+
   const handleCheckout = async () => {
     if (!user) {
-      navigate("/login");
+      navigate("/login", { state: { from: { pathname: "/cart" } } });
       return;
     }
     if (items.length === 0) return;
@@ -259,7 +424,7 @@ export default function CartPage() {
         price: item.product.price,
         quantity: item.quantity,
       }));
-      const fees = calculateFees(getTotal(), getTotalItems());
+      const fees = calculateFees(getTotal(), getTotalItems(), promoPercent);
       localStorage.setItem(
         PENDING_PURCHASE_KEY,
         JSON.stringify({
@@ -270,7 +435,10 @@ export default function CartPage() {
           totalQuantity: getTotalItems(),
         }),
       );
-      const checkoutUrl = await createCheckoutSession(checkoutItems);
+      const checkoutUrl = await createCheckoutSession(
+        checkoutItems,
+        fees.usePromo ? promoCode : undefined,
+      );
       window.location.href = checkoutUrl;
     } catch (error) {
       alert(
@@ -280,6 +448,14 @@ export default function CartPage() {
     }
   };
   if (items.length === 0) {
+    if (!cartReady) {
+      return (
+        <div className="w-full -mt-20">
+          <RouteMeta metadata={metadata} />
+          <CartHero />
+        </div>
+      );
+    }
     return (
       <div className="w-full -mt-20">
         <RouteMeta metadata={metadata} />
@@ -310,6 +486,13 @@ export default function CartPage() {
             <p className="text-asphalt-300 text-xl mb-8">
               Racing wristbands and party packages are all on the pricing page.
             </p>
+            {promoCode && (
+              <p className="text-chalk text-lg mb-8">
+                Code{" "}
+                <span className="font-display tracking-wide">{promoCode}</span>{" "}
+                is saved. Pick your races and it comes off at checkout.
+              </p>
+            )}
             <Link
               to="/pricing"
               className="inline-flex bg-race-600 hover:bg-race-500 text-chalk px-8 py-4 rounded-md font-bold text-lg shadow-race hover:shadow-lift transition duration-base ease-snap active:scale-95"
@@ -322,7 +505,7 @@ export default function CartPage() {
     );
   }
   const totalItems = getTotalItems();
-  const fees = calculateFees(getTotal(), totalItems);
+  const fees = calculateFees(getTotal(), totalItems, promoPercent);
   return (
     <div className="w-full -mt-20">
       <RouteMeta metadata={metadata} />
@@ -352,6 +535,23 @@ export default function CartPage() {
               totalItems={totalItems}
               isProcessing={isProcessing}
               onCheckout={handleCheckout}
+              promoCode={promoCode}
+              promoField={
+                <PromoCodeField
+                  promoCode={promoCode}
+                  promo={
+                    promo.status === "valid" && !fees.usePromo
+                      ? {
+                          status: "idle",
+                          message:
+                            "Your group discount is as big, so the code stays good for another order.",
+                        }
+                      : promo
+                  }
+                  onApply={setPromoCode}
+                  onRemove={() => setPromoCode("")}
+                />
+              }
             />
           </div>
         </div>
