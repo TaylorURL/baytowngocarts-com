@@ -8,3 +8,13 @@ verify_jwt = true
 # signature itself.
 [functions.stripe-webhook]
 verify_jwt = false
+
+# pg_cron posts with x-sweep-secret rather than a user's token, and the
+# function checks that secret itself.
+[functions.email-sweep]
+verify_jwt = false
+
+# A mail client's one-click unsubscribe posts with no Supabase token at all.
+# The unsubscribe token in the link is the credential.
+[functions.email-unsubscribe]
+verify_jwt = false

@@ -66,12 +66,16 @@ export const ROUTES = [
   { path: "*", ...page(() => import("./pages/NotFoundPage.jsx")) },
 ];
 
-/* These three render outside the site chrome, so they sit beside the layout
+/* These render outside the site chrome, so they sit beside the layout
    rather than inside it. */
 export const BARE_ROUTES = [
   { path: "/login", ...page(() => import("./pages/LoginPage.jsx")) },
   { path: "/signup", ...page(() => import("./pages/SignupPage.jsx")) },
   { path: "/success", ...page(() => import("./pages/SuccessPage.jsx")) },
+  {
+    path: "/unsubscribe",
+    ...page(() => import("./pages/UnsubscribePage.jsx")),
+  },
 ];
 
 export const ALL_ROUTES = [...ROUTES, ...BARE_ROUTES];

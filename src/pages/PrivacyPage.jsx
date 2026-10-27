@@ -215,7 +215,9 @@ const SECTIONS = [
         correct, delete, or restrict the processing of your personal
         information. To exercise these rights, please contact us using the
         information below. Note that Speedway 146 and TaylorURL reserve the
-        right to retain and use data as permitted by applicable law.
+        right to retain and use data as permitted by applicable law. Every
+        marketing email we send, including cart reminders and offers, carries an
+        unsubscribe link, and using it stops all of them for your account.
       </p>
     ),
   },

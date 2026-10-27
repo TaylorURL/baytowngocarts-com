@@ -60,7 +60,9 @@ export function useAuth() {
     });
     return { data, error };
   };
-  const signUp = async (email, password) => {
+  // marketingOptIn lands in the user's metadata, where the trigger that makes
+  // their email_preferences row reads it.
+  const signUp = async (email, password, { marketingOptIn = true } = {}) => {
     const { data, error } = await (
       await supabaseClient()
     ).auth.signUp({
@@ -68,6 +70,7 @@ export function useAuth() {
       password,
       options: {
         emailRedirectTo: undefined,
+        data: { marketing_opt_in: Boolean(marketingOptIn) },
       },
     });
     return { data, error };
