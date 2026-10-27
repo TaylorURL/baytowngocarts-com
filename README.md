@@ -8,7 +8,7 @@
 <p align="center"><a href="https://baytowngokarts.com">baytowngokarts.com</a></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2026.44.0-e11d2a?style=for-the-badge" alt="Version 2026.44.0" />
+  <img src="https://img.shields.io/badge/version-2026.44.1-e11d2a?style=for-the-badge" alt="Version 2026.44.1" />
 </p>
 
 Speedway 146 is an outdoor go-kart track on TX-146 in Baytown, with bounce houses and party rooms. The site lets families buy race tickets and book birthday parties online through Stripe instead of calling. Staff use the same site to see orders, revenue and traffic.
