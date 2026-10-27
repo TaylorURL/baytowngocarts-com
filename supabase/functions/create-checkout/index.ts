@@ -2,12 +2,29 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 // @ts-ignore
 import Stripe from "https://esm.sh/stripe@13.10.0?target=deno";
+// @ts-ignore
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // @ts-ignore
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
   apiVersion: "2023-10-16",
   httpClient: Stripe.createFetchHttpClient(),
 });
+
+// The service role reads promo codes and records the attempt. Neither table is
+// writable from the browser, so a buyer cannot mint a code or mark one unused.
+const supabaseClient = createClient(
+  // @ts-ignore
+  Deno.env.get("SUPABASE_URL") ?? "",
+  // @ts-ignore
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  },
+);
 
 const ALLOWED_ORIGIN = "https://baytowngokarts.com";
 
@@ -22,6 +39,11 @@ const TRANSACTION_FEE_PERCENT = 0.04;
 const TEXAS_SALES_TAX_PERCENT = 0.0825;
 const GROUP_DISCOUNT_THRESHOLD = 15;
 const GROUP_DISCOUNT_PERCENT = 0.1;
+// How long Stripe holds a checkout open. Stripe's floor is 30 minutes and its
+// default a day; an hour is what lets the cart reminder go out the same
+// afternoon the buyer walked away, rather than the next one.
+const SESSION_LIFETIME_SECONDS = 60 * 60;
+const PROMO_CODE_PATTERN = /^[A-Z0-9-]{6,32}$/;
 // @ts-ignore
 const CONNECTED_ACCOUNT_ID = Deno.env.get("STRIPE_CONNECTED_ACCOUNT_ID") || "";
 
@@ -84,13 +106,54 @@ function callerFromToken(req: Request): { id: string; email: string } | null {
   }
 }
 
+type PromoCode = { id: string; code: string; percent_off: number };
+
+/**
+ * The caller's own unspent, unexpired code, or why it cannot be used. A code
+ * belongs to the account it was emailed to, so one forwarded to a friend is
+ * refused here rather than discovered on the statement.
+ */
+async function promoFor(
+  value: unknown,
+  userId: string,
+): Promise<{ promo: PromoCode | null; error?: string }> {
+  if (value === undefined || value === null || value === "") {
+    return { promo: null };
+  }
+  const code = String(value).trim().toUpperCase();
+  if (!PROMO_CODE_PATTERN.test(code)) {
+    return { promo: null, error: "That promo code isn't valid." };
+  }
+  const { data, error } = await supabaseClient
+    .from("promo_codes")
+    .select("id, code, user_id, percent_off, expires_at, redeemed_at")
+    .eq("code", code)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data || data.user_id !== userId) {
+    return {
+      promo: null,
+      error: "That promo code isn't valid on this account.",
+    };
+  }
+  if (data.redeemed_at) {
+    return { promo: null, error: "That promo code has already been used." };
+  }
+  if (new Date(data.expires_at).getTime() <= Date.now()) {
+    return { promo: null, error: "That promo code has expired." };
+  }
+  return {
+    promo: { id: data.id, code: data.code, percent_off: data.percent_off },
+  };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const { items, successUrl, cancelUrl } = await req.json();
+    const { items, successUrl, cancelUrl, promoCode } = await req.json();
 
     if (!isAllowedRedirect(successUrl) || !isAllowedRedirect(cancelUrl)) {
       return new Response(JSON.stringify({ error: "Invalid redirect URL." }), {
@@ -188,14 +251,28 @@ serve(async (req) => {
       totalQuantity += item.quantity;
     }
 
+    const { promo, error: promoError } = await promoFor(promoCode, userId);
+    if (promoError) {
+      return new Response(JSON.stringify({ error: promoError }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      });
+    }
+
+    // The group discount and a promo code do not stack: the larger one is the
+    // discount, and it comes off the races and packages before tax and fees,
+    // the same as the group discount always has.
     const qualifiesForGroupDiscount = totalQuantity >= GROUP_DISCOUNT_THRESHOLD;
-    const discountMultiplier = qualifiesForGroupDiscount
-      ? 1 - GROUP_DISCOUNT_PERCENT
-      : 1;
-    const groupDiscount = qualifiesForGroupDiscount
-      ? rawSubtotal * GROUP_DISCOUNT_PERCENT
-      : 0;
-    const subtotal = rawSubtotal - groupDiscount;
+    const groupPercent = qualifiesForGroupDiscount ? GROUP_DISCOUNT_PERCENT : 0;
+    const promoPercent = promo ? promo.percent_off / 100 : 0;
+    const usePromo = promoPercent > groupPercent;
+    const discountPercent = Math.max(groupPercent, promoPercent);
+    const discountMultiplier = 1 - discountPercent;
+    const discount = rawSubtotal * discountPercent;
+    const groupDiscount = usePromo ? 0 : discount;
+    const promoDiscount = usePromo ? discount : 0;
+    const subtotal = rawSubtotal - discount;
+    const discountLabel = `${Math.round(discountPercent * 100)}% off`;
 
     const lineItems = [];
 
@@ -207,9 +284,10 @@ serve(async (req) => {
         price_data: {
           currency: "usd",
           product_data: {
-            name: qualifiesForGroupDiscount
-              ? `${item.name} (10% off)`
-              : item.name,
+            name:
+              discountPercent > 0
+                ? `${item.name} (${discountLabel})`
+                : item.name,
             description: item.description,
           },
           unit_amount: discountedCents,
@@ -249,12 +327,15 @@ serve(async (req) => {
     const stripeProcessingFee = total * 0.029 + 0.3;
     const applicationFeeAmount = toCents(platformFee + stripeProcessingFee);
 
+    const expiresAt = Math.floor(Date.now() / 1000) + SESSION_LIFETIME_SECONDS;
+
     const sessionConfig: any = {
       line_items: lineItems,
       mode: "payment",
       success_url: successUrl + "?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: cancelUrl,
       customer_email: customerEmail,
+      expires_at: expiresAt,
       metadata: {
         user_id: userId,
         platform_fee: platformFee.toFixed(2),
@@ -262,6 +343,8 @@ serve(async (req) => {
         sales_tax: salesTax.toFixed(2),
         subtotal: subtotal.toFixed(2),
         group_discount: groupDiscount.toFixed(2),
+        promo_discount: promoDiscount.toFixed(2),
+        promo_code_id: usePromo && promo ? promo.id : "",
         total_quantity: totalQuantity.toString(),
       },
       payment_intent_data: {
@@ -275,6 +358,23 @@ serve(async (req) => {
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
+    // What the cart reminder is built from if this session expires unpaid. A
+    // failure here costs one reminder, never the sale, so it is logged and the
+    // buyer goes on to Stripe regardless.
+    const { error: attemptError } = await supabaseClient
+      .from("checkout_attempts")
+      .insert({
+        user_id: userId,
+        email: customerEmail,
+        stripe_session_id: session.id,
+        items: items.map((item) => ({ id: item.id, quantity: item.quantity })),
+        promo_code_id: usePromo && promo ? promo.id : null,
+        expires_at: new Date(expiresAt * 1000).toISOString(),
+      });
+    if (attemptError) {
+      console.error("Error recording checkout attempt:", attemptError);
+    }
+
     return new Response(
       JSON.stringify({
         sessionId: session.id,
@@ -283,6 +383,7 @@ serve(async (req) => {
         platformFee: platformFee.toFixed(2),
         transactionFee: transactionFee.toFixed(2),
         total: total.toFixed(2),
+        promoApplied: usePromo,
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },

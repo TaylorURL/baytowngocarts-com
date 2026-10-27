@@ -2,7 +2,7 @@
   "name": "speedway146-website",
   "private": true,
   "license": "UNLICENSED",
-  "version": "2026.42.3",
+  "version": "2026.44.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

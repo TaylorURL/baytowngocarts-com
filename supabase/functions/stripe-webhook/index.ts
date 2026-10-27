@@ -99,7 +99,10 @@ serve(async (req) => {
         .insert(purchaseData)
         .select();
 
-      if (error) {
+      // 23505 is the success page having written this order first, which is
+      // the order recorded rather than a failure. Answering 500 to it had Stripe
+      // retrying a delivery that could only ever be refused again.
+      if (error && error.code !== "23505") {
         console.error("Error saving purchase:", error);
         return new Response(
           JSON.stringify({
@@ -110,6 +113,43 @@ serve(async (req) => {
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           },
         );
+      }
+
+      // A paid checkout is no longer one to remind anybody about, and the code
+      // it was paid with is spent. Both are written whether or not the order
+      // row above was this delivery's to write.
+      const closedAt = new Date().toISOString();
+      const { error: attemptError } = await supabaseClient
+        .from("checkout_attempts")
+        .update({ status: "completed", closed_at: closedAt })
+        .eq("stripe_session_id", session.id)
+        .in("status", ["open", "expired", "void"]);
+      if (attemptError) {
+        console.error("Error closing checkout attempt:", attemptError);
+      }
+
+      const promoCodeId = session.metadata?.promo_code_id;
+      if (promoCodeId) {
+        const { error: promoError } = await supabaseClient
+          .from("promo_codes")
+          .update({ redeemed_at: closedAt, redeemed_session_id: session.id })
+          .eq("id", promoCodeId)
+          .is("redeemed_at", null);
+        if (promoError) {
+          console.error("Error redeeming promo code:", promoError);
+        }
+      }
+    }
+
+    if (event.type === "checkout.session.expired") {
+      const session = event.data.object;
+      const { error } = await supabaseClient
+        .from("checkout_attempts")
+        .update({ status: "expired", closed_at: new Date().toISOString() })
+        .eq("stripe_session_id", session.id)
+        .eq("status", "open");
+      if (error) {
+        console.error("Error expiring checkout attempt:", error);
       }
     }
 

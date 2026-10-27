@@ -10,7 +10,7 @@
       "destination": "/api/asset-missing"
     },
     {
-      "source": "/(cart|dashboard|staff|traffic|login|signup|success)",
+      "source": "/(cart|dashboard|staff|traffic|login|signup|success|unsubscribe)",
       "destination": "/app"
     },
     {

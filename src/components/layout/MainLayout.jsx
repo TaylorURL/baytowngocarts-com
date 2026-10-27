@@ -6,9 +6,11 @@ import SplitRail from "@taylorurl/split-rail";
 import ClickSpark from "../reactbits/ClickSpark.jsx";
 import RouteFallback from "../shell/RouteFallback.jsx";
 import { useTrafficLogger } from "../../hooks/useTraffic";
+import { useEmailLink } from "../../hooks/useEmailLink.js";
 const MainLayout = () => {
   const location = useLocation();
   useTrafficLogger(location.pathname);
+  useEmailLink();
   /*
    * A route reached by clicking arrives on the same entrance the rest of the
    * page uses. The document the visitor came in on is already painted, so it

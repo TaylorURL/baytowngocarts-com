@@ -34,6 +34,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(true);
   const [loading, setLoading] = useState(false);
   const { notify } = useToast();
   const { signUp } = useAuth();
@@ -52,7 +53,7 @@ const SignupPage = () => {
       setLoading(false);
       return;
     }
-    const { error } = await signUp(email, password);
+    const { error } = await signUp(email, password, { marketingOptIn });
     if (error) {
       notify(error.message, "error");
     } else {
@@ -165,6 +166,18 @@ const SignupPage = () => {
                 </button>
               </div>
             </div>
+            <label className="flex items-start gap-3 text-sm text-asphalt-700 cursor-pointer">
+              <input
+                type="checkbox"
+                name="marketingOptIn"
+                checked={marketingOptIn}
+                onChange={(e) => setMarketingOptIn(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-asphalt-300 accent-race-600"
+              />
+              <span>
+                Email me race-night deals and reminders. Unsubscribe anytime.
+              </span>
+            </label>
             <Button
               type="submit"
               variant="primary"
