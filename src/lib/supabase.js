@@ -5,6 +5,50 @@ let client = null;
 let building = null;
 const waiting = new Set();
 
+/*
+ * How long an auth request is given before it is abandoned.
+ *
+ * The failure this exists for is not a request that is refused, it is one that
+ * never finishes: the connection half-opens, nothing comes back, and fetch
+ * neither resolves nor rejects. An in-app webview is where that happens -
+ * the host app suspends the network under the page, or hands it a proxy that
+ * accepts the connection and then stops - and the auth library sets no
+ * deadline of its own, so the promise the form is waiting on simply never
+ * settles. The submit button then reads "Creating account…" and stays
+ * disabled for the rest of the visit with nothing said to the visitor.
+ *
+ * A bounded wait turns that into an ordinary failure: the form reports it, the
+ * button comes back, and the typed values are still there to send again. Only
+ * the auth endpoints are held to it, because they are a short exchange behind
+ * a button somebody is waiting at - a file upload is neither.
+ */
+const AUTH_TIMEOUT_MS = 12000;
+const AUTH_PATH = "/auth/v1/";
+
+const timedFetch = (input, init = {}) => {
+  const target = typeof input === "string" ? input : input?.url || "";
+  // A caller carrying its own signal already has its own deadline, and
+  // AbortController is not something to assume exists.
+  if (
+    target.indexOf(AUTH_PATH) === -1 ||
+    init.signal ||
+    typeof AbortController === "undefined"
+  ) {
+    return fetch(input, init);
+  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), AUTH_TIMEOUT_MS);
+  const settled = (value, failed) => {
+    clearTimeout(timer);
+    if (failed) throw value;
+    return value;
+  };
+  return fetch(input, { ...init, signal: controller.signal }).then(
+    (response) => settled(response, false),
+    (error) => settled(error, true),
+  );
+};
+
 /**
  * Shared Supabase client, built on first use.
  *
@@ -28,14 +72,27 @@ export const supabaseClient = async () => {
     );
   }
   if (!building) {
-    building = import("@supabase/supabase-js").then(({ createClient }) => {
-      client = createClient(supabaseUrl, supabaseAnonKey);
-      building = null;
-      const announce = [...waiting];
-      waiting.clear();
-      announce.forEach((then) => then(client));
-      return client;
-    });
+    building = import("@supabase/supabase-js").then(
+      ({ createClient }) => {
+        client = createClient(supabaseUrl, supabaseAnonKey, {
+          global: { fetch: timedFetch },
+        });
+        building = null;
+        const announce = [...waiting];
+        waiting.clear();
+        announce.forEach((then) => then(client));
+        return client;
+      },
+      (error) => {
+        // A chunk that did not arrive must not be remembered as the answer.
+        // Left in place, the rejected promise is what every later call on the
+        // page is handed, so one lost request would take the library for the
+        // rest of the visit and nothing could ever ask for it again - a second
+        // press of the button has to be able to fetch it.
+        building = null;
+        throw error;
+      },
+    );
   }
   return building;
 };

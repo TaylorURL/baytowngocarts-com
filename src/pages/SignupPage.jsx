@@ -53,14 +53,25 @@ const SignupPage = () => {
       setLoading(false);
       return;
     }
-    const { error } = await signUp(email, password, { marketingOptIn });
-    if (error) {
-      notify(error.message, "error");
-    } else {
-      notify("Account created.");
-      setTimeout(() => navigate("/"), 1200);
+    // However the attempt ends, the button comes back to the visitor and
+    // something is said about it. Released only on the paths that were thought
+    // of, a failure nobody expected - the request that got no answer, the auth
+    // chunk that never arrived - left the form disabled on "Creating account…"
+    // for the rest of the visit, with the typed values still in it and no way
+    // to send them.
+    try {
+      const { error } = await signUp(email, password, { marketingOptIn });
+      if (error) {
+        notify(error.message, "error");
+      } else {
+        notify("Account created.");
+        setTimeout(() => navigate("/"), 1200);
+      }
+    } catch {
+      notify("We could not create your account. Please try again.", "error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
