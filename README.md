@@ -6,7 +6,7 @@ Website for Speedway 146, a go-kart track in Baytown, Texas.
 
 [baytowngokarts.com](https://baytowngokarts.com)
 
-<img src="https://img.shields.io/badge/version-2026.44.1-e11d2a?style=for-the-badge" alt="Version 2026.44.1" />
+<img src="https://img.shields.io/badge/version-2026.44.2-e11d2a?style=for-the-badge" alt="Version 2026.44.2" />
 
 Race tickets, party packages and add-ons in one cart, paid through Stripe. Customer accounts with past orders. A staff panel for orders, revenue and traffic. React, prerendered per route, on Supabase.
 
