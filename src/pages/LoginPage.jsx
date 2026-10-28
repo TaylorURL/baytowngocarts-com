@@ -42,14 +42,22 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signIn(email, password);
-    if (error) {
-      notify(error.message, "error");
-    } else {
-      notify("Signed in.");
-      setTimeout(() => navigate(from, { replace: true }), 800);
+    // The same guarantee the signup form makes: the button is given back and
+    // the outcome is reported on every path out of here, including the ones
+    // that throw.
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        notify(error.message, "error");
+      } else {
+        notify("Signed in.");
+        setTimeout(() => navigate(from, { replace: true }), 800);
+      }
+    } catch {
+      notify("We could not sign you in. Please try again.", "error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
