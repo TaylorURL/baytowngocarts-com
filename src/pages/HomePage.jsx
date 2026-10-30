@@ -1,5 +1,5 @@
 import HeroSection from "../components/sections/HeroSection.jsx";
-import ThursdaySpecialSection from "../components/sections/ThursdaySpecialSection.jsx";
+import NovemberSpecialSection from "../components/sections/NovemberSpecialSection.jsx";
 import PartySection from "../components/sections/PartySection.jsx";
 import GallerySection from "../components/sections/GallerySection.jsx";
 import FeatureSection from "../components/sections/FeatureSection.jsx";
@@ -12,7 +12,7 @@ import { SHARE_IMAGE, SITE_URL } from "../lib/seo/schema.js";
 export const metadata = {
   title: "Speedway 146 | Go-Kart Racing in Baytown, TX",
   description:
-    "Outdoor go-kart racing on TX-146 in Baytown. Five-minute heats, bounce houses and party rooms, open Thursday through Sunday, walk-ins welcome.",
+    "Outdoor go-kart racing on TX-146 in Baytown. Five-minute heats, bounce houses and party rooms, open Friday through Sunday, walk-ins welcome.",
   canonical: "/",
   heroImage: "/images/14.webp",
   robots: "index, follow",
@@ -20,7 +20,7 @@ export const metadata = {
   openGraph: {
     "og:title": "Speedway 146 | Go-Kart Racing in Baytown, TX",
     "og:description":
-      "Outdoor go-kart racing on TX-146 in Baytown. Five-minute heats, bounce houses and party rooms, open Thursday through Sunday, walk-ins welcome.",
+      "Outdoor go-kart racing on TX-146 in Baytown. Five-minute heats, bounce houses and party rooms, open Friday through Sunday, walk-ins welcome.",
     "og:url": SITE_URL + "/",
     "og:image": SHARE_IMAGE,
     "og:type": "website",
@@ -37,9 +37,10 @@ const HomePage = () => (
   <div className="w-full -mt-20">
     <RouteMeta metadata={metadata} />
     <HeroSection />
-    <div className="section-defer">
-      <ThursdaySpecialSection />
-    </div>
+    {/* Not deferred. The November band is the one section on this page with a
+        date on it, and content-visibility would hold it back until a visitor
+        scrolled towards the thing they are meant to see on arrival. */}
+    <NovemberSpecialSection />
     <div className="section-defer">
       <PartySection />
     </div>
