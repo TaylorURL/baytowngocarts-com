@@ -30,7 +30,7 @@ export const metadata = {
 const HERO_BADGES = [
   { icon: "cake", label: "Birthday Parties" },
   { icon: "briefcase", label: "Corporate" },
-  { icon: "stopwatch", label: "Thursday Special" },
+  { icon: "stopwatch", label: "Unlimited Racing" },
 ];
 
 const EVENT_TYPES = [
@@ -65,15 +65,15 @@ const EVENT_TYPES = [
     ],
   },
   {
-    title: "Thursday Unlimited Special",
+    title: "Unlimited Racing Wristband",
     description:
-      "Every Thursday, 2.5 hours of unlimited racing for one flat price. $49.99 plus tax per person. Wristband on the clock from the moment it's issued.",
+      "Two and a half hours of unlimited racing for one flat price, any day we are open. $49.99 plus tax per person. Wristband on the clock from the moment it's issued.",
     image: "/images/19.webp",
     imageWidth: 1200,
     imageHeight: 1800,
     icon: "stopwatch",
     features: [
-      "Thursdays only",
+      "Any day the track is open",
       "$49.99 + tax per person",
       "2.5 hours of unlimited racing",
       "Adult or Kid karts",
@@ -115,7 +115,7 @@ const EventsPage = () => (
         </h1>
       }
       crumbs={metadata.crumbs}
-      description="Birthdays, corporate outings and Thursday specials are all run on the same track. Same venue, same karts, your group, your schedule."
+      description="Birthdays, corporate outings and unlimited wristbands are all run on the same track. Same venue, same karts, your group, your schedule."
       backgroundImage="/images/14.webp"
     >
       <div className="mt-8 flex flex-wrap justify-center gap-3">

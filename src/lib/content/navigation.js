@@ -1,5 +1,5 @@
 import { PARTY_PROMO } from "./party.js";
-import { THURSDAY_UNLIMITED_SPECIAL } from "./specials.js";
+import { UNLIMITED_WRISTBAND_SPECIAL } from "./specials.js";
 
 /*
  * The bar's destinations.
@@ -36,10 +36,10 @@ export const NAV_ITEMS = [
         },
       ],
       feature: {
-        eyebrow: THURSDAY_UNLIMITED_SPECIAL.eyebrow,
-        title: THURSDAY_UNLIMITED_SPECIAL.title,
-        figure: THURSDAY_UNLIMITED_SPECIAL.price,
-        note: THURSDAY_UNLIMITED_SPECIAL.perPerson,
+        eyebrow: UNLIMITED_WRISTBAND_SPECIAL.eyebrow,
+        title: UNLIMITED_WRISTBAND_SPECIAL.title,
+        figure: UNLIMITED_WRISTBAND_SPECIAL.price,
+        note: UNLIMITED_WRISTBAND_SPECIAL.perPerson,
         href: "/pricing?tab=individual",
         cta: "See the Rates",
       },
@@ -62,7 +62,7 @@ export const NAV_ITEMS = [
           description: "Private heats, bracket or open format.",
         },
         {
-          label: "Thursday Unlimited",
+          label: "Unlimited Wristband",
           href: "/events",
           description: "Two and a half hours, one flat price.",
         },

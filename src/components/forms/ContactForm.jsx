@@ -167,7 +167,9 @@ const ContactForm = () => {
             <option value="birthday-party">Birthday Party (Party Room)</option>
             <option value="corporate-event">Corporate / Team Outing</option>
             <option value="november-special">November $5 Ride Nights</option>
-            <option value="thursday-special">Thursday Unlimited Special</option>
+            <option value="unlimited-wristband">
+              Unlimited Racing Wristband
+            </option>
             <option value="bounce-rental">Off-Site Bounce House Rental</option>
             <option value="general">General Question</option>
             <option value="other">Other</option>

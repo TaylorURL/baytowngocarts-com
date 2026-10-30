@@ -1,8 +1,16 @@
+/*
+ * Bounce house rates, priced by the kind of day rather than by the weekday.
+ *
+ * `novemberDescription` is the extra night `november.js` opens: the weekday
+ * rate runs on the weekday evenings the gate is open, which is Friday alone
+ * for most of the year and Thursday as well for that month.
+ */
 export const BOUNCE_PRICING = [
   {
     title: "Weekday Unlimited",
     price: "$10",
-    description: "Thursday & Friday",
+    description: "Friday",
+    novemberDescription: "Thursday & Friday",
     items: [
       "Unlimited jumping all day",
       "Indoor climate-controlled",
