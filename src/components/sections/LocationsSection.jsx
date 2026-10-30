@@ -1,10 +1,11 @@
 import { useState } from "react";
 import {
-  BUSINESS_HOURS,
   CLOSED_DAYS_NOTE,
   CONTACT_INFO,
   HOLIDAY_HOURS_NOTE,
 } from "../../lib/content/business.js";
+import { NOVEMBER_PROMO, hoursToPrint } from "../../lib/content/november.js";
+import useNovemberPromo from "../../hooks/useNovemberPromo.js";
 import Icon from "../ui/Icon.jsx";
 
 /**
@@ -55,59 +56,72 @@ const ContactRow = ({ icon, label, children }) => (
   </div>
 );
 
-const LocationsSection = () => (
-  <div className="space-y-6">
-    <div className="space-y-4">
-      <ContactRow icon="map-pin" label="Address">
-        <p>{CONTACT_INFO.address}</p>
-        <a
-          href={CONTACT_INFO.directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center gap-1.5 text-sm text-race-600 hover:text-race-700 transition-colors duration-base font-semibold"
-        >
-          Get Directions
-          <Icon
-            name="arrow-right"
-            className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-0.5"
-          />
-        </a>
-      </ContactRow>
-      <ContactRow icon="phone" label="Phone">
-        <a
-          href={CONTACT_INFO.phoneTel}
-          className="tabular-nums hover:text-race-600 transition-colors duration-base"
-        >
-          {CONTACT_INFO.phone}
-        </a>
-      </ContactRow>
-      <ContactRow icon="mail" label="Email">
-        <a
-          href={CONTACT_INFO.emailMailto}
-          className="hover:text-race-600 transition-colors duration-base break-all"
-        >
-          {CONTACT_INFO.email}
-        </a>
-      </ContactRow>
-      <ContactRow icon="clock" label="Hours">
-        <ul className="space-y-1 text-sm tabular-nums">
-          {BUSINESS_HOURS.map(({ day, hours }) => (
-            <li key={day} className="flex items-baseline justify-between gap-4">
-              <span className="font-semibold">{day}</span>
-              <span className="text-asphalt-600">{hours}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-2 text-xs text-asphalt-500 italic">
-          {CLOSED_DAYS_NOTE}
-        </p>
-        <p className="mt-1 text-xs text-asphalt-500 leading-relaxed">
-          {HOLIDAY_HOURS_NOTE}
-        </p>
-      </ContactRow>
+const LocationsSection = () => {
+  /* One list, with November's extra night appended while it runs, rather than
+     a second hard-written copy of the week that can fall out of step. */
+  const novemberOn = useNovemberPromo();
+  return (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <ContactRow icon="map-pin" label="Address">
+          <p>{CONTACT_INFO.address}</p>
+          <a
+            href={CONTACT_INFO.directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 text-sm text-race-600 hover:text-race-700 transition-colors duration-base font-semibold"
+          >
+            Get Directions
+            <Icon
+              name="arrow-right"
+              className="h-4 w-4 transition-transform duration-base ease-snap group-hover:translate-x-0.5"
+            />
+          </a>
+        </ContactRow>
+        <ContactRow icon="phone" label="Phone">
+          <a
+            href={CONTACT_INFO.phoneTel}
+            className="tabular-nums hover:text-race-600 transition-colors duration-base"
+          >
+            {CONTACT_INFO.phone}
+          </a>
+        </ContactRow>
+        <ContactRow icon="mail" label="Email">
+          <a
+            href={CONTACT_INFO.emailMailto}
+            className="hover:text-race-600 transition-colors duration-base break-all"
+          >
+            {CONTACT_INFO.email}
+          </a>
+        </ContactRow>
+        <ContactRow icon="clock" label="Hours">
+          <ul className="space-y-1 text-sm tabular-nums">
+            {hoursToPrint(novemberOn).map(({ day, hours, note }) => (
+              <li
+                key={day}
+                className="flex flex-wrap items-baseline justify-between gap-x-4"
+              >
+                <span className="font-semibold">{day}</span>
+                <span className="text-asphalt-600">{hours}</span>
+                {note && (
+                  <span className="w-full font-display text-[10px] uppercase not-italic tracking-speedway text-race-600">
+                    {note}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-asphalt-500 italic">
+            {novemberOn ? NOVEMBER_PROMO.closedDaysNote : CLOSED_DAYS_NOTE}
+          </p>
+          <p className="mt-1 text-xs text-asphalt-500 leading-relaxed">
+            {HOLIDAY_HOURS_NOTE}
+          </p>
+        </ContactRow>
+      </div>
+      <MapPanel />
     </div>
-    <MapPanel />
-  </div>
-);
+  );
+};
 
 export default LocationsSection;

@@ -200,7 +200,7 @@ const StillAsking = () => (
           Anything not on this page is usually specific to your date, your group
           or the weather that afternoon, and we can answer all three faster on
           the phone than by form. It is also how you book a party. We are open
-          Thursday to Sunday.
+          Friday to Sunday.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button

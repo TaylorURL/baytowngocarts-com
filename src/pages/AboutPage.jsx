@@ -84,8 +84,8 @@ const HOUSE_RULES = [
   },
   {
     icon: "fuel",
-    title: "Outdoor, Thursday to Sunday",
-    text: "Open Thursday through Sunday. Light rain we run, heavy rain we pause for safety, then resume.",
+    title: "Outdoor, Friday to Sunday",
+    text: "Open Friday through Sunday. Light rain we run, heavy rain we pause for safety, then resume.",
   },
 ];
 
@@ -286,7 +286,7 @@ const AboutPage = () => (
             <span className="block text-race-500">First one's $13.99.</span>
           </h2>
           <p className="mt-6 text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-            Walk-ins Thursday through Sunday. Parties booked by phone.
+            Walk-ins Friday through Sunday. Parties booked by phone.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Magnet padding={70} magnetStrength={4}>

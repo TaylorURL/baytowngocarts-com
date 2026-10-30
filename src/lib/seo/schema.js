@@ -4,6 +4,7 @@ import {
   CONTACT_INFO,
   SOCIAL_URLS,
 } from "../content/business.js";
+import { NOVEMBER_PROMO } from "../content/november.js";
 
 export const SITE_URL = "https://baytowngokarts.com";
 export const SHARE_IMAGE = `${SITE_URL}/images/share-card.jpg`;
@@ -45,6 +46,30 @@ function openingHoursSpecification() {
   }).filter((spec) => spec.opens && spec.closes);
 }
 
+/**
+ * The extra night a single month opens, as the exception it is.
+ *
+ * A dated `specialOpeningHoursSpecification` is the only way to tell a
+ * crawler about one month's extra day without claiming it is part of the
+ * standing week - and it carries the window with it, so a document left in
+ * a cache after the month is out still says which month it meant.
+ */
+function specialOpeningHoursSpecification() {
+  const { extraDay, validFrom, validThrough } = NOVEMBER_PROMO;
+  const [opens, closes] = hourEnds(extraDay.hours);
+  if (!opens || !closes) return null;
+  return [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: `https://schema.org/${extraDay.day}`,
+      opens,
+      closes,
+      validFrom,
+      validThrough,
+    },
+  ];
+}
+
 /** The same hours in the short form, for readers that take only that. */
 function compactOpeningHours() {
   return BUSINESS_HOURS.map(({ day, hours }) => {
@@ -61,6 +86,7 @@ function compactOpeningHours() {
  * than as two things that happen to share a name.
  */
 export function localBusinessSchema() {
+  const special = specialOpeningHoursSpecification();
   return {
     "@type": "LocalBusiness",
     additionalType: "https://schema.org/AmusementPark",
@@ -90,6 +116,7 @@ export function localBusinessSchema() {
     },
     openingHours: compactOpeningHours(),
     openingHoursSpecification: openingHoursSpecification(),
+    ...(special ? { specialOpeningHoursSpecification: special } : {}),
     sameAs: Object.values(SOCIAL_URLS),
   };
 }
