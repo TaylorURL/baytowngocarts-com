@@ -8,7 +8,8 @@ import {
 } from "../lib/stripe-config.js";
 import { CONTACT_INFO } from "../lib/content/business.js";
 import SectionEyebrow from "../components/ui/SectionEyebrow.jsx";
-import { THURSDAY_UNLIMITED_SPECIAL } from "../lib/content/specials.js";
+import { UNLIMITED_WRISTBAND_SPECIAL } from "../lib/content/specials.js";
+import useNovemberPromo from "../hooks/useNovemberPromo.js";
 import { parsePriceString } from "../lib/pricing.js";
 import { formatDollars } from "../lib/format.js";
 import { useCart } from "../hooks/useCart";
@@ -25,7 +26,7 @@ import { SHARE_IMAGE, SITE_URL, productSchema } from "../lib/seo/schema.js";
 export const metadata = {
   title: "Go-Kart Prices & Wristbands | Speedway 146 Baytown",
   description:
-    "Race prices, unlimited Thursday wristbands, group rates and party packages at Speedway 146 in Baytown. Buy online or pay at the gate.",
+    "Race prices, unlimited racing wristbands, group rates and party packages at Speedway 146 in Baytown. Buy online or pay at the gate.",
   canonical: "/pricing",
   heroImage: "/images/16.webp",
   robots: "index, follow",
@@ -33,7 +34,7 @@ export const metadata = {
   openGraph: {
     "og:title": "Go-Kart Prices & Wristbands | Speedway 146 Baytown",
     "og:description":
-      "Race prices, unlimited Thursday wristbands, group rates and party packages at Speedway 146 in Baytown. Buy online or pay at the gate.",
+      "Race prices, unlimited racing wristbands, group rates and party packages at Speedway 146 in Baytown. Buy online or pay at the gate.",
     "og:url": SITE_URL + "/pricing",
     "og:image": SHARE_IMAGE,
     "og:type": "website",
@@ -122,6 +123,7 @@ const PricingPage = () => {
    */
   const [searchParams, setSearchParams] = useSearchParams();
   const hydrated = useHydrated();
+  const novemberOn = useNovemberPromo();
   const requested = searchParams.get("tab");
   const activeTab =
     hydrated && TABS.includes(requested) ? requested : DEFAULT_TAB;
@@ -273,22 +275,22 @@ const PricingPage = () => {
           <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-8 lg:grid-cols-5 lg:gap-12">
             <div className="flex flex-col gap-4 lg:col-span-3">
               <SectionEyebrow tone="dark" className="text-chalk/90">
-                {THURSDAY_UNLIMITED_SPECIAL.eyebrow}
+                {UNLIMITED_WRISTBAND_SPECIAL.eyebrow}
               </SectionEyebrow>
               <h2 className="font-display text-3xl leading-[0.95] tracking-tight md:text-5xl">
-                {THURSDAY_UNLIMITED_SPECIAL.title}
+                {UNLIMITED_WRISTBAND_SPECIAL.title}
               </h2>
               <p className="max-w-xl leading-relaxed text-chalk/85">
-                {THURSDAY_UNLIMITED_SPECIAL.description}
+                {UNLIMITED_WRISTBAND_SPECIAL.description}
               </p>
             </div>
             <div className="lg:col-span-2">
               <div className="rounded-lg border-2 border-chalk/25 bg-asphalt-950/80 px-7 py-8 shadow-lift backdrop-blur-sm">
                 <div className="font-display text-6xl leading-none tracking-wide tabular-nums text-chalk">
-                  {THURSDAY_UNLIMITED_SPECIAL.price}
+                  {UNLIMITED_WRISTBAND_SPECIAL.price}
                 </div>
                 <div className="mt-3 text-sm tracking-wide text-chalk/75">
-                  {THURSDAY_UNLIMITED_SPECIAL.perPerson}
+                  {UNLIMITED_WRISTBAND_SPECIAL.perPerson}
                 </div>
               </div>
             </div>
@@ -672,7 +674,9 @@ const PricingPage = () => {
                       </h3>
                       {plan.description && (
                         <p className="text-sm text-asphalt-500">
-                          {plan.description}
+                          {novemberOn && plan.novemberDescription
+                            ? plan.novemberDescription
+                            : plan.description}
                         </p>
                       )}
                     </div>

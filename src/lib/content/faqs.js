@@ -167,9 +167,9 @@ export const FAQS = [
   },
   {
     section: "pricing",
-    question: "What is the Thursday Unlimited Racing Special?",
+    question: "How much is an unlimited racing wristband?",
     answer:
-      "Every Thursday, 2.5 hours of unlimited racing for $49.99 plus tax per person, from the moment your wristband is issued. Thursdays only.",
+      "$49.99 plus tax per person for 2.5 hours of unlimited racing, from the moment your wristband is issued. Any day we are open.",
   },
   {
     section: "pricing",
