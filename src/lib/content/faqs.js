@@ -51,7 +51,13 @@ export const FAQS = [
     section: "visiting",
     question: "What are your hours?",
     answer:
-      "Thursday through Sunday. Thursday and Friday, 5:00 PM to 10:30 PM. Saturday and Sunday, 10:30 AM to 10:30 PM. Closed Monday, Tuesday and Wednesday. Holiday hours vary, so check our Google page for the current schedule.",
+      "Friday through Sunday. Friday, 5:00 PM to 10:30 PM. Saturday and Sunday, 10:30 AM to 10:30 PM. Closed Monday through Thursday. For November only we also open Thursday, 5:00 PM to 10:30 PM. Holiday hours vary, so check our Google page for the current schedule.",
+  },
+  {
+    section: "visiting",
+    question: "Are you open on Thursdays?",
+    answer:
+      "In November only. For that month the gate opens Thursday through Sunday, and Thursday nights run 5:00 PM to 10:30 PM. The rest of the year we are open Friday through Sunday.",
   },
   {
     section: "visiting",
@@ -164,6 +170,12 @@ export const FAQS = [
     question: "What is the Thursday Unlimited Racing Special?",
     answer:
       "Every Thursday, 2.5 hours of unlimited racing for $49.99 plus tax per person, from the moment your wristband is issued. Thursdays only.",
+  },
+  {
+    section: "pricing",
+    question: "What is the November $5 ride special?",
+    answer:
+      "Every Thursday and Friday in November, a go-kart ride is $5 plus tax, from 5:00 PM to 10:30 PM. November only, walk up and pay at the gate.",
   },
   {
     section: "pricing",

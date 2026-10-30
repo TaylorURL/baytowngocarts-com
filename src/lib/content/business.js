@@ -1,11 +1,20 @@
+/*
+ * The standing week, which is the week the Google listing publishes.
+ *
+ * Every surface that prints hours reads this list rather than spelling the
+ * days out in its own copy, so a change to the gate is one edit and the
+ * footer, the contact panel, the FAQ and the JSON-LD cannot disagree about
+ * which days a visitor can turn up on. A month that opens an extra night is
+ * the exception stacked on top of this - see `november.js` - not a second
+ * copy of the week.
+ */
 export const BUSINESS_HOURS = [
-  { day: "Thursday", hours: "5:00 PM to 10:30 PM" },
   { day: "Friday", hours: "5:00 PM to 10:30 PM" },
   { day: "Saturday", hours: "10:30 AM to 10:30 PM" },
   { day: "Sunday", hours: "10:30 AM to 10:30 PM" },
 ];
 
-export const CLOSED_DAYS_NOTE = "Closed Monday to Wednesday";
+export const CLOSED_DAYS_NOTE = "Closed Monday to Thursday";
 
 export const HOLIDAY_HOURS_NOTE =
   "Holiday hours vary. Check our Google page for the latest schedule and any changes.";

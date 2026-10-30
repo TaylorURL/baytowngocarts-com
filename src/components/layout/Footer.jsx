@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { NAV_ITEMS } from "../../lib/content/navigation.js";
 import {
-  BUSINESS_HOURS,
   CLOSED_DAYS_NOTE,
   CONTACT_INFO,
   HOLIDAY_HOURS_NOTE,
   SOCIAL_URLS,
 } from "../../lib/content/business.js";
+import { NOVEMBER_PROMO, hoursToPrint } from "../../lib/content/november.js";
+import useNovemberPromo from "../../hooks/useNovemberPromo.js";
 import Icon from "../ui/Icon.jsx";
 import Wordmark from "./Wordmark.jsx";
 
@@ -53,6 +54,7 @@ const Footer = ({ children }) => {
      a New Year rollover and on a device set to the wrong time zone, and the
      two disagreeing is what throws hydration on that first paint. */
   const currentYear = __BUILD_YEAR__;
+  const novemberOn = useNovemberPromo();
   return (
     /* Chrome pinned to the viewport's bottom edge publishes the height it
        covers as --docked-reserve, and the footer carries it, so the reserved
@@ -105,17 +107,24 @@ const Footer = ({ children }) => {
             </Fact>
             <Fact icon="clock" label="Track Hours">
               <ul className="space-y-1 tabular-nums">
-                {BUSINESS_HOURS.map(({ day, hours }) => (
+                {hoursToPrint(novemberOn).map(({ day, hours, note }) => (
                   <li
                     key={day}
-                    className="flex items-baseline justify-between gap-4"
+                    className="flex flex-wrap items-baseline justify-between gap-x-4"
                   >
                     <span className="font-semibold text-chalk">{day}</span>
                     <span className="text-gray-400">{hours}</span>
+                    {note && (
+                      <span className="w-full font-display text-[10px] uppercase tracking-speedway text-caution-400">
+                        {note}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-xs text-gray-500">{CLOSED_DAYS_NOTE}</p>
+              <p className="mt-2 text-xs text-gray-500">
+                {novemberOn ? NOVEMBER_PROMO.closedDaysNote : CLOSED_DAYS_NOTE}
+              </p>
             </Fact>
             <Fact icon="calendar" label="Holidays">
               <p className="text-xs leading-relaxed text-gray-400">

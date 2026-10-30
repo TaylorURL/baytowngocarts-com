@@ -3,6 +3,8 @@ import Button from "../ui/Button.jsx";
 import Icon from "../ui/Icon.jsx";
 import StatTile from "../ui/StatTile.jsx";
 import TrackDivider from "../decor/TrackDivider.jsx";
+import { NOVEMBER_PROMO } from "../../lib/content/november.js";
+import useNovemberPromo from "../../hooks/useNovemberPromo.js";
 import Pill from "../ui/Pill.jsx";
 import ParticleField from "../reactbits/ParticleField.jsx";
 /* A headline that decorates itself is never worth the whole page. Anything
@@ -32,6 +34,9 @@ import {
 } from "../../lib/photoRecovery.js";
 
 const HeroSection = () => {
+  /* The pill is the first hours claim on the page, so it reads the exception
+     rather than the standing week alone. */
+  const novemberOn = useNovemberPromo();
   const [currentImageIndex, setCurrentImageIndex] = useImageSlideshow(
     HERO_BACKGROUND_IMAGES,
     SLIDESHOW_INTERVAL_MS,
@@ -172,7 +177,10 @@ const HeroSection = () => {
             <div className="lg:col-span-7">
               <div className="flex items-center gap-3 mb-5" data-aos="fade">
                 <Pill variant="race" size="sm">
-                  Outdoor Speedway · Open Thu to Sun
+                  Outdoor Speedway ·{" "}
+                  {novemberOn
+                    ? NOVEMBER_PROMO.shortHoursNote
+                    : "Open Fri to Sun"}
                 </Pill>
               </div>
               <h1
@@ -209,7 +217,7 @@ const HeroSection = () => {
                 </ErrorBoundary>
               </h1>
               <BlurText
-                text="Speedway 146 is Baytown's outdoor go-kart speedway on TX-146. 5-minute heats, family-friendly track, open Thursday through Sunday."
+                text="Speedway 146 is Baytown's outdoor go-kart speedway on TX-146. 5-minute heats, family-friendly track, open Friday through Sunday."
                 animateBy="words"
                 delay={30}
                 className="mt-5 text-base md:text-xl text-gray-300 max-w-xl leading-relaxed"

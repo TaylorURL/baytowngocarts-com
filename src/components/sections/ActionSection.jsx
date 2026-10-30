@@ -56,11 +56,11 @@ const ActionSection = () => (
 
         <h2 className="mt-5 font-display text-5xl lg:text-7xl tracking-tight leading-[0.9]">
           Come race.
-          <span className="block text-race-500">Thursday to Sunday.</span>
+          <span className="block text-race-500">Friday to Sunday.</span>
         </h2>
 
         <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Walk-ins Thursday through Sunday, weekends until 10:30 PM. Booking a
+          Walk-ins Friday through Sunday, weekends until 10:30 PM. Booking a
           party for up to 60? Call and we'll lock in your date.
         </p>
 
@@ -117,7 +117,7 @@ const ActionSection = () => (
             {CONTACT_INFO.phone}
           </a>
           <span className="text-sm text-gray-500">
-            Thursday to Sunday · weekends until 10:30 PM
+            Friday to Sunday · weekends until 10:30 PM
           </span>
         </div>
       </div>
