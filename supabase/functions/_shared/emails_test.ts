@@ -1,10 +1,12 @@
-// deno test supabase/functions/email-sweep/emails_test.ts
+// deno test supabase/functions/_shared/emails_test.ts
 import {
-  KINDS,
   cartUrl,
   centralHour,
   formatDay,
+  KINDS,
   newPromoCode,
+  novemberOpen,
+  ORDER_KIND,
   renderEmail,
 } from "./emails.ts";
 
@@ -207,4 +209,154 @@ Deno.test("the track's clock is Central time", () => {
     formatDay(new Date("2026-10-31T03:00:00Z")) === "Friday, October 30",
     "day boundary wrong",
   );
+});
+
+const ORDER = {
+  number: "SPW146-2026-482913",
+  items: [
+    { product_name: "15 Tickets", price: 14999, quantity: 1 },
+    { product_name: "Adult Race", price: 1399, quantity: 2 },
+  ],
+  total: 20112,
+  placedAt: new Date("2026-09-20T17:33:08Z"),
+};
+
+Deno.test(
+  "the confirmation shows the order, what it cost and what to bring",
+  () => {
+    const email = renderEmail({ kind: ORDER_KIND, order: ORDER });
+    assert(
+      email.subject.includes("SPW146-2026-482913"),
+      "subject has no order",
+    );
+    assert(
+      email.text.includes("15 Tickets, 1 × $149.99 = $149.99"),
+      "ticket line missing",
+    );
+    assert(
+      email.text.includes("Adult Race, 2 × $13.99 = $27.98"),
+      "race line missing",
+    );
+    assert(
+      email.text.includes("Total paid, with tax and fees: $201.12"),
+      "total missing",
+    );
+    assert(email.text.includes("Placed Sunday, September 20"), "date missing");
+    assert(email.text.includes("valid ID"), "what to bring is missing");
+    assert(
+      email.text.includes("https://baytowngokarts.com/dashboard"),
+      "no link to the buyer's purchases",
+    );
+    assert(
+      email.html.includes("6750 TX-146, Baytown, TX 77523"),
+      "confirmation has no address",
+    );
+  },
+);
+
+Deno.test(
+  "a confirmation carries no unsubscribe, the marketing kinds still do",
+  () => {
+    const email = renderEmail({ kind: ORDER_KIND, order: ORDER });
+    assert(
+      !/unsubscribe/i.test(email.html),
+      "confirmation html offers an unsubscribe",
+    );
+    assert(
+      !/unsubscribe/i.test(email.text),
+      "confirmation text offers an unsubscribe",
+    );
+    for (const kind of KINDS) {
+      const marketing = renderEmail({
+        kind,
+        items: ITEMS,
+        offer: OFFER,
+        unsubscribeUrl: UNSUBSCRIBE,
+      });
+      assert(
+        marketing.html.includes(UNSUBSCRIBE),
+        `${kind} lost its unsubscribe`,
+      );
+    }
+  },
+);
+
+Deno.test("a confirmation without its order refuses to render", () => {
+  let threw = false;
+  try {
+    renderEmail({ kind: ORDER_KIND });
+  } catch {
+    threw = true;
+  }
+  assert(threw, "rendered a confirmation for no order");
+});
+
+Deno.test(
+  "the hours are the site's, with November's Thursday only in November",
+  () => {
+    const november = renderEmail({
+      kind: ORDER_KIND,
+      order: ORDER,
+      now: new Date("2026-11-12T18:00:00Z"),
+    });
+    assert(
+      november.text.includes("Thursday (November): 5:00 PM – 10:30 PM"),
+      "November Thursday missing",
+    );
+    assert(
+      november.text.includes("Friday: 5:00 PM – 10:30 PM"),
+      "Friday missing",
+    );
+    assert(
+      november.text.includes("Saturday – Sunday: 10:30 AM – 10:30 PM"),
+      "weekend missing",
+    );
+    assert(
+      november.text.includes("Closed Monday to Wednesday in November."),
+      "November closed days wrong",
+    );
+
+    const december = renderEmail({
+      kind: ORDER_KIND,
+      order: ORDER,
+      now: new Date("2026-12-01T18:00:00Z"),
+    });
+    assert(
+      !december.text.includes("Thursday (November)"),
+      "December still opens Thursday",
+    );
+    assert(
+      december.text.includes("Closed Monday to Thursday."),
+      "December closed days wrong",
+    );
+
+    assert(
+      novemberOpen(new Date("2026-12-01T05:30:00Z")),
+      "the 30th in Baytown ends at its midnight",
+    );
+    assert(
+      !novemberOpen(new Date("2026-12-01T06:30:00Z")),
+      "December 1 in Baytown still November",
+    );
+  },
+);
+
+Deno.test("no email sells the wristband as a Thursday deal any more", () => {
+  for (const kind of KINDS) {
+    const email = renderEmail({
+      kind,
+      items: ITEMS,
+      offer: OFFER,
+      unsubscribeUrl: UNSUBSCRIBE,
+      now: new Date("2026-12-05T18:00:00Z"),
+    });
+    assert(
+      !/thursdays only/i.test(email.text),
+      `${kind} still says Thursdays only`,
+    );
+    assert(
+      !/thursdays only/i.test(email.html),
+      `${kind} html still says Thursdays only`,
+    );
+  }
 });

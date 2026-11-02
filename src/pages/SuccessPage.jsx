@@ -35,24 +35,52 @@ const NEXT_STEPS = [
   "Each race ticket = one 5-minute race on the track",
 ];
 
+/**
+ * Has the server save this order and send its confirmation, from what Stripe
+ * says was paid. True once the order is saved.
+ */
+async function completeOnServer(sessionId) {
+  try {
+    const { data, error } = await (
+      await supabaseClient()
+    ).functions.invoke("checkout-complete", { body: { sessionId } });
+    return !error && Boolean(data?.order);
+  } catch {
+    return false;
+  }
+}
+
 const SuccessPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { clearCart } = useCart();
+  const serverCall = useRef(null);
   const purchaseAttempted = useRef(false);
 
   /*
-   * The Stripe webhook writes this row too. Whichever of the two gets there
-   * first wins: stripe_session_id is unique, so the loser's insert comes back
-   * 23505 and is left alone. Writing from the page as well is what puts the
-   * order in front of a buyer who lands back here before Stripe's post has
-   * been delivered.
+   * The server saves the order and confirms it the moment the buyer lands
+   * here, signed in or not, and every run of this effect waits on that one
+   * call. Only if it fails does the page write the row itself from the cart
+   * it kept, as it always has. email-sweep catches a buyer who never gets
+   * here within thirty seconds. stripe_session_id is unique, so whichever
+   * writer comes second is refused and the order is recorded once.
    */
   useEffect(() => {
     const createPurchase = async () => {
       const sessionId = searchParams.get("session_id");
-      if (!sessionId || !user) {
+      if (!sessionId) {
+        setLoading(false);
+        return;
+      }
+      if (!serverCall.current) serverCall.current = completeOnServer(sessionId);
+      if (await serverCall.current) {
+        localStorage.removeItem("pendingPurchase");
+        clearCart();
+        setLoading(false);
+        return;
+      }
+      if (!user) {
         setLoading(false);
         return;
       }
