@@ -2,32 +2,40 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 // @ts-ignore
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkouts } from "../_shared/checkout.ts";
 import {
   CHECKOUT_KINDS,
   KINDS,
   OFFER_KINDS,
+  ORDER_KIND,
   centralHour,
   newPromoCode,
   renderEmail,
   type CartLine,
+  type EmailKind,
   type Kind,
   type Offer,
-} from "./emails.ts";
+} from "../_shared/emails.ts";
+import { mailer, type OrderDue } from "../_shared/mail.ts";
 
 /*
- * Every fifteen minutes pg_cron posts here, and this sends whatever cart
- * reminders, cart offers and come-back emails are due.
+ * pg_cron posts here on two clocks. Every thirty seconds it asks for the order
+ * kind alone: open checkouts are looked up on Stripe, a paid one gets the
+ * order the success page never wrote, and new orders are confirmed. Every
+ * fifteen minutes it asks for everything, which adds whatever cart reminders,
+ * cart offers and come-back emails are due.
  *
- * First it settles the checkouts Stripe has finished with: an open attempt past
- * its expiry is looked up on Stripe and closed as paid, expired or gone. That
- * is what makes the reminder independent of whether the webhook was ever
- * subscribed to checkout.session.expired.
+ * Settling comes first. Each open attempt is looked up on Stripe: a paid one
+ * is completed through the same code checkout-complete runs when the buyer
+ * lands back, and an expired or missing one is closed as that. Stripe's own
+ * notice never reaches this project - its webhook listens to connected
+ * accounts, and these checkouts belong to the platform - so asking is the
+ * only way a buyer who paid and never came back gets an order at all.
  *
- * Then, kind by kind, it asks email_candidates() who is due, writes a row to
- * email_log before each send, and stamps it once Resend has the message. The
- * unique (kind, ref) on that table is what stops a second sweep sending the
- * same email again. A failed send is retaken by a later sweep, three times at
- * most.
+ * Then, kind by kind, it asks the database who is due and sends through the
+ * shared mailer, which writes email_log before each send so no email goes out
+ * twice. Order confirmations come from order_confirmations_due() and go out
+ * at any hour; the rest come from email_candidates() inside their hours.
  *
  * The caller proves itself with x-sweep-secret, which pg_cron reads out of the
  * database vault.
@@ -40,14 +48,24 @@ const SUPABASE_URL = env("SUPABASE_URL");
 const STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY");
 const RESEND_API_KEY = env("RESEND_API_KEY");
 const SWEEP_SECRET = env("EMAIL_SWEEP_SECRET");
-const FROM = env("EMAIL_FROM") || "Speedway 146 <hello@baytowngokarts.com>";
-// Replies come back to the domain, and email-inbound passes them on to the
-// track's Gmail.
-const REPLY_TO = env("EMAIL_REPLY_TO") || "hello@baytowngokarts.com";
+// A test that names its own inbox, or a call that names one order, confirms
+// whether or not this is on.
+const CONFIRMATIONS_ON = env("ORDER_CONFIRMATIONS") === "on";
 
 const db = createClient(SUPABASE_URL, env("SUPABASE_SERVICE_ROLE_KEY"), {
   auth: { autoRefreshToken: false, persistSession: false },
 });
+
+const { claim, deliver, sendConfirmation } = mailer(db, {
+  resendKey: RESEND_API_KEY,
+  from: env("EMAIL_FROM") || "Speedway 146 <hello@baytowngokarts.com>",
+  // Replies come back to the domain, and email-inbound passes them on to the
+  // track's Gmail.
+  replyTo: env("EMAIL_REPLY_TO") || "hello@baytowngokarts.com",
+  confirmationsOn: CONFIRMATIONS_ON,
+});
+
+const { recover, settleOpen } = checkouts(db, STRIPE_SECRET_KEY);
 
 const OFFER_PERCENT = 10;
 const HOUR_MS = 60 * 60 * 1000;
@@ -70,9 +88,9 @@ const PER_SWEEP: Record<"checkout" | "lifecycle", number> = {
   checkout: 40,
   lifecycle: 20,
 };
+const ORDER_PER_SWEEP = 40;
 
-const MAX_ATTEMPTS = 3;
-const SETTLE_GRACE_MS = 2 * 60 * 1000;
+const SESSION_ID = /^cs_(live|test)_[A-Za-z0-9]+$/;
 
 type Candidate = {
   user_id: string;
@@ -82,8 +100,6 @@ type Candidate = {
   items: CartLine[] | null;
   unsubscribe_token: string;
 };
-
-type Claim = { id: string; attempts: number };
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -116,103 +132,6 @@ const unsubscribePage = (token: string) =>
 const unsubscribeOneClick = (token: string) =>
   `${SUPABASE_URL}/functions/v1/email-unsubscribe?token=${encodeURIComponent(token)}`;
 
-/** Closes the open checkouts Stripe is finished with. */
-async function settleOpenAttempts() {
-  const settled = { completed: 0, expired: 0, void: 0, open: 0, errors: 0 };
-  const cutoff = new Date(Date.now() - SETTLE_GRACE_MS).toISOString();
-  const { data, error } = await db
-    .from("checkout_attempts")
-    .select("id, stripe_session_id")
-    .eq("status", "open")
-    .lt("expires_at", cutoff)
-    .limit(50);
-  if (error) throw error;
-
-  for (const attempt of data ?? []) {
-    const response = await fetch(
-      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(attempt.stripe_session_id)}`,
-      { headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}` } },
-    );
-    let status: "completed" | "expired" | "void" | null = null;
-    if (response.status === 404) {
-      status = "void";
-    } else if (response.ok) {
-      const session = await response.json();
-      if (session.status === "complete") status = "completed";
-      else if (session.status === "expired") status = "expired";
-    } else {
-      settled.errors += 1;
-      console.error(
-        "email-sweep: Stripe answered %d for %s",
-        response.status,
-        attempt.stripe_session_id,
-      );
-      continue;
-    }
-    if (!status) {
-      settled.open += 1;
-      continue;
-    }
-    const { error: updateError } = await db
-      .from("checkout_attempts")
-      .update({ status, closed_at: new Date().toISOString() })
-      .eq("id", attempt.id)
-      .eq("status", "open");
-    if (updateError) throw updateError;
-    settled[status] += 1;
-  }
-  return settled;
-}
-
-/**
- * Writes the log row this send will be stamped on, or retakes one an earlier
- * sweep failed. Null when somebody else already holds it.
- */
-async function claim(
-  kind: Kind,
-  candidate: Candidate,
-  to: string,
-): Promise<Claim | null> {
-  const inserted = await db
-    .from("email_log")
-    .insert({
-      user_id: candidate.user_id,
-      email: to,
-      kind,
-      ref: candidate.ref,
-    })
-    .select("id, attempts")
-    .single();
-  if (!inserted.error) return inserted.data;
-  if (inserted.error.code !== "23505") throw inserted.error;
-
-  const held = await db
-    .from("email_log")
-    .select("id, attempts, status")
-    .eq("kind", kind)
-    .eq("ref", candidate.ref)
-    .single();
-  if (held.error) throw held.error;
-  if (held.data.status !== "failed" || held.data.attempts >= MAX_ATTEMPTS) {
-    return null;
-  }
-  const retaken = await db
-    .from("email_log")
-    .update({
-      status: "claimed",
-      attempts: held.data.attempts + 1,
-      email: to,
-      error: null,
-    })
-    .eq("id", held.data.id)
-    .eq("status", "failed")
-    .eq("attempts", held.data.attempts)
-    .select("id, attempts")
-    .maybeSingle();
-  if (retaken.error) throw retaken.error;
-  return retaken.data ?? null;
-}
-
 async function mintOffer(
   kind: Kind,
   userId: string,
@@ -240,47 +159,6 @@ async function mintOffer(
     if (error.code !== "23505") throw error;
   }
   throw new Error("could not mint a unique promo code");
-}
-
-/** Hands one message to Resend and returns its id. */
-async function deliver(
-  to: string,
-  kind: Kind,
-  email: { subject: string; html: string; text: string },
-  oneClick: string,
-  idempotencyKey: string,
-): Promise<string> {
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-      "Idempotency-Key": idempotencyKey,
-    },
-    body: JSON.stringify({
-      from: FROM,
-      to: [to],
-      reply_to: REPLY_TO,
-      subject: email.subject,
-      html: email.html,
-      text: email.text,
-      headers: {
-        "List-Unsubscribe": `<${oneClick}>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-      },
-      tags: [
-        { name: "site", value: "speedway146" },
-        { name: "kind", value: kind },
-      ],
-    }),
-  });
-  const answer = await response.json().catch(() => ({}));
-  if (!response.ok || !answer.id) {
-    throw new Error(
-      `resend answered ${response.status}: ${answer.message ?? "no id"}`,
-    );
-  }
-  return answer.id;
 }
 
 /** One email, from its claim to its stamp. */
@@ -352,22 +230,59 @@ async function sendOne(
   }
 }
 
+/**
+ * Confirms the orders placed in the last day that have not been yet, which
+ * is every order checkout-complete could not confirm the moment it was made.
+ */
+async function confirmOrders(options: Options) {
+  const named = options.deliverTo !== null || options.orderId !== null;
+  if (!CONFIRMATIONS_ON && !named && !options.dryRun) {
+    return { skipped: "order confirmations are switched off" };
+  }
+  const { data, error } = await db.rpc("order_confirmations_due", {
+    p_limit: options.dryRun ? 500 : ORDER_PER_SWEEP,
+    p_user_id: options.onlyUserId,
+    p_purchase_id: options.orderId,
+  });
+  if (error) throw error;
+  const due = (data ?? []) as OrderDue[];
+
+  if (options.dryRun) {
+    return {
+      switchedOn: CONFIRMATIONS_ON,
+      due: due.length,
+      orders: due.map((order) => order.order_number),
+    };
+  }
+  const tally = { sent: 0, held: 0, failed: 0 };
+  for (const order of due) {
+    tally[await sendConfirmation(order, options.deliverTo)] += 1;
+    await pause(SEND_SPACING_MS);
+  }
+  return tally;
+}
+
 type Options = {
   dryRun: boolean;
-  kinds: Kind[];
+  kinds: EmailKind[];
   onlyUserId: string | null;
   deliverTo: string | null;
+  orderId: string | null;
   ignoreWindow: boolean;
 };
 
 const ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const ALL_KINDS: readonly EmailKind[] = [ORDER_KIND, ...KINDS];
 
 function readOptions(body: Record<string, unknown>): Options | string {
-  const kinds = Array.isArray(body.kinds) ? body.kinds : KINDS;
+  const kinds = Array.isArray(body.kinds) ? body.kinds : ALL_KINDS;
   if (
-    !kinds.every((kind) => (KINDS as readonly string[]).includes(String(kind)))
+    !kinds.every((kind) =>
+      (ALL_KINDS as readonly string[]).includes(String(kind)),
+    )
   ) {
-    return `kinds must be drawn from ${KINDS.join(", ")}`;
+    return `kinds must be drawn from ${ALL_KINDS.join(", ")}`;
   }
   const onlyUserId =
     typeof body.onlyUserId === "string" ? body.onlyUserId : null;
@@ -376,11 +291,15 @@ function readOptions(body: Record<string, unknown>): Options | string {
   if (deliverTo && (!onlyUserId || !ADDRESS.test(deliverTo))) {
     return "deliverTo needs a valid address and an onlyUserId";
   }
+  const orderId = typeof body.orderId === "string" ? body.orderId : null;
+  if (orderId && !UUID.test(orderId)) return "orderId must be a purchase id";
   return {
     dryRun: body.dryRun === true,
-    kinds: kinds as Kind[],
+    kinds: kinds as EmailKind[],
     onlyUserId,
     deliverTo,
+    // Confirms that one order at any age, and nothing else this run.
+    orderId,
     // Only with one named account, so a test can run outside the hours and a
     // mistyped body cannot send the whole list at midnight.
     ignoreWindow: body.ignoreWindow === true && onlyUserId !== null,
@@ -388,29 +307,47 @@ function readOptions(body: Record<string, unknown>): Options | string {
 }
 
 /** Renders every kind with sample content and sends it to one address. */
-async function preview(to: string, kinds: Kind[]) {
+async function preview(to: string, kinds: EmailKind[]) {
   const sent: Record<string, string> = {};
   for (const kind of kinds) {
-    const email = renderEmail({
-      kind,
-      items: [
-        { id: "prod_single_kart_15", quantity: 2 },
-        { id: "prod_party_bounce_upgrade", quantity: 1 },
-      ],
-      offer: OFFER_KINDS.includes(kind)
-        ? {
-            code: "RACE-K7M2QX",
-            percentOff: OFFER_PERCENT,
-            expiresAt: new Date(Date.now() + (OFFER_LIFETIME_MS[kind] ?? 0)),
-          }
-        : null,
-      unsubscribeUrl: "https://baytowngokarts.com/unsubscribe?token=preview",
-    });
+    const email =
+      kind === ORDER_KIND
+        ? renderEmail({
+            kind,
+            order: {
+              number: "SPW146-2026-482913",
+              items: [
+                { product_name: "15 Tickets", price: 14999, quantity: 1 },
+              ],
+              total: 17016,
+              placedAt: new Date(),
+            },
+          })
+        : renderEmail({
+            kind,
+            items: [
+              { id: "prod_single_kart_15", quantity: 2 },
+              { id: "prod_party_bounce_upgrade", quantity: 1 },
+            ],
+            offer: OFFER_KINDS.includes(kind)
+              ? {
+                  code: "RACE-K7M2QX",
+                  percentOff: OFFER_PERCENT,
+                  expiresAt: new Date(
+                    Date.now() + (OFFER_LIFETIME_MS[kind] ?? 0),
+                  ),
+                }
+              : null,
+            unsubscribeUrl:
+              "https://baytowngokarts.com/unsubscribe?token=preview",
+          });
     sent[kind] = await deliver(
       to,
       kind,
       { ...email, subject: `[Preview] ${email.subject}` },
-      `${SUPABASE_URL}/functions/v1/email-unsubscribe?token=preview`,
+      kind === ORDER_KIND
+        ? null
+        : `${SUPABASE_URL}/functions/v1/email-unsubscribe?token=preview`,
       crypto.randomUUID(),
     );
     await pause(SEND_SPACING_MS);
@@ -439,12 +376,36 @@ serve(async (req: Request) => {
       return json({ preview: await preview(body.previewTo, options.kinds) });
     }
 
-    const settled = options.dryRun ? null : await settleOpenAttempts();
+    if (Array.isArray(body?.recoverSessions)) {
+      const ids = body.recoverSessions.map(String);
+      if (
+        !ids.length ||
+        ids.length > 20 ||
+        !ids.every((id: string) => SESSION_ID.test(id))
+      ) {
+        return json(
+          { error: "recoverSessions takes 1 to 20 Checkout session ids" },
+          400,
+        );
+      }
+      return json({
+        dryRun: options.dryRun,
+        recovered: await recover(ids, options.dryRun),
+      });
+    }
+
+    const settled = await settleOpen(options.dryRun);
     const now = new Date();
     const report: Record<string, unknown> = {};
     const budget = { ...PER_SWEEP };
 
     for (const kind of options.kinds) {
+      if (kind === ORDER_KIND) {
+        report[kind] = await confirmOrders(options);
+        continue;
+      }
+      // A call that names one order confirms it and sends nothing else.
+      if (options.orderId) continue;
       const group = groupOf(kind);
       if (!options.ignoreWindow && !inWindow(kind, now) && !options.dryRun) {
         report[kind] = { skipped: "outside sending hours" };
