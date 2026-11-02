@@ -10,9 +10,10 @@
  * that is all Outlook and Gmail both draw.
  *
  * The business details are written out here rather than imported from
- * src/lib/content, because an edge function is bundled from this folder alone.
- * They are the same values as src/lib/content/business.js, specials.js and
- * src/lib/stripe-config.js.
+ * src/lib/content, because an edge function is bundled from supabase/functions
+ * alone.
+ * They are the same values as src/lib/content/business.js, november.js,
+ * specials.js and src/lib/stripe-config.js.
  */
 
 export const SITE_URL = "https://baytowngokarts.com";
@@ -26,9 +27,15 @@ const BUSINESS = {
   directions:
     "https://www.google.com/maps/dir/?api=1&destination=6750+TX-146+Baytown+TX+77523",
   hours: [
-    ["Thursday – Friday", "5:00 PM – 10:30 PM"],
+    ["Friday", "5:00 PM – 10:30 PM"],
     ["Saturday – Sunday", "10:30 AM – 10:30 PM"],
   ],
+  // November opens Thursday too, through the 30th on the track's clock.
+  november: {
+    row: ["Thursday (November)", "5:00 PM – 10:30 PM"],
+    from: 20261101,
+    through: 20261130,
+  },
   social: [
     ["Facebook", "https://www.facebook.com/p/Speedway146-61575710985956/"],
     ["Instagram", "https://www.instagram.com/Speedway146/"],
@@ -76,15 +83,34 @@ export const OFFER_KINDS: readonly Kind[] = [
   "come_back_offer",
 ];
 
+/**
+ * The receipt for an order, kept apart from the marketing kinds: it goes to
+ * everybody who bought, unsubscribed or not, at any hour, with no unsubscribe.
+ */
+export const ORDER_KIND = "order_confirmation" as const;
+
+export type EmailKind = Kind | typeof ORDER_KIND;
+
 export type CartLine = { id: string; quantity: number };
 
 export type Offer = { code: string; percentOff: number; expiresAt: Date };
 
+/** An order as purchases holds it: amounts in cents. */
+export type OrderSummary = {
+  number: string;
+  items: { product_name: string; price: number; quantity: number }[];
+  total: number;
+  placedAt: Date;
+};
+
 export type EmailInput = {
-  kind: Kind;
+  kind: EmailKind;
   items?: CartLine[] | null;
   offer?: Offer | null;
-  unsubscribeUrl: string;
+  order?: OrderSummary | null;
+  unsubscribeUrl?: string | null;
+  // Which week's hours to print. Defaults to the moment it renders.
+  now?: Date;
 };
 
 export type Email = { subject: string; html: string; text: string };
@@ -216,8 +242,32 @@ export function centralHour(now: Date = new Date()): number {
   );
 }
 
+/** The day on the track's clock as 20261130, so days compare as numbers. */
+function centralDay(date: Date): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Chicago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const part = (type: string) =>
+    parts.find((piece) => piece.type === type)?.value ?? "0";
+  return Number(`${part("year")}${part("month")}${part("day")}`);
+}
+
+/** Whether the week printed for `now` includes November's Thursday. */
+export function novemberOpen(now: Date): boolean {
+  const day = centralDay(now);
+  return day >= BUSINESS.november.from && day <= BUSINESS.november.through;
+}
+
+const openDays = (now: Date) =>
+  novemberOpen(now) ? "Thursday to Sunday" : "Friday to Sunday";
+
 const dollars = (value: number) =>
   `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+const cents = (value: number) => dollars(value / 100);
 
 function escapeHtml(value: string): string {
   return value
@@ -231,10 +281,25 @@ function escapeHtml(value: string): string {
 type Block =
   | { type: "p"; text: string }
   | { type: "cart"; items: CartLine[] }
+  | { type: "order"; order: OrderSummary }
   | { type: "offer"; offer: Offer; url: string }
   | { type: "special" }
-  | { type: "hours" }
+  | { type: "hours"; rows: string[][]; note: string }
   | { type: "button"; label: string; url: string };
+
+/** The week as it stands on `now`, November's Thursday included. */
+function hoursBlock(now: Date): Block {
+  const november = novemberOpen(now);
+  return {
+    type: "hours",
+    rows: november
+      ? [BUSINESS.november.row, ...BUSINESS.hours]
+      : BUSINESS.hours,
+    note: november
+      ? "Closed Monday to Wednesday in November. Holiday hours vary."
+      : "Closed Monday to Thursday. Holiday hours vary.",
+  };
+}
 
 type Content = {
   subject: string;
@@ -262,6 +327,7 @@ function contentFor(input: EmailInput): Content {
   const items = knownLines(input.items);
   const offer = input.offer ?? null;
   const percent = offer?.percentOff ?? 10;
+  const now = input.now ?? new Date();
   const signoff =
     "Questions about racing or a party? Just reply. Your message goes straight to the track.";
   const accountReason =
@@ -270,6 +336,45 @@ function contentFor(input: EmailInput): Content {
     "You're getting this because you started a checkout at baytowngokarts.com.";
 
   switch (input.kind) {
+    case ORDER_KIND: {
+      const order = input.order;
+      if (!order) throw new Error("an order confirmation needs its order");
+      const tickets = order.items.some((item) =>
+        /ticket/i.test(item.product_name),
+      );
+      return {
+        subject: `Order confirmed: ${order.number}`,
+        preheader:
+          "Thanks for your order. Bring this email and a valid ID to the gate.",
+        hero: HEROES.track,
+        eyebrow: "Order confirmed",
+        heading: "You're all set",
+        blocks: [
+          {
+            type: "p",
+            text: "Thanks for your order. Here's what you bought. Bring this email and a valid ID to the gate, and sign the waiver at the front desk before you race.",
+          },
+          { type: "order", order },
+          ...(tickets
+            ? [
+                {
+                  type: "p",
+                  text: "Each race ticket is one 5-minute race on the track.",
+                } as Block,
+              ]
+            : []),
+          {
+            type: "button",
+            label: "View my purchases",
+            url: `${SITE_URL}/dashboard`,
+          },
+          hoursBlock(now),
+        ],
+        signoff,
+        reason:
+          "You're getting this because you placed an order at baytowngokarts.com.",
+      };
+    }
     case "checkout_reminder":
       return {
         subject: "Your races are still on the grid",
@@ -325,7 +430,7 @@ function contentFor(input: EmailInput): Content {
       return {
         subject: "Your first lap at Speedway 146",
         preheader:
-          "Grab wristbands online and go straight to the track. Thursdays: unlimited racing for $49.99.",
+          "Grab wristbands online and go straight to the track. 2.5 hours of unlimited racing is $49.99.",
         hero: HEROES.driver,
         eyebrow: "Welcome to Speedway 146",
         heading: "Ready for your first race?",
@@ -340,7 +445,7 @@ function contentFor(input: EmailInput): Content {
             label: "See race prices",
             url: siteUrl("/pricing"),
           },
-          { type: "hours" },
+          hoursBlock(now),
         ],
         signoff,
         reason: accountReason,
@@ -348,8 +453,7 @@ function contentFor(input: EmailInput): Content {
     case "come_back":
       return {
         subject: "The track's been quiet without you",
-        preheader:
-          "Speedway 146 is open Thursday to Sunday. Bigger bundles bring races down to $8 each.",
+        preheader: `Speedway 146 is open ${openDays(now)}. Bigger bundles bring races down to $8 each.`,
         hero: HEROES.driver,
         eyebrow: "We miss you out here",
         heading: "Time for a rematch?",
@@ -364,7 +468,7 @@ function contentFor(input: EmailInput): Content {
             label: "Book your next race",
             url: siteUrl("/pricing"),
           },
-          { type: "hours" },
+          hoursBlock(now),
         ],
         signoff,
         reason: accountReason,
@@ -398,7 +502,7 @@ function contentFor(input: EmailInput): Content {
                   url: siteUrl("/pricing"),
                 } as Block,
               ]),
-          { type: "hours" },
+          hoursBlock(now),
         ],
         signoff,
         reason: accountReason,
@@ -464,6 +568,26 @@ ${rows}
 <td align="right" style="padding:14px 0 0 12px;border-top:2px solid ${COLORS.asphalt900};font-family:${DISPLAY};font-size:28px;line-height:28px;color:${COLORS.asphalt900};white-space:nowrap;">${dollars(subtotal)}</td></tr>
 </table>`;
     }
+    case "order": {
+      const rows = block.order.items
+        .map(
+          (item) => `<tr>
+<td style="padding:14px 0;border-top:1px solid ${COLORS.line};font-family:${BODY};">
+<div style="font-size:16px;line-height:22px;font-weight:700;color:${COLORS.asphalt900};">${escapeHtml(item.product_name)}</div>
+<div style="font-size:14px;line-height:20px;color:${COLORS.asphalt400};">${item.quantity} &times; ${cents(item.price)}</div>
+</td>
+<td align="right" valign="top" style="padding:14px 0 14px 12px;border-top:1px solid ${COLORS.line};font-family:${DISPLAY};font-size:24px;line-height:24px;color:${COLORS.asphalt900};white-space:nowrap;">${cents(item.price * item.quantity)}</td>
+</tr>`,
+        )
+        .join("");
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
+<tr><td colspan="2" style="padding:0 0 2px;font-family:${DISPLAY};font-size:16px;letter-spacing:2px;text-transform:uppercase;color:${COLORS.race600};">Order ${escapeHtml(block.order.number)}</td></tr>
+<tr><td colspan="2" style="padding:0 0 8px;font-family:${BODY};font-size:14px;line-height:20px;color:${COLORS.asphalt400};">Placed ${escapeHtml(formatDay(block.order.placedAt))}</td></tr>
+${rows}
+<tr><td style="padding:14px 0 0;border-top:2px solid ${COLORS.asphalt900};font-family:${BODY};font-size:14px;line-height:20px;color:${COLORS.asphalt400};">Total paid, with tax and fees</td>
+<td align="right" style="padding:14px 0 0 12px;border-top:2px solid ${COLORS.asphalt900};font-family:${DISPLAY};font-size:28px;line-height:28px;color:${COLORS.asphalt900};white-space:nowrap;">${cents(block.order.total)}</td></tr>
+</table>`;
+    }
     case "offer":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
 <tr><td bgcolor="${COLORS.asphalt900}" style="background:${COLORS.asphalt900};border-radius:10px;padding:28px 24px;" align="center">
@@ -476,20 +600,20 @@ ${button(`Claim my ${block.offer.percentOff}% off`, block.url)}
     case "special":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
 <tr><td style="border-left:6px solid ${COLORS.caution};background:${COLORS.page};padding:18px 20px;">
-<div style="font-family:${DISPLAY};font-size:14px;letter-spacing:2.5px;text-transform:uppercase;color:${COLORS.race600};">Thursdays only</div>
+<div style="font-family:${DISPLAY};font-size:14px;letter-spacing:2.5px;text-transform:uppercase;color:${COLORS.race600};">Unlimited racing</div>
 <div style="font-family:${DISPLAY};font-size:30px;line-height:32px;color:${COLORS.asphalt900};margin:4px 0;">2.5 hours unlimited &middot; $49.99</div>
-<div style="font-family:${BODY};font-size:15px;line-height:22px;color:${COLORS.asphalt700};">Per person, plus tax. Adult or kid karts. Wristband time starts when it's issued.</div>
+<div style="font-family:${BODY};font-size:15px;line-height:22px;color:${COLORS.asphalt700};">Per person, plus tax, any day we're open. Adult or kid karts. Wristband time starts when it's issued.</div>
 </td></tr></table>`;
     case "hours":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 8px;">
 <tr><td colspan="2" style="padding:0 0 8px;font-family:${DISPLAY};font-size:16px;letter-spacing:2px;text-transform:uppercase;color:${COLORS.race600};">Track hours</td></tr>
-${BUSINESS.hours
+${block.rows
   .map(
     ([days, time]) =>
       `<tr><td style="padding:6px 0;border-top:1px solid ${COLORS.line};font-family:${BODY};font-size:15px;line-height:22px;font-weight:700;color:${COLORS.asphalt900};">${escapeHtml(days)}</td><td align="right" style="padding:6px 0;border-top:1px solid ${COLORS.line};font-family:${BODY};font-size:15px;line-height:22px;color:${COLORS.asphalt700};">${escapeHtml(time)}</td></tr>`,
   )
   .join("")}
-<tr><td colspan="2" style="padding:6px 0 0;border-top:1px solid ${COLORS.line};font-family:${BODY};font-size:14px;line-height:21px;color:${COLORS.asphalt400};">Closed Monday to Wednesday. Holiday hours vary.</td></tr>
+<tr><td colspan="2" style="padding:6px 0 0;border-top:1px solid ${COLORS.line};font-family:${BODY};font-size:14px;line-height:21px;color:${COLORS.asphalt400};">${escapeHtml(block.note)}</td></tr>
 </table>`;
   }
 }
@@ -514,18 +638,28 @@ function blockText(block: Block): string {
       );
       return `YOUR CART\n${lines.join("\n")}\nSubtotal, before tax and fees: ${dollars(subtotal)}`;
     }
+    case "order": {
+      const lines = block.order.items.map(
+        (item) =>
+          `- ${item.product_name}, ${item.quantity} × ${cents(item.price)} = ${cents(item.price * item.quantity)}`,
+      );
+      return `ORDER ${block.order.number}\nPlaced ${formatDay(block.order.placedAt)}\n${lines.join("\n")}\nTotal paid, with tax and fees: ${cents(block.order.total)}`;
+    }
     case "offer":
       return `${block.offer.percentOff}% OFF, good through ${formatDay(block.offer.expiresAt)}\nClaim it: ${block.url}\nOr enter ${block.offer.code} at checkout. One use, on the account this was sent to.`;
     case "special":
-      return "THURSDAYS ONLY: 2.5 hours unlimited racing, $49.99 per person plus tax.";
+      return "UNLIMITED RACING: 2.5 hours unlimited, $49.99 per person plus tax, any day we're open.";
     case "hours":
-      return `TRACK HOURS\n${BUSINESS.hours.map(([days, time]) => `${days}: ${time}`).join("\n")}\nClosed Monday to Wednesday. Holiday hours vary.`;
+      return `TRACK HOURS\n${block.rows.map(([days, time]) => `${days}: ${time}`).join("\n")}\n${block.note}`;
   }
 }
 
 export function renderEmail(input: EmailInput): Email {
   const content = contentFor(input);
-  const unsubscribe = escapeHtml(input.unsubscribeUrl);
+  const unsubscribeUrl = input.unsubscribeUrl ?? null;
+  const unsubscribe = unsubscribeUrl
+    ? `<br><a href="${escapeHtml(unsubscribeUrl)}" target="_blank" style="color:${COLORS.asphalt300};text-decoration:underline;">Unsubscribe</a>`
+    : "";
   const body = content.blocks.map(blockHtml).join("\n");
   const social = BUSINESS.social
     .map(
@@ -583,7 +717,7 @@ ${body}
 <a href="${BUSINESS.directions}" target="_blank" style="color:${COLORS.asphalt300};text-decoration:none;">${escapeHtml(BUSINESS.address)}</a><br>
 <a href="${BUSINESS.phoneTel}" style="color:${COLORS.asphalt300};text-decoration:none;">${escapeHtml(BUSINESS.phone)}</a> &middot; <a href="${SITE_URL}" target="_blank" style="color:${COLORS.asphalt300};text-decoration:none;">baytowngokarts.com</a>
 </div>
-<div style="font-family:${BODY};font-size:12px;line-height:19px;color:${COLORS.asphalt400};margin:16px 0 0;">${escapeHtml(content.reason)}<br><a href="${unsubscribe}" target="_blank" style="color:${COLORS.asphalt300};text-decoration:underline;">Unsubscribe</a></div>
+<div style="font-family:${BODY};font-size:12px;line-height:19px;color:${COLORS.asphalt400};margin:16px 0 0;">${escapeHtml(content.reason)}${unsubscribe}</div>
 </td></tr>
 
 </table>
@@ -607,7 +741,7 @@ ${body}
     `${BUSINESS.name} · ${BUSINESS.address} · ${BUSINESS.phone}`,
     SITE_URL,
     content.reason,
-    `Unsubscribe: ${input.unsubscribeUrl}`,
+    ...(unsubscribeUrl ? [`Unsubscribe: ${unsubscribeUrl}`] : []),
   ].join("\n");
 
   return { subject: content.subject, html, text };

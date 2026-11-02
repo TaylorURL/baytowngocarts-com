@@ -23,3 +23,8 @@ verify_jwt = false
 # token, and the function checks that signature itself.
 [functions.email-inbound]
 verify_jwt = false
+
+# The success page posts the Checkout session id, signed in or not. The id is
+# the credential, and the function checks it with Stripe itself.
+[functions.checkout-complete]
+verify_jwt = false
