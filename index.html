@@ -591,17 +591,35 @@
         // The refresh above is announced by withBuildRefresh, which wraps the
         // dynamic imports the routes are loaded through. A stylesheet is not
         // one: it fails as an element error with no promise to reject and no
-        // loader to wrap, so nothing ever reached it. The hold therefore always
-        // expired on a stylesheet and the visitor was left reading an unstyled
-        // page with nothing bringing it back.
+        // loader to wrap, so nothing ever reached it.
         //
-        // The failed file is re-fetched past the cache before the reload, which
-        // is the part a plain reload does not do. A miss under /assets used to
-        // be answered with a year-long immutable response, so a browser that
-        // recorded one replays it from disk against a file the host is serving;
-        // only a request that bypasses the cache replaces that entry. The
-        // document itself is served must-revalidate, so the reload picks up new
-        // hashes on its own where the build really has moved on.
+        // THE SHEET IS ASKED FOR AGAIN BEFORE THE DOCUMENT IS. A sheet that
+        // is missing because the build moved on is one case of a failed
+        // request and not the common one: far more of them are a request that
+        // did not finish - a cell handover, a captive portal answering for a
+        // moment, a connection dropped mid-response - against a file the host
+        // is serving perfectly, and the reports that brought this here named
+        // the hashes of the build that was live at the time. For those the
+        // only thing needed is the file, and the document has nothing to do
+        // with it. So the first move is one more request for the sheet itself,
+        // attached to this page: the design arrives where the reader already
+        // is, with their scroll, their form and their cart where they left
+        // them, and nothing to press.
+        //
+        // The second ask carries a parameter of its own because a failed fetch
+        // is recorded against its URL and replayed to every later request for
+        // it, and a miss under /assets used to be answered with a year-long
+        // immutable response; a distinct URL is a distinct entry and the file
+        // behind it is the same file. One ask per sheet, so a file that is
+        // genuinely gone cannot be asked for in a loop, and the element the
+        // ask creates is marked so its own failure is not read as a fresh one.
+        //
+        // Only when that second ask fails too is the build the likely cause,
+        // and then the document is what pins a build, so the reload below is
+        // the answer. The failed file is re-fetched past the cache first,
+        // which is the part a plain reload does not do; the document itself is
+        // served must-revalidate, so the reload picks up new hashes on its own
+        // where the build really has moved on.
         //
         // One reload per tab, marked before it is taken and never released, so
         // a file that is genuinely gone cannot loop. The gate is the mark being
@@ -614,9 +632,6 @@
         // A store that cannot be written counts as already spent - an ungated
         // reload is worse than an unstyled page - and the key is the stylesheet's
         // own, so it can never spend the allowance chunk-recovery needs.
-        // Whenever the reload is not taken nothing is announced, so the hold
-        // expires and the failure reports as it did before: this recovers the
-        // visitor, it does not quiet the queue.
         //
         // A reload that cannot be taken is where the reader was left out. The
         // sheet is the whole of the design past the first screen: the critical
@@ -631,16 +646,75 @@
         // reveals: the markup is in the document, the boot binds its button,
         // and its button reloads, which is exactly the move the allowance is
         // refusing to make unasked. The flag is read as well as the event
-        // because a render-blocking sheet fails while the document is still
-        // parsing, before the boot module runs and can listen.
+        // because a sheet can fail while the document is still parsing, before
+        // the boot module runs and can listen. It is the last resort and not
+        // the first one: telling a reader the page is broken is worth doing
+        // only once the site has run out of ways to make it whole.
+        //
+        // NOT EVERY SHEET IS THE DESIGN. One of them is the Barlow weights
+        // src/lib/fonts.js asks for once the page has arrived, and the page is
+        // whole without it: the family has its 400 declared in the document,
+        // every line those weights set falls back to it, and the browser
+        // darkens the bolder cuts itself. That sheet is marked where it is
+        // created, and a marked sheet gets the second ask and nothing else -
+        // no reload, no notice, and no spending of the allowance the design's
+        // own sheet needs. Put through the path above it was reloading a
+        // settled page out from under a reader over three font weights, or
+        // where the reload was gone, telling them a page they could read
+        // perfectly had not finished loading. Both are still reported; what
+        // changes is what the reader is put through for them.
         var STYLE_MARK = "speedway146:style-refresh";
+        var REASK = "data-reask";
+        var askedAgain = {};
         function tellIncomplete() {
           window.__speedway146Incomplete = true;
           try {
             window.dispatchEvent(new Event("speedway146:page-incomplete"));
           } catch (ignored) {}
         }
-        function recoverStylesheet(url) {
+        // Asks for the sheet once more and puts the answer into this page.
+        // Arriving announces the refresh, which drops the held failure exactly
+        // as a chunk that came back drops its own - the reader lost nothing.
+        // Failing hands over to `next`, and the hold expires and reports.
+        function askAgain(url, next) {
+          if (askedAgain[url]) {
+            next();
+            return;
+          }
+          askedAgain[url] = true;
+          var link;
+          try {
+            link = document.createElement("link");
+          } catch (ignored) {
+            next();
+            return;
+          }
+          var settled = false;
+          link.rel = "stylesheet";
+          link.setAttribute(REASK, "");
+          link.href = url + (url.indexOf("?") < 0 ? "?" : "&") + "reask=1";
+          link.onload = function () {
+            if (settled) return;
+            settled = true;
+            try {
+              window.dispatchEvent(new Event("speedway146:build-refresh"));
+            } catch (ignored) {}
+          };
+          link.onerror = function () {
+            if (settled) return;
+            settled = true;
+            next();
+          };
+          try {
+            (document.head || document.documentElement).appendChild(link);
+          } catch (ignored) {
+            if (!settled) {
+              settled = true;
+              next();
+            }
+          }
+        }
+        function reloadForStylesheet(url) {
           try {
             if (sessionStorage.getItem(STYLE_MARK) !== null) {
               tellIncomplete();
@@ -662,6 +736,15 @@
           } catch (ignored) {
             proceed();
           }
+        }
+        function recoverStylesheet(url, optional) {
+          if (optional) {
+            askAgain(url, function () {});
+            return;
+          }
+          askAgain(url, function () {
+            reloadForStylesheet(url);
+          });
         }
         // Leaving for any other reason ends the wait, so a page closed on a
         // real failure still reports it.
@@ -736,6 +819,18 @@
                 ) {
                   return;
                 }
+                // The recovery's own second ask for a sheet. It carries its
+                // own handler, which is what decides where the failure goes
+                // next, and the sheet is already held under the URL the page
+                // asked for first - so one lost sheet keeps one identity
+                // however many requests it took to lose it, and reading this
+                // one as a fresh failure would ask again for ever.
+                if (
+                  event.target.tagName.toLowerCase() === "link" &&
+                  event.target.getAttribute(REASK) !== null
+                ) {
+                  return;
+                }
                 var failure =
                   "Failed to load " +
                   event.target.tagName.toLowerCase() +
@@ -750,7 +845,10 @@
                     event.target.tagName.toLowerCase() === "link" &&
                     rel === "stylesheet"
                   ) {
-                    recoverStylesheet(source);
+                    recoverStylesheet(
+                      source,
+                      event.target.getAttribute("data-optional") !== null,
+                    );
                   }
                 } else if (photoAsset(source)) {
                   // Keyed on the candidate that actually failed rather than on

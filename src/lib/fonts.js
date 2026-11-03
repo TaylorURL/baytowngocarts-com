@@ -1,4 +1,4 @@
-import { withBuildRefresh } from "./chunk-recovery.js";
+import weightsHref from "../styles/barlow-weights.css?url";
 import { whenSettled } from "./idle.js";
 
 /*
@@ -20,18 +20,38 @@ import { whenSettled } from "./idle.js";
  * What the real faces bring is the advance the designer drew - a percent or so
  * on a word, several on a row of digits - inside line boxes whose height the
  * family keeps across every weight.
+ *
+ * THE SHEET IS ATTACHED HERE, MARKED, RATHER THAN IMPORTED. A dynamic import
+ * of a stylesheet is a link the bundler creates where nothing on the page can
+ * see it, and the page watches for stylesheets that fail: the one in the
+ * document is the whole of the design past the first screen, so a failure
+ * there is answered with a reload of the document and, where that is not
+ * available, with a notice telling the reader the page did not finish loading.
+ * This sheet is not that, and it was getting that answer - a settled page
+ * reloaded out from under a reader over three font weights, or a notice over a
+ * page they could read perfectly - and it was spending the one reload the
+ * design's own sheet needs. The mark is what tells the two apart, so the sheet
+ * is attached by name, with the mark on it. The recovery in index.html asks
+ * once more for a marked sheet and then leaves the page alone; the failure is
+ * reported either way.
+ *
+ * Nothing waits on it and nothing reads from it, so there is no promise to
+ * hand back: what the sheet does is arrive, and the type it sets is correct
+ * before it does.
  */
-const loadWeights = withBuildRefresh(
-  () => import("../styles/barlow-weights.css"),
-);
-
 export function startFontWeights() {
   whenSettled(() => {
-    loadWeights().catch(() => {
-      // A sheet the served build no longer has is a document this tab has
-      // outlived, which is what the refresh the loader carries answers. Where
-      // the tab has already spent its one reload, the page goes on setting
-      // these lines in the weight it has rather than ending on an error.
-    });
+    try {
+      const head = document.head || document.documentElement;
+      if (!head) return;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.setAttribute("data-optional", "");
+      link.href = weightsHref;
+      head.appendChild(link);
+    } catch {
+      // A document that will not take a link is not one this can fix, and the
+      // page sets these lines in the weight it has either way.
+    }
   });
 }
