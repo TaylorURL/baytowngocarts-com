@@ -6,7 +6,7 @@ Website for Speedway 146, a go-kart track in Baytown, Texas.
 
 [baytowngokarts.com](https://baytowngokarts.com)
 
-<img src="https://img.shields.io/badge/version-2026.45.1-e11d2a?style=for-the-badge" alt="Version 2026.45.1" />
+<img src="https://img.shields.io/badge/version-2026.45.2-e11d2a?style=for-the-badge" alt="Version 2026.45.2" />
 
 Race tickets, party packages and add-ons in one cart, paid through Stripe. Customers get accounts with their past orders, and staff get a panel for orders, revenue and traffic. React, prerendered per route, on Supabase.
 
@@ -37,6 +37,8 @@ The domain's MX points at Resend, and `email-inbound` forwards everything to the
 - A missing file under `/assets` goes to `api/asset-missing.js` instead of the 404 page. A cached 404 would break that file for a year.
 - A photo that fails is requested once more under a new query string (`src/lib/photoRecovery.js`). The browser would otherwise replay the failure.
 - A tab left open across a deploy asks for chunks that are gone. `src/lib/chunk-recovery.js` reloads once per tab, and the allowance is tied to the chunk that failed so another loader succeeding can't hand it back.
+- A stylesheet that fails is asked for once more under a new query string, attached to the page the reader is already on. Most of those failures are a request that didn't finish, not a build that moved on. Only when the second ask fails too does the document reload, once per tab. A tab that already spent its reload gets a notice with a button instead, since that sheet is the whole design past the first screen.
+- The Barlow weights the first screen doesn't set are attached after the page lands, marked optional (`src/lib/fonts.js`). A marked sheet gets the second ask and nothing else. Reloading a settled page over three font weights is worse than the 400 those lines fall back to.
 
 The first paint's CSS is inlined with Beasties, rules keyed on `data-` and `aria-` attributes included, since those states only show up after load. The Supabase SDK is imported on first use, so a visitor with no account and no cart never downloads it. Ambient motion waits until the page has fully arrived and gone idle, and the WebGL particles stay still on a software renderer. Traffic goes to the site's own `site_traffic` table, minus crawlers and PageSpeed runs.
 
