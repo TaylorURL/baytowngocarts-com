@@ -120,6 +120,19 @@
         // reads, rather than letting the scan match a scheme without slashes:
         // every dotted filename in a stack ends in a colon too, and counting
         // those as schemes stops any extension frame from being recognised.
+        //
+        // Safari on iOS does not spell the extension scheme out at all. A
+        // content script injected into the page has its source URL replaced
+        // with webkit-masked-url://hidden/ before the engine ever writes a
+        // stack, deliberately, so a page cannot read back which extension is
+        // on it. Every frame of such a failure carries that one URL and
+        // nothing else, which is a scheme the loop above does not know and so
+        // reads as the site's - and the handler then files a content script's
+        // own fault, under a message naming variables no file here declares,
+        // as a defect of the home page. A file this site serves is fetched
+        // over https and keeps its real URL in the stack, so a masked frame is
+        // never ours; where one appears beside a site frame the rule below
+        // still returns false and the report goes out, as it should.
         function browserOnly(text) {
           var body = String(text || "").replace(
             /\buser-script:(?!\/\/)/gi,
@@ -131,6 +144,7 @@
             var scheme = schemes[i].slice(0, -3).toLowerCase();
             if (scheme.slice(-9) === "extension") continue;
             if (scheme === "user-script") continue;
+            if (scheme === "webkit-masked-url") continue;
             return false;
           }
           return true;
