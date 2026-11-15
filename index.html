@@ -679,7 +679,35 @@
         // changes is what the reader is put through for them.
         var STYLE_MARK = "speedway146:style-refresh";
         var REASK = "data-reask";
-        var askedAgain = {};
+        // A sheet gets its second ask straight away and two more after that,
+        // and each of those is issued only when the connection comes back or
+        // the reader returns to the tab. Bounded, so a file that is genuinely
+        // gone is never asked for in a loop.
+        var STYLE_ASKS = 3;
+        var styleAsks = {};
+        // The two moments a request that has just failed could succeed again:
+        // the connection returning, and the reader coming back to a tab whose
+        // timers were throttled while it was away. Same pair the photograph
+        // retries above wait on, for the same reason.
+        function whenReachable(run) {
+          var fired = false;
+          function go() {
+            if (fired) return;
+            fired = true;
+            try {
+              window.removeEventListener("online", go);
+              document.removeEventListener("visibilitychange", visible);
+            } catch (ignored) {}
+            run();
+          }
+          function visible() {
+            if (!document.hidden) go();
+          }
+          try {
+            window.addEventListener("online", go);
+            document.addEventListener("visibilitychange", visible);
+          } catch (ignored) {}
+        }
         function tellIncomplete() {
           window.__speedway146Incomplete = true;
           try {
@@ -691,11 +719,12 @@
         // as a chunk that came back drops its own - the reader lost nothing.
         // Failing hands over to `next`, and the hold expires and reports.
         function askAgain(url, next) {
-          if (askedAgain[url]) {
+          var spent = styleAsks[url] || 0;
+          if (spent >= STYLE_ASKS) {
             next();
             return;
           }
-          askedAgain[url] = true;
+          styleAsks[url] = spent + 1;
           var link;
           try {
             link = document.createElement("link");
@@ -706,7 +735,8 @@
           var settled = false;
           link.rel = "stylesheet";
           link.setAttribute(REASK, "");
-          link.href = url + (url.indexOf("?") < 0 ? "?" : "&") + "reask=1";
+          link.href =
+            url + (url.indexOf("?") < 0 ? "?" : "&") + "reask=" + (spent + 1);
           link.onload = function () {
             if (settled) return;
             settled = true;
@@ -740,24 +770,68 @@
             return;
           }
           window.dispatchEvent(new Event("speedway146:build-refresh"));
-          function proceed() {
-            try {
-              location.reload();
-            } catch (ignored) {}
+          try {
+            location.reload();
+          } catch (ignored) {}
+        }
+        // THE RELOAD IS TAKEN ONLY WHEN THE HOST ANSWERED.
+        //
+        // The request past the cache was once a formality - whatever it did,
+        // the page reloaded, and it was there to drop a recorded failure
+        // before the document asked for the file again. Its two outcomes are
+        // the whole question, though, and they say opposite things.
+        //
+        // A build that has moved on ANSWERS. A hashed name the deployment no
+        // longer has is rewritten to api/asset-missing, which replies 404 and
+        // no-store, so the request resolves. The document is the stale thing,
+        // the reload replaces it with one naming the current hashes, and the
+        // reader gets their page back.
+        //
+        // A request that fails outright answers nothing about the build. It
+        // is the connection: three asks for this file have now gone out and
+        // none of them reached the host. And the reader is holding the only
+        // copy of this page there is. Reloading over a connection in that
+        // state throws away a document that is painted and interactive - the
+        // reader's scroll, their form, their cart - for the browser's own
+        // cannot-connect screen, spends the single allowance this tab had,
+        // and still has no stylesheet to show for it. The page keeps its
+        // first screen and loses the rules under it; the error screen keeps
+        // nothing.
+        //
+        // So a failed request waits instead, and the sheet is asked for again
+        // at the first moment a request could succeed. The allowance is not
+        // spent, so a build that really has moved on can still be reloaded
+        // into once the connection is back. Only when the asks are spent is
+        // the reader told the page did not finish, which is the notice's own
+        // rule: it is the last resort, not the first one.
+        function settleStylesheet(url) {
+          var decided = false;
+          function answered() {
+            if (decided) return;
+            decided = true;
+            reloadForStylesheet(url);
+          }
+          function unreachable() {
+            if (decided) return;
+            decided = true;
+            whenReachable(function () {
+              recoverStylesheet(url, false);
+            });
           }
           try {
-            fetch(url, { cache: "reload" }).then(proceed, proceed);
+            fetch(url, { cache: "reload" }).then(answered, unreachable);
           } catch (ignored) {
-            proceed();
+            answered();
           }
         }
         function recoverStylesheet(url, optional) {
-          if (optional) {
-            askAgain(url, function () {});
+          if ((styleAsks[url] || 0) >= STYLE_ASKS) {
+            if (!optional) tellIncomplete();
             return;
           }
           askAgain(url, function () {
-            reloadForStylesheet(url);
+            if (optional) return;
+            settleStylesheet(url);
           });
         }
         // Leaving for any other reason ends the wait, so a page closed on a
