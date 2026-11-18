@@ -70,20 +70,33 @@ function calculateFees(rawSubtotal, totalPeople, promoPercent = 0) {
 /**
  * Whether the signed-in buyer's code is good, read through their own row. This
  * only shows the discount before checkout; create-checkout checks it again.
+ *
+ * A code from the site's email sign-up is mailed to an address that may have
+ * no account yet. When the buyer's own rows don't have it, the first account
+ * with that address to bring it here claims it, and from then on it is that
+ * account's row like any other.
  */
 async function lookUpPromo(code) {
-  const { data, error } = await (
-    await supabaseClient()
-  )
+  const client = await supabaseClient();
+  const { data: own, error } = await client
     .from("promo_codes")
     .select("percent_off, expires_at, redeemed_at")
     .eq("code", code)
     .maybeSingle();
   if (error) return { status: "error", message: "Couldn't check that code." };
+  let data = own;
+  if (!data) {
+    const claimed = await client.rpc("claim_offer_code", { p_code: code });
+    if (claimed.error) {
+      return { status: "error", message: "Couldn't check that code." };
+    }
+    data = claimed.data?.[0] ?? null;
+  }
   if (!data) {
     return {
       status: "invalid",
-      message: "That code isn't valid on this account.",
+      message:
+        "That code isn't valid on this account. A code only works on an account with the email it was sent to.",
     };
   }
   if (data.redeemed_at) {
@@ -365,7 +378,7 @@ export default function CartPage() {
       setPromo({
         status: "signin",
         message:
-          "Sign in at checkout with the account it was sent to and it comes off.",
+          "Sign in at checkout with the email it was sent to and it comes off.",
       });
       return;
     }
