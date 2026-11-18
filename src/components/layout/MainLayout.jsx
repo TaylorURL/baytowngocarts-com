@@ -5,6 +5,7 @@ import Footer from "./Footer.jsx";
 import SplitRail from "@taylorurl/split-rail";
 import ClickSpark from "../reactbits/ClickSpark.jsx";
 import RouteFallback from "../shell/RouteFallback.jsx";
+import EmailOffer from "../offer/EmailOffer.jsx";
 import { useTrafficLogger } from "../../hooks/useTraffic";
 import { useEmailLink } from "../../hooks/useEmailLink.js";
 const MainLayout = () => {
@@ -62,6 +63,7 @@ const MainLayout = () => {
             <SplitRail version={__BUILD_VERSION__} year={__BUILD_YEAR__} />
           </Footer>
         </div>
+        <EmailOffer />
       </div>
     </ClickSpark>
   );

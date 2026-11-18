@@ -6,7 +6,7 @@ Website for Speedway 146, a go-kart track in Baytown, Texas.
 
 [baytowngokarts.com](https://baytowngokarts.com)
 
-<img src="https://img.shields.io/badge/version-2026.46.2-e11d2a?style=for-the-badge" alt="Version 2026.46.2" />
+<img src="https://img.shields.io/badge/version-2026.47.0-e11d2a?style=for-the-badge" alt="Version 2026.47.0" />
 
 Race tickets, party packages and add-ons in one cart, paid through Stripe. Customers get accounts with their past orders, and staff get a panel for orders, revenue and traffic. React, prerendered per route, on Supabase.
 
@@ -26,7 +26,9 @@ Sales from before checkouts were tracked are recovered by name: `email-sweep` wi
 
 Every order gets one confirmation, usually from `checkout-complete` within seconds of paying. The sweep confirms any order from the last day that hasn't had one, at any hour and whether or not the buyer unsubscribed, since it's a receipt rather than marketing. Confirmations stay off until the function's `ORDER_CONFIRMATIONS` secret is `on`. A test that names an account and an inbox (`onlyUserId` with `deliverTo`) runs either way, and so does `orderId`, which confirms one order at any age. `dryRun` reports what a sweep would save and send, and writes nothing.
 
-Unsubscribing takes a per-account token from the one-click header or the `/unsubscribe` page. A `GET` only redirects. Mail scanners follow links, and unsubscribing on `GET` would unsubscribe people who never asked.
+The sign-up offer asks a new visitor for their email two seconds after the page settles, on the public pages only, and `email-offer` mails them a single-use 10% code good for 30 days. One inbox gets one code ever: the send is claimed in `email_log` under the inbox (with the `+tag` and Gmail's dots dropped), and each network gets five sign-ups an hour. The address goes in `email_subscribers`, linked to the account with the same address if there is one. With no account yet, the code is bound to the address, and the first account with that address to put it on its cart claims it (`claim_offer_code`), after which `create-checkout` prices it like any other code. `{"email": "…", "dryRun": true}` checks an address and renders the email without reading, writing or sending anything. The dialog loads as its own chunk when it opens. Closing it snoozes it for two weeks in the visitor's browser, and signing up ends it.
+
+Unsubscribing takes a per-account or per-sign-up token from the one-click header or the `/unsubscribe` page, and leaving either list leaves both. A `GET` only redirects. Mail scanners follow links, and unsubscribing on `GET` would unsubscribe people who never asked.
 
 The domain's MX points at Resend, and `email-inbound` forwards everything to the track's Gmail with the sender on Reply-To. Mail from the domain's own addresses isn't forwarded, so nothing loops.
 

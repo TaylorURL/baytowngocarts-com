@@ -28,3 +28,9 @@ verify_jwt = false
 # the credential, and the function checks it with Stripe itself.
 [functions.checkout-complete]
 verify_jwt = false
+
+# The site's sign-up form posts an email address with no account behind it.
+# The function checks the address, limits each network and the site as a
+# whole, and sends one code per inbox ever.
+[functions.email-offer]
+verify_jwt = false

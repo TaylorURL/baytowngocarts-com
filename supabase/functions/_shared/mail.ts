@@ -1,4 +1,4 @@
-import { ORDER_KIND, renderEmail, type EmailKind } from "./emails.ts";
+import { ORDER_KIND, renderEmail, type MailKind } from "./emails.ts";
 import type { PurchaseItem } from "./orders.ts";
 
 /*
@@ -43,8 +43,9 @@ export function mailer(db: Db, config: MailConfig) {
    * send failed. Null when somebody else already holds it.
    */
   async function claim(
-    kind: EmailKind,
-    candidate: { user_id: string; ref: string },
+    kind: MailKind,
+    // A sign-up from an address with no account has no user to name.
+    candidate: { user_id: string | null; ref: string },
     to: string,
   ): Promise<Claim | null> {
     const inserted = await db
@@ -93,7 +94,7 @@ export function mailer(db: Db, config: MailConfig) {
    */
   async function deliver(
     to: string,
-    kind: EmailKind,
+    kind: MailKind,
     email: { subject: string; html: string; text: string },
     oneClick: string | null,
     idempotencyKey: string,

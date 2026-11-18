@@ -10,7 +10,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
  * token on the query string and `List-Unsubscribe=One-Click` as a form body.
  * The site's /unsubscribe page posts the token as JSON once the reader presses
  * the button. Either way the token is the whole credential: it is a random
- * uuid, one per account, and it can only ever switch emails off.
+ * uuid, one per account or per address that signed up for the offer, and it
+ * can only ever switch emails off.
+ *
+ * An account and a sign-up with the same address are one reader, so leaving
+ * either list leaves both.
  *
  * A GET only redirects to that page. Mail scanners follow links on their own,
  * and a link that unsubscribed on GET would unsubscribe people nobody asked.
@@ -45,6 +49,27 @@ const json = (body: unknown, status = 200) =>
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+
+async function unsubscribeAccount(userId: string) {
+  const now = new Date().toISOString();
+  const { error } = await supabaseClient
+    .from("email_preferences")
+    .update({ unsubscribed_at: now, updated_at: now })
+    .eq("user_id", userId)
+    .is("unsubscribed_at", null);
+  if (error) throw error;
+}
+
+/** Signed up for the offer, by the row itself or the account it is linked to. */
+async function unsubscribeSignups(column: "id" | "user_id", value: string) {
+  const now = new Date().toISOString();
+  const { error } = await supabaseClient
+    .from("email_subscribers")
+    .update({ unsubscribed_at: now, updated_at: now })
+    .eq(column, value)
+    .is("unsubscribed_at", null);
+  if (error) throw error;
+}
 
 async function tokenFrom(req: Request, url: URL): Promise<string> {
   const fromQuery = url.searchParams.get("token");
@@ -84,18 +109,25 @@ serve(async (req: Request) => {
       .eq("unsubscribe_token", token)
       .maybeSingle();
     if (error) throw error;
-    if (!data) {
+    if (data) {
+      if (!data.unsubscribed_at) await unsubscribeAccount(data.user_id);
+      await unsubscribeSignups("user_id", data.user_id);
+      return json({ unsubscribed: true });
+    }
+
+    const signup = await supabaseClient
+      .from("email_subscribers")
+      .select("id, user_id, unsubscribed_at")
+      .eq("unsubscribe_token", token)
+      .maybeSingle();
+    if (signup.error) throw signup.error;
+    if (!signup.data) {
       return json({ error: "That unsubscribe link isn't recognised." }, 404);
     }
-    if (!data.unsubscribed_at) {
-      const now = new Date().toISOString();
-      const { error: updateError } = await supabaseClient
-        .from("email_preferences")
-        .update({ unsubscribed_at: now, updated_at: now })
-        .eq("user_id", data.user_id)
-        .is("unsubscribed_at", null);
-      if (updateError) throw updateError;
+    if (!signup.data.unsubscribed_at) {
+      await unsubscribeSignups("id", signup.data.id);
     }
+    if (signup.data.user_id) await unsubscribeAccount(signup.data.user_id);
     return json({ unsubscribed: true });
   } catch (cause) {
     console.error(

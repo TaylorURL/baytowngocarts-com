@@ -89,7 +89,17 @@ export const OFFER_KINDS: readonly Kind[] = [
  */
 export const ORDER_KIND = "order_confirmation" as const;
 
+/**
+ * The code a visitor asks for by giving the site their address. It is sent by
+ * email-offer the moment they ask, at any hour, once per inbox ever, and never
+ * by the sweep, so it stays out of KINDS.
+ */
+export const SIGNUP_KIND = "site_offer" as const;
+
 export type EmailKind = Kind | typeof ORDER_KIND;
+
+/** Every kind renderEmail and the mailer know, the sign-up's included. */
+export type MailKind = EmailKind | typeof SIGNUP_KIND;
 
 export type CartLine = { id: string; quantity: number };
 
@@ -104,7 +114,7 @@ export type OrderSummary = {
 };
 
 export type EmailInput = {
-  kind: EmailKind;
+  kind: MailKind;
   items?: CartLine[] | null;
   offer?: Offer | null;
   order?: OrderSummary | null;
@@ -282,7 +292,7 @@ type Block =
   | { type: "p"; text: string }
   | { type: "cart"; items: CartLine[] }
   | { type: "order"; order: OrderSummary }
-  | { type: "offer"; offer: Offer; url: string }
+  | { type: "offer"; offer: Offer; url: string; fine?: string }
   | { type: "special" }
   | { type: "hours"; rows: string[][]; note: string }
   | { type: "button"; label: string; url: string };
@@ -311,6 +321,11 @@ type Content = {
   signoff: string;
   reason: string;
 };
+
+/** Who an offer's code works for, under the code. */
+const ACCOUNT_FINE = "One use, on the account this was sent to.";
+const ADDRESS_FINE =
+  "One use, on an account with this email address. It doesn't stack with the group discount.";
 
 const HEROES = {
   track: {
@@ -375,6 +390,40 @@ function contentFor(input: EmailInput): Content {
           "You're getting this because you placed an order at baytowngokarts.com.",
       };
     }
+    case SIGNUP_KIND:
+      return {
+        subject: `Your ${percent}% off code for Speedway 146`,
+        preheader: offer
+          ? `Your code is ${offer.code}: ${percent}% off race tickets and party packages online, good through ${formatDay(offer.expiresAt)}.`
+          : `${percent}% off race tickets and party packages at Speedway 146.`,
+        hero: HEROES.track,
+        eyebrow: "Thanks for signing up",
+        heading: `Here's ${percent}% off`,
+        blocks: [
+          {
+            type: "p",
+            text: `Welcome to Speedway 146. Your code takes ${percent}% off race tickets and party packages when you book online.`,
+          },
+          ...(offer
+            ? [
+                {
+                  type: "offer",
+                  offer,
+                  url: siteUrl("/pricing", null, offer.code),
+                  fine: ADDRESS_FINE,
+                } as Block,
+              ]
+            : []),
+          {
+            type: "p",
+            text: "Tap the button and the code goes on your cart. When you check out, sign in or create an account with this same email address and the discount comes off.",
+          },
+          hoursBlock(now),
+        ],
+        signoff,
+        reason:
+          "You're getting this because you signed up for Speedway 146 emails at baytowngokarts.com.",
+      };
     case "checkout_reminder":
       return {
         subject: "Your races are still on the grid",
@@ -595,7 +644,7 @@ ${rows}
 <div style="font-family:${DISPLAY};font-size:72px;line-height:72px;color:#ffffff;margin:6px 0 4px;">${block.offer.percentOff}<span style="color:${COLORS.race500};">%</span> OFF</div>
 <div style="font-family:${BODY};font-size:15px;line-height:22px;color:${COLORS.asphalt300};margin:0 0 22px;">Good through ${escapeHtml(formatDay(block.offer.expiresAt))}</div>
 ${button(`Claim my ${block.offer.percentOff}% off`, block.url)}
-<div style="font-family:${BODY};font-size:14px;line-height:21px;color:${COLORS.asphalt300};margin:20px 0 0;">Or enter <span style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:bold;letter-spacing:2px;color:#ffffff;background:${COLORS.asphalt700};padding:3px 8px;border-radius:4px;">${escapeHtml(block.offer.code)}</span> at checkout.<br>One use, on the account this was sent to.</div>
+<div style="font-family:${BODY};font-size:14px;line-height:21px;color:${COLORS.asphalt300};margin:20px 0 0;">Or enter <span style="font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:bold;letter-spacing:2px;color:#ffffff;background:${COLORS.asphalt700};padding:3px 8px;border-radius:4px;">${escapeHtml(block.offer.code)}</span> at checkout.<br>${escapeHtml(block.fine ?? ACCOUNT_FINE)}</div>
 </td></tr></table>`;
     case "special":
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
@@ -646,7 +695,7 @@ function blockText(block: Block): string {
       return `ORDER ${block.order.number}\nPlaced ${formatDay(block.order.placedAt)}\n${lines.join("\n")}\nTotal paid, with tax and fees: ${cents(block.order.total)}`;
     }
     case "offer":
-      return `${block.offer.percentOff}% OFF, good through ${formatDay(block.offer.expiresAt)}\nClaim it: ${block.url}\nOr enter ${block.offer.code} at checkout. One use, on the account this was sent to.`;
+      return `${block.offer.percentOff}% OFF, good through ${formatDay(block.offer.expiresAt)}\nClaim it: ${block.url}\nOr enter ${block.offer.code} at checkout. ${block.fine ?? ACCOUNT_FINE}`;
     case "special":
       return "UNLIMITED RACING: 2.5 hours unlimited, $49.99 per person plus tax, any day we're open.";
     case "hours":
