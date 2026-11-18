@@ -97,7 +97,7 @@ const UnsubscribePage = () => {
               </h1>
               <p className="text-asphalt-600 mb-6">
                 This stops deals, cart reminders and come-back emails for your
-                account.
+                email address.
               </p>
               {state.status === "error" && (
                 <p role="alert" className="text-sm text-race-700 mb-4">

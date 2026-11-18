@@ -7,8 +7,8 @@ import { CONTACT_INFO } from "../lib/content/business.js";
 import RouteMeta from "../components/shell/RouteMeta.jsx";
 import { SHARE_IMAGE, SITE_URL, articleSchema } from "../lib/seo/schema.js";
 
-const UPDATED = "2026-03-15";
-const UPDATED_LABEL = "March 15, 2026";
+const UPDATED = "2026-11-18";
+const UPDATED_LABEL = "November 18, 2026";
 
 export const metadata = {
   title: "Privacy Policy | Speedway 146 Baytown",
@@ -69,6 +69,15 @@ const SECTIONS = [
           <li>
             <strong>Account Information:</strong> Username, password, and
             profile details when you create an account.
+          </li>
+          <li>
+            <strong>Email Sign-Ups:</strong> If you enter your email address to
+            get our 10% off code, we keep that address, the page and time you
+            signed up, the code we sent and whether it has been used, and
+            whether you have unsubscribed. We use it to email you the code and,
+            after that, deals and news from the track. To stop abuse of the form
+            we also keep a scrambled (hashed) form of the network address the
+            sign-up came from, for one day.
           </li>
           <li>
             <strong>Transaction Data:</strong> Records of purchases, bookings,
@@ -168,9 +177,11 @@ const SECTIONS = [
     body: (
       <p>
         We use cookies and similar technologies to enhance your experience,
-        analyze usage patterns, and deliver targeted content. You may adjust
-        your browser settings to refuse cookies, but some features of our
-        website may not function properly without them.
+        analyze usage patterns, and deliver targeted content. Your browser also
+        remembers whether you closed or answered the email sign-up offer, so we
+        don't show it again. You may adjust your browser settings to refuse
+        cookies, but some features of our website may not function properly
+        without them.
       </p>
     ),
   },
@@ -217,7 +228,8 @@ const SECTIONS = [
         information below. Note that Speedway 146 and TaylorURL reserve the
         right to retain and use data as permitted by applicable law. Every
         marketing email we send, including cart reminders and offers, carries an
-        unsubscribe link, and using it stops all of them for your account.
+        unsubscribe link, and using it stops all of them for your account and
+        your email address.
       </p>
     ),
   },
