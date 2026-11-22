@@ -374,9 +374,18 @@
             report("resource", heldAssets.shift());
           }
         }
-        function holdAsset(message) {
+        // A CHUNK'S HOLD IS A CLOCK AND A SHEET'S IS NOT. A missing chunk is
+        // answered by a reload that happens within a second or two, so five
+        // seconds covers it. A sheet is answered by asks that now reach past
+        // a quarter of a minute, and a five-second clock over those reported
+        // every sheet the recovery went on to rescue - a fault that cannot
+        // stop recurring however well the recovery works, which is the exact
+        // shape the photograph holds above were rewritten to avoid. So a sheet
+        // waits on its own recovery: arriving drops it, running out of asks
+        // sends it, and the page going sends it too.
+        function holdAsset(message, awaited) {
           heldAssets.push(message);
-          setTimeout(flushHeldAssets, HOLD_MS);
+          if (!awaited) setTimeout(flushHeldAssets, HOLD_MS);
         }
         window.addEventListener("speedway146:build-refresh", function () {
           heldAssets.length = 0;
@@ -685,11 +694,37 @@
         // gone is never asked for in a loop.
         var STYLE_ASKS = 3;
         var styleAsks = {};
-        // The two moments a request that has just failed could succeed again:
-        // the connection returning, and the reader coming back to a tab whose
-        // timers were throttled while it was away. Same pair the photograph
-        // retries above wait on, for the same reason.
-        function whenReachable(run) {
+        // How long the sheet waits before each of the asks after the first.
+        //
+        // A WAIT ON THOSE TWO EVENTS ALONE IS A WAIT THAT USUALLY NEVER ENDS.
+        // The connection coming back and the reader returning to the tab are
+        // the two moments a failed request could succeed, and they are the
+        // pair the photograph retries wait on - but the photographs wait on a
+        // clock as well, and the sheet did not. That is the whole of this
+        // defect. What loses this file is almost never the connection going
+        // down: it is a handover between cells, a captive portal answering for
+        // a moment, a response cut off mid-flight. Through all of those
+        // `navigator.onLine` stays true, so `online` never fires, and the
+        // reader is looking at the tab, so `visibilitychange` never fires
+        // either. The sheet therefore got exactly one ask, issued inside the
+        // same instant that had just taken the first request - which the
+        // photograph retries above say in as many words is not a second
+        // chance at all - and when that one failed the recovery stopped dead:
+        // no further ask, no reload, and not even the notice, because the
+        // notice is on the far side of a wait that had no end. The reader kept
+        // a page that stops after its first screen with nothing saying why,
+        // and five seconds later the failure was reported under the URL the
+        // document asked for. That is this report, three builds running.
+        //
+        // So the remaining asks are spread across the width of an
+        // interruption, as the photographs are, and either of those two events
+        // brings the next one forward. Longer than the interruptions that lose
+        // a file, and still inside the visit that lost it.
+        var STYLE_WAIT_MS = [3400, 14000];
+        // Whichever comes first of: the connection returning, the reader
+        // coming back to a tab whose timers were throttled while it was away,
+        // and the wait running out.
+        function whenReachable(wait, run) {
           var fired = false;
           function go() {
             if (fired) return;
@@ -707,6 +742,7 @@
             window.addEventListener("online", go);
             document.addEventListener("visibilitychange", visible);
           } catch (ignored) {}
+          setTimeout(go, wait);
         }
         function tellIncomplete() {
           window.__speedway146Incomplete = true;
@@ -717,7 +753,8 @@
         // Asks for the sheet once more and puts the answer into this page.
         // Arriving announces the refresh, which drops the held failure exactly
         // as a chunk that came back drops its own - the reader lost nothing.
-        // Failing hands over to `next`, and the hold expires and reports.
+        // Failing hands over to `next`, which is what decides whether another
+        // ask is coming; the held failure goes out when none is.
         function askAgain(url, next) {
           var spent = styleAsks[url] || 0;
           if (spent >= STYLE_ASKS) {
@@ -761,12 +798,12 @@
         function reloadForStylesheet(url) {
           try {
             if (sessionStorage.getItem(STYLE_MARK) !== null) {
-              tellIncomplete();
+              giveUpStylesheet();
               return;
             }
             sessionStorage.setItem(STYLE_MARK, url);
           } catch (ignored) {
-            tellIncomplete();
+            giveUpStylesheet();
             return;
           }
           window.dispatchEvent(new Event("speedway146:build-refresh"));
@@ -814,23 +851,57 @@
           function unreachable() {
             if (decided) return;
             decided = true;
-            whenReachable(function () {
-              recoverStylesheet(url, false);
-            });
+            var spent = styleAsks[url] || 0;
+            // Out of asks, and the last of them never reached the host. There
+            // is nothing left to wait for, so the reader is told now rather
+            // than left holding an undressed page on a wait with no end.
+            if (spent >= STYLE_ASKS) {
+              giveUpStylesheet();
+              return;
+            }
+            whenReachable(
+              STYLE_WAIT_MS[Math.min(spent, STYLE_WAIT_MS.length) - 1],
+              function () {
+                recoverStylesheet(url, false);
+              },
+            );
           }
           try {
-            fetch(url, { cache: "reload" }).then(answered, unreachable);
+            // Marked as the recovery's own, for the same reason the second
+            // ask's element is marked: its failure is the one already held
+            // under the URL the document asked for, and reporting it again
+            // files the same lost sheet once more for every ask it takes to
+            // lose it.
+            fetch(url, { cache: "reload", speedway146Probe: true }).then(
+              answered,
+              unreachable,
+            );
           } catch (ignored) {
             answered();
           }
         }
+        // The recovery has run out of moves. The reader gets the notice, and
+        // the failure that has been waiting on the recovery goes out now - the
+        // hold is answered by the asks rather than by a clock, so this is what
+        // ends it.
+        function giveUpStylesheet() {
+          tellIncomplete();
+          flushHeldAssets();
+        }
         function recoverStylesheet(url, optional) {
           if ((styleAsks[url] || 0) >= STYLE_ASKS) {
-            if (!optional) tellIncomplete();
+            if (optional) flushHeldAssets();
+            else giveUpStylesheet();
             return;
           }
           askAgain(url, function () {
-            if (optional) return;
+            // One ask and nothing else for a sheet the page is whole without,
+            // and the failure is reported there: no clock is going to answer
+            // it later.
+            if (optional) {
+              flushHeldAssets();
+              return;
+            }
             settleStylesheet(url);
           });
         }
@@ -925,14 +996,14 @@
                   ": " +
                   source;
                 if (buildAsset(source)) {
+                  var sheet =
+                    event.target.tagName.toLowerCase() === "link" &&
+                    rel === "stylesheet";
                   // Held first: the recovery clears the held failures as it
                   // goes, and this one is only noise if the reload it is about
                   // to take actually happens.
-                  holdAsset(failure);
-                  if (
-                    event.target.tagName.toLowerCase() === "link" &&
-                    rel === "stylesheet"
-                  ) {
+                  holdAsset(failure, sheet);
+                  if (sheet) {
                     recoverStylesheet(
                       source,
                       event.target.getAttribute("data-optional") !== null,
@@ -1053,6 +1124,15 @@
               else if (input && typeof input === "object" && input.keepalive)
                 keepalive = true;
             } catch (ignored) {}
+            // The stylesheet recovery's request past the cache. It is asking a
+            // question rather than fetching something the page needs, and the
+            // answer it gets decides what the recovery does next; the failure
+            // it is asking about is already held under the URL the document
+            // asked for, and that hold is what reports.
+            var probe = false;
+            try {
+              if (init && init.speedway146Probe) probe = true;
+            } catch (ignored) {}
             return originalFetch.apply(window, arguments).then(
               function (response) {
                 if (response.status >= 500 && firstParty(target))
@@ -1063,7 +1143,7 @@
                 return response;
               },
               function (error) {
-                if (!keepalive && firstParty(target)) {
+                if (!keepalive && !probe && firstParty(target)) {
                   report(
                     "network",
                     (error && error.message ? error.message : String(error)) +
