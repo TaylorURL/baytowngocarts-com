@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 import { sparkPalette } from "../../lib/tokens.js";
 import useFrameLoop from "../../hooks/useFrameLoop.js";
@@ -25,7 +25,7 @@ const vertex = /* glsl */ `
   attribute vec3 position;
   attribute vec4 random;
   attribute vec3 color;
-  
+
   uniform mat4 modelMatrix;
   uniform mat4 viewMatrix;
   uniform mat4 projectionMatrix;
@@ -33,23 +33,23 @@ const vertex = /* glsl */ `
   uniform float uSpread;
   uniform float uBaseSize;
   uniform float uSizeRandomness;
-  
+
   varying vec4 vRandom;
   varying vec3 vColor;
-  
+
   void main() {
     vRandom = random;
     vColor = color;
-    
+
     vec3 pos = position * uSpread;
     pos.z *= 10.0;
-    
+
     vec4 mPos = modelMatrix * vec4(pos, 1.0);
     float t = uTime;
     mPos.x += sin(t * random.z + 6.28 * random.w) * mix(0.1, 1.5, random.x);
     mPos.y += sin(t * random.y + 6.28 * random.x) * mix(0.1, 1.5, random.w);
     mPos.z += sin(t * random.w + 6.28 * random.y) * mix(0.1, 1.5, random.z);
-    
+
     vec4 mvPos = viewMatrix * mPos;
 
     if (uSizeRandomness == 0.0) {
@@ -64,16 +64,16 @@ const vertex = /* glsl */ `
 
 const fragment = /* glsl */ `
   precision highp float;
-  
+
   uniform float uTime;
   uniform float uAlphaParticles;
   varying vec4 vRandom;
   varying vec3 vColor;
-  
+
   void main() {
     vec2 uv = gl_PointCoord.xy;
     float d = length(uv - vec2(0.5));
-    
+
     if(uAlphaParticles < 0.5) {
       if(d > 0.5) {
         discard;
@@ -129,6 +129,19 @@ const Particles = ({
   const containerRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const onScreen = useFrameLoop(containerRef);
+  /*
+   * Whether the field is on screen decides whether the loop runs, and nothing
+   * more. It is read through a ref so that scrolling past the section starts
+   * and stops the drawing of a field that is already set up, rather than
+   * building a second one: a browser lends a page a small, fixed number of
+   * drawing contexts, and a field rebuilt on every scroll spends them all.
+   */
+  const onScreenRef = useRef(onScreen);
+  onScreenRef.current = onScreen;
+  const fieldRef = useRef(null);
+  /* A context the browser took back and then offered again is a field worth
+     building a second time, and the only thing that asks for one. */
+  const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -150,6 +163,39 @@ const Particles = ({
     const software = drawsInSoftware(gl);
     container.appendChild(gl.canvas);
     gl.clearColor(0, 0, 0, 0);
+
+    let frame;
+    let live = true;
+
+    const stop = () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      frame = undefined;
+    };
+
+    /*
+     * A context the browser has taken back - a phone short of memory, a tab
+     * sent to the background, one page asking for more contexts than the
+     * browser lends - answers every question about a shader with null and
+     * every draw with nothing. Drawing into one is the whole of this fault:
+     * the library reports the null, prints both shaders after it, and the
+     * frame after that throws. So the field lets go of the context at the
+     * first sign of that and leaves an empty transparent canvas, which is a
+     * decoration nobody can tell is missing.
+     */
+    const retire = () => {
+      live = false;
+      stop();
+      fieldRef.current = null;
+    };
+
+    const onLost = (event) => {
+      // Asking for it back: a browser only offers a restore to a page that does.
+      event.preventDefault();
+      retire();
+    };
+    const onRestored = () => setGeneration((n) => n + 1);
+    gl.canvas.addEventListener("webglcontextlost", onLost, false);
+    gl.canvas.addEventListener("webglcontextrestored", onRestored, false);
 
     const camera = new Camera(gl, { fov: 15 });
     camera.position.set(0, 0, cameraDistance);
@@ -173,6 +219,25 @@ const Particles = ({
     if (moveParticlesOnHover) {
       container.addEventListener("mousemove", handleMouseMove);
     }
+
+    const teardown = () => {
+      retire();
+      window.removeEventListener("resize", resize);
+      gl.canvas.removeEventListener("webglcontextlost", onLost);
+      gl.canvas.removeEventListener("webglcontextrestored", onRestored);
+      if (moveParticlesOnHover) {
+        container.removeEventListener("mousemove", handleMouseMove);
+      }
+      if (container.contains(gl.canvas)) {
+        container.removeChild(gl.canvas);
+      }
+      /* Handing the context back as the field goes away, rather than waiting
+         for the collector to notice, is what keeps a page's count of them
+         under the browser's limit. Past that limit a browser takes the oldest
+         context from whoever still holds it. */
+      const release = gl.getExtension("WEBGL_lose_context");
+      if (release && !gl.isContextLost()) release.loseContext();
+    };
 
     const count = particleCount;
     const positions = new Float32Array(count * 3);
@@ -207,6 +272,14 @@ const Particles = ({
       color: { size: 3, data: colors },
     });
 
+    /* A context handed over already dead compiles nothing, so asking it to
+       is what prints both shaders and a null to the console. Nothing is
+       asked of it. */
+    if (gl.isContextLost()) {
+      retire();
+      return teardown;
+    }
+
     const program = new Program(gl, {
       vertex,
       fragment,
@@ -221,14 +294,34 @@ const Particles = ({
       depthTest: false,
     });
 
+    /* A program that did not link has no uniform locations to set, and the
+       first draw that reaches for them throws. There is no field to draw
+       either way, so the layer stays empty and the page carries on. */
+    if (
+      gl.isContextLost() ||
+      !gl.getProgramParameter(program.program, gl.LINK_STATUS)
+    ) {
+      retire();
+      return teardown;
+    }
+
     const particles = new Mesh(gl, { mode: gl.POINTS, geometry, program });
 
-    let animationFrameId;
     let lastTime = performance.now();
     let elapsed = 0;
 
+    const draw = () => {
+      if (!live) return false;
+      if (gl.isContextLost()) {
+        retire();
+        return false;
+      }
+      renderer.render({ scene: particles, camera });
+      return true;
+    };
+
     const update = (t) => {
-      animationFrameId = requestAnimationFrame(update);
+      frame = undefined;
       const delta = t - lastTime;
       lastTime = t;
       elapsed += delta * speed;
@@ -249,7 +342,11 @@ const Particles = ({
         particles.rotation.z += 0.01 * speed;
       }
 
-      renderer.render({ scene: particles, camera });
+      /* The next frame is asked for after this one drew, never before it, so
+         a draw that fails for a reason nothing here anticipated is reported
+         once and the loop ends there instead of repeating it every frame for
+         the rest of the visit. */
+      if (draw()) frame = requestAnimationFrame(update);
     };
 
     /*
@@ -258,23 +355,26 @@ const Particles = ({
      * drawn once and left. The layer looks the way it did and costs nothing
      * for the rest of the visit.
      */
-    if (onScreen && !software && !window.matchMedia(STILL).matches) {
-      animationFrameId = requestAnimationFrame(update);
+    const animates = !software && !window.matchMedia(STILL).matches;
+
+    fieldRef.current = {
+      animates,
+      start: () => {
+        if (!live || frame !== undefined) return;
+        lastTime = performance.now();
+        frame = requestAnimationFrame(update);
+      },
+      stop,
+      draw,
+    };
+
+    if (animates && onScreenRef.current) {
+      fieldRef.current.start();
     } else {
-      renderer.render({ scene: particles, camera });
+      draw();
     }
 
-    return () => {
-      window.removeEventListener("resize", resize);
-      if (moveParticlesOnHover) {
-        container.removeEventListener("mousemove", handleMouseMove);
-      }
-      if (animationFrameId !== undefined)
-        cancelAnimationFrame(animationFrameId);
-      if (container.contains(gl.canvas)) {
-        container.removeChild(gl.canvas);
-      }
-    };
+    return teardown;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     particleCount,
@@ -288,8 +388,20 @@ const Particles = ({
     cameraDistance,
     disableRotation,
     pixelRatio,
-    onScreen,
+    generation,
   ]);
+
+  /* Scrolling the section out of view, or sending the tab to the background,
+     stops the loop on the field that is already there. */
+  useEffect(() => {
+    const field = fieldRef.current;
+    if (!field) return;
+    if (field.animates && onScreen) field.start();
+    else {
+      field.stop();
+      field.draw();
+    }
+  }, [onScreen]);
 
   return (
     <div ref={containerRef} className={`relative w-full h-full ${className}`} />
